@@ -92,6 +92,44 @@ const serviceDetails: Record<string, ServiceDetail> = {
   },
 }
 
+for (const service of services) {
+  if (!serviceDetails[service.title]) {
+    serviceDetails[service.title] = {
+      intro: service.text,
+      sections: [{ title: 'ما تشمله الخدمة', items: ['تنفيذ احترافي يناسب احتياجك.', 'مراجعة وتنسيق شامل قبل التسليم.', 'تعديلات ومتابعة حتى اعتماد العمل.'] }],
+      steps: [
+        { step: '01', title: 'إرسال الطلب', desc: 'أرسل التفاصيل والمتطلبات الخاصة بخدمتك.' },
+        { step: '02', title: 'مراجعة الفريق', desc: 'نراجع الطلب ونحدد نطاق العمل والتكلفة.' },
+        { step: '03', title: 'المعاينة والتعديل', desc: 'نشاركك النسخة الأولية ونطبق ملاحظاتك.' },
+        { step: '04', title: 'التسليم النهائي', desc: 'تستلم العمل مكتملًا ومنسقًا وجاهزًا.' },
+      ],
+      faq: [
+        { question: 'هل تشمل الخدمة التعديلات؟', answer: 'نعم، نقدم تعديلات متوافقة مع المتطلبات والملاحظات المطلوبة.' },
+        { question: 'كيف أتابع طلبي؟', answer: 'يمكنك التواصل معنا مباشرة عبر واتساب لمتابعة حالة الطلب.' },
+      ],
+      formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
+    }
+  }
+}
+
+for (const service of services) {
+  if (!serviceDetails[service.title]) serviceDetails[service.title] = {
+    intro: service.text,
+    sections: [{ title: 'ما تشمله الخدمة', items: ['تنفيذ احترافي يناسب احتياجك.', 'مراجعة وتنسيق شامل قبل التسليم.', 'تعديلات ومتابعة حتى اعتماد العمل.'] }],
+    steps: [
+      { step: '01', title: 'إرسال الطلب', desc: 'أرسل التفاصيل والمتطلبات الخاصة بخدمتك.' },
+      { step: '02', title: 'مراجعة الفريق', desc: 'نراجع الطلب ونحدد نطاق العمل والتكلفة.' },
+      { step: '03', title: 'المعاينة والتعديل', desc: 'نشاركك النسخة الأولية ونطبق ملاحظاتك.' },
+      { step: '04', title: 'التسليم النهائي', desc: 'تستلم العمل مكتملًا ومنسقًا وجاهزًا.' },
+    ],
+    faq: [
+      { question: 'هل تشمل الخدمة التعديلات؟', answer: 'نعم، نقدم تعديلات متوافقة مع المتطلبات والملاحظات المطلوبة.' },
+      { question: 'كيف أتابع طلبي؟', answer: 'يمكنك التواصل معنا مباشرة عبر واتساب لمتابعة حالة الطلب.' },
+    ],
+    formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
+  }
+}
+
 const values: [string, string][] = [
   ['الأمانة الأكاديمية', 'أصالة وجودة وخلو الأعمال من السرقات الأدبية.'],
   ['الجودة والاحترافية', 'نلتزم بمعايير أكاديمية عالية في كل خدمة نقدمها.'],
@@ -155,7 +193,7 @@ export default function Page() {
 
       <section id="services" data-reveal className="section container reveal-section"><div className="section-heading"><div><span className="section-kicker">خدماتنا</span><h2>حلول أكاديمية <em>باحترافية</em></h2></div><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب الآن <ArrowLeft size={17} /></a></div><div className="service-grid">{services.map(({ icon: Icon, image, title, text }) => <article data-reveal className="service-card reveal-section" key={title}><div className="service-image"><Image src={image} alt={title} fill sizes="(max-width: 800px) 100vw, 30vw" /></div><span className="service-icon"><Icon size={24} /></span><h3>{title}</h3><p>{text}</p><div className="service-actions"><button className="service-browse" onClick={() => setSelectedService(title)}>تصفح <ChevronLeft size={15} /></button><a className="service-order" href={whatsapp} target="_blank" rel="noreferrer">اطلب الخدمة <MessageCircle size={15} /></a></div></article>)}</div></section>
 
-      {selectedService && <div className="service-modal-backdrop" role="presentation" onClick={() => setSelectedService(null)}><section className="service-modal" role="dialog" aria-modal="true" aria-labelledby="service-details-title" onClick={(event) => event.stopPropagation()}><button className="service-modal-close" onClick={() => setSelectedService(null)} aria-label="إغلاق التفاصيل"><X size={20} /></button><span className="section-kicker">تفاصيل الخدمة</span><h2 id="service-details-title">{selectedService}</h2>{serviceDetails[selectedService] ? <><p className="service-modal-intro">{serviceDetails[selectedService].intro}</p><div className="research-details"><div className="research-overview"><h3>ما تشمله الخدمة</h3><ul><li>صياغة خطة البحث (Proposal) وتحديد المشكلة والفجوة البحثية.</li><li>إعداد الإطار النظري ومراجعة الدراسات والأدبيات السابقة.</li><li>توثيق المراجع والمصادر بدقة وفق نظام APA 7th Edition.</li><li>التنسيق المكتبي الشامل: الفهارس، الجداول، الملاحق، وأرقام الصفحات.</li><li>فحص الاستلال والأمانة العلمية عبر البرامج المعتمدة مع إرفاق التقرير.</li></ul></div>{serviceDetails[selectedService].sections.slice(1).map((detail) => <div className="research-detail" key={detail.title}><h3>{detail.title}</h3><ul>{detail.items.map((item) => <li key={item}>{item}</li>)}</ul></div>)}</div>{serviceDetails[selectedService].steps && <div className="service-steps"><h3>خطوات العمل</h3>{serviceDetails[selectedService].steps.map((step) => <div className="service-step" key={step.step}><span>{step.step}</span><div><strong>{step.title}</strong><p>{step.desc}</p></div></div>)}</div>}{serviceDetails[selectedService].faq && <div className="service-faq"><h3>الأسئلة الشائعة</h3>{serviceDetails[selectedService].faq.map((item) => <details className="faq-item" key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div>}</> : <p className="service-modal-intro">سيتم إضافة تفاصيل هذه الخدمة قريبًا. تواصل معنا عبر واتساب لمعرفة كل ما تقدمه هذه الخدمة.</p>}<a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب هذه الخدمة <MessageCircle size={17} /></a></section></div>}
+      {selectedService && <div className="service-modal-backdrop" role="presentation" onClick={() => setSelectedService(null)}><section className="service-modal" role="dialog" aria-modal="true" aria-labelledby="service-details-title" onClick={(event) => event.stopPropagation()}><button className="service-modal-close" onClick={() => setSelectedService(null)} aria-label="إغلاق التفاصيل"><X size={20} /></button><span className="section-kicker">تفاصيل الخدمة</span><h2 id="service-details-title">{selectedService}</h2>{serviceDetails[selectedService] ? <><p className="service-modal-intro">{serviceDetails[selectedService].intro}</p><div className="research-details"><div className="research-overview"><h3>ما تشمله الخدمة</h3><ul><li>صياغة خطة البحث (Proposal) وتحديد المشكلة والفجوة البحثية.</li><li>إعداد الإطار النظري ومراجعة الدراسات والأدبيات السابقة.</li><li>توثيق المراجع والمصادر بدقة وفق نظام APA 7th Edition.</li><li>التنسيق المكتبي الشامل: الفهارس، الجداول، الملاحق، وأرقام الصفحات.</li><li>فحص الاستلال والأمانة العلمية عبر البرامج المعتمدة مع إرفاق التقرير.</li></ul></div>{serviceDetails[selectedService].sections.slice(1).map((detail) => <div className="research-detail" key={detail.title}><h3>{detail.title}</h3><ul>{detail.items.map((item) => <li key={item}>{item}</li>)}</ul></div>)}</div>{serviceDetails[selectedService].steps && <div className="service-steps"><h3>خطوات العمل</h3>{serviceDetails[selectedService].steps.map((step) => <div className="service-step" key={step.step}><span>{step.step}</span><div><strong>{step.title}</strong><p>{step.desc}</p></div></div>)}</div>}<div className="service-samples"><h3>نماذج سابقة</h3><div className="service-sample-list">{previousWorks.slice(0, 3).map((work) => <a className="service-sample" href={work.preview} target="_blank" rel="noreferrer" key={work.preview}><FileText size={18} /><span>{work.title}</span><ChevronLeft size={16} /></a>)}</div></div>{serviceDetails[selectedService].faq && <div className="service-faq"><h3>الأسئلة الشائعة</h3>{serviceDetails[selectedService].faq.map((item) => <details className="faq-item" key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>)}</div>}</> : <p className="service-modal-intro">سيتم إضافة تفاصيل هذه الخدمة قريبًا. تواصل معنا عبر واتساب لمعرفة كل ما تقدمه هذه الخدمة.</p>}<a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب هذه الخدمة <MessageCircle size={17} /></a></section></div>}
 
       <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
 
