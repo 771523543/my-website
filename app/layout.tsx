@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     locale: 'ar_SA',
     title: 'منصة هديل | للخدمات الطلابية والأكاديمية',
     description: 'منصة هديل للخدمات الطلابية والأكاديمية والبحوث والعروض والواجبات وخدمات البلاك بورد.',
-    images: [{ url: '/hadeel-platform-logo.png', width: 1080, height: 1080, alt: 'شعار منصة هديل للخدمات الطلابية' }],
+    images: [{ url: '/hadeel-platform-logo.png', width: 1080, height: 1080, alt: 'شعار منصة هديل للخدمات الطلابية والأكاديمية' }],
   },
   twitter: {
     card: 'summary_large_image',
