@@ -92,6 +92,13 @@ const serviceDetails: Record<string, ServiceDetail> = {
   },
 }
 
+const values: [string, string][] = [
+  ['الأمانة الأكاديمية', 'أصالة وجودة وخلو الأعمال من السرقات الأدبية.'],
+  ['الجودة والاحترافية', 'نلتزم بمعايير أكاديمية عالية في كل خدمة نقدمها.'],
+  ['السرية والخصوصية', 'نحافظ على بياناتك وملفاتك بسرية تامة.'],
+  ['الدعم والمتابعة', 'نبقى معك خطوة بخطوة حتى إتمام طلبك بنجاح.'],
+]
+
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [selectedService, setSelectedService] = useState<string | null>(null)
