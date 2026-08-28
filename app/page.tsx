@@ -14,14 +14,14 @@ const services = [
     icon: BookOpen, 
     image: '/images/service-research.png', 
     title: 'إعداد البحوث والتقارير', 
-    text: 'إعداد وتنسيق الأبحاث والتقارير الجامعية وفق أحدث المعايير الأكاديمية وضوابط APA 7th. نضمن لك خلو العمل من الاستلال والأخطاء اللغوية، مع تقديم هيكل بحثي متكامل يدعم مسيرتك الدراسية.',
+    text: 'إعداد وتنسيق الأبحاث والتقارير الجامعية وفق أحدث المعايير الأكاديمية وضوابط APA 7th. نضمن لك خلو العمل من الانتحال والأخطاء اللغوية، مع تقديم هيكل بحثي متكامل يدعم مسيرتك الدراسية.',
     link: '/services/research'
   },
   { icon: Presentation, image: '/images/service-presentation.png', title: 'العروض التقديمية', text: 'تصميم شرائح PowerPoint احترافية لمشاريع التخرج والمناقشات.' },
-  { icon: GraduationCap, image: '/images/service-assignments.png', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية.' },
+  { icon: GraduationCap, image: '/images/service-assignments.png', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية مع شرح وافٍ للمفاهيم.' },
   { icon: UserRound, image: '/images/service-cv.png', title: 'السيرة الذاتية CV', text: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة ATS.' },
   { icon: Sparkles, image: '/images/service-invitations.png', title: 'الدعوات الإلكترونية', text: 'بطاقات تخرج ومناسبات بتصاميم حديثة تناسب ذوقك.' },
-  { icon: Headphones, image: '/images/service-followup.png', title: 'متابعة مواد البلاك بورد', text: 'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الترم.' },
+  { icon: Headphones, image: '/images/service-followup.png', title: 'متابعة مواد البلاك بورد', text: 'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الفصل الدراسي.' },
 ]
 
 type ServiceDetail = { 
@@ -58,7 +58,7 @@ const serviceDetails: Record<string, ServiceDetail> = {
         title: 'التدقيق اللغوي وإعادة الصياغة', 
         items: [
           'تصحيح الأخطاء الإملائية والنحوية وتطوير الصياغة إلى أسلوب أكاديمي قوي.',
-          'إعادة الصياغة لخفض نسبة الاقتباس العلمي (Plagiarism) وضمان الأصالة الأكاديمية.'
+          'إعادة الصياغة لخفض نسبة الانتحال العلمي (Plagiarism) وضمان الأصالة الأكاديمية.'
         ] 
       },
       { 
@@ -81,8 +81,8 @@ const serviceDetails: Record<string, ServiceDetail> = {
         answer: 'نعم، نقدم تعديلات مجانية متوافقة مع الملاحظات الأكاديمية المطلوبة طوال فترة المراجعة.' 
       },
       { 
-        question: 'كيف أضمن عدم وجود اقتباس أو استلال (Plagiarism) في البحث؟', 
-        answer: 'نفحص العمل عبر برامج كشف الاستلال المعتمدة ونوفر لك تقريراً رسمياً يثبت نسبة الأمانة العلمية.' 
+        question: 'كيف أضمن عدم وجود انتحال أو سرقة علمية (Plagiarism) في البحث؟', 
+        answer: 'نفحص العمل عبر برامج كشف الانتحال المعتمدة ونوفر لك تقريراً رسمياً يثبت نسبة الأمانة العلمية.' 
       }
     ],
     formFields: {
@@ -112,23 +112,7 @@ for (const service of services) {
   }
 }
 
-for (const service of services) {
-  if (!serviceDetails[service.title]) serviceDetails[service.title] = {
-    intro: service.text,
-    sections: [{ title: 'ما تشمله الخدمة', items: ['تنفيذ احترافي يناسب احتياجك.', 'مراجعة وتنسيق شامل قبل التسليم.', 'تعديلات ومتابعة حتى اعتماد العمل.'] }],
-    steps: [
-      { step: '01', title: 'إرسال الطلب', desc: 'أرسل التفاصيل والمتطلبات الخاصة بخدمتك.' },
-      { step: '02', title: 'مراجعة الفريق', desc: 'نراجع الطلب ونحدد نطاق العمل والتكلفة.' },
-      { step: '03', title: 'المعاينة والتع������يل', desc: 'نشاركك النسخة الأولية ونطبق ملاحظاتك.' },
-      { step: '04', title: 'التسليم النهائي', desc: 'تستلم العمل مكتملًا ومنسقًا وجاهزًا.' },
-    ],
-    faq: [
-      { question: 'هل تشمل الخدمة التعديلات؟', answer: 'نعم، نقدم تعديلات متوافقة مع المتطلبات والملاحظات المطلوبة.' },
-      { question: 'كيف أتابع طلبي؟', answer: 'يمكنك التواصل معنا مباشرة عبر واتساب لمتابعة حالة الطلب.' },
-    ],
-    formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
-  }
-}
+
 
 const values: [string, string][] = [
   ['الأمانة الأكاديمية', 'أصالة وجودة وخلو الأعمال من السرقات الأدبية.'],
@@ -187,13 +171,13 @@ export default function Page() {
 
       <section className="stats-strip"><div className="container stats"><div><strong>+10K</strong><span>طالب مستفيد</span></div><div><strong>+15</strong><span>خدمة أكاديمية</span></div><div><strong>+8</strong><span>سنوات خبرة</span></div><div><strong>98%</strong><span>نسبة رضا العملاء</span></div></div></section>
 
-      <section id="story" className="section story-section container"><div className="story-visual"><div className="story-card"><BookOpen size={42} /><span>معرفة<br />تُنجز</span></div><div className="story-badge">منذ 2018</div></div><div className="story-copy"><span className="section-kicker">قصتنا</span><h2>بدأنا من إيماننا بأن<br /><em>كل طالب يستحق الدعم</em></h2><p>انطلقت منصة هديل لتكون الوجهة الموثوقة للطلاب والباحثين، وتحوّل التحديات ال��كاديمية إلى خطوات واضحة قابلة للإنجاز. نعمل بشغف لنقدم حلولًا احترافية تراعي احتياجك وتساعدك على إكمال رحلتك بأعلى درجات الجودة.</p><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">تعرّ�� على هديل <ArrowLeft size={17} /></a></div></section>
+      <section id="story" className="section story-section container"><div className="story-visual"><div className="story-card"><BookOpen size={42} /><span>معرفة<br />تُنجز</span></div><div className="story-badge">منذ 2018</div></div><div className="story-copy"><span className="section-kicker">قصتنا</span><h2>بدأنا من إيماننا بأن<br /><em>كل طالب يستحق الدعم</em></h2><p>انطلقت منصة هديل لتكون الوجهة الموثوقة للطلاب والباحثين، وتحوّل التحديات الأكاديمية إلى خطوات واضحة قابلة للإنجاز. نعمل بشغف لنقدم حلولًا احترافية تراعي احتياجك وتساعدك على إكمال رحلتك بأعلى درجات الجودة.</p><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">تعرّف على هديل <ArrowLeft size={17} /></a></div></section>
 
       <section id="values" data-reveal className="section soft-section reveal-section"><div className="container"><div className="center-heading"><span className="section-kicker">قيمنا الأساسية</span><h2>ثقة تُبنى على <em>المبادئ</em></h2><p>نضع احتياجك ونجاحك في مقدمة كل ما نقدمه.</p></div><div className="values-grid">{values.map(([title, text], index) => <article data-reveal className="value-card reveal-section" key={title}><span className="value-number">0{index + 1}</span><ShieldCheck size={25} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
 
 
-      <section id="services" className="services-section container"><div className="services-heading"><span className="section-kicker">خدماتنا</span><h2>خدمات البحوث <em>العلمية</em></h2><p>حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم، موثق، وجاهز للتقديم بثقة.</p></div><article className="research-service-card"><div className="research-service-media"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9c589a0df5766828c8bb04436f8936e9-YBqHFD6XerQGWc67zmDPCVhH08c5qc.jpg" alt="تحليل البيانات والبحوث العلمية" /><span className="research-media-label">بحث وتحليل</span></div><div className="research-service-content"><span className="service-index">01 / خدمة أكاديمية</span><h3>إعداد البحوث والتقارير</h3><p>نحوّل فكرتك إلى بحث متكامل بصياغة أكاديمية واضحة، توثيق دقيق، وتنسيق احترافي يوافق متطلبات جامعتك.</p><div className="research-points"><span><Check size={16} /> خطة بحث وإطار نظري</span><span><Check size={16} /> توثيق APA 7th</span><span><Check size={16} /> تدقيق لغوي وفحص استلال</span><span><Check size={16} /> جداول وفهارس وملاحق</span></div><button className="details-button" type="button" onClick={() => setResearchDetailsOpen(true)}>انظر إلى التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة البحوث <MessageCircle size={17} /></a></div></article></section>
+      <section id="services" className="services-section container"><div className="services-heading"><span className="section-kicker">خدماتنا</span><h2>خدمات البحوث <em>العلمية</em></h2><p>حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم، موثق، وجاهز للتقديم بثقة.</p></div><article className="research-service-card"><div className="research-service-media"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9c589a0df5766828c8bb04436f8936e9-YBqHFD6XerQGWc67zmDPCVhH08c5qc.jpg" alt="تحليل البيانات والبحوث العلمية" /><span className="research-media-label">بحث وتحليل</span></div><div className="research-service-content"><span className="service-index">01 / خدمة أكاديمية</span><h3>إعداد البحوث والتقارير</h3><p>نحوّل فكرتك إلى بحث متكامل بصياغة أكاديمية واضحة، توثيق دقيق، وتنسيق احترافي يوافق متطلبات جامعتك.</p><div className="research-points"><span><Check size={16} /> خطة بحث وإطار نظري</span><span><Check size={16} /> توثيق APA 7th</span><span><Check size={16} /> تدقيق لغوي وفحص استلال</span><span><Check size={16} /> جداول وفهارس وملاحق</span></div><button className="details-button" type="button" onClick={() => setResearchDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة البحوث <MessageCircle size={17} /></a></div></article></section>
 
       {researchDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setResearchDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="research-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="research-details-title">خدمات البحوث العلمية</h2></div><button type="button" onClick={() => setResearchDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نساعدك على تحويل فكرتك إلى بحث علمي متكامل، من التخطيط والكتابة إلى التوثيق والتنسيق والمراجعة النهائية.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>عنوان الموضوع أو الفكرة البحثية.</li><li>اسم المقرر والتخصص والمرحلة الدراسية.</li><li>عدد الصفحات والموعد النهائي للتسليم.</li><li>دليل الجامعة أو تعليمات المحاضر إن وجدت.</li><li>أي مراجع أو ملفات أو ملاحظات ترغب بإضافتها.</li></ul></div><div className="details-block"><h3>أعمالنا السابقة</h3><div className="details-samples">{previousWorks.slice(0, 5).map((work) => <a href={work.preview} target="_blank" rel="noreferrer" key={work.preview}><FileText size={17} /><span>{work.title}</span><ChevronLeft size={16} /></a>)}</div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
 
