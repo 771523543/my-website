@@ -92,6 +92,44 @@ const serviceDetails: Record<string, ServiceDetail> = {
   },
 }
 
+for (const service of services) {
+  if (!serviceDetails[service.title]) {
+    serviceDetails[service.title] = {
+      intro: service.text,
+      sections: [{ title: 'ما تشمله الخدمة', items: ['تنفيذ احترافي يناسب احتياجك.', 'مراجعة وتنسيق شامل قبل التسليم.', 'تعديلات ومتابعة حتى اعتماد العمل.'] }],
+      steps: [
+        { step: '01', title: 'إرسال الطلب', desc: 'أرسل التفاصيل والمتطلبات الخاصة بخدمتك.' },
+        { step: '02', title: 'مراجعة الفريق', desc: 'نراجع الطلب ونحدد نطاق العمل والتكلفة.' },
+        { step: '03', title: 'المعاينة والتعديل', desc: 'نشاركك النسخة الأولية ونطبق ملاحظاتك.' },
+        { step: '04', title: 'التسليم النهائي', desc: 'تستلم العمل مكتملًا ومنسقًا وجاهزًا.' },
+      ],
+      faq: [
+        { question: 'هل تشمل الخدمة التعديلات؟', answer: 'نعم، نقدم تعديلات متوافقة مع المتطلبات والملاحظات المطلوبة.' },
+        { question: 'كيف أتابع طلبي؟', answer: 'يمكنك التواصل معنا مباشرة عبر واتساب لمتابعة حالة الطلب.' },
+      ],
+      formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
+    }
+  }
+}
+
+for (const service of services) {
+  if (!serviceDetails[service.title]) serviceDetails[service.title] = {
+    intro: service.text,
+    sections: [{ title: 'ما تشمله الخدمة', items: ['تنفيذ احترافي يناسب احتياجك.', 'مراجعة وتنسيق شامل قبل التسليم.', 'تعديلات ومتابعة حتى اعتماد العمل.'] }],
+    steps: [
+      { step: '01', title: 'إرسال الطلب', desc: 'أرسل التفاصيل والمتطلبات الخاصة بخدمتك.' },
+      { step: '02', title: 'مراجعة الفريق', desc: 'نراجع الطلب ونحدد نطاق العمل والتكلفة.' },
+      { step: '03', title: 'المعاينة والتع������يل', desc: 'نشاركك النسخة الأولية ونطبق ملاحظاتك.' },
+      { step: '04', title: 'التسليم النهائي', desc: 'تستلم العمل مكتملًا ومنسقًا وجاهزًا.' },
+    ],
+    faq: [
+      { question: 'هل تشمل الخدمة التعديلات؟', answer: 'نعم، نقدم تعديلات متوافقة مع المتطلبات والملاحظات المطلوبة.' },
+      { question: 'كيف أتابع طلبي؟', answer: 'يمكنك التواصل معنا مباشرة عبر واتساب لمتابعة حالة الطلب.' },
+    ],
+    formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
+  }
+}
+
 const values: [string, string][] = [
   ['الأمانة الأكاديمية', 'أصالة وجودة وخلو الأعمال من السرقات الأدبية.'],
   ['الجودة والاحترافية', 'نلتزم بمعايير أكاديمية عالية في كل خدمة نقدمها.'],
@@ -101,8 +139,8 @@ const values: [string, string][] = [
 
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [selectedService, setSelectedService] = useState<string | null>(null)
   const [selectedWork, setSelectedWork] = useState<{ title: string; preview: string } | null>(null)
+  const [researchDetailsOpen, setResearchDetailsOpen] = useState(false)
   const previousWorks = [{ title: 'تأثير التكنولوجيا على الخدمات التعليمية', preview: 'https://drive.google.com/file/d/1eFtsqZqRJsWDCcTYcZQXSmIeU0w02NLI/preview' }, { title: 'حماية البيئة في ظل رؤية المملكة 2030', preview: 'https://drive.google.com/file/d/1KriLId4ui_lb8UusGwanwVUHQ4dk3oLC/preview' }, { title: 'تطوير الصناعات المحلية والخدمات اللوجستية', preview: 'https://drive.google.com/file/d/1nDeMLBHtyiyNn_N6EZ0mAsmdOQ_qTiyG/preview' }, { title: 'المبتدأ والخبر في القرآن الكريم', preview: 'https://drive.google.com/file/d/15tZAI1j_ppP-YiKWwJQtMlStvqnRebMJ/preview' }, { title: 'مشروع إقامة ذكية SmartStay', preview: 'https://drive.google.com/file/d/1M3M6BW7RVOBvOMyH9MVnmJugwVwzrW1I/preview' }, { title: 'الفروق الفقهية في الأحوال الشخصية', preview: 'https://drive.google.com/file/d/1iaOiQbgtcqJUJdYeSEU48FBcgWR9E88M/preview' }]
   const [achievementIndex, setAchievementIndex] = useState(0)
   const [achievementPaused, setAchievementPaused] = useState(false)
@@ -136,7 +174,7 @@ export default function Page() {
         <div className="container nav-wrap">
           <a className="brand" href="#top"><Image className="brand-logo" src="/hadeel-platform-logo.png" alt="شعار منصة هديل للخدمات الطلابية" width={54} height={54} priority /><span>منصة هديل<span className="brand-dot">.</span></span></a>
           <nav className={menuOpen ? 'nav-links mobile-open' : 'nav-links'}>
-            <a href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#story" onClick={() => setMenuOpen(false)}>قصتنا</a><a href="#values" onClick={() => setMenuOpen(false)}>قيمنا</a><a href="#services" onClick={() => setMenuOpen(false)}>خدماتنا</a><a href="#why" onClick={() => setMenuOpen(false)}>لماذا نحن</a><a href="#contact" onClick={() => setMenuOpen(false)}>اتصل بنا</a>
+            <a href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#story" onClick={() => setMenuOpen(false)}>قصتنا</a><a href="#values" onClick={() => setMenuOpen(false)}>قيمنا</a><a href="#why" onClick={() => setMenuOpen(false)}>لماذا نحن</a><a href="#contact" onClick={() => setMenuOpen(false)}>اتصل بنا</a>
           </nav>
           <div className="nav-actions"><a className="primary-button header-order" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={17} /> اطلب خدمتك الآن</a><button className="menu-button" aria-label="فتح القائمة" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
         </div>
@@ -149,13 +187,15 @@ export default function Page() {
 
       <section className="stats-strip"><div className="container stats"><div><strong>+10K</strong><span>طالب مستفيد</span></div><div><strong>+15</strong><span>خدمة أكاديمية</span></div><div><strong>+8</strong><span>سنوات خبرة</span></div><div><strong>98%</strong><span>نسبة رضا العملاء</span></div></div></section>
 
-      <section id="story" className="section story-section container"><div className="story-visual"><div className="story-card"><BookOpen size={42} /><span>معرفة<br />تُنجز</span></div><div className="story-badge">منذ 2018</div></div><div className="story-copy"><span className="section-kicker">قصتنا</span><h2>بدأنا من إيماننا بأن<br /><em>كل طالب يستحق الدعم</em></h2><p>انطلقت منصة هديل لتكون الوجهة الموثوقة للطلاب والباحثين، وتحوّل التحديات الأكاديمية إلى خطوات واضحة قابلة للإنجاز. نعمل بشغف لنقدم حلولًا احترافية تراعي احتياجك وتساعدك على إكمال رحلتك بأعلى درجات الجودة.</p><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">تعرّف على هديل <ArrowLeft size={17} /></a></div></section>
+      <section id="story" className="section story-section container"><div className="story-visual"><div className="story-card"><BookOpen size={42} /><span>معرفة<br />تُنجز</span></div><div className="story-badge">منذ 2018</div></div><div className="story-copy"><span className="section-kicker">قصتنا</span><h2>بدأنا من إيماننا بأن<br /><em>كل طالب يستحق الدعم</em></h2><p>انطلقت منصة هديل لتكون الوجهة الموثوقة للطلاب والباحثين، وتحوّل التحديات ال��كاديمية إلى خطوات واضحة قابلة للإنجاز. نعمل بشغف لنقدم حلولًا احترافية تراعي احتياجك وتساعدك على إكمال رحلتك بأعلى درجات الجودة.</p><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">تعرّ�� على هديل <ArrowLeft size={17} /></a></div></section>
 
       <section id="values" data-reveal className="section soft-section reveal-section"><div className="container"><div className="center-heading"><span className="section-kicker">قيمنا الأساسية</span><h2>ثقة تُبنى على <em>المبادئ</em></h2><p>نضع احتياجك ونجاحك في مقدمة كل ما نقدمه.</p></div><div className="values-grid">{values.map(([title, text], index) => <article data-reveal className="value-card reveal-section" key={title}><span className="value-number">0{index + 1}</span><ShieldCheck size={25} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
-      <section id="services" data-reveal className="section container reveal-section"><div className="section-heading"><div><span className="section-kicker">خدماتنا</span><h2>حلول أكاديمية <em>باحترافية</em></h2></div><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب الآن <ArrowLeft size={17} /></a></div><div className="service-grid">{services.map(({ icon: Icon, image, title, text }) => <article data-reveal className="service-card reveal-section" key={title}><div className="service-image"><Image src={image} alt={title} fill sizes="(max-width: 800px) 100vw, 30vw" /></div><span className="service-icon"><Icon size={24} /></span><h3>{title}</h3><p>{text}</p><div className="service-actions"><button className="service-browse" onClick={() => setSelectedService(title)}>تصفح <ChevronLeft size={15} /></button><a className="service-order" href={whatsapp} target="_blank" rel="noreferrer">اطلب الخدمة <MessageCircle size={15} /></a></div></article>)}</div></section>
 
-      {selectedService && <div className="service-modal-backdrop" role="presentation" onClick={() => setSelectedService(null)}><section className="service-modal" role="dialog" aria-modal="true" aria-labelledby="service-details-title" onClick={(event) => event.stopPropagation()}><button className="service-modal-close" onClick={() => setSelectedService(null)} aria-label="إغلاق التفاصيل"><X size={20} /></button><span className="section-kicker">تفاصيل الخدمة</span><h2 id="service-details-title">{selectedService}</h2>{serviceDetails[selectedService] ? <><p className="service-modal-intro">{serviceDetails[selectedService].intro}</p><div className="research-details">{serviceDetails[selectedService].sections.map((detail) => <div className="research-detail" key={detail.title}><h3>{detail.title}</h3><ul>{detail.items.map((item) => <li key={item}>{item}</li>)}</ul></div>)}</div></> : <p className="service-modal-intro">سيتم إضافة تفاصيل هذه الخدمة قريبًا. تواصل معنا عبر واتساب لمعرفة كل ما تقدمه هذه الخدمة.</p>}<a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب هذه الخدمة <MessageCircle size={17} /></a></section></div>}
+
+      <section id="services" className="services-section container"><div className="services-heading"><span className="section-kicker">خدماتنا</span><h2>خدمات البحوث <em>العلمية</em></h2><p>حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم، موثق، وجاهز للتقديم بثقة.</p></div><article className="research-service-card"><div className="research-service-media"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9c589a0df5766828c8bb04436f8936e9-YBqHFD6XerQGWc67zmDPCVhH08c5qc.jpg" alt="تحليل البيانات والبحوث العلمية" /><span className="research-media-label">بحث وتحليل</span></div><div className="research-service-content"><span className="service-index">01 / خدمة أكاديمية</span><h3>إعداد البحوث والتقارير</h3><p>نحوّل فكرتك إلى بحث متكامل بصياغة أكاديمية واضحة، توثيق دقيق، وتنسيق احترافي يوافق متطلبات جامعتك.</p><div className="research-points"><span><Check size={16} /> خطة بحث وإطار نظري</span><span><Check size={16} /> توثيق APA 7th</span><span><Check size={16} /> تدقيق لغوي وفحص استلال</span><span><Check size={16} /> جداول وفهارس وملاحق</span></div><button className="details-button" type="button" onClick={() => setResearchDetailsOpen(true)}>انظر إلى التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة البحوث <MessageCircle size={17} /></a></div></article></section>
+
+      {researchDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setResearchDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="research-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="research-details-title">خدمات البحوث العلمية</h2></div><button type="button" onClick={() => setResearchDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نساعدك على تحويل فكرتك إلى بحث علمي متكامل، من التخطيط والكتابة إلى التوثيق والتنسيق والمراجعة النهائية.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>عنوان الموضوع أو الفكرة البحثية.</li><li>اسم المقرر والتخصص والمرحلة الدراسية.</li><li>عدد الصفحات والموعد النهائي للتسليم.</li><li>دليل الجامعة أو تعليمات المحاضر إن وجدت.</li><li>أي مراجع أو ملفات أو ملاحظات ترغب بإضافتها.</li></ul></div><div className="details-block"><h3>أعمالنا السابقة</h3><div className="details-samples">{previousWorks.slice(0, 5).map((work) => <a href={work.preview} target="_blank" rel="noreferrer" key={work.preview}><FileText size={17} /><span>{work.title}</span><ChevronLeft size={16} /></a>)}</div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
 
       <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
 
@@ -170,7 +210,7 @@ export default function Page() {
       <section id="why" className="why-section"><div className="container why-inner"><div><span className="section-kicker">لماذا تختار منصة هديل؟</span><h2>معك من أول فكرة<br /><em>حتى التسليم النهائي</em></h2><p>فريق متخصص، تواصل واضح، وجودة نراجعها معك خطوة بخطوة.</p></div><div className="feature-list"><div><Check /><span><strong>سرعة فائقة في الإنجاز</strong><small>تنفيذ وتسليم في وقت قياسي.</small></span></div><div><Check /><span><strong>جودة أكاديمية عالية</strong><small>مراجعة تدقيقية متكاملة لجميع الأعمال.</small></span></div><div><Check /><span><strong>دعم ومتابعة مستمرة</strong><small>تواصل وتعديل حتى اعتماد العمل نهائيًا.</small></span></div></div></div></section>
 
       <section id="contact" className="cta-section container"><div><span className="section-kicker">جاهز تبدأ؟</span><h2>خلّنا ننجزها <em>معًا</em></h2><p>تواصل معنا الآن واحصل على استشارة مجانية لخدمتك.</p></div><a className="light-button" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={18} /> تواصل عبر واتساب</a></section>
-      <footer className="footer"><div className="container footer-grid"><div><a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="brand-dot">.</span></span></a><p>منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز أكاديمي أفضل.</p></div><div><h4>روابط سريعة</h4><a href="#story">قصتنا</a><a href="#values">قيمنا</a><a href="#services">خدماتنا</a><a href="#why">لماذا نحن</a></div><div><h4>تواصل معنا</h4><a href="mailto:Hadeelmubarak387@gmail.com">Hadeelmubarak387@gmail.com</a></div><div className="footer-note"><MessageCircle size={30} /><h4>تحتاج مساعدة؟</h4><p>فريقنا جاهز للإجابة عن استفساراتك.</p><a className="footer-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">راسلنا مباشرة <ArrowLeft size={15} /></a></div></div><div className="container footer-bottom"><span>© 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع الحقوق محفوظة.</span><span>صُنع بعناية للطلاب والباحثين</span></div></footer>
+      <footer className="footer"><div className="container footer-grid"><div><a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="brand-dot">.</span></span></a><p>منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز أكاديمي أفضل.</p></div><div><h4>روابط سريعة</h4><a href="#story">قصتنا</a><a href="#values">قيمنا</a><a href="#why">لماذا نحن</a></div><div><h4>تواصل معنا</h4><a href="mailto:Hadeelmubarak387@gmail.com">Hadeelmubarak387@gmail.com</a></div><div className="footer-note"><MessageCircle size={30} /><h4>تحتاج مساعدة؟</h4><p>فريقنا جاهز للإجابة عن استفساراتك.</p><a className="footer-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">راسلنا مباشرة <ArrowLeft size={15} /></a></div></div><div className="container footer-bottom"><span>© 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع الحقوق محفوظة.</span><span>صُنع بعناية للطلاب والباحثين</span></div></footer>
       <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="تواصل معنا عبر واتساب"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/whatsapp/default.svg" alt="واتساب" /><span>تواصل معنا</span></a>
 
     </main>
