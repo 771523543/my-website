@@ -38,6 +38,52 @@ type ServiceDetail = {
 const serviceDetails: Record<string, ServiceDetail> = {
   'إعداد البحوث والتقارير': {
     intro: 'حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم وموثق وفق أعلى المعايير.',
+  },
+  'العروض التقديمية': {
+    intro: 'تصميم عروض تقديمية احترافية تجمع بين الجودة البصرية ووضوح المحتوى لتترك انطباعًا قويًا أمام لجنة المناقشة.',
+    sections: [
+      {
+        title: 'تصميم الشرائح والهوية البصرية',
+        items: [
+          'تصميم شرائح PowerPoint بأسلوب احترافي متناسق مع هوية المشروع.',
+          'اختيار أنظمة ألوان وخطوط مناسبة تضمن وضوح القراءة وجاذبية العرض.',
+          'إضافة رسوم بيانية وإنفوجرافيك يبسّط البيانات المعقدة.'
+        ]
+      },
+      {
+        title: 'تنظيم المحتوى وسرد القصة',
+        items: [
+          'هيكلة الشرائح بترتيب منطقي يخدم هدف العرض ويوصل الفكرة بوضوح.',
+          'صياغة نصوص مختصرة وقوية تناسب طبيعة العروض التقديمية.',
+          'إعداد ملاحظات المتحدث (Speaker Notes) لدعم الأداء أمام اللجنة.'
+        ]
+      },
+      {
+        title: 'الرسوم المتحركة والانتقالات',
+        items: [
+          'إضافة انتقالات سلسة بين الشرائح دون إثقال العرض.',
+          'تحريك العناصر لتسليط الضوء على النقاط الرئيسية في الوقت المناسب.'
+        ]
+      },
+      {
+        title: 'المراجعة والتسليم',
+        items: [
+          'مراجعة شاملة لضمان خلو الشرائح من الأخطاء اللغوية والتنسيقية.',
+          'تسليم الملف بصيغتين قابلتين للتعديل (PPTX) وللعرض (PDF).'
+        ]
+      }
+    ],
+    steps: [
+      { step: '01', title: 'إرسال الطلب والمرفقات', desc: 'تحديد موضوع العرض، عدد الشرائح، وأي محتوى أو بيانات جاهزة.' },
+      { step: '02', title: 'المراجعة والتسعير', desc: 'تقييم المتطلبات وتحديد التكلفة والمدة الزمنية للتسليم.' },
+      { step: '03', title: 'المعاينة والمسودة', desc: 'تسليم نسخة أولية من الشرائح لإبداء ملاحظاتك وتعديلها.' },
+      { step: '04', title: 'التسليم النهائي', desc: 'استلام العرض جاهزًا للتقديم بصيغتين قابلتين للتعديل والعرض.' }
+    ],
+    faq: [
+      { question: 'هل يمكنني تعديل الشرائح بعد الاستلام؟', answer: 'نعم، نسلمك الملف بصيغة PPTX قابلة للتعديل بالكامل، مع إمكانية إجراء تعديلات عبر فريقنا.' },
+      { question: 'هل تدعمون برامج غير PowerPoint؟', answer: 'نعم، يمكننا تصميم العروض على PowerPoint و Google Slides و Canva حسب رغبتك.' }
+    ],
+    formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
     sections: [
       { 
         title: 'إعداد وصياغة البحوث والتقارير', 
@@ -125,6 +171,7 @@ export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [selectedWork, setSelectedWork] = useState<{ title: string; preview: string } | null>(null)
   const [researchDetailsOpen, setResearchDetailsOpen] = useState(false)
+  const [presentationDetailsOpen, setPresentationDetailsOpen] = useState(false)
   const previousWorks = [{ title: 'تأثير التكنولوجيا على الخدمات التعليمية', preview: 'https://drive.google.com/file/d/1eFtsqZqRJsWDCcTYcZQXSmIeU0w02NLI/preview' }, { title: 'حماية البيئة في ظل رؤية المملكة 2030', preview: 'https://drive.google.com/file/d/1KriLId4ui_lb8UusGwanwVUHQ4dk3oLC/preview' }, { title: 'تطوير الصناعات المحلية والخدمات اللوجستية', preview: 'https://drive.google.com/file/d/1nDeMLBHtyiyNn_N6EZ0mAsmdOQ_qTiyG/preview' }, { title: 'المبتدأ والخبر في القرآن الكريم', preview: 'https://drive.google.com/file/d/15tZAI1j_ppP-YiKWwJQtMlStvqnRebMJ/preview' }, { title: 'مشروع إقامة ذكية SmartStay', preview: 'https://drive.google.com/file/d/1M3M6BW7RVOBvOMyH9MVnmJugwVwzrW1I/preview' }, { title: 'الفروق الفقهية في الأحوال الشخصية', preview: 'https://drive.google.com/file/d/1iaOiQbgtcqJUJdYeSEU48FBcgWR9E88M/preview' }]
   const [achievementIndex, setAchievementIndex] = useState(0)
   const [achievementPaused, setAchievementPaused] = useState(false)
@@ -177,9 +224,11 @@ export default function Page() {
 
 
 
-      <section id="services" className="services-section container"><div className="services-heading"><span className="section-kicker">خدماتنا</span><h2>خدمات البحوث <em>العلمية</em></h2><p>حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم، موثق، وجاهز للتقديم بثقة.</p></div><article className="research-service-card"><div className="research-service-media"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9c589a0df5766828c8bb04436f8936e9-YBqHFD6XerQGWc67zmDPCVhH08c5qc.jpg" alt="تحليل البيانات والبحوث العلمية" /><span className="research-media-label">بحث وتحليل</span></div><div className="research-service-content"><span className="service-index">01 / خدمة أكاديمية</span><h3>إعداد البحوث والتقارير</h3><p>نحوّل فكرتك إلى بحث متكامل بصياغة أكاديمية واضحة، توثيق دقيق، وتنسيق احترافي يوافق متطلبات جامعتك.</p><div className="research-points"><span><Check size={16} /> خطة بحث وإطار نظري</span><span><Check size={16} /> توثيق APA 7th</span><span><Check size={16} /> تدقيق لغوي وفحص استلال</span><span><Check size={16} /> جداول وفهارس وملاحق</span></div><button className="details-button" type="button" onClick={() => setResearchDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة البحوث <MessageCircle size={17} /></a></div></article></section>
+      <section id="services" className="services-section container"><div className="services-heading"><span className="section-kicker">خدماتنا</span><h2>خدمات البحوث <em>العلمية</em></h2><p>حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم، موثق، وجاهز للتقديم بثقة.</p></div><article className="research-service-card"><div className="research-service-media"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9c589a0df5766828c8bb04436f8936e9-YBqHFD6XerQGWc67zmDPCVhH08c5qc.jpg" alt="تحليل البيانات والبحوث العلمية" /><span className="research-media-label">بحث وتحليل</span></div><div className="research-service-content"><span className="service-index">01 / خدمة أكاديمية</span><h3>إعداد البحوث والتقارير</h3><p>نحوّل فكرتك إلى بحث متكامل بصياغة أكاديمية واضحة، توثيق دقيق، وتنسيق احترافي يوافق متطلبات جامعتك.</p><div className="research-points"><span><Check size={16} /> خطة بحث وإطار نظري</span><span><Check size={16} /> توثيق APA 7th</span><span><Check size={16} /> تدقيق لغوي وفحص استلال</span><span><Check size={16} /> جداول وفهارس وملاحق</span></div><button className="details-button" type="button" onClick={() => setResearchDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة البحوث <MessageCircle size={17} /></a></div></article><article className="research-service-card"><div className="research-service-media"><img src="/images/service-presentation.png" alt="تصميم العروض التقديمية PowerPoint" /><span className="research-media-label">عروض تقديمية</span></div><div className="research-service-content"><span className="service-index">02 / خدمة أكاديمية</span><h3>العروض التقديمية</h3><p>نصمم لك شرائح PowerPoint احترافية تجمع بين الجاذبية البصرية ووضوح المحتوى، لتقدّم مشروعك أو مناقشتك بثقة وأسلوب مؤثر.</p><div className="research-points"><span><Check size={16} /> تصميم شرائح احترافي متناسق</span><span><Check size={16} /> رسوم بيانية وإنفوجرافيك</span><span><Check size={16} /> ملاحظات المتحدث (Speaker Notes)</span><span><Check size={16} /> تسليم بصيغتي PPTX و PDF</span></div><button className="details-button" type="button" onClick={() => setPresentationDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة العروض <MessageCircle size={17} /></a></div></article></section>
 
       {researchDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setResearchDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="research-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="research-details-title">خدمات البحوث العلمية</h2></div><button type="button" onClick={() => setResearchDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نساعدك على تحويل فكرتك إلى بحث علمي متكامل، من التخطيط والكتابة إلى التوثيق والتنسيق والمراجعة النهائية.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>عنوان الموضوع أو الفكرة البحثية.</li><li>اسم المقرر والتخصص والمرحلة الدراسية.</li><li>عدد الصفحات والموعد النهائي للتسليم.</li><li>دليل الجامعة أو تعليمات المحاضر إن وجدت.</li><li>أي مراجع أو ملفات أو ملاحظات ترغب بإضافتها.</li></ul></div><div className="details-block"><h3>أعمالنا السابقة</h3><div className="details-samples">{previousWorks.slice(0, 5).map((work) => <a href={work.preview} target="_blank" rel="noreferrer" key={work.preview}><FileText size={17} /><span>{work.title}</span><ChevronLeft size={16} /></a>)}</div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
+
+      {presentationDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setPresentationDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="presentation-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="presentation-details-title">خدمات العروض التقديمية</h2></div><button type="button" onClick={() => setPresentationDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نحوّل محتوى مشروعك إلى عرض تقديمي مؤثر يجمع بين التصميم الاحترافي وسرد القصة، لتترك انطباعًا قويًا أمام لجنة المناقشة.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>موضوع العرض وهدفه الرئيسي.</li><li>عدد الشرائح التقريبي والمدة المطلوبة للعرض.</li><li>أي محتوى أو بيانات أو صور جاهزة.</li><li>هوية بصرية مفضّلة (ألوان، شعار، نمط) إن وجدت.</li><li>الموعد النهائي للتسليم.</li></ul></div><div className="details-block"><h3>ما يميّز عروضنا</h3><div className="details-samples"><a href={whatsapp} target="_blank" rel="noreferrer" key="p1"><Presentation size={17} /><span>تصميم شرائح احترافي متناسق</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="p2"><Presentation size={17} /><span>رسوم بيانية وإنفوجرافيك واضحة</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="p3"><Presentation size={17} /><span>ملاحظات المتحدث لدعم الأداء</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="p4"><Presentation size={17} /><span>تسليم بصيغتي PPTX و PDF</span><ChevronLeft size={16} /></a></div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
 
       <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
 
