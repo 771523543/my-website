@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ArrowLeft, BookOpen, Check, ChevronLeft, ChevronRight, FileText, GraduationCap, Headphones,
   Menu, MessageCircle, Presentation, ShieldCheck, Sparkles, UserRound, X,
@@ -36,6 +36,60 @@ export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [selectedService, setSelectedService] = useState<string | null>(null)
   const [selectedWork, setSelectedWork] = useState<{ title: string; preview: string } | null>(null)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [startX, setStartX] = useState(0)
+  const [scrollLeft, setScrollLeft] = useState(0)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
+
+  const updateScrollButtons = useCallback(() => {
+    const el = carouselRef.current
+    if (!el) return
+    setCanScrollLeft(el.scrollLeft > 5)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 5)
+  }, [])
+
+  const scrollByCard = useCallback((direction: 'left' | 'right') => {
+    const el = carouselRef.current
+    if (!el) return
+    const card = el.querySelector('.service-card') as HTMLElement | null
+    const cardWidth = card ? card.offsetWidth + 18 : 320
+    el.scrollBy({ left: direction === 'left' ? -cardWidth : cardWidth, behavior: 'smooth' })
+  }, [])
+
+  const handleMouseDown = useCallback((event: React.MouseEvent) => {
+    const el = carouselRef.current
+    if (!el) return
+    setIsDragging(true)
+    setStartX(event.pageX - el.offsetLeft)
+    setScrollLeft(el.scrollLeft)
+  }, [])
+
+  const handleMouseMove = useCallback((event: React.MouseEvent) => {
+    const el = carouselRef.current
+    if (!el || !isDragging) return
+    event.preventDefault()
+    const x = event.pageX - el.offsetLeft
+    const walk = (x - startX) * 1.8
+    el.scrollLeft = scrollLeft - walk
+  }, [isDragging, startX, scrollLeft])
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false)
+  }, [])
+
+  useEffect(() => {
+    const el = carouselRef.current
+    if (!el) return
+    el.addEventListener('scroll', updateScrollButtons, { passive: true })
+    updateScrollButtons()
+    window.addEventListener('resize', updateScrollButtons)
+    return () => {
+      el.removeEventListener('scroll', updateScrollButtons)
+      window.removeEventListener('resize', updateScrollButtons)
+    }
+  }, [updateScrollButtons])
   const previousWorks = [{ title: 'تأثير التكنولوجيا على الخدمات التعليمية', preview: 'https://drive.google.com/file/d/1eFtsqZqRJsWDCcTYcZQXSmIeU0w02NLI/preview' }, { title: 'حماية البيئة في ظل رؤية المملكة 2030', preview: 'https://drive.google.com/file/d/1KriLId4ui_lb8UusGwanwVUHQ4dk3oLC/preview' }, { title: 'تطوير الصناعات المحلية والخدمات اللوجستية', preview: 'https://drive.google.com/file/d/1nDeMLBHtyiyNn_N6EZ0mAsmdOQ_qTiyG/preview' }, { title: 'المبتدأ والخبر في القرآن الكريم', preview: 'https://drive.google.com/file/d/15tZAI1j_ppP-YiKWwJQtMlStvqnRebMJ/preview' }, { title: 'مشروع إقامة ذكية SmartStay', preview: 'https://drive.google.com/file/d/1M3M6BW7RVOBvOMyH9MVnmJugwVwzrW1I/preview' }, { title: 'الفروق الفقهية في الأحوال الشخصية', preview: 'https://drive.google.com/file/d/1iaOiQbgtcqJUJdYeSEU48FBcgWR9E88M/preview' }]
   const [achievementIndex, setAchievementIndex] = useState(0)
   const [achievementPaused, setAchievementPaused] = useState(false)
@@ -86,7 +140,7 @@ export default function Page() {
 
       <section id="values" data-reveal className="section soft-section reveal-section"><div className="container"><div className="center-heading"><span className="section-kicker">قيمنا الأساسية</span><h2>ثقة تُبنى على <em>المبادئ</em></h2><p>نضع احتياجك ونجاحك في مقدمة كل ما نقدمه.</p></div><div className="values-grid">{values.map(([title, text], index) => <article data-reveal className="value-card reveal-section" key={title}><span className="value-number">0{index + 1}</span><ShieldCheck size={25} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
-      <section id="services" data-reveal className="section container reveal-section"><div className="section-heading"><div><span className="section-kicker">خدماتنا</span><h2>حلول أكاديمية <em>باحترافية</em></h2></div><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب الآن <ArrowLeft size={17} /></a></div><div className="service-grid">{services.map(({ icon: Icon, image, title, text }) => <article data-reveal className={`service-card reveal-section ${title === 'إعداد البحوث والتقارير' ? 'service-card-clickable' : ''}`} key={title} onClick={() => title === 'إعداد البحوث والتقارير' && setSelectedService(title)} onKeyDown={(event) => { if (title === 'إعداد البحوث والتقارير' && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); setSelectedService(title) } }} role={title === 'إعداد البحوث والتقارير' ? 'button' : undefined} tabIndex={title === 'إعداد البحوث والتقارير' ? 0 : undefined}><div className="service-image"><Image src={image} alt={title} fill sizes="(max-width: 800px) 100vw, 30vw" /></div><span className="service-icon"><Icon size={24} /></span><h3>{title}</h3><p>{text}</p><a href={whatsapp} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>اطلب الخدمة <ChevronLeft size={16} /></a>{title === 'إعداد البحوث والتقارير' && <span className="service-more">عرض التفاصيل <ChevronLeft size={14} /></span>}</article>)}</div></section>
+      <section id="services" data-reveal className="section container reveal-section"><div className="section-heading"><div><span className="section-kicker">خدماتنا</span><h2>حلول أكاديمية <em>باحترافية</em></h2></div><div className="carousel-nav"><button className="carousel-arrow carousel-arrow-prev" onClick={() => scrollByCard('right')} disabled={!canScrollLeft} aria-label="السابق"><ChevronRight size={20} /></button><button className="carousel-arrow carousel-arrow-next" onClick={() => scrollByCard('left')} disabled={!canScrollRight} aria-label="التالي"><ChevronLeft size={20} /></button></div></div><div className="service-carousel-wrapper"><div className={`service-carousel ${isDragging ? 'is-dragging' : ''}`} ref={carouselRef} onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>{services.map(({ icon: Icon, image, title, text }) => <article data-reveal className="service-card reveal-section" key={title} onClick={() => title === 'إعداد البحوث والتقارير' && setSelectedService(title)} onKeyDown={(event) => { if (title === 'إعداد البحوث والتقارير' && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); setSelectedService(title) } }} role={title === 'إعداد البحوث والتقارير' ? 'button' : undefined} tabIndex={title === 'إعداد البحوث والتقارير' ? 0 : undefined}><div className="service-image"><Image src={image} alt={title} fill sizes="(max-width: 800px) 100vw, 30vw" /></div><span className="service-icon"><Icon size={24} /></span><h3>{title}</h3><p>{text}</p><a href={whatsapp} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>اطلب الخدمة <ChevronLeft size={16} /></a>{title === 'إعداد البحوث والتقارير' && <span className="service-more">عرض التفاصيل <ChevronLeft size={14} /></span>}</article>)}</div></div></section>
 
       {selectedService === 'إعداد البحوث والتقارير' && <div className="service-modal-backdrop" role="presentation" onClick={() => setSelectedService(null)}><section className="service-modal" role="dialog" aria-modal="true" aria-labelledby="research-details-title" onClick={(event) => event.stopPropagation()}><button className="service-modal-close" onClick={() => setSelectedService(null)} aria-label="إغلاق التفاصيل"><X size={20} /></button><span className="section-kicker">تفاصيل الخدمة</span><h2 id="research-details-title">إعداد البحوث والتقارير</h2><p className="service-modal-intro">حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم وموثق.</p><div className="research-details">{researchDetails.map((detail) => <div className="research-detail" key={detail.title}><h3>{detail.title}</h3><ul>{detail.items.map((item) => <li key={item}>{item}</li>)}</ul></div>)}</div><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب هذه الخدمة <MessageCircle size={17} /></a></section></div>}
 
