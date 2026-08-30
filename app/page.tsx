@@ -10,7 +10,7 @@ import {
 const whatsapp = 'https://wa.me/967776280186'
 
 const services = [
-  { icon: BookOpen, image: '/images/service-research.png', title: 'إعداد البحوث والتقارير', text: 'بحوث وتقارير علمية وفق منهجية أكاديمية وتوثيق معتمد.' },
+  { icon: BookOpen, image: '/images/62a97c13f14f5fd59ba3b7e15f3e3ecb.jpg', title: 'إعداد البحوث والتقارير', text: 'بحوث وتقارير علمية وفق منهجية أكاديمية وتوثيق معتمد.' },
   { icon: Presentation, image: '/images/service-presentation.png', title: 'العروض التقديمية', text: 'تصميم شرائح PowerPoint احترافية لمشاريع التخرج والمناقشات.' },
   { icon: GraduationCap, image: '/images/service-assignments.png', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية.' },
   { icon: UserRound, image: '/images/service-cv.png', title: 'السيرة الذاتية CV', text: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة ATS.' },
