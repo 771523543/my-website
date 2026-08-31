@@ -1,54 +1,183 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import {
-  ArrowLeft,
-  BookOpen,
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  FileText,
-  GraduationCap,
-  Headphones,
-  Menu,
-  MessageCircle,
-  Presentation,
-  ShieldCheck,
-  Sparkles,
-  UserRound,
-  X,
+  ArrowLeft, BookOpen, Check, ChevronLeft, ChevronRight, FileText, GraduationCap, Headphones,
+  Menu, MessageCircle, Presentation, ShieldCheck, Sparkles, UserRound, X,
 } from 'lucide-react'
 
-const whatsapp = 'https://wa.me/966500000000'
+const whatsapp = 'https://wa.me/967776280186'
 
 const services = [
-  { icon: BookOpen, image: '/images/service-research.png', title: 'إعداد البحوث والتقارير', text: 'بحوث وتقارير علمية وفق منهجية أكاديمية وتوثيق معتمد.' },
+  { 
+    icon: BookOpen, 
+    image: '/images/service-research.png', 
+    title: 'إعداد البحوث والتقارير', 
+    text: 'إعداد وتنسيق الأبحاث والتقارير الجامعية وفق أحدث المعايير الأكاديمية وضوابط APA 7th. نضمن لك خلو العمل من الانتحال والأخطاء اللغوية، مع تقديم هيكل بحثي متكامل يدعم مسيرتك الدراسية.',
+    link: '/services/research'
+  },
   { icon: Presentation, image: '/images/service-presentation.png', title: 'العروض التقديمية', text: 'تصميم شرائح PowerPoint احترافية لمشاريع التخرج والمناقشات.' },
-  { icon: GraduationCap, image: '/images/service-assignments.png', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية.' },
+  { icon: GraduationCap, image: '/images/service-assignments.png', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية مع شرح وافٍ للمفاهيم.' },
   { icon: UserRound, image: '/images/service-cv.png', title: 'السيرة الذاتية CV', text: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة ATS.' },
   { icon: Sparkles, image: '/images/service-invitations.png', title: 'الدعوات الإلكترونية', text: 'بطاقات تخرج ومناسبات بتصاميم حديثة تناسب ذوقك.' },
-  { icon: Headphones, image: '/images/service-followup.png', title: 'متابعة مواد البلاك بورد', text: 'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الترم.' },
+  { icon: Headphones, image: '/images/service-followup.png', title: 'متابعة مواد البلاك بورد', text: 'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الفصل الدراسي.' },
 ]
 
-const researchDetails = [
-  { title: 'إعداد وصياغة البحوث والتقارير', items: ['كتابة الأوراق البحثية، التقارير الجامعية، والواجبات والمهمات الدراسية.', 'إعداد مقترحات البحوث (Research Proposals) وخطط الدراسة.', 'كتابة مراجعات الأدبيات والدراسات السابقة (Literature Review).'] },
-  { title: 'التنسيق والتوثيق المرجعي', items: ['تنسيق الهوامش، الخطوط، الجداول، والعناوين حسب شروط كل جامعة.', 'توثيق المصادر والمراجع بالأساليب العالمية المعتمدة (APA, MLA, Harvard, Chicago, IEEE).'] },
-  { title: 'التدقيق اللغوي وإعادة الصياغة', items: ['تصحيح الأخطاء الإملائية والنحوية وتطوير الصياغة إلى أسلوب أكاديمي قوي.', 'إعادة الصياغة لخفض نسبة الاقتباس العلمي (Plagiarism) وضمان الأصالة.'] },
-  { title: 'تلخيص المراجع والدراسات', items: ['تلخيص الكتب والمقالات العلمية والفصول الدراسية في نقاط مركزة وسلسة.', 'كتابة الملخصات التنفيذية (Executive Summaries) للتقارير والبحوث الطويلة.'] },
-]
+type ServiceDetail = { 
+  intro: string; 
+  sections: { title: string; items: string[] }[];
+  steps?: { step: string; title: string; desc: string }[];
+  faq?: { question: string; answer: string }[];
+  formFields?: {
+    academicLevels: string[];
+    defaultDuration: string;
+  };
+}
 
-const values = [
+const serviceDetails: Record<string, ServiceDetail> = {
+  'إعداد البحوث والتقارير': {
+    intro: 'حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم وموثق وفق أعلى المعايير.',
+  },
+  'العروض التقديمية': {
+    intro: 'تصميم عروض تقديمية احترافية تجمع بين الجودة البصرية ووضوح المحتوى لتترك انطباعًا قويًا أمام لجنة المناقشة.',
+    sections: [
+      {
+        title: 'تصميم الشرائح والهوية البصرية',
+        items: [
+          'تصميم شرائح PowerPoint بأسلوب احترافي متناسق مع هوية المشروع.',
+          'اختيار أنظمة ألوان وخطوط مناسبة تضمن وضوح القراءة وجاذبية العرض.',
+          'إضافة رسوم بيانية وإنفوجرافيك يبسّط البيانات المعقدة.'
+        ]
+      },
+      {
+        title: 'تنظيم المحتوى وسرد القصة',
+        items: [
+          'هيكلة الشرائح بترتيب منطقي يخدم هدف العرض ويوصل الفكرة بوضوح.',
+          'صياغة نصوص مختصرة وقوية تناسب طبيعة العروض التقديمية.',
+          'إعداد ملاحظات المتحدث (Speaker Notes) لدعم الأداء أمام اللجنة.'
+        ]
+      },
+      {
+        title: 'الرسوم المتحركة والانتقالات',
+        items: [
+          'إضافة انتقالات سلسة بين الشرائح دون إثقال العرض.',
+          'تحريك العناصر لتسليط الضوء على النقاط الرئيسية في الوقت المناسب.'
+        ]
+      },
+      {
+        title: 'المراجعة والتسليم',
+        items: [
+          'مراجعة شاملة لضمان خلو الشرائح من الأخطاء اللغوية والتنسيقية.',
+          'تسليم الملف بصيغتين قابلتين للتعديل (PPTX) وللعرض (PDF).'
+        ]
+      }
+    ],
+    steps: [
+      { step: '01', title: 'إرسال الطلب والمرفقات', desc: 'تحديد موضوع العرض، عدد الشرائح، وأي محتوى أو بيانات جاهزة.' },
+      { step: '02', title: 'المراجعة والتسعير', desc: 'تقييم المتطلبات وتحديد التكلفة والمدة الزمنية للتسليم.' },
+      { step: '03', title: 'المعاينة والمسودة', desc: 'تسليم نسخة أولية من الشرائح لإبداء ملاحظاتك وتعديلها.' },
+      { step: '04', title: 'التسليم النهائي', desc: 'استلام العرض جاهزًا للتقديم بصيغتين قابلتين للتعديل والعرض.' }
+    ],
+    faq: [
+      { question: 'هل يمكنني تعديل الشرائح بعد الاستلام؟', answer: 'نعم، نسلمك الملف بصيغة PPTX قابلة للتعديل بالكامل، مع إمكانية إجراء تعديلات عبر فريقنا.' },
+      { question: 'هل تدعمون برامج غير PowerPoint؟', answer: 'نعم، يمكننا تصميم العروض على PowerPoint و Google Slides و Canva حسب رغبتك.' }
+    ],
+    formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
+    sections: [
+      { 
+        title: 'إعداد وصياغة البحوث والتقارير', 
+        items: [
+          'كتابة الأوراق البحثية، التقارير الجامعية، والواجبات والمهمات الدراسية.',
+          'إعداد مقترحات البحوث (Research Proposals) وخطط الدراسة المعتمدة.',
+          'كتابة مراجعات الأدبيات والدراسات السابقة (Literature Review).'
+        ] 
+      },
+      { 
+        title: 'التنسيق والتوثيق المرجعي', 
+        items: [
+          'تنسيق الهوامش، الخطوط، الجداول، والعناوين حسب شروط كل جامعة.',
+          'توثيق المصادر والمراجع بالأساليب العالمية المعتمدة (APA 7th, MLA, Harvard, Chicago, IEEE).'
+        ] 
+      },
+      { 
+        title: 'التدقيق اللغوي وإعادة الصياغة', 
+        items: [
+          'تصحيح الأخطاء الإملائية والنحوية وتطوير الصياغة إلى أسلوب أكاديمي قوي.',
+          'إعادة الصياغة لخفض نسبة الانتحال العلمي (Plagiarism) وضمان الأصالة الأكاديمية.'
+        ] 
+      },
+      { 
+        title: 'تلخيص المراجع والدراسات', 
+        items: [
+          'تلخيص الكتب والمقالات العلمية والفصول الدراسية في نقاط مركزة وسلسة.',
+          'كتابة الملخصات التنفيذية (Executive Summaries) للتقارير والبحوث الطويلة.'
+        ] 
+      }
+    ],
+    steps: [
+      { step: '01', title: 'إرسال الطلب والمرفقات', desc: 'تحديد موضوع البحث، عدد الصفحات، والدليل الإرشادي المطلوب من المحاضر.' },
+      { step: '02', title: 'المراجعة والتسعير', desc: 'تقييم الطلب أكاديمياً وتحديد التكلفة الإجمالية والمدى الزمني للتنفيذ.' },
+      { step: '03', title: 'المعاينة والمسودة', desc: 'تسليم نسخة أولية لإبداء ملاحظاتك وإجراء التعديلات الأكاديمية المطلوبة.' },
+      { step: '04', title: 'التسليم النهائي', desc: 'استلام البحث منسقاً بالكامل وجاهزاً للطباعة والتقديم المباشر.' }
+    ],
+    faq: [
+      { 
+        question: 'هل تشمل الخدمة تعديل الملاحظات بعد الاستلام؟', 
+        answer: 'نعم، نقدم تعديلات مجانية متوافقة مع الملاحظات الأكاديمية المطلوبة طوال فترة المراجعة.' 
+      },
+      { 
+        question: 'كيف أضمن عدم وجود انتحال أو سرقة علمية (Plagiarism) في البحث؟', 
+        answer: 'نفحص العمل عبر برامج كشف الانتحال المعتمدة ونوفر لك تقريراً رسمياً يثبت نسبة الأمانة العلمية.' 
+      }
+    ],
+    formFields: {
+      academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'],
+      defaultDuration: 'حسب الموعد المحدد'
+    }
+  },
+}
+
+for (const service of services) {
+  if (!serviceDetails[service.title]) {
+    serviceDetails[service.title] = {
+      intro: service.text,
+      sections: [{ title: 'ما تشمله الخدمة', items: ['تنفيذ احترافي يناسب احتياجك.', 'مراجعة وتنسيق شامل قبل التسليم.', 'تعديلات ومتابعة حتى اعتماد العمل.'] }],
+      steps: [
+        { step: '01', title: 'إرسال الطلب', desc: 'أرسل التفاصيل والمتطلبات الخاصة بخدمتك.' },
+        { step: '02', title: 'مراجعة الفريق', desc: 'نراجع الطلب ونحدد نطاق العمل والتكلفة.' },
+        { step: '03', title: 'المعاينة والتعديل', desc: 'نشاركك النسخة الأولية ونطبق ملاحظاتك.' },
+        { step: '04', title: 'التسليم النهائي', desc: 'تستلم العمل مكتملًا ومنسقًا وجاهزًا.' },
+      ],
+      faq: [
+        { question: 'هل تشمل الخدمة التعديلات؟', answer: 'نعم، نقدم تعديلات متوافقة مع المتطلبات والملاحظات المطلوبة.' },
+        { question: 'كيف أتابع طلبي؟', answer: 'يمكنك التواصل معنا مباشرة عبر واتساب لمتابعة حالة الطلب.' },
+      ],
+      formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
+    }
+  }
+}
+
+
+
+const values: [string, string][] = [
   ['الأمانة الأكاديمية', 'أصالة وجودة وخلو الأعمال من السرقات الأدبية.'],
-  ['السرية والخصوصية', 'حماية كاملة لبيانات ومستندات ومعلومات الطلاب.'],
-  ['التميز والدقة', 'أعمال متكاملة تفي بالمعايير والشروط الجامعية.'],
-  ['الالتزام بالمواعيد', 'احترام وقتك وتسليم دقيق في الموعد المحدد.'],
+  ['الجودة والاحترافية', 'نلتزم بمعايير أكاديمية عالية في كل خدمة نقدمها.'],
+  ['السرية والخصوصية', 'نحافظ على بياناتك وملفاتك بسرية تامة.'],
+  ['الدعم والمتابعة', 'نبقى معك خطوة بخطوة حتى إتمام طلبك بنجاح.'],
 ]
 
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [selectedService, setSelectedService] = useState<string | null>(null)
   const [selectedWork, setSelectedWork] = useState<{ title: string; preview: string } | null>(null)
+  const [researchDetailsOpen, setResearchDetailsOpen] = useState(false)
+  const [presentationDetailsOpen, setPresentationDetailsOpen] = useState(false)
+  const [assignmentsDetailsOpen, setAssignmentsDetailsOpen] = useState(false)
+  const [cvDetailsOpen, setCvDetailsOpen] = useState(false)
+  const [invitationsDetailsOpen, setInvitationsDetailsOpen] = useState(false)
+  const [graduationDetailsOpen, setGraduationDetailsOpen] = useState(false)
+  const [blackboardFollowDetailsOpen, setBlackboardFollowDetailsOpen] = useState(false)
+  const [blackboardSolveDetailsOpen, setBlackboardSolveDetailsOpen] = useState(false)
   const previousWorks = [{ title: 'تأثير التكنولوجيا على الخدمات التعليمية', preview: 'https://drive.google.com/file/d/1eFtsqZqRJsWDCcTYcZQXSmIeU0w02NLI/preview' }, { title: 'حماية البيئة في ظل رؤية المملكة 2030', preview: 'https://drive.google.com/file/d/1KriLId4ui_lb8UusGwanwVUHQ4dk3oLC/preview' }, { title: 'تطوير الصناعات المحلية والخدمات اللوجستية', preview: 'https://drive.google.com/file/d/1nDeMLBHtyiyNn_N6EZ0mAsmdOQ_qTiyG/preview' }, { title: 'المبتدأ والخبر في القرآن الكريم', preview: 'https://drive.google.com/file/d/15tZAI1j_ppP-YiKWwJQtMlStvqnRebMJ/preview' }, { title: 'مشروع إقامة ذكية SmartStay', preview: 'https://drive.google.com/file/d/1M3M6BW7RVOBvOMyH9MVnmJugwVwzrW1I/preview' }, { title: 'الفروق الفقهية في الأحوال الشخصية', preview: 'https://drive.google.com/file/d/1iaOiQbgtcqJUJdYeSEU48FBcgWR9E88M/preview' }]
   const [achievementIndex, setAchievementIndex] = useState(0)
   const [achievementPaused, setAchievementPaused] = useState(false)
@@ -80,9 +209,9 @@ export default function Page() {
       <div className="announcement"><Sparkles size={15} /> خصم خاص على خدمات منصة هديل لفترة محدودة <ArrowLeft size={15} /></div>
       <header className="site-header">
         <div className="container nav-wrap">
-          <a className="brand" href="#top"><img className="brand-logo" src="/hadeel-platform-logo.svg" alt="شعار منصة هديل للخدمات الطلابية" width={54} height={54} /><span>منصة هديل<span className="brand-dot">.</span></span></a>
+          <a className="brand" href="#top"><Image className="brand-logo" src="/hadeel-platform-logo.png" alt="شعار منصة هديل للخدمات الطلابية" width={54} height={54} priority /><span>منصة هديل<span className="brand-dot">.</span></span></a>
           <nav className={menuOpen ? 'nav-links mobile-open' : 'nav-links'}>
-            <a href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#story" onClick={() => setMenuOpen(false)}>قصتنا</a><a href="#values" onClick={() => setMenuOpen(false)}>قيمنا</a><a href="#services" onClick={() => setMenuOpen(false)}>خدماتنا</a><a href="#why" onClick={() => setMenuOpen(false)}>لماذا نحن</a><a href="#contact" onClick={() => setMenuOpen(false)}>اتصل بنا</a>
+            <a href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#story" onClick={() => setMenuOpen(false)}>قصتنا</a><a href="#values" onClick={() => setMenuOpen(false)}>قيمنا</a><a href="#why" onClick={() => setMenuOpen(false)}>لماذا نحن</a><a href="#contact" onClick={() => setMenuOpen(false)}>اتصل بنا</a>
           </nav>
           <div className="nav-actions"><a className="primary-button header-order" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={17} /> اطلب خدمتك الآن</a><button className="menu-button" aria-label="فتح القائمة" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
         </div>
@@ -99,9 +228,25 @@ export default function Page() {
 
       <section id="values" data-reveal className="section soft-section reveal-section"><div className="container"><div className="center-heading"><span className="section-kicker">قيمنا الأساسية</span><h2>ثقة تُبنى على <em>المبادئ</em></h2><p>نضع احتياجك ونجاحك في مقدمة كل ما نقدمه.</p></div><div className="values-grid">{values.map(([title, text], index) => <article data-reveal className="value-card reveal-section" key={title}><span className="value-number">0{index + 1}</span><ShieldCheck size={25} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
-      <section id="services" data-reveal className="section container reveal-section"><div className="section-heading"><div><span className="section-kicker">خدماتنا</span><h2>حلول أكاديمية <em>باحترافية</em></h2></div><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب الآن <ArrowLeft size={17} /></a></div><div className="service-grid">{services.map(({ icon: Icon, image, title, text }) => <article data-reveal className={`service-card reveal-section ${title === 'إعداد البحوث والتقارير' ? 'service-card-clickable' : ''}`} key={title} onClick={() => title === 'إعداد البحوث والتقارير' && setSelectedService(title)} onKeyDown={(event) => { if (title === 'إعداد البحوث والتقارير' && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); setSelectedService(title) } }} role={title === 'إعداد البحوث والتقارير' ? 'button' : undefined} tabIndex={title === 'إعداد البحوث والتقارير' ? 0 : undefined}><div className="service-image"><Image src={image} alt={title} fill sizes="(max-width: 800px) 100vw, 30vw" /></div><span className="service-icon"><Icon size={24} /></span><h3>{title}</h3><p>{text}</p><a href={whatsapp} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>اطلب الخدمة <ChevronLeft size={16} /></a>{title === 'إعداد البحوث والتقارير' && <span className="service-more">عرض التفاصيل <ChevronLeft size={14} /></span>}</article>)}</div></section>
 
-      {selectedService === 'إعداد البحوث والتقارير' && <div className="service-modal-backdrop" role="presentation" onClick={() => setSelectedService(null)}><section className="service-modal" role="dialog" aria-modal="true" aria-labelledby="research-details-title" onClick={(event) => event.stopPropagation()}><button className="service-modal-close" onClick={() => setSelectedService(null)} aria-label="إغلاق التفاصيل"><X size={20} /></button><span className="section-kicker">تفاصيل الخدمة</span><h2 id="research-details-title">إعداد البحوث والتقارير</h2><p className="service-modal-intro">حلول بحثية متكاملة تساعدك على تقديم عمل أكاديمي منظم وموثق.</p><div className="research-details">{researchDetails.map((detail) => <div className="research-detail" key={detail.title}><h3>{detail.title}</h3><ul>{detail.items.map((item) => <li key={item}>{item}</li>)}</ul></div>)}</div><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب هذه الخدمة <MessageCircle size={17} /></a></section></div>}
+
+      <section id="services" className="services-section container"><div className="services-heading"><span className="section-kicker">خدماتنا</span><h2>خدماتنا <em>الأكاديمية</em></h2><p>حلول أكاديمية متكاملة تساعدك على تقديم عمل منظم، موثق، وجاهز للتقديم بثقة في كل تخصص ومرحلة.</p></div><article className="research-service-card"><div className="research-service-media"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/9c589a0df5766828c8bb04436f8936e9-YBqHFD6XerQGWc67zmDPCVhH08c5qc.jpg" alt="تحليل البيانات والبحوث العلمية" /><span className="research-media-label">بحث وتحليل</span></div><div className="research-service-content"><span className="service-index">01 / خدمة أكاديمية</span><h3>إعداد البحوث والتقارير</h3><p>نحوّل فكرتك إلى بحث متكامل بصياغة أكاديمية واضحة، توثيق دقيق، وتنسيق احترافي يوافق متطلبات جامعتك.</p><div className="research-points"><span><Check size={16} /> خطة بحث وإطار نظري</span><span><Check size={16} /> توثيق APA 7th</span><span><Check size={16} /> تدقيق لغوي وفحص استلال</span><span><Check size={16} /> جداول وفهارس وملاحق</span></div><button className="details-button" type="button" onClick={() => setResearchDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة البحوث <MessageCircle size={17} /></a></div></article><article className="research-service-card"><div className="research-service-media"><img src="/images/service-presentation.png" alt="تصميم العروض التقديمية PowerPoint" /><span className="research-media-label">عروض تقديمية</span></div><div className="research-service-content"><span className="service-index">02 / خدمة أكاديمية</span><h3>العروض التقديمية</h3><p>نصمم لك شرائح PowerPoint احترافية تجمع بين الجاذبية البصرية ووضوح المحتوى، لتقدّم مشروعك أو مناقشتك بثقة وأسلوب مؤثر.</p><div className="research-points"><span><Check size={16} /> تصميم شرائح احترافي متناسق</span><span><Check size={16} /> رسوم بيانية وإنفوجرافيك</span><span><Check size={16} /> ملاحظات المتحدث (Speaker Notes)</span><span><Check size={16} /> تسليم بصيغتي PPTX و PDF</span></div><button className="details-button" type="button" onClick={() => setPresentationDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة العروض <MessageCircle size={17} /></a></div></article><article className="research-service-card"><div className="research-service-media"><img src="/images/service-assignments.png" alt="حل التكليفات والواجبات الجامعية" /><span className="research-media-label">واجبات وتكاليف</span></div><div className="research-service-content"><span className="service-index">03 / خدمة أكاديمية</span><h3>التكليفات والواجبات</h3><p>حل ومتابعة وافية للأنشطة والواجبات الجامعية مع شرح وافٍ للمفاهيم، لضمان فعمك للمادة ورفع معدلك الأكاديمي.</p><div className="research-points"><span><Check size={16} /> حل دقيق لجميع التكليفات</span><span><Check size={16} /> شرح مبسط للمفاهيم</span><span><Check size={16} /> تسليم قبل الموعد المحدد</span><span><Check size={16} /> متابعة وتعديلات مجانية</span></div><button className="details-button" type="button" onClick={() => setAssignmentsDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة الواجبات <MessageCircle size={17} /></a></div></article><article className="research-service-card"><div className="research-service-media"><img src="/images/service-cv.png" alt="تصميم السيرة الذاتية الاحترافية" /><span className="research-media-label">سيرة ذاتية</span></div><div className="research-service-content"><span className="service-index">04 / خدمة أكاديمية</span><h3>السيرة الذاتية CV</h3><p>نعد لك سيرة ذاتية احترافية باللغتين العربية والإنجليزية، متوافقة مع أنظمة ATS ومصممة لتبرز مهاراتك وخبراتك بأفضل صورة.</p><div className="research-points"><span><Check size={16} /> توافق مع أنظمة ATS</span><span><Check size={16} /> تصميم عصري واحترافي</span><span><Check size={16} /> صياغة عربية وإنجليزية</span><span><Check size={16} /> تسليم بصيغتي Word و PDF</span></div><button className="details-button" type="button" onClick={() => setCvDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة السيرة <MessageCircle size={17} /></a></div></article><article className="research-service-card"><div className="research-service-media"><img src="/images/service-invitations.png" alt="تصميم الدعوات الإلكترونية" /><span className="research-media-label">دعوات إلكترونية</span></div><div className="research-service-content"><span className="service-index">05 / خدمة أكاديمية</span><h3>الدعوات الإلكترونية</h3><p>نصمم لك بطاقات تخرج ومناسبات بتصاميم حديثة وراقية تناسب ذوقك، جاهزة للمشاركة الرقمية والطباعة.</p><div className="research-points"><span><Check size={16} /> تصاميم حديثة وراقية</span><span><Check size={16} /> بطاقات تخرج ومناسبات</span><span><Check size={16} /> قابلة للمشاركة والطباعة</span><span><Check size={16} /> تسليم سريع</span></div><button className="details-button" type="button" onClick={() => setInvitationsDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة الدعوات <MessageCircle size={17} /></a></div></article><article className="research-service-card"><div className="research-service-media"><img src="/images/hadeel-academic-hero.png" alt="مشاريع التخرج والمناقشات" /><span className="research-media-label">مشاريع تخرج</span></div><div className="research-service-content"><span className="service-index">06 / خدمة أكاديمية</span><h3>مشاريع التخرج</h3><p>نقدم دعمًا متكامل لمشاريع التخرج من اختيار الفكرة وكتابة البحث حتى تصميم العرض التقديمي والتحضير للمناقشة.</p><div className="research-points"><span><Check size={16} /> اختيار الفكرة وإعداد الخطة</span><span><Check size={16} /> كتابة البحث والتوثيق</span><span><Check size={16} /> تصميم عرض تقديمي للمناقشة</span><span><Check size={16} /> تحضير لأسئلة اللجنة</span></div><button className="details-button" type="button" onClick={() => setGraduationDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة مشاريع التخرج <MessageCircle size={17} /></a></div></article><article className="research-service-card"><div className="research-service-media"><img src="/images/service-followup.png" alt="متابعة جميع المواد على البلاك بورد" /><span className="research-media-label">متابعة البلاك بورد</span></div><div className="research-service-content"><span className="service-index">07 / خدمة أكاديمية</span><h3>متابعة جميع المواد على البلاك بورد</h3><p>ندير ونتابع جميع مقرراتك على منصة البلاك بورد طوال الفصل الدراسي، من المحاضرات والواجبات إلى الاختبارات والأنشطة.</p><div className="research-points"><span><Check size={16} /> متابعة جميع المقررات</span><span><Check size={16} /> تتبع المحاضرات والأنشطة</span><span><Check size={16} /> تنبيهات للمواعيد والاختبارات</span><span><Check size={16} /> متابعة طوال الفصل الدراسي</span></div><button className="details-button" type="button" onClick={() => setBlackboardFollowDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة المتابعة <MessageCircle size={17} /></a></div></article><article className="research-service-card"><div className="research-service-media"><img src="/images/service-followup.png" alt="حل جميع الأعمال على البلاك بورد" /><span className="research-media-label">حل البلاك بورد</span></div><div className="research-service-content"><span className="service-index">08 / خدمة أكاديمية</span><h3>حل جميع الأعمال على البلاك بورد</h3><p>نقوم بحل جميع الواجبات والاختبارات والأنشطة على منصة البلاك بورد بدقة عالية وفي الوقت المحدد، لضمان أعلى الدرجات.</p><div className="research-points"><span><Check size={16} /> حل الواجبات والاختبارات</span><span><Check size={16} /> حل الأنشطة والمهام</span><span><Check size={16} /> دقة عالية وتسليم في الموعد</span><span><Check size={16} /> تغطية جميع المواد</span></div><button className="details-button" type="button" onClick={() => setBlackboardSolveDetailsOpen(true)}>استعراض التفاصيل <ChevronLeft size={17} /></button><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمة الحل <MessageCircle size={17} /></a></div></article></section>
+
+      {researchDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setResearchDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="research-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="research-details-title">خدمات البحوث العلمية</h2></div><button type="button" onClick={() => setResearchDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نساعدك على تحويل فكرتك إلى بحث علمي متكامل، من التخطيط والكتابة إلى التوثيق والتنسيق والمراجعة النهائية.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>عنوان الموضوع أو الفكرة البحثية.</li><li>اسم المقرر والتخصص والمرحلة الدراسية.</li><li>عدد الصفحات والموعد النهائي للتسليم.</li><li>دليل الجامعة أو تعليمات المحاضر إن وجدت.</li><li>أي مراجع أو ملفات أو ملاحظات ترغب بإضافتها.</li></ul></div><div className="details-block"><h3>أعمالنا السابقة</h3><div className="details-samples">{previousWorks.slice(0, 5).map((work) => <a href={work.preview} target="_blank" rel="noreferrer" key={work.preview}><FileText size={17} /><span>{work.title}</span><ChevronLeft size={16} /></a>)}</div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
+
+      {presentationDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setPresentationDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="presentation-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="presentation-details-title">خدمات العروض التقديمية</h2></div><button type="button" onClick={() => setPresentationDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نحوّل محتوى مشروعك إلى عرض تقديمي مؤثر يجمع بين التصميم الاحترافي وسرد القصة، لتترك انطباعًا قويًا أمام لجنة المناقشة.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>موضوع العرض وهدفه الرئيسي.</li><li>عدد الشرائح التقريبي والمدة المطلوبة للعرض.</li><li>أي محتوى أو بيانات أو صور جاهزة.</li><li>هوية بصرية مفضّلة (ألوان، شعار، نمط) إن وجدت.</li><li>الموعد النهائي للتسليم.</li></ul></div><div className="details-block"><h3>ما يميّز عروضنا</h3><div className="details-samples"><a href={whatsapp} target="_blank" rel="noreferrer" key="p1"><Presentation size={17} /><span>تصميم شرائح احترافي متناسق</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="p2"><Presentation size={17} /><span>رسوم بيانية وإنفوجرافيك واضحة</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="p3"><Presentation size={17} /><span>ملاحظات المتحدث لدعم الأداء</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="p4"><Presentation size={17} /><span>تسليم بصيغتي PPTX و PDF</span><ChevronLeft size={16} /></a></div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
+
+      {assignmentsDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setAssignmentsDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="assignments-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="assignments-details-title">خدمات التكليفات والواجبات</h2></div><button type="button" onClick={() => setAssignmentsDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نقدم حلًا ومتابعة وافية للأنشطة والواجبات الجامعية مع شرح مبسط للمفاهيم، لضمان فهمك للمادة ورفع معدلك الأكاديمي.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>نوع التكليف أو الواجب ومتطلباته.</li><li>اسم المقرر والتخصص والمرحلة الدراسية.</li><li>أي ملفات أو تعليمات أو محتوى من المحاضر.</li><li>الموعد النهائي للتسليم.</li></ul></div><div className="details-block"><h3>ما يميّز خدمتنا</h3><div className="details-samples"><a href={whatsapp} target="_blank" rel="noreferrer" key="a1"><GraduationCap size={17} /><span>حل دقيق لجميع التكليفات</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="a2"><GraduationCap size={17} /><span>شرح مبسط للمفاهيم الصعبة</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="a3"><GraduationCap size={17} /><span>تسليم قبل الموعد المحدد</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="a4"><GraduationCap size={17} /><span>متابعة وتعديلات مجانية</span><ChevronLeft size={16} /></a></div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
+
+      {cvDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setCvDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="cv-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="cv-details-title">خدمات السيرة الذاتية CV</h2></div><button type="button" onClick={() => setCvDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نعد لك سيرة ذاتية احترافية باللغتين العربية والإنجليزية، متوافقة مع أنظمة ATS ومصممة لتبرز مهاراتك وخبراتك بأفضل صورة أمام أصحاب العمل.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>معلوماتك الشخصية وبيانات الاتصال.</li><li>المؤهلات العلمية والشهادات.</li><li>الخبرات السابقة والمهارات.</li><li>الوظيفة أو المجال المستهدف.</li><li>اللغة المطلوبة (عربية / إنجليزية / كلاهما).</li></ul></div><div className="details-block"><h3>ما يميّز خدمتنا</h3><div className="details-samples"><a href={whatsapp} target="_blank" rel="noreferrer" key="c1"><UserRound size={17} /><span>توافق مع أنظمة ATS</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="c2"><UserRound size={17} /><span>تصميم عصري واحترافي</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="c3"><UserRound size={17} /><span>صياغة عربية وإنجليزية</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="c4"><UserRound size={17} /><span>تسليم بصيغتي Word و PDF</span><ChevronLeft size={16} /></a></div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
+
+      {invitationsDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setInvitationsDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="invitations-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="invitations-details-title">خدمات الدعوات الإلكترونية</h2></div><button type="button" onClick={() => setInvitationsDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نصمم لك بطاقات تخرج ومناسبات بتصاميم حديثة وراقية تناسب ذوقك، جاهزة للمشاركة الرقمية والطباعة.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>نوع المناسبة (تخرج، زواج، خطوبة، غيرها).</li><li>الاسماء والتواريخ والمكان.</li><li>الألوان أو النمط المفضّل إن وجد.</li><li>أي نصوص أو آيات أو صور ترغب بإضافتها.</li></ul></div><div className="details-block"><h3>ما يميّز خدمتنا</h3><div className="details-samples"><a href={whatsapp} target="_blank" rel="noreferrer" key="i1"><Sparkles size={17} /><span>تصاميم حديثة وراقية</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="i2"><Sparkles size={17} /><span>بطاقات تخرج ومناسبات</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="i3"><Sparkles size={17} /><span>قابلة للمشاركة والطباعة</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="i4"><Sparkles size={17} /><span>تسليم سريع</span><ChevronLeft size={16} /></a></div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
+
+      {graduationDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setGraduationDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="graduation-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="graduation-details-title">خدمات مشاريع التخرج</h2></div><button type="button" onClick={() => setGraduationDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نقدم دعمًا متكامل لمشاريع التخرج من اختيار الفكرة وكتابة البحث حتى تصميم العرض التقديمي والتحضير للمناقشة أمام اللجنة.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>موضوع المشروع أو المجال المستهدف.</li><li>متطلبات القسم والجامعة.</li><li>أي بيانات أو مصادر جاهزة.</li><li>الموعد النهائي للتسليم والمناقشة.</li></ul></div><div className="details-block"><h3>ما تشمله الخدمة</h3><div className="details-samples"><a href={whatsapp} target="_blank" rel="noreferrer" key="g1"><BookOpen size={17} /><span>اختيار الفكرة وإعداد الخطة</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="g2"><BookOpen size={17} /><span>كتابة البحث والتوثيق</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="g3"><Presentation size={17} /><span>تصميم عرض تقديمي للمناقشة</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="g4"><Check size={17} /><span>تحضير لأسئلة اللجنة</span><ChevronLeft size={16} /></a></div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
+
+      {blackboardFollowDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setBlackboardFollowDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="bb-follow-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="bb-follow-details-title">متابعة جميع المواد على البلاك بورد</h2></div><button type="button" onClick={() => setBlackboardFollowDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>ندير ونتابع جميع مقرراتك على منصة البلاك بورد طوال الفصل الدراسي، من المحاضرات والواجبات إلى الاختبارات والأنشطة، لضمان عدم تفويت أي موعد أو مهمة.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>بيانات الدخول للمنصة (يتم التعامل معها بسرية تامة).</li><li>قائمة المقررات المسجلة في الفصل.</li><li>أي تعليمات خاصة من الأساتذة.</li><li>مدة المتابعة المطلوبة (فصل دراسي / جزء منه).</li></ul></div><div className="details-block"><h3>ما تشمله الخدمة</h3><div className="details-samples"><a href={whatsapp} target="_blank" rel="noreferrer" key="bf1"><Headphones size={17} /><span>متابعة جميع المقررات</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="bf2"><Headphones size={17} /><span>تتبع المحاضرات والأنشطة</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="bf3"><Headphones size={17} /><span>تنبيهات للمواعيد والاختبارات</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="bf4"><Headphones size={17} /><span>متابعة طوال الفصل الدراسي</span><ChevronLeft size={16} /></a></div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
+
+      {blackboardSolveDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setBlackboardSolveDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="bb-solve-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="bb-solve-details-title">حل جميع الأعمال على البلاك بورد</h2></div><button type="button" onClick={() => setBlackboardSolveDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نقوم بحل جميع الواجبات والاختبارات والأنشطة على منصة البلاك بورد بدقة عالية وفي الوقت المحدد، لضمان تحقيق أعلى الدرجات في جميع المواد.</p></div><div className="details-block"><h3>ما الذي نحتاجه منك؟</h3><ul><li>بيانات الدخول للمنصة (يتم التعامل معها بسرية تامة).</li><li>قائمة المقررات والواجبات المطلوب حلها.</li><li>أي تعليمات أو محتوى من الأساتذة.</li><li>مواعيد التسليم لكل واجب أو اختبار.</li></ul></div><div className="details-block"><h3>ما تشمله الخدمة</h3><div className="details-samples"><a href={whatsapp} target="_blank" rel="noreferrer" key="bs1"><Check size={17} /><span>حل الواجبات والاختبارات</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="bs2"><Check size={17} /><span>حل الأنشطة والمهام</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="bs3"><Check size={17} /><span>دقة عالية وتسليم في الموعد</span><ChevronLeft size={16} /></a><a href={whatsapp} target="_blank" rel="noreferrer" key="bs4"><Check size={17} /><span>تغطية جميع المواد</span><ChevronLeft size={16} /></a></div></div></div><div className="research-details-footer"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">ابدأ طلبك الآن <MessageCircle size={17} /></a></div></section></div>}
 
       <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
 
@@ -116,7 +261,7 @@ export default function Page() {
       <section id="why" className="why-section"><div className="container why-inner"><div><span className="section-kicker">لماذا تختار منصة هديل؟</span><h2>معك من أول فكرة<br /><em>حتى التسليم النهائي</em></h2><p>فريق متخصص، تواصل واضح، وجودة نراجعها معك خطوة بخطوة.</p></div><div className="feature-list"><div><Check /><span><strong>سرعة فائقة في الإنجاز</strong><small>تنفيذ وتسليم في وقت قياسي.</small></span></div><div><Check /><span><strong>جودة أكاديمية عالية</strong><small>مراجعة تدقيقية متكاملة لجميع الأعمال.</small></span></div><div><Check /><span><strong>دعم ومتابعة مستمرة</strong><small>تواصل وتعديل حتى اعتماد العمل نهائيًا.</small></span></div></div></div></section>
 
       <section id="contact" className="cta-section container"><div><span className="section-kicker">جاهز تبدأ؟</span><h2>خلّنا ننجزها <em>معًا</em></h2><p>تواصل معنا الآن واحصل على استشارة مجانية لخدمتك.</p></div><a className="light-button" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={18} /> تواصل عبر واتساب</a></section>
-      <footer className="footer"><div className="container footer-grid"><div><a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="brand-dot">.</span></span></a><p>منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز أكاديمي أفضل.</p></div><div><h4>روابط سريعة</h4><a href="#story">قصتنا</a><a href="#values">قيمنا</a><a href="#services">خدماتنا</a><a href="#why">لماذا نحن</a></div><div><h4>تواصل معنا</h4><a href="mailto:Hadeelmubarak387@gmail.com">Hadeelmubarak387@gmail.com</a></div><div className="footer-note"><MessageCircle size={30} /><h4>تحتاج مساعدة؟</h4><p>فريقنا جاهز للإجابة عن استفساراتك.</p><a className="footer-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">راسلنا مباشرة <ArrowLeft size={15} /></a></div></div><div className="container footer-bottom"><span>© 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع الحقوق محفوظة.</span><span>صُنع بعناية للطلاب والباحثين</span></div></footer>
+      <footer className="footer"><div className="container footer-grid"><div><a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="brand-dot">.</span></span></a><p>منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز أكاديمي أفضل.</p></div><div><h4>روابط سريعة</h4><a href="#story">قصتنا</a><a href="#values">قيمنا</a><a href="#why">لماذا نحن</a></div><div><h4>تواصل معنا</h4><a href="mailto:Hadeelmubarak387@gmail.com">Hadeelmubarak387@gmail.com</a></div><div className="footer-note"><MessageCircle size={30} /><h4>تحتاج مساعدة؟</h4><p>فريقنا جاهز للإجابة عن استفساراتك.</p><a className="footer-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">راسلنا مباشرة <ArrowLeft size={15} /></a></div></div><div className="container footer-bottom"><span>© 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع الحقوق محفوظة.</span><span>صُنع بعناية للطلاب والباحثين</span></div></footer>
       <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="تواصل معنا عبر واتساب"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/whatsapp/default.svg" alt="واتساب" /><span>تواصل معنا</span></a>
 
     </main>
