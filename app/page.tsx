@@ -12,16 +12,16 @@ const whatsapp = 'https://wa.me/967776280186'
 const services = [
   { 
     icon: BookOpen, 
-    image: '/images/hadeel-academic-hero.png', 
+    image: 'https://images.unsplash.com/photo-1521747116042-5a810fda9664?auto=format&fit=crop&w=1200&q=80', 
     title: 'إعداد البحوث والتقارير', 
     text: 'إعداد وتنسيق الأبحاث والتقارير الجامعية وفق أحدث المعايير الأكاديمية وضوابط APA 7th. نضمن لك خلو العمل من الانتحال والأخطاء اللغوية، مع تقديم هيكل بحثي متكامل يدعم مسيرتك الدراسية.',
     link: '/services/research'
   },
-  { icon: Presentation, image: '/images/hadeel-hero-family.png', title: 'العروض التقديمية', text: 'تصميم شرائح PowerPoint احترافية لمشاريع التخرج والمناقشات.' },
-  { icon: GraduationCap, image: '/images/service-assignments.png', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية مع شرح وافٍ للمفاهيم.' },
-  { icon: UserRound, image: '/images/hadeel-student-hero.png', title: 'السيرة الذاتية CV', text: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة ATS.' },
-  { icon: Sparkles, image: '/images/hadeel-academic-hero.png', title: 'الدعوات الإلكترونية', text: 'بطاقات تخرج ومناسبات بتصاميم حديثة تناسب ذوقك.' },
-  { icon: Headphones, image: '/images/hadeel-achievements.png', title: 'متابعة مواد البلاك بورد', text: 'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الفصل الدراسي.' },
+  { icon: Presentation, image: 'https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&w=1200&q=80', title: 'العروض التقديمية', text: 'تصميم شرائح PowerPoint احترافية لمشاريع التخرج والمناقشات.' },
+  { icon: GraduationCap, image: 'https://images.unsplash.com/photo-1517976487492-5750f3195933?auto=format&fit=crop&w=1200&q=80', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية مع شرح وافٍ للمفاهيم.' },
+  { icon: UserRound, image: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=1200&q=80', title: 'السيرة الذاتية CV', text: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة ATS.' },
+  { icon: Sparkles, image: 'https://images.unsplash.com/photo-1505238680356-667803448bb6?auto=format&fit=crop&w=1200&q=80', title: 'الدعوات الإلكترونية', text: 'بطاقات تخرج ومناسبات بتصاميم حديثة تناسب ذوقك.' },
+  { icon: Headphones, image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80', title: 'متابعة مواد البلاك بورد', text: 'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الفصل الدراسي.' },
 ]
 
 type ServiceDetail = { 
@@ -55,7 +55,7 @@ const serviceDetails: Record<string, ServiceDetail> = {
         items: [
           'هيكلة الشرائح بترتيب منطقي يخدم هدف العرض ويوصل الفكرة بوضوح.',
           'صياغة نصوص مختصرة وقوية تناسب طبيعة العروض التقديمية.',
-          'إعداد ملاحظات المتحدث (Speaker Notes) لدعم الأداء ��مام اللجنة.'
+          'إعداد ملاحظات المتحدث (Speaker Notes) لدعم الأداء أمام اللجنة.'
         ]
       },
       {
@@ -77,7 +77,7 @@ const serviceDetails: Record<string, ServiceDetail> = {
       { step: '01', title: 'إرسال الطلب والمرفقات', desc: 'تحديد موضوع العرض، عدد الشرائح، وأي محتوى أو بيانات جاهزة.' },
       { step: '02', title: 'المراجعة والتسعير', desc: 'تقييم المتطلبات وتحديد التكلفة والمدة الزمنية للتسليم.' },
       { step: '03', title: 'المعاينة والمسودة', desc: 'تسليم نسخة أولية من الشرائح لإبداء ملاحظاتك وتعديلها.' },
-      { step: '04', title: 'التسل��م النهائي', desc: 'استلام العرض جاهزًا للتقديم بصيغتين قابلتين للتعديل والعرض.' }
+      { step: '04', title: 'التسليم النهائي', desc: 'استلام العرض جاهزًا للتقديم بصيغتين قابلتين للتعديل والعرض.' }
     ],
     faq: [
       { question: 'هل يمكنني تعديل الشرائح بعد الاستلام؟', answer: 'نعم، نسلمك الملف بصيغة PPTX قابلة للتعديل بالكامل، مع إمكانية إجراء تعديلات إضافية وفق الاتفاق.' },
@@ -151,7 +151,7 @@ for (const service of services) {
       ],
       faq: [
         { question: 'هل تشمل الخدمة التعديلات؟', answer: 'نعم، نقدم تعديلات متوافقة مع المتطلبات والملاحظات المطلوبة.' },
-        { question: 'كيف ��تابع طلبي؟', answer: 'يمكنك التواصل معنا مباشرة عبر واتساب لمتابعة حالة الطلب.' },
+        { question: 'كيف أتابع طلبي؟', answer: 'يمكنك التواصل معنا مباشرة عبر واتساب لمتابعة حالة الطلب.' },
       ],
       formFields: { academicLevels: ['دبلوم', 'بكالوريوس', 'ماجستير'], defaultDuration: 'حسب الموعد المحدد' },
     }
@@ -206,12 +206,12 @@ export default function Page() {
 
   return (
     <main dir="rtl" className="min-h-screen overflow-hidden bg-background text-foreground">
-      <div className="announcement"><Sparkles size={15} /> خصم خاص على خدمات منصة هديل لفترة محدودة <ArrowLeft size={15} /></div>
+      <div className="announcement"><Sparkles size={15} /> خصم خاص على خدمات منصة هديل لفترة مح��ودة <ArrowLeft size={15} /></div>
       <header className="site-header">
         <div className="container nav-wrap">
           <a className="brand" href="#top"><Image className="brand-logo" src="/hadeel-platform-logo.png" alt="شعار منصة هديل للخدمات الطلابية" width={54} height={54} priority /></a>
           <nav className={menuOpen ? 'nav-links mobile-open' : 'nav-links'}>
-            <a href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#story" onClick={() => setMenuOpen(false)}>قصتنا</a><a href="#values" onClick={() => setMenuOpen(false)}>ق[...]
+            <a href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a><a href="#story" onClick={() => setMenuOpen(false)}>قصتنا</a><a href="#values" onClick={() => setMenuOpen(false)}>قيمنا</a>
           </nav>
           <div className="nav-actions"><a className="primary-button header-order" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={17} /> اطلب خدمتك الآن</a><button className="menu-toggle" onClick={() => setMenuOpen((s) => !s)} aria-label="قائمة"><Menu size={20} /></button></div>
         </div>
@@ -260,27 +260,4 @@ export default function Page() {
 
       {invitationsDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setInvitationsDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="invitations-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="invitations-details-title">خدمات الدعوات الإلكترونية</h2></div><button type="button" onClick={() => setInvitationsDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نصمم لك بطاقات تخرج ومناسبات بتصاميم حديثة وقابلة للطباعة أو المشاركة إلكترونيًا.</p></div></div></section></div>
 
-      {graduationDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setGraduationDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="graduation-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="graduation-details-title">خدمات مشاريع التخرج</h2></div><button type="button" onClick={() => setGraduationDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نقدم دعمًا متكامل لمشاريع التخرج من اختيار الموضوع إلى التحضير للمناقشة.</p></div></div></section></div>
-
-      {blackboardFollowDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setBlackboardFollowDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="bb-follow-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="bb-follow-details-title">متابعة البلاك بورد</h2></div><button type="button" onClick={() => setBlackboardFollowDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نساعد في إدارة الدخول، متابعة تسليم المهام، والتواصل مع المدرسين حسب الطلب.</p></div></div></section></div>
-
-      {blackboardSolveDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setBlackboardSolveDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="bb-solve-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="bb-solve-details-title">حل جميع الأعمال على البلاك بورد</h2></div><button type="button" onClick={() => setBlackboardSolveDetailsOpen(false)} aria-label="إغلاق التفاصيل"><X size={20} /></button></div><div className="research-details-body"><div className="details-block details-overview"><h3>وصف الخدمة</h3><p>نقوم بحل جميع الواجبات والاختبارات داخل نظام البلاك بورد حسب متطلبات المقرر.</p></div></div></section></div>
-
-      <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
-
-      {selectedWork && <div className="pdf-modal-backdrop" role="presentation" onClick={() => setSelectedWork(null)}><section className="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-modal-title" onClick={(event) => event.stopPropagation()}><div className="pdf-header"><div><h2 id="pdf-modal-title">معاينة العمل</h2></div><button type="button" onClick={() => setSelectedWork(null)} aria-label="إغلاق المعاينة"><X size={20} /></button></div><div className="pdf-body"><iframe src={selectedWork.preview} title={selectedWork.title} /></div></section></div>
-
-      <section className="student-showcase-section container"><div className="hero-art visual-hero"><div className="visual-orb" /><Image className="student-hero-image" src="/images/hadeel-student-hero.png" alt="طالب يستعرض عمله" fill /></div></section>
-
-      <section className="academic-ad-section container"><div className="academic-ad"><span className="ad-badge"><span>⚡</span> خدمات أكاديمية متكاملة</span><h2>ارفع معدلك.<br />ووفر وقتك.</h2><p>من إعداد البحوث الموثقة إلى إدارة حساب البلاك بورد، تقدم لك منصة هديل كافة الأدوات والخدمات التي توفر وقتك وتضمن لك التفوق الأكاديمي.</p><a href={whatsapp} target="_blank" rel="noreferrer" className="ad-button">ابدأ طلبك الآن <ArrowLeft size={16} /></a></div></section>
-
-      <section className="achievements-section container"><div className="achievements-copy"><span className="section-kicker">إنجازاتنا بالأرقام</span><h2>نتائج تُثبت<br /><em>ثقة طلابنا</em></h2><p>نفخر بكل طالب ساعدناه على تحويل التحديات الأكاديمية إلى إنجازات واضحة ونتائج ملموسة.</p><div className="achievement-stats"><div><strong>+1,200</strong><span>خدمة منجزة</span></div><div><strong>98%</strong><span>رضا العملاء</span></div><div><strong>+6</strong><span>سنوات خبرة</span></div><div><strong>24/7</strong><span>دعم فني</span></div></div></div><div className="achievements-visual"><img src={achievementImages[achievementIndex]} alt="إنجازات منصة هديل" onMouseEnter={() => setAchievementPaused(true)} onMouseLeave={() => setAchievementPaused(false)} /></div></section>
-
-      <section id="why" className="why-section"><div className="container why-inner"><div><span className="section-kicker">لماذا تختار منصة هديل؟</span><h2>معك من أول خطوة حتى <em>النتيجة</em></h2><ul>{values.map((v) => <li key={v[0]}><strong>{v[0]}</strong><span>{v[1]}</span></li>)}</ul></div></div></section>
-
-      <section id="contact" className="cta-section container"><div><span className="section-kicker">جاهز تبدأ؟</span><h2>خلّنا ننجزها <em>معًا</em></h2><p>تواصل معنا عبر واتساب لإرسال متطلباتك وملفاتك، وسنبدأ العمل فورًا.</p><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب الآن <ArrowLeft size={14} /></a></div></section>
-      <footer className="footer"><div className="container footer-grid"><div><a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="sr-only">للخدمات الطلابية</span></span></a><p>حلول أكاديمية وخدمات احترافية للطلاب والباحثين.</p></div></div><a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="تواصل معنا عبر واتساب"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@master/whatsapp.svg" alt="واتساب" /></a></footer>
-
-    </main>
-  )
-}
+      {graduationDetailsOpen && <div className="research-details-backdrop" role="presentation" onClick={() => setGraduationDetailsOpen(false)}><section className="research-details-panel" role="dialog" aria-modal="true" aria-labelledby="graduation-details-title" onClick={(event) => event.stopPropagation()}><div className="research-details-header"><div><span className="section-kicker">تفاصيل الخدمة</span><h2 id="graduation-details-title">خدمات مشاريع التخرج</h2></div><button type="button`,
