@@ -23,12 +23,12 @@ import {
 const whatsapp = 'https://wa.me/966500000000'
 
 const services = [
-  { icon: BookOpen, image: 'https://images.pexels.com/photos/8085267/pexels-photo-8085267.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', title: 'إعداد البحوث والتقارير', text: 'بحوث وتقارير علمية وفق منهجية أكاديمية وتوثيق معتمد.' },
-  { icon: Presentation, image: 'https://images.pexels.com/photos/9034216/pexels-photo-9034216.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', title: 'العروض التقديمية', text: 'تصميم شرائح PowerPoint احترافية لمشاريع التخرج والمناقشات.' },
-  { icon: GraduationCap, image: 'https://images.pexels.com/photos/6209565/pexels-photo-6209565.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية.' },
-  { icon: UserRound, image: 'https://images.pexels.com/photos/590044/pexels-photo-590044.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', title: 'السيرة الذاتية CV', text: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة ATS.' },
-  { icon: Sparkles, image: 'https://images.pexels.com/photos/15313106/pexels-photo-15313106.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', title: 'الدعوات الإلكترونية', text: 'بطاقات تخرج ومناسبات بتصاميم حديثة تناسب ذوقك.' },
-  { icon: Headphones, image: 'https://images.pexels.com/photos/5212666/pexels-photo-5212666.jpeg?auto=compress&cs=tinysrgb&h=650&w=940', title: 'متابعة مواد البلاك بورد', text: 'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الترم.' },
+  { icon: BookOpen, image: '/images/service-research.png', title: 'إعداد البحوث والتقارير', text: 'بحوث وتقارير علمية وفق منهجية أكاديمية وتوثيق معتمد.' },
+  { icon: Presentation, image: '/images/service-presentation.png', title: 'العروض التقديمية', text: 'تصميم شرائح PowerPoint احترافية لمشاريع التخرج والمناقشات.' },
+  { icon: GraduationCap, image: '/images/service-assignments.png', title: 'التكليفات والواجبات', text: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية.' },
+  { icon: UserRound, image: '/images/service-cv.png', title: 'السيرة الذاتية CV', text: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة ATS.' },
+  { icon: Sparkles, image: '/images/service-invitations.png', title: 'الدعوات الإلكترونية', text: 'بطاقات تخرج ومناسبات بتصاميم حديثة تناسب ذوقك.' },
+  { icon: Headphones, image: '/images/service-followup.png', title: 'متابعة مواد البلاك بورد', text: 'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الترم.' },
 ]
 
 const researchDetails = [
@@ -54,10 +54,7 @@ const previousWorks = [
   { title: 'الفروق الفقهية في الأحوال الشخصية', preview: 'https://drive.google.com/file/d/1iaOiQbgtcqJUJdYeSEU48FBcgWR9E88M/preview' },
 ]
 
-const achievementImages = [
-  'https://images.pexels.com/photos/15093007/pexels-photo-15093007.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  'https://images.pexels.com/photos/7713370/pexels-photo-7713370.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-]
+const achievementImages = ['/images/hadeel-achievements.png', '/images/hadeel-achievement-test.jpg']
 
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -161,7 +158,7 @@ export default function Page() {
           </div>
         </div>
         <div className="hero-art hero-photo">
-          <Image src="https://images.pexels.com/photos/4173338/pexels-photo-4173338.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="معلمة عربية تساعد طالبًا على التعلم" fill priority sizes="(max-width: 800px) 100vw, 48vw" />
+          <Image src="/images/hadeel-hero-family.png" alt="معلمة عربية تساعد طالبًا على التعلم" fill priority sizes="(max-width: 800px) 100vw, 48vw" />
         </div>
       </section>
 
@@ -308,7 +305,7 @@ export default function Page() {
       <section className="student-showcase-section container">
         <div className="hero-art visual-hero">
           <div className="visual-orb" />
-          <Image className="student-hero-image" src="https://images.pexels.com/photos/5538605/pexels-photo-5538605.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="طالبة وباحثة عربية تمثل خدمات منصة هديل" width={390} height={480} priority />
+          <Image className="student-hero-image" src="/images/hadeel-student-hero.png" alt="طالبة وباحثة عربية تمثل خدمات منصة هديل" width={390} height={480} priority />
           <div className="floating-badge badge-research"><BookOpen size={18} /><span>إعداد البحوث<br /><small>والأوراق العلمية</small></span></div>
           <div className="floating-badge badge-presentation"><Presentation size={18} /><span>تصميم العروض<br /><small>التقديمية PowerPoint</small></span></div>
           <div className="floating-badge badge-assignments"><Check size={18} /><span>متابعة التكليفات<br /><small>والواجبات</small></span></div>
