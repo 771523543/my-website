@@ -230,33 +230,85 @@ export default function Page() {
           })}
         </div>
 
-        {/* النافذة المنبثقة للتفاصيل ورفع الطلب */}
+              {/* النافذة المنبثقة في منتصف الشاشة */}
         {selectedDetailService && (
-          <div className="service-modal-backdrop" role="presentation" onClick={() => setSelectedDetailService(null)}>
-            <section className="service-modal" style={{ maxWidth: '750px', maxHeight: '90vh', overflowY: 'auto' }} role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
-              <button className="service-modal-close" onClick={() => setSelectedDetailService(null)} aria-label="إغلاق">
-                <X size={20} />
+          <div 
+            className="service-modal-backdrop" 
+            role="presentation" 
+            onClick={() => setSelectedDetailService(null)}
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 99999,
+              padding: '1rem'
+            }}
+          >
+            <section 
+              className="service-modal" 
+              role="dialog" 
+              aria-modal="true" 
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                backgroundColor: '#fff',
+                borderRadius: '16px',
+                padding: '1.5rem',
+                width: '100%',
+                maxWidth: '650px',
+                maxHeight: '85vh',
+                overflowY: 'auto',
+                position: 'relative',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                direction: 'rtl'
+              }}
+            >
+              <button 
+                className="service-modal-close" 
+                onClick={() => setSelectedDetailService(null)} 
+                aria-label="إغلاق"
+                style={{
+                  position: 'absolute',
+                  top: '1rem',
+                  left: '1rem',
+                  background: '#f3f4f6',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+              >
+                <X size={18} />
               </button>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
-                <selectedDetailService.icon size={28} style={{ color: 'var(--primary, #10b981)' }} />
-                <h2>{selectedDetailService.title}</h2>
+                {selectedDetailService.icon && <selectedDetailService.icon size={28} style={{ color: '#10b981' }} />}
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{selectedDetailService.title}</h2>
               </div>
 
               {/* عن الخدمة */}
-              <div style={{ marginBottom: '1.5rem', background: '#f9fafb', padding: '1rem', borderRadius: '8px' }}>
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#111' }}>📌 عن الخدمة</h3>
-                <p style={{ fontSize: '0.95rem', lineHeight: '1.7', color: '#444' }}>{selectedDetailService.about}</p>
+              <div style={{ marginBottom: '1.2rem', background: '#f9fafb', padding: '0.8rem 1rem', borderRadius: '8px' }}>
+                <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold' }}>📌 عن الخدمة</h3>
+                <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: '#444' }}>{selectedDetailService.about}</p>
               </div>
 
               {/* الأعمال السابقة */}
-              {selectedDetailService.previousWorks.length > 0 && (
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#111' }}>📄 نماذج من أعمالنا السابقة</h3>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {selectedDetailService.previousWorks && selectedDetailService.previousWorks.length > 0 && (
+                <div style={{ marginBottom: '1.2rem' }}>
+                  <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold' }}>📄 نماذج من أعمالنا السابقة</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     {selectedDetailService.previousWorks.map((work, idx) => (
-                      <a key={idx} href={work.link} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.5rem', border: '1px solid #e5e7eb', borderRadius: '6px', color: '#2563eb', textDecoration: 'none' }}>
-                        <FileText size={18} /> {work.title}
+                      <a key={idx} href={work.link} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.5rem', border: '1px solid #e5e7eb', borderRadius: '6px', color: '#2563eb', textDecoration: 'none', fontSize: '0.85rem' }}>
+                        <FileText size={16} /> {work.title}
                       </a>
                     ))}
                   </div>
@@ -264,83 +316,102 @@ export default function Page() {
               )}
 
               {/* ماذا نحتاج منك */}
-              <div style={{ marginBottom: '1.5rem' }}>
-                <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#111' }}>📋 ماذا نحتاج منك لطلب الخدمة؟</h3>
-                <ul style={{ listStyleType: 'disc', paddingRight: '1.2rem', color: '#444', lineHeight: '1.7' }}>
-                  {selectedDetailService.requirements.map((req, idx) => (
-                    <li key={idx}>{req}</li>
-                  ))}
-                </ul>
-              </div>
+              {selectedDetailService.requirements && (
+                <div style={{ marginBottom: '1.2rem' }}>
+                  <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold' }}>📋 ماذا نحتاج منك لطلب الخدمة؟</h3>
+                  <ul style={{ listStyleType: 'disc', paddingRight: '1.2rem', color: '#444', fontSize: '0.88rem', lineHeight: '1.6' }}>
+                    {selectedDetailService.requirements.map((req, idx) => (
+                      <li key={idx}>{req}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* الأسئلة الشائعة */}
-              {selectedDetailService.faqs.length > 0 && (
-                <div style={{ marginBottom: '1.5rem' }}>
-                  <h3 style={{ fontSize: '1.1rem', marginBottom: '0.5rem', color: '#111' }}>❓ الأسئلة الشائعة</h3>
+              {selectedDetailService.faqs && selectedDetailService.faqs.length > 0 && (
+                <div style={{ marginBottom: '1.2rem' }}>
+                  <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold' }}>❓ الأسئلة الشائعة</h3>
                   {selectedDetailService.faqs.map((faq, idx) => (
-                    <div key={idx} style={{ marginBottom: '0.8rem', padding: '0.8rem', borderRight: '3px solid #10b981', background: '#f8fafc' }}>
-                      <strong style={{ display: 'block', fontSize: '0.95rem', marginBottom: '0.2rem' }}>{faq.q}</strong>
-                      <span style={{ fontSize: '0.9rem', color: '#555' }}>{faq.a}</span>
+                    <div key={idx} style={{ marginBottom: '0.6rem', padding: '0.6rem 0.8rem', borderRight: '3px solid #10b981', background: '#f8fafc', borderRadius: '0 6px 6px 0' }}>
+                      <strong style={{ display: 'block', fontSize: '0.88rem', marginBottom: '0.2rem' }}>{faq.q}</strong>
+                      <span style={{ fontSize: '0.83rem', color: '#555' }}>{faq.a}</span>
                     </div>
                   ))}
                 </div>
               )}
 
-              <hr style={{ margin: '1.5rem 0', borderColor: '#eee' }} />
+              <hr style={{ margin: '1.2rem 0', borderColor: '#eee' }} />
 
               {/* نموذج الطلب والملاحظات */}
               <div>
-                <h3 style={{ fontSize: '1.15rem', marginBottom: '1rem', color: '#111', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Sparkles size={18} /> طلب الخدمة ورفع المتطلبات
+                <h3 style={{ fontSize: '1.05rem', marginBottom: '0.8rem', color: '#111', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
+                  <Sparkles size={16} /> طلب الخدمة ورفع المتطلبات
                 </h3>
-                <form onSubmit={(e) => { e.preventDefault(); handleSendToWhatsapp(); }} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <form onSubmit={(e) => { e.preventDefault(); handleSendToWhatsapp(); }} style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.3rem', fontWeight: 'bold' }}>اسم الطالب / الطالبة *</label>
+                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold' }}>اسم الطالب / الطالبة *</label>
                     <input 
                       type="text" 
                       required 
                       placeholder="أدخل اسمك الكامـل" 
                       value={formData.studentName} 
                       onChange={(e) => setFormData({ ...formData, studentName: e.target.value })}
-                      style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #ccc' }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }}
                     />
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.3rem', fontWeight: 'bold' }}>الرقم الجامعي</label>
+                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold' }}>الرقم الجامعي</label>
                     <input 
                       type="text" 
                       placeholder="أدخل الرقم الجامعي (اختياري)" 
                       value={formData.universityId} 
                       onChange={(e) => setFormData({ ...formData, universityId: e.target.value })}
-                      style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #ccc' }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }}
                     />
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.3rem', fontWeight: 'bold' }}>ملف المتطلبات أو اسم الملف</label>
+                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold' }}>ملف المتطلبات أو اسم الملف</label>
                     <input 
                       type="text" 
-                      placeholder="أدخل عنوان الملف أو رابط جوجل درايف للمستند" 
+                      placeholder="أدخل عنوان الملف أو رابط جوجل درايف" 
                       value={formData.fileName} 
                       onChange={(e) => setFormData({ ...formData, fileName: e.target.value })}
-                      style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #ccc' }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }}
                     />
-                    <small style={{ color: '#777', fontSize: '0.8rem' }}>* يمكنك إرسال الملفات والمستندات مباشرة أثناء المحادثة عبر الواتساب.</small>
+                    <small style={{ color: '#777', fontSize: '0.75rem', display: 'block', marginTop: '0.2rem' }}>* يمكنك إرسال المستندات أثناء المحادثة عبر الواتساب.</small>
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '0.3rem', fontWeight: 'bold' }}>ملاحظات وإرشادات إضافية</label>
+                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold' }}>ملاحظات وإرشادات إضافية</label>
                     <textarea 
-                      rows={3} 
-                      placeholder="أدخل أي شروط خاصة أو مواعيد التسليم المطلوبة..." 
+                      rows={2} 
+                      placeholder="أدخل أي شروط خاصة أو موعد التسليم..." 
                       value={formData.notes} 
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      style={{ width: '100%', padding: '0.6rem', borderRadius: '6px', border: '1px solid #ccc' }}
+                      style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }}
                     />
                   </div>
 
-                  <button type="submit" className="primary-button" style={{ justifyContent: 'center', background: '#25D366', borderColor: '#25D366', marginTop: '0.5rem', color: '#fff' }}>
+                  <button 
+                    type="submit" 
+                    style={{ 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      gap: '8px', 
+                      background: '#25D366', 
+                      color: '#fff', 
+                      border: 'none', 
+                      padding: '0.7rem', 
+                      borderRadius: '8px', 
+                      fontWeight: 'bold', 
+                      fontSize: '0.95rem',
+                      cursor: 'pointer',
+                      marginTop: '0.4rem' 
+                    }}
+                  >
                     تأكيد وإرسال الطلب عبر الواتساب <MessageCircle size={18} />
                   </button>
                 </form>
@@ -348,7 +419,7 @@ export default function Page() {
             </section>
           </div>
         )}
-      </section>
+
 
 
       <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
