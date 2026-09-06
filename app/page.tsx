@@ -326,7 +326,7 @@ export default function Page() {
         </div>
 
         {/* مرشح/فلتر الخدمات */}
-        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           <button onClick={() => setActiveCategory('all')} style={{ padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'all' ? '#10b981' : 'transparent', color: activeCategory === 'all' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>الكل</button>
           <button onClick={() => setActiveCategory('research')} style={{ padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'research' ? '#10b981' : 'transparent', color: activeCategory === 'research' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>بحوث وتقارير</button>
           <button onClick={() => setActiveCategory('design')} style={{ padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'design' ? '#10b981' : 'transparent', color: activeCategory === 'design' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>تصاميم وعروض</button>
@@ -359,11 +359,14 @@ export default function Page() {
                   <div className="service-image" style={{ height: '180px', position: 'relative' }}>
                     <Image src={service.image} alt={service.title} fill sizes="320px" />
                   </div>
-                  <div className="service-content" style={{ padding: '1.2rem 1rem 1rem', textAlign: 'right' }}>
-                    <div style={{ textAlign: 'right' }}>
-                      <span className="service-icon" style={{ display: 'inline-flex', marginBottom: '0.4rem' }}><Icon size={22} /></span>
-                      <h3 style={{ fontSize: '1.15rem', marginTop: '0.2rem', fontWeight: 'bold', textAlign: 'right' }}>{service.title}</h3>
-                      <p style={{ margin: '0.5rem 0 1rem', fontSize: '0.88rem', color: '#111827', lineHeight: '1.5', fontWeight: '500', textAlign: 'right', direction: 'rtl', height: '2.8rem', overflow: 'hidden' }}>
+                  {/* تم تعديل المحاذاة للنص والأيقونة للوسط بالكامل */}
+                  <div className="service-content" style={{ padding: '1.2rem 1rem 1rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <span className="service-icon" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.4rem' }}>
+                        <Icon size={22} />
+                      </span>
+                      <h3 style={{ fontSize: '1.15rem', marginTop: '0.2rem', fontWeight: 'bold', textAlign: 'center', width: '100%' }}>{service.title}</h3>
+                      <p style={{ margin: '0.5rem 0 1rem', fontSize: '0.88rem', color: '#111827', lineHeight: '1.5', fontWeight: '500', textAlign: 'center', direction: 'rtl', height: '2.8rem', overflow: 'hidden', width: '100%' }}>
                         {service.shortText}
                       </p>
                     </div>
@@ -405,30 +408,30 @@ export default function Page() {
                 <X size={18} />
               </button>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
-                {selectedDetailService.icon && <selectedDetailService.icon size={28} style={{ color: '#10b981' }} />}
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{selectedDetailService.title}</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '1rem', textAlign: 'center' }}>
+                {selectedDetailService.icon && <selectedDetailService.icon size={32} style={{ color: '#10b981' }} />}
+                <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', textAlign: 'center' }}>{selectedDetailService.title}</h2>
               </div>
 
-              <div style={{ marginBottom: '1.2rem', background: '#f9fafb', padding: '0.8rem 1rem', borderRadius: '8px' }}>
+              <div style={{ marginBottom: '1.2rem', background: '#f9fafb', padding: '0.8rem 1rem', borderRadius: '8px', textAlign: 'center' }}>
                 <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold' }}>📌 عن الخدمة</h3>
                 <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: '#444' }}>{selectedDetailService.about}</p>
               </div>
 
               {selectedDetailService.requirements && (
                 <div style={{ marginBottom: '1.2rem' }}>
-                  <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold' }}>📋 ماذا نحتاج منك لطلب الخدمة؟</h3>
-                  <ul style={{ listStyleType: 'disc', paddingRight: '1.2rem', color: '#444', fontSize: '0.88rem', lineHeight: '1.6' }}>
-                    {selectedDetailService.requirements.map((req, idx) => <li key={idx}>{req}</li>)}
+                  <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold', textAlign: 'center' }}>📋 ماذا نحتاج منك لطلب الخدمة؟</h3>
+                  <ul style={{ listStyleType: 'none', paddingRight: 0, color: '#444', fontSize: '0.88rem', lineHeight: '1.6', textAlign: 'center' }}>
+                    {selectedDetailService.requirements.map((req, idx) => <li key={idx} style={{ marginBottom: '0.2rem' }}>• {req}</li>)}
                   </ul>
                 </div>
               )}
 
               {selectedDetailService.faqs && selectedDetailService.faqs.length > 0 && (
                 <div style={{ marginBottom: '1.2rem' }}>
-                  <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold' }}>❓ الأسئلة الشائعة للخدمة</h3>
+                  <h3 style={{ fontSize: '1rem', marginBottom: '0.4rem', color: '#111', fontWeight: 'bold', textAlign: 'center' }}>❓ الأسئلة الشائعة للخدمة</h3>
                   {selectedDetailService.faqs.map((faq, idx) => (
-                    <div key={idx} style={{ marginBottom: '0.6rem', padding: '0.6rem 0.8rem', borderRight: '3px solid #10b981', background: '#f8fafc', borderRadius: '0 6px 6px 0' }}>
+                    <div key={idx} style={{ marginBottom: '0.6rem', padding: '0.6rem 0.8rem', background: '#f8fafc', borderRadius: '6px', textAlign: 'center' }}>
                       <strong style={{ display: 'block', fontSize: '0.88rem', marginBottom: '0.2rem' }}>{faq.q}</strong>
                       <span style={{ fontSize: '0.83rem', color: '#555' }}>{faq.a}</span>
                     </div>
@@ -439,24 +442,24 @@ export default function Page() {
               <hr style={{ margin: '1.2rem 0', borderColor: '#eee' }} />
 
               <div>
-                <h3 style={{ fontSize: '1.05rem', marginBottom: '0.8rem', color: '#111', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' }}>
+                <h3 style={{ fontSize: '1.05rem', marginBottom: '0.8rem', color: '#111', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontWeight: 'bold' }}>
                   <Sparkles size={16} /> طلب الخدمة ورفع المتطلبات
                 </h3>
                 <form onSubmit={(e) => { e.preventDefault(); handleSendToWhatsapp(); }} style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold' }}>اسم الطالب / الطالبة *</label>
+                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold', textAlign: 'right' }}>اسم الطالب / الطالبة *</label>
                     <input type="text" required placeholder="أدخل اسمك الكامـل" value={formData.studentName} onChange={(e) => setFormData({ ...formData, studentName: e.target.value })} style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }} />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold' }}>الرقم الجامعي</label>
+                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold', textAlign: 'right' }}>الرقم الجامعي</label>
                     <input type="text" placeholder="أدخل الرقم الجامعي (اختياري)" value={formData.universityId} onChange={(e) => setFormData({ ...formData, universityId: e.target.value })} style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }} />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold' }}>ملف المتطلبات أو اسم الملف</label>
+                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold', textAlign: 'right' }}>ملف المتطلبات أو اسم الملف</label>
                     <input type="text" placeholder="أدخل عنوان الملف أو رابط جوجل درايف" value={formData.fileName} onChange={(e) => setFormData({ ...formData, fileName: e.target.value })} style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }} />
                   </div>
                   <div>
-                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold' }}>ملاحظات وإرشادات إضافية</label>
+                    <label style={{ display: 'block', fontSize: '0.85rem', marginBottom: '0.2rem', fontWeight: 'bold', textAlign: 'right' }}>ملاحظات وإرشادات إضافية</label>
                     <textarea rows={2} placeholder="أدخل أي شروط خاصة أو موعد التسليم..." value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })} style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }} />
                   </div>
                   <button type="submit" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', background: '#25D366', color: '#fff', border: 'none', padding: '0.7rem', borderRadius: '8px', fontWeight: 'bold', fontSize: '0.95rem', cursor: 'pointer', marginTop: '0.4rem' }}>
@@ -553,8 +556,8 @@ export default function Page() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
           {testimonialsData.map((t, i) => (
-            <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
-              <div style={{ display: 'flex', gap: '2px', color: '#f59e0b', marginBottom: '0.8rem' }}>
+            <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)', textAlign: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '2px', color: '#f59e0b', marginBottom: '0.8rem' }}>
                 {[...Array(t.rating)].map((_, starIndex) => <Star key={starIndex} size={16} fill="#f59e0b" />)}
               </div>
               <p style={{ fontSize: '0.9rem', color: '#374151', lineHeight: '1.6', marginBottom: '1rem' }}>"{t.text}"</p>
@@ -599,7 +602,7 @@ export default function Page() {
                 <ChevronDown size={18} style={{ transform: openFaqIndex === idx ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
               </button>
               {openFaqIndex === idx && (
-                <div style={{ padding: '0 1.2rem 1rem', fontSize: '0.88rem', color: '#4b5563', lineHeight: '1.6', borderTop: '1px solid #f3f4f6', paddingTop: '0.8rem' }}>
+                <div style={{ padding: '0 1.2rem 1rem', fontSize: '0.88rem', color: '#4b5563', lineHeight: '1.6', borderTop: '1px solid #f3f4f6', paddingTop: '0.8rem', textAlign: 'right' }}>
                   {faq.a}
                 </div>
               )}
