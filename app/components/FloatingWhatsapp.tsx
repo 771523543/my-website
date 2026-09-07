@@ -1,11 +1,17 @@
-'use client'
-
-
-
-const whatsapp = 'https://wa.me/967776280186'
+'use client';
+import React from 'react';
+import { MessageCircle } from 'lucide-react';
 
 export default function FloatingWhatsapp() {
   return (
-<a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="تواصل معنا عبر واتساب"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/whatsapp/default.svg" alt="واتساب" /><span>تواصل معنا</span></a>
-  )
+    <a
+      href="https://wa.me/966500000000"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 left-6 z-40 bg-emerald-500 text-white p-4 rounded-full shadow-2xl hover:bg-emerald-600 hover:scale-110 transition-all flex items-center justify-center"
+      aria-label="تواصل عبر الواتساب"
+    >
+      <MessageCircle size={28} />
+    </a>
+  );
 }
