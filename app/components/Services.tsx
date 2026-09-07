@@ -1,120 +1,94 @@
-'use client'
-
-import Image from 'next/image'
-import { useState } from 'react'
-import { ArrowLeft, ChevronLeft, MessageCircle, Share2, Sparkles, X } from 'lucide-react'
-import { servicesDetailsData } from '../data/siteData'
-
-const whatsapp = 'https://wa.me/967776280186'
+'use client';
+import React, { useState } from 'react';
+import { servicesData } from '../data/siteData';
+import { ArrowRight, Copy, CheckCircle, X } from 'lucide-react';
 
 export default function Services() {
-  const [selectedDetailService, setSelectedDetailService] = useState<typeof servicesDetailsData[0] | null>(null)
-  const [formData, setFormData] = useState({ studentName: '', universityId: '', notes: '', fileName: '' })
-  const [activeCategory, setActiveCategory] = useState<'all' | 'research' | 'design' | 'academic'>('all')
-  const [toastMessage, setToastMessage] = useState<string | null>(null)
-  const handleCopyServiceLink = (serviceTitle: string) => {
-    if (typeof window !== 'undefined') {
-      navigator.clipboard.writeText(window.location.href)
-      setToastMessage(`تم نسخ رابط خدمة "${serviceTitle}" بنجاح!`)
-      setTimeout(() => setToastMessage(null), 3000)
-    }
-  }
-  const filteredServices = activeCategory === 'all' ? servicesDetailsData : servicesDetailsData.filter(s => s.category === activeCategory)
-  const marqueeServices = [...filteredServices, ...filteredServices, ...filteredServices]
-  const handleSendToWhatsapp = () => {
-    if (!selectedDetailService) return
-    let message = `مرحباً منصة هديل، أرغب بطلب خدمة: *${selectedDetailService.title}*\n\n`
-    message += `👤 *اسم الطالب/الطالبة:* ${formData.studentName || 'لم يحدد'}\n`
-    message += `🎓 *الرقم الجامعي:* ${formData.universityId || 'لم يحدد'}\n`
-    if (formData.fileName) message += `📎 *اسم/وصف الملف المرفق:* ${formData.fileName}\n`
-    if (formData.notes) message += `📝 *ملاحظات وإرشادات:* ${formData.notes}\n`
-    message += `\nأرجو التواصل معي لتأكيد الطلب والتفاصيل.`
-    window.open(`${whatsapp}?text=${encodeURIComponent(message)}`, '_blank')
-  }
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [selectedService, setSelectedService] = useState<any>(null);
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+
+  const filteredServices = activeCategory === 'all' 
+    ? servicesData 
+    : servicesData.filter(s => s.category === activeCategory);
+
+  const handleCopyLink = (id: number) => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
   return (
-    <>
-      <style jsx global>{`
-        @keyframes servicesMarquee { 0% { transform: translateX(0); } 100% { transform: translateX(33.333%); } }
-        .services-marquee-track { display: flex; gap: 1.5rem; width: max-content; animation: servicesMarquee 35s linear infinite; }
-        .services-marquee-container:hover .services-marquee-track { animation-play-state: paused; }
-      `}</style>
-      {toastMessage && (
-        <div style={{ position: 'fixed', bottom: '20px', left: '20px', backgroundColor: '#10b981', color: '#fff', padding: '0.8rem 1.2rem', borderRadius: '8px', zIndex: 99999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)', fontWeight: 'bold', fontSize: '0.9rem' }}>
-          {toastMessage}
+    <section id="services" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">خدماتنا الأكاديمية</h2>
+          <p className="text-slate-600">نغطي كافة احتياجاتك الأكاديمية والتنفيذية بأعلى جودة احترافية</p>
+          
+          <div className="flex flex-wrap justify-center gap-2 mt-8">
+            {[
+              { id: 'all', label: 'الكل' },
+              { id: 'research', label: 'البحوث والترجمة' },
+              { id: 'academic', label: 'التكليفات والتقارير' },
+              { id: 'design', label: 'التصاميم والـ CV' },
+            ].map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className={`px-5 py-2 rounded-lg font-medium text-sm transition-all ${
+                  activeCategory === cat.id ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredServices.map((service) => {
+            const IconComponent = service.icon;
+            return (
+              <div key={service.id} className="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                    <IconComponent size={24} />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-6">{service.desc}</p>
+                </div>
+                
+                <div className="flex items-center justify-between pt-4 border-t border-slate-200/60">
+                  <button onClick={() => setSelectedService(service)} className="text-blue-600 font-semibold text-sm hover:underline flex items-center gap-1">
+                    التفاصيل <ArrowRight size={16} className="rotate-180" />
+                  </button>
+                  <button onClick={() => handleCopyLink(service.id)} className="text-slate-400 hover:text-slate-600 p-2 rounded-lg transition-colors">
+                    {copiedId === service.id ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {selectedService && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+            <button onClick={() => setSelectedService(null)} className="absolute top-4 left-4 text-slate-400 hover:text-slate-600 p-1">
+              <X size={24} />
+            </button>
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">{selectedService.title}</h3>
+            <p className="text-slate-600 leading-relaxed mb-6">{selectedService.desc}</p>
+            <a href="#contact" onClick={() => setSelectedService(null)} className="block w-full bg-blue-600 text-white text-center font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors">
+              اطلب هذه الخدمة الآن
+            </a>
+          </div>
         </div>
       )}
-{/* قسم الخدمات التفاعلي المتحرك تلقائياً */}
-<section id="services" data-reveal className="section container reveal-section">
-  <div className="section-heading">
-    <div>
-      <span className="section-kicker">خدماتنا</span>
-      <h2>حلول أكاديمية <em>شاملة وباحترافية</em></h2>
-    </div>
-    <a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">
-      اطلب الآن <ArrowLeft size={17} />
-    </a>
-  </div>
-
-  {/* مرشح/فلتر الخدمات */}
-  <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
-    <button onClick={() => setActiveCategory('all')} style={{ padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'all' ? '#10b981' : 'transparent', color: activeCategory === 'all' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>الكل</button>
-    <button onClick={() => setActiveCategory('research')} style={{ padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'research' ? '#10b981' : 'transparent', color: activeCategory === 'research' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>بحوث وتقارير</button>
-    <button onClick={() => setActiveCategory('design')} style={{ padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'design' ? '#10b981' : 'transparent', color: activeCategory === 'design' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>تصاميم وعروض</button>
-    <button onClick={() => setActiveCategory('academic')} style={{ padding: '0.5rem 1rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'academic' ? '#10b981' : 'transparent', color: activeCategory === 'academic' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>خدمات ومتابعة</button>
-  </div>
-
-  {/* حاوية الحركة التلقائية للخدمات */}
-  <div className="services-marquee-container" style={{ overflow: 'hidden', padding: '1rem 0' }}>
-    <div className="services-marquee-track">
-      {marqueeServices.map((service, index) => {
-        const Icon = service.icon
-        return (
-          <article 
-            key={`${service.id}-${index}`} 
-            className="service-card" 
-            style={{ 
-              position: 'relative', 
-              width: '320px', 
-              flexShrink: 0,
-              margin: 0
-            }}
-          >
-            <button 
-              onClick={() => handleCopyServiceLink(service.title)}
-              title="مشاركة/نسخ رابط الخدمة"
-              style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 10, background: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}
-            >
-              <Share2 size={16} style={{ color: '#333' }} />
-            </button>
-            <div className="service-image" style={{ height: '180px', position: 'relative' }}>
-              <Image src={service.image} alt={service.title} fill sizes="320px" />
-            </div>
-            {/* تم تعديل المحاذاة للنص والأيقونة للوسط بالكامل */}
-            <div className="service-content" style={{ padding: '1.2rem 1rem 1rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <div style={{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <span className="service-icon" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.4rem' }}>
-                  <Icon size={22} />
-                </span>
-                <h3 style={{ fontSize: '1.15rem', marginTop: '0.2rem', fontWeight: 'bold', textAlign: 'center', width: '100%' }}>{service.title}</h3>
-                <p style={{ margin: '0.5rem 0 1rem', fontSize: '0.88rem', color: '#111827', lineHeight: '1.5', fontWeight: '500', textAlign: 'center', direction: 'rtl', height: '2.8rem', overflow: 'hidden', width: '100%' }}>
-                  {service.shortText}
-                </p>
-              </div>
-              <button 
-                className="primary-button" 
-                style={{ width: '100%', justifyContent: 'center', fontSize: '0.85rem', padding: '0.55rem 0.8rem' }}
-                onClick={() => setSelectedDetailService(service)}
-              >
-                تفاصيل الخدمة والطلب <ChevronLeft size={16} />
-              </button>
-            </div>
-          </article>
-        )
-      })}
-    </div>
-  </div>
-
-  {/* النافذة المنبثقة للخدمة */}
+    </section>
+  );
+}
   {selectedDetailService && (
     <div 
       className="service-modal-backdrop" 
