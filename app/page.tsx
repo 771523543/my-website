@@ -1,60 +1,38 @@
-'use client'
+import Header from '../components/Header';
+import Hero from '../components/Hero';
+import Services from '../components/Services';
+import GpaCalculator from '../components/GpaCalculator';
+import Faq from '../components/Faq';
+import Contact from '../components/Contact';
+import Footer from '../components/Footer';
+import FloatingWhatsapp from '../components/FloatingWhatsapp';
 
-import { useEffect } from 'react'
-import Announcement from './components/Announcement'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import Stats from './components/Stats'
-import Story from './components/Story'
-import Values from './components/Values'
-import Services from './components/Services'
-import GpaCalculator from './components/GpaCalculator'
-import Testimonials from './components/Testimonials'
-import Portfolio from './components/Portfolio'
-import StudentShowcase from './components/StudentShowcase'
-import AcademicAd from './components/AcademicAd'
-import Achievements from './components/Achievements'
-import WhyChooseUs from './components/WhyChooseUs'
-import Faq from './components/Faq'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import FloatingWhatsapp from './components/FloatingWhatsapp'
-
-export default function Page() {
-  useEffect(() => {
-    const revealItems = document.querySelectorAll<HTMLElement>('[data-reveal]')
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible')
-          observer.unobserve(entry.target)
-        }
-      })
-    }, { threshold: 0.14 })
-    revealItems.forEach((item) => observer.observe(item))
-    return () => observer.disconnect()
-  }, [])
-
+export default function Home() {
   return (
-    <main dir="rtl" className="min-h-screen overflow-hidden bg-background text-foreground">
-      <Announcement />
+    <main className="min-h-screen bg-slate-50 text-slate-800 font-sans" dir="rtl">
+      {/* 1. الهيدر والقائمة العلوي */}
       <Header />
+
+      {/* 2. القسم الرئيسي الترحيبي */}
       <Hero />
-      <Stats />
-      <Story />
-      <Values />
+
+      {/* 3. قسم عرض الخدمات الأكاديمية */}
       <Services />
+
+      {/* 4. حاسبة المعدل التراكمي */}
       <GpaCalculator />
-      <Testimonials />
-      <Portfolio />
-      <StudentShowcase />
-      <AcademicAd />
-      <Achievements />
-      <WhyChooseUs />
+
+      {/* 5. قسم الأسئلة الشائعة */}
       <Faq />
+
+      {/* 6. نموذج التواصل والطلب */}
       <Contact />
+
+      {/* 7. الفوتر السفلي */}
       <Footer />
+
+      {/* 8. زر الواتساب العائم */}
       <FloatingWhatsapp />
     </main>
-  )
+  );
 }
