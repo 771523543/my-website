@@ -1,40 +1,34 @@
-'use client'
-
-import { useState } from 'react'
-import { ChevronDown } from 'lucide-react'
-import { generalFaqs } from '../data/siteData'
+'use client';
+import React, { useState } from 'react';
+import { faqsData } from '../data/siteData';
+import { ChevronDown } from 'lucide-react';
 
 export default function Faq() {
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
-  return (
-    <>
-{/* قسم الأسئلة الشائعة العامة (FAQ Accordion) */}
-<section id="faq" className="section container">
-  <div className="center-heading">
-    <span className="section-kicker">الأسئلة الشائعة</span>
-    <h2>إجابات عن <em>استفساراتك</em></h2>
-    <p>إليك إجابات لأبرز الأسئلة والاستفسارات الشائعة حول خدماتنا وطريقة التعامل.</p>
-  </div>
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
 
-  <div style={{ maxWidth: '750px', margin: '2rem auto 0', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-    {generalFaqs.map((faq, idx) => (
-      <div key={idx} style={{ border: '1px solid #e5e7eb', borderRadius: '10px', overflow: 'hidden', background: '#fff' }}>
-        <button 
-          onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
-          style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.2rem', border: 'none', background: 'transparent', textAlign: 'right', fontWeight: 'bold', fontSize: '0.95rem', cursor: 'pointer', color: '#111827' }}
-        >
-          <span>{faq.q}</span>
-          <ChevronDown size={18} style={{ transform: openFaqIndex === idx ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
-        </button>
-        {openFaqIndex === idx && (
-          <div style={{ padding: '0 1.2rem 1rem', fontSize: '0.88rem', color: '#4b5563', lineHeight: '1.6', borderTop: '1px solid #f3f4f6', paddingTop: '0.8rem', textAlign: 'right' }}>
-            {faq.a}
-          </div>
-        )}
+  return (
+    <section id="faq" className="py-20 bg-slate-50">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 className="text-3xl font-bold text-slate-900 text-center mb-10">الأسئلة الشائعة</h2>
+        <div className="space-y-4">
+          {faqsData.map((faq, idx) => (
+            <div key={idx} className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+              <button
+                onClick={() => setOpenIdx(openIdx === idx ? null : idx)}
+                className="w-full p-5 text-right font-bold text-slate-800 flex justify-between items-center gap-4 hover:bg-slate-50 transition-colors"
+              >
+                <span>{faq.q}</span>
+                <ChevronDown size={20} className={`transition-transform ${openIdx === idx ? 'rotate-180 text-blue-600' : 'text-slate-400'}`} />
+              </button>
+              {openIdx === idx && (
+                <div className="p-5 pt-0 text-slate-600 border-t border-slate-100 leading-relaxed text-sm">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</section>
-    </>
-  )
+    </section>
+  );
 }
