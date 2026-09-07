@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import {
   BookOpen, Calculator, Award, ArrowRight, MessageCircle,
   GraduationCap, CheckCircle, FileText, Sparkles, Copy, Layers,
-  Menu, X
+  Menu, X, Phone, FileCheck, Brain, Search
 } from 'lucide-react';
 
 export default function Home() {
@@ -25,17 +25,53 @@ export default function Home() {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
-    service: 'بحوث أبحاث وأوراق علمية',
+    service: 'إعداد الأبحاث والورقات العلمية',
     details: ''
   });
 
   const servicesData = [
-    { id: 1, category: 'research', title: 'إعداد البحوث والأوراق العلمية', desc: 'بحوث متكاملة وفق المعايير الأكاديمية وحسب دليل الجامعات مع التوثيق المعتمد.', icon: BookOpen },
-    { id: 2, category: 'design', title: 'تصميم العروض التقديمية (PowerPoint)', desc: 'تصاميم احترافية تفاعلية تعكس جودة محتواك الأكاديمي والمهني.', icon: Layers },
-    { id: 3, category: 'academic', title: 'حل الواجبات والتكليفات', desc: 'مساعدة دقيقة في إنجاز الواجبات الأكاديمية لمختلف التخصصات.', icon: FileText },
-    { id: 4, category: 'academic', title: 'كتابة التقارير والمشاريع', desc: 'صياغة تقارير ميدانية ومشاريع تخرج وفق أعلى المعايير.', icon: GraduationCap },
-    { id: 5, category: 'design', title: 'تصميم السير الذاتية (CV)', desc: 'تصميم سيرة ذاتية احترافية باللغتين العربية والإنجليزي لزيادة فرص القبول.', icon: Award },
-    { id: 6, category: 'research', title: 'الترجمة الأكاديمية والتلخيص', desc: 'ترجمة دقيقة وتلخيص شامل للمراجع والمقالات العلمية.', icon: Sparkles }
+    { 
+      id: 1, 
+      category: 'research', 
+      title: 'إعداد الأبحاث والورقات العلمية', 
+      desc: 'صياغة أبحاث متكاملة وفق معايير التوثيق المعتمدة (APA 7th) وتنسيق الهوامش والمراجع بدقة أكاديمية عالية.', 
+      icon: BookOpen 
+    },
+    { 
+      id: 2, 
+      category: 'academic', 
+      title: 'إعداد التقارير والمشاريع الميدانية', 
+      desc: 'كتابة تقارير التدريب الميداني والتقارير الأكاديمية وتلخيص الدلائل والأنظمة وفق متطلبات كل كلية.', 
+      icon: FileCheck 
+    },
+    { 
+      id: 3, 
+      category: 'academic', 
+      title: 'حل التكليفات والواجبات', 
+      desc: 'مساعدة دقيقة وحل واجبات مختلف المواد والتخصصات الأكاديمية بأسلوب علمي واضح.', 
+      icon: FileText 
+    },
+    { 
+      id: 4, 
+      category: 'design', 
+      title: 'تصميم العروض التقديمية (PowerPoint)', 
+      desc: 'تصميم شرائح تفاعلية واحترافية تلخص المحتوى الأكاديمي والمهني لتقديم عرض ممتاز أمام اللجان.', 
+      icon: Layers 
+    },
+    { 
+      id: 5, 
+      category: 'translation', 
+      title: 'الترجمة الأكاديمية والتلخيص', 
+      desc: 'ترجمة احترافية ومزدوجة بين العربية والإنجليزي للمقالات والمراجع مع تلخيص أهم الأفكار.', 
+      icon: Sparkles 
+    },
+    { 
+      id: 6, 
+      category: 'design', 
+      title: 'تصميم السير الذاتية (CV)', 
+      desc: 'إنشاء وتنسيق سير ذاتية احترافية تتوافق مع نظام الفرز الآلي (ATS) لزيادة فرص القبول الوظيفي.', 
+      icon: Award 
+    }
   ];
 
   const filteredServices = activeCategory === 'all' 
@@ -72,7 +108,7 @@ export default function Home() {
 
   const handleSendWhatsapp = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = `السلام عليكم، أرغب في الاستفسار عن خدمة:\n*الاسم:* ${formData.name}\n*رقم التواصل:* ${formData.phone}\n*الخدمة:* ${formData.service}\n*التفاصيل:* ${formData.details}`;
+    const text = `السلام عليكم ورحمة الله، أرغب في الطلب من منصة هديل:\n*الاسم:* ${formData.name}\n*رقم التواصل:* ${formData.phone}\n*الخدمة:* ${formData.service}\n*تفاصيل الطلب:* ${formData.details}`;
     window.open(`https://wa.me/966500000000?text=${encodeURIComponent(text)}`, '_blank');
   };
 
@@ -88,14 +124,14 @@ export default function Home() {
             </div>
             <div>
               <span className="text-xl font-bold text-slate-900 block leading-none">منصة هديل</span>
-              <span className="text-xs text-slate-500 font-medium">للخدمات الطلابية والأكاديمية</span>
+              <span className="text-xs text-slate-500 font-medium">مكتبة هديل للخدمات الطلابية والأكاديمية</span>
             </div>
           </div>
 
           <nav className="hidden md:flex items-center gap-8 font-medium text-slate-600">
             <a href="#services" className="hover:text-blue-600 transition-colors">الخدمات</a>
             <a href="#gpa" className="hover:text-blue-600 transition-colors">حاسبة المعدل</a>
-            <a href="#contact" className="hover:text-blue-600 transition-colors">تواصل معنا</a>
+            <a href="#contact" className="hover:text-blue-600 transition-colors">اطلب الآن</a>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
@@ -103,7 +139,7 @@ export default function Home() {
               href="#contact" 
               className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium shadow-sm transition-all"
             >
-              اطلب خدمتك الآن
+              تواصل معنا
             </a>
           </div>
 
@@ -119,7 +155,7 @@ export default function Home() {
           <div className="md:hidden bg-white border-b border-slate-200 px-4 py-6 flex flex-col gap-4">
             <a href="#services" onClick={() => setMobileMenuOpen(false)} className="text-slate-700 font-medium py-2">الخدمات</a>
             <a href="#gpa" onClick={() => setMobileMenuOpen(false)} className="text-slate-700 font-medium py-2">حاسبة المعدل</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-slate-700 font-medium py-2">تواصل معنا</a>
+            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-slate-700 font-medium py-2">اطلب الآن</a>
           </div>
         )}
       </header>
@@ -128,20 +164,20 @@ export default function Home() {
       <section className="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-b from-blue-50/50 to-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <span className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
-            <Sparkles size={16} /> شريكك الأكاديمي الموثوق
+            <Sparkles size={16} /> منصتكم الأولى لإنجاز الأعمال الأكاديمية
           </span>
           <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
-            نحقق لك <span className="text-blue-600">التميز الأكاديمي</span> بسهولة وإتقان
+            وجهتك الأكاديمية للإنجاز <span className="text-blue-600">والتميز العلمي</span>
           </h1>
           <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed">
-            نقدم أفضل الخدمات الطلابية والأكاديمية بكفاءة عالية، من إعداد البحوث المعتمدة وحتى التنسيق والتصميم الاحترافي لضمان نجاحك.
+            نساعدك في إعداد الأبحاث، التقارير الميدانية، حل الواجبات، وتصميم العروض التقديمية وفق المعايير واللوائح الجامعية المعتمدة.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a 
               href="#contact" 
               className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2"
             >
-              ابدأ مشروعك الآن <ArrowRight size={20} className="rotate-180" />
+              اطلب خدمتك عبر الواتساب <ArrowRight size={20} className="rotate-180" />
             </a>
             <a 
               href="#gpa" 
@@ -153,10 +189,10 @@ export default function Home() {
 
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {[
-              { title: 'جودة عالية', desc: 'معايير أكاديمية دقيقة' },
-              { title: 'تسليم سريع', desc: 'التزام كامل بالمواعيد' },
-              { title: 'سرية تامة', desc: 'حماية كاملة للبيانات' },
-              { title: 'دعم مستمر', desc: 'تواصل مباشر مع الفريق' },
+              { title: 'توثيق أكاديمي', desc: 'معايير APA 7th المعتمدة' },
+              { title: 'دقة وتسليم', desc: 'التزام تكتيكي بالمواعيد' },
+              { title: 'سرية تامة', desc: 'حماية خصوصية بياناتك' },
+              { title: 'مراجعة وتعديل', desc: 'متابعة مباشرة للطلب' },
             ].map((item, idx) => (
               <div key={idx} className="bg-white/80 backdrop-blur p-4 rounded-xl border border-slate-100 shadow-sm text-center">
                 <CheckCircle className="text-blue-600 mx-auto mb-2" size={24} />
@@ -172,15 +208,16 @@ export default function Home() {
       <section id="services" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">خدماتنا الأكاديمية</h2>
-            <p className="text-slate-600">نغطي كافة احتياجاتك الأكاديمية والتنفيذية بأعلى جودة احترافية</p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">خدمات منصة هديل</h2>
+            <p className="text-slate-600">نقدم خيارات متكاملة تلبي احتياجات كافة التخصصات والجامعات</p>
             
             <div className="flex flex-wrap justify-center gap-2 mt-8">
               {[
-                { id: 'all', label: 'الكل' },
-                { id: 'research', label: 'البحوث والترجمة' },
-                { id: 'academic', label: 'التكليفات والتقارير' },
-                { id: 'design', label: 'التصاميم والـ CV' },
+                { id: 'all', label: 'كافة الخدمات' },
+                { id: 'research', label: 'الأبحاث والتوثيق' },
+                { id: 'academic', label: 'التقارير والتكليفات' },
+                { id: 'translation', label: 'الترجمة والتلخيص' },
+                { id: 'design', label: 'العروض والعروض الذاتية' },
               ].map(cat => (
                 <button
                   key={cat.id}
@@ -215,11 +252,12 @@ export default function Home() {
                       onClick={() => setSelectedService(service)}
                       className="text-blue-600 font-semibold text-sm hover:underline flex items-center gap-1"
                     >
-                      التفاصيل <ArrowRight size={16} className="rotate-180" />
+                      عرض التفاصيل <ArrowRight size={16} className="rotate-180" />
                     </button>
                     <button 
                       onClick={() => handleCopyLink(service.id)}
                       className="text-slate-400 hover:text-slate-600 p-2 rounded-lg transition-colors"
+                      title="مشاركة الرابط"
                     >
                       {copiedId === service.id ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
                     </button>
@@ -236,10 +274,10 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
-              <Calculator size={18} /> أداة تفاعلية
+              <Calculator size={18} /> حاسبة منصة هديل
             </div>
-            <h2 className="text-3xl font-bold">حاسبة المعدل التراكمي (GPA)</h2>
-            <p className="text-slate-400 mt-2">احسب معدلك الفصلي أو التراكمي بدقة وسهولة</p>
+            <h2 className="text-3xl font-bold">حاسبة المعدل التراكمي الفصلية والجامعية</h2>
+            <p className="text-slate-400 mt-2">احسب معدلك بسهولة ودقة طبقاً للنظامين السداسي والخماسي</p>
           </div>
 
           <div className="bg-slate-800/80 backdrop-blur rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl">
@@ -294,22 +332,22 @@ export default function Home() {
                   >
                     {gpaSystem === 5 ? (
                       <>
-                        <option value={5}>A+ (5.00)</option>
-                        <option value={4.75}>A (4.75)</option>
-                        <option value={4.5}>B+ (4.50)</option>
-                        <option value={4.0}>B (4.00)</option>
-                        <option value={3.5}>C+ (3.50)</option>
-                        <option value={3.0}>C (3.00)</option>
-                        <option value={2.5}>D+ (2.50)</option>
-                        <option value={2.0}>D (2.00)</option>
+                        <option value={5}>A+ ممتاز مرتفع (5.00)</option>
+                        <option value={4.75}>A ممتاز (4.75)</option>
+                        <option value={4.5}>B+ جيد جداً مرتفع (4.50)</option>
+                        <option value={4.0}>B جيد جداً (4.00)</option>
+                        <option value={3.5}>C+ جيد مرتفع (3.50)</option>
+                        <option value={3.0}>C جيد (3.00)</option>
+                        <option value={2.5}>D+ مقبول مرتفع (2.50)</option>
+                        <option value={2.0}>D مقبول (2.00)</option>
                       </>
                     ) : (
                       <>
-                        <option value={4}>A (4.00)</option>
-                        <option value={3.5}>B+ (3.50)</option>
-                        <option value={3.0}>B (3.00)</option>
-                        <option value={2.5}>C+ (2.50)</option>
-                        <option value={2.0}>C (2.00)</option>
+                        <option value={4}>A ممتاز (4.00)</option>
+                        <option value={3.5}>B+ جيد جداً مرتفع (3.50)</option>
+                        <option value={3.0}>B جيد جداً (3.00)</option>
+                        <option value={2.5}>C+ جيد مرتفع (2.50)</option>
+                        <option value={2.0}>C جيد (2.00)</option>
                       </>
                     )}
                   </select>
@@ -325,7 +363,7 @@ export default function Home() {
                 onClick={handleAddCourse}
                 className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors"
               >
-                + إضافة مادة
+                + إضافة مادة جديدة
               </button>
               <button onClick={calculateGPA} className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-2.5 rounded-xl font-bold text-sm shadow-lg transition-all">
                 حساب المعدل الآن
@@ -334,7 +372,7 @@ export default function Home() {
 
             {calculatedGpa !== null && (
               <div className="bg-blue-600/20 border border-blue-500/40 rounded-xl p-6 text-center">
-                <span className="text-slate-300 text-sm font-medium block mb-1">المعدل المحسوب:</span>
+                <span className="text-slate-300 text-sm font-medium block mb-1">المعدل التراكمي المتوقع:</span>
                 <span className="text-4xl font-extrabold text-blue-400">{calculatedGpa}</span>
                 <span className="text-slate-400 text-sm"> / {gpaSystem}.00</span>
               </div>
@@ -347,25 +385,25 @@ export default function Home() {
       <section id="contact" className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">تواصل معنا والطلب المباشر</h2>
-            <p className="text-slate-600">أرسل طلبك مباشرة وسنرد عليك بالسرعة الممكنة</p>
+            <h2 className="text-3xl font-bold text-slate-900 mb-3">نموذج طلب خدمة من مكتبة منصة هديل</h2>
+            <p className="text-slate-600">تواصل مع فريقنا مباشرة لإنجاز أبحاثك وتكليفاتك بسرعة</p>
           </div>
 
           <form onSubmit={handleSendWhatsapp} className="bg-slate-50 border border-slate-100 p-8 rounded-2xl shadow-sm space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">الاسم الكريم</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">اسم الطالب / الباحث</label>
                 <input
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="أدخل اسمك"
+                  placeholder="أدخل اسمك الكريم"
                   className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-blue-600"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">رقم الجوال / الواتساب</label>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">رقم التواصل / الواتساب</label>
                 <input
                   type="tel"
                   required
@@ -384,20 +422,22 @@ export default function Home() {
                 onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                 className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-blue-600"
               >
-                <option value="بحوث أبحاث وأوراق علمية">بحوث وأوراق علمية</option>
-                <option value="عروض تقديمية باوربوينت">عروض تقديمية (PowerPoint)</option>
-                <option value="حل واجبات وتكليفات">حل واجبات وتكليفات</option>
-                <option value="تصميم سيرة ذاتية CV">تصميم سيرة ذاتية (CV)</option>
+                <option value="إعداد الأبحاث والورقات العلمية">إعداد الأبحاث والورقات العلمية</option>
+                <option value="إعداد التقارير والمشاريع الميدانية">إعداد التقارير والمشاريع الميدانية</option>
+                <option value="حل التكليفات والواجبات">حل التكليفات والواجبات الأكاديمية</option>
+                <option value="تصميم العروض التقديمية (PowerPoint)">تصميم عروض تقديمية PowerPoint</option>
+                <option value="الترجمة الأكاديمية والتلخيص">الترجمة الأكاديمية والتلخيص</option>
+                <option value="تصميم السير الذاتية (CV)">تصميم سيرة ذاتية (CV)</option>
               </select>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">تفاصيل الطلب</label>
+              <label className="block text-sm font-semibold text-slate-700 mb-2">تفاصيل وحجم العمل (التخصص، عدد الصفحات، الموعد المطلوب)</label>
               <textarea
                 rows={4}
                 value={formData.details}
                 onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                placeholder="اذكر التفاصيل..."
+                placeholder="اكتب هنا كافة تفاصيل وشروط الدكتور أو التكليف..."
                 className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-blue-600"
               ></textarea>
             </div>
@@ -406,7 +446,7 @@ export default function Home() {
               type="submit"
               className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
             >
-              <MessageCircle size={20} /> إرسال عبر الواتساب مباشرة
+              <MessageCircle size={20} /> إرسال الطلب عبر الواتساب المباشر
             </button>
           </form>
         </div>
@@ -452,7 +492,7 @@ export default function Home() {
             <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold">
               هديل
             </div>
-            <span className="text-white font-bold text-lg">منصة هديل للخدمات الطلابية</span>
+            <span className="text-white font-bold text-lg">منصة ومكتبة هديل للخدمات الطلابية</span>
           </div>
           <p className="text-sm text-center">جميع الحقوق محفوظة © {new Date().getFullYear()} منصة هديل</p>
         </div>
