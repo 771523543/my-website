@@ -1,503 +1,291 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import {
-  BookOpen, Calculator, Award, ArrowRight, MessageCircle,
-  GraduationCap, CheckCircle, FileText, Sparkles, Copy, Layers,
-  Menu, X, Phone, FileCheck, Brain, Search
-} from 'lucide-react';
+  ArrowLeft, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, Calculator,
+  FileText, GraduationCap, Headphones, Menu, MessageCircle, Presentation,
+  ShieldCheck, Sparkles, Star, X, Plus, Trash2
+} from 'lucide-react'
+import Services from './Services'
 
-export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [selectedService, setSelectedService] = useState<any>(null);
-  const [copiedId, setCopiedId] = useState<number | null>(null);
+const whatsapp = 'https://wa.me/967776280186'
 
-  // GPA Calculator State
-  const [gpaSystem, setGpaSystem] = useState<4 | 5>(5);
+const generalFaqs = [
+  { q: 'كيف أستطيع طلب خدمة من منصة هديل؟', a: 'يمكنك اختيار الخدمة المطلوبة من الموقع، الضغط على زر التفاصيل وتعبئة النموذج، أو التواصل المباشر معنا عبر الواتساب وإرسال المتطلبات.' },
+  { q: 'ما هي طرق الدفع المتاحة؟', a: 'نوفر طرق دفع إلكترونية متعددة وآمنة تناسب جميع الطلاب داخل وخارج المملكة.' },
+  { q: 'هل يمكنني طلب تعديل على العمل بعد الاستلام؟', a: 'نعم بكل تأكيد، نضمن لك تعديلات مجانية لتلبية الملاحظات الأكاديمية والوصول بالعمل إلى مستوى القبول والرضا الكامل.' },
+  { q: 'كيف يتم ضمان سرية الخصوصية والبيانات؟', a: 'جميع معلومات الطلاب، البيانات الأكاديمية، والملفات المُرسلة تُعامل بسرية تامة ولا يتم إظهارها أو مشاركتها مع أي جهة.' }
+]
+
+const testimonialsData = [
+  { name: 'عبدالله العتيبي', role: 'طالب بكالوريوس', text: 'ما شاء الله تبارك الله، سرعة ودقة في إعداد البحث والتزام بالتوثيق المعتمد APA. أنقذتوني في الوقت المناسب!', rating: 5 },
+  { name: 'سارة الشمري', role: 'طالبة ماجستير', text: 'عرض الباوربوينت كان أكثر من رائع وتفاعلي، الدكتور أثنى على تنسيق الشرائح وطريقة عرض الأفكار. شكراً منصة هديل.', rating: 5 },
+  { name: 'محمد الغامدي', role: 'طالب جامعي', text: 'خدمة متابعة التكليفات والبلاك بورد احترافية جداً وبمنتهى الخصوصية والأمانة. تعامل راقي ومستمر معكم بإذن الله.', rating: 5 }
+]
+
+const values = [
+  ['الأمانة الأكاديمية', 'أصالة وجودة وخلو الأعمال من السرقات الأدبية.'],
+  ['السرية والخصوصية', 'حماية كاملة لبيانات ومستندات ومعلومات الطلاب.'],
+  ['التميز والدقة', 'أعمال متكاملة تفي بالمعايير والشروط الجامعية.'],
+  ['الالتزام بالمواعيد', 'احترام وقتك وتسليم دقيق في الموعد المحدد.'],
+]
+
+export default function Page() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
+
+  // حاسبة المعدل التراكمي (GPA)
+  const [gpaSystem, setGpaSystem] = useState<5 | 4>(5)
   const [courses, setCourses] = useState([
-    { name: 'المادة 1', hours: 3, grade: 5 },
-    { name: 'المادة 2', hours: 2, grade: 4.5 },
-  ]);
-  const [calculatedGpa, setCalculatedGpa] = useState<number | null>(null);
-
-  // Contact Form State
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    service: 'إعداد الأبحاث والورقات العلمية',
-    details: ''
-  });
-
-  const servicesData = [
-    { 
-      id: 1, 
-      category: 'research', 
-      title: 'إعداد الأبحاث والورقات العلمية', 
-      desc: 'صياغة أبحاث متكاملة وفق معايير التوثيق المعتمدة (APA 7th) وتنسيق الهوامش والمراجع بدقة أكاديمية عالية.', 
-      icon: BookOpen 
-    },
-    { 
-      id: 2, 
-      category: 'academic', 
-      title: 'إعداد التقارير والمشاريع الميدانية', 
-      desc: 'كتابة تقارير التدريب الميداني والتقارير الأكاديمية وتلخيص الدلائل والأنظمة وفق متطلبات كل كلية.', 
-      icon: FileCheck 
-    },
-    { 
-      id: 3, 
-      category: 'academic', 
-      title: 'حل التكليفات والواجبات', 
-      desc: 'مساعدة دقيقة وحل واجبات مختلف المواد والتخصصات الأكاديمية بأسلوب علمي واضح.', 
-      icon: FileText 
-    },
-    { 
-      id: 4, 
-      category: 'design', 
-      title: 'تصميم العروض التقديمية (PowerPoint)', 
-      desc: 'تصميم شرائح تفاعلية واحترافية تلخص المحتوى الأكاديمي والمهني لتقديم عرض ممتاز أمام اللجان.', 
-      icon: Layers 
-    },
-    { 
-      id: 5, 
-      category: 'translation', 
-      title: 'الترجمة الأكاديمية والتلخيص', 
-      desc: 'ترجمة احترافية ومزدوجة بين العربية والإنجليزي للمقالات والمراجع مع تلخيص أهم الأفكار.', 
-      icon: Sparkles 
-    },
-    { 
-      id: 6, 
-      category: 'design', 
-      title: 'تصميم السير الذاتية (CV)', 
-      desc: 'إنشاء وتنسيق سير ذاتية احترافية تتوافق مع نظام الفرز الآلي (ATS) لزيادة فرص القبول الوظيفي.', 
-      icon: Award 
-    }
-  ];
-
-  const filteredServices = activeCategory === 'all' 
-    ? servicesData 
-    : servicesData.filter(s => s.category === activeCategory);
-
-  const handleCopyLink = (id: number) => {
-    if (typeof window !== 'undefined') {
-      navigator.clipboard.writeText(window.location.href);
-      setCopiedId(id);
-      setTimeout(() => setCopiedId(null), 2000);
-    }
-  };
-
-  const calculateGPA = () => {
-    let totalHours = 0;
-    let totalPoints = 0;
-    courses.forEach(c => {
-      totalHours += Number(c.hours);
-      totalPoints += Number(c.hours) * Number(c.grade);
-    });
-    if (totalHours > 0) {
-      setCalculatedGpa(Number((totalPoints / totalHours).toFixed(2)));
-    }
-  };
+    { id: 1, hours: 3, grade: 5 },
+    { id: 2, hours: 3, grade: 4.75 },
+    { id: 3, hours: 2, grade: 4.5 }
+  ])
+  const [calculatedGpa, setCalculatedGpa] = useState<string | null>(null)
 
   const handleAddCourse = () => {
-    setCourses([...courses, { name: `المادة ${courses.length + 1}`, hours: 3, grade: gpaSystem }]);
-  };
+    setCourses([...courses, { id: Date.now(), hours: 3, grade: gpaSystem }])
+  }
 
-  const handleRemoveCourse = (index: number) => {
-    setCourses(courses.filter((_, i) => i !== index));
-  };
+  const handleRemoveCourse = (id: number) => {
+    if (courses.length > 1) {
+      setCourses(courses.filter(c => c.id !== id))
+    }
+  }
 
-  const handleSendWhatsapp = (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = `السلام عليكم ورحمة الله، أرغب في الطلب من منصة هديل:\n*الاسم:* ${formData.name}\n*رقم التواصل:* ${formData.phone}\n*الخدمة:* ${formData.service}\n*تفاصيل الطلب:* ${formData.details}`;
-    window.open(`https://wa.me/966500000000?text=${encodeURIComponent(text)}`, '_blank');
-  };
+  const handleCalculateGpa = () => {
+    let totalPoints = 0
+    let totalHours = 0
+    courses.forEach(c => {
+      totalPoints += c.hours * c.grade
+      totalHours += c.hours
+    })
+    if (totalHours > 0) {
+      setCalculatedGpa((totalPoints / totalHours).toFixed(2))
+    }
+  }
+
+  const [selectedWork, setSelectedWork] = useState<{ title: string; preview: string } | null>(null)
+  const previousWorks = [
+    { title: 'تأثير التكنولوجيا على الخدمات التعليمية', preview: 'https://drive.google.com/file/d/1eFtsqZqRJsWDCcTYcZQXSmIeU0w02NLI/preview' },
+    { title: 'حماية البيئة في ظل رؤية المملكة 2030', preview: 'https://drive.google.com/file/d/1KriLId4ui_lb8UusGwanwVUHQ4dk3oLC/preview' },
+    { title: 'تطوير الصناعات المحلية والخدمات اللوجستية', preview: 'https://drive.google.com/file/d/1nDeMLBHtyiyNn_N6EZ0mAsmdOQ_qTiyG/preview' },
+    { title: 'المبتدأ والخبر في القرآن الكريم', preview: 'https://drive.google.com/file/d/15tZAI1j_ppP-YiKWwJQtMlStvqnRebMJ/preview' },
+    { title: 'مشروع إقامة ذكية SmartStay', preview: 'https://drive.google.com/file/d/1M3M6BW7RVOBvOMyH9MVnmJugwVwzrW1I/preview' },
+    { title: 'الفروق الفقهية في الأحوال الشخصية', preview: 'https://drive.google.com/file/d/1iaOiQbgtcqJUJdYeSEU48FBcgWR9E88M/preview' }
+  ]
+  const [achievementIndex, setAchievementIndex] = useState(0)
+  const [achievementPaused, setAchievementPaused] = useState(false)
+  const achievementImages = ['/images/hadeel-achievements.png', '/images/hadeel-achievement-test.jpg']
+
+  useEffect(() => {
+    if (achievementPaused) return
+    const timer = window.setInterval(() => setAchievementIndex((current) => (current + 1) % achievementImages.length), 3000)
+    return () => window.clearInterval(timer)
+  }, [achievementPaused, achievementImages.length])
+
+  useEffect(() => {
+    const revealItems = document.querySelectorAll<HTMLElement>('[data-reveal]')
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, { threshold: 0.14 })
+
+    revealItems.forEach((item) => observer.observe(item))
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans" dir="rtl">
-      
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-md">
-              هديل
-            </div>
-            <div>
-              <span className="text-xl font-bold text-slate-900 block leading-none">منصة هديل</span>
-              <span className="text-xs text-slate-500 font-medium">مكتبة هديل للخدمات الطلابية والأكاديمية</span>
-            </div>
-          </div>
+    <main dir="rtl" className="min-h-screen overflow-hidden bg-background text-foreground">
 
-          <nav className="hidden md:flex items-center gap-8 font-medium text-slate-600">
-            <a href="#services" className="hover:text-blue-600 transition-colors">الخدمات</a>
-            <a href="#gpa" className="hover:text-blue-600 transition-colors">حاسبة المعدل</a>
-            <a href="#contact" className="hover:text-blue-600 transition-colors">اطلب الآن</a>
+      {/* التنبيه الفوري */}
+
+      <div className="announcement"><Sparkles size={15} /> خصم خاص على خدمات منصة هديل لفترة محدودة <ArrowLeft size={15} /></div>
+      <header className="site-header">
+        <div className="container nav-wrap">
+          <a className="brand" href="#top"><Image className="brand-logo" src="/hadeel-platform-logo.png" alt="شعار منصة هديل للخدمات الطلابية" width={54} height={54} priority /><span>منصة هديل<span className="brand-dot">.</span></span></a>
+          <nav className={menuOpen ? 'nav-links mobile-open' : 'nav-links'}>
+            <a href="#top" onClick={() => setMenuOpen(false)}>الرئيسية</a>
+            <a href="#story" onClick={() => setMenuOpen(false)}>قصتنا</a>
+            <a href="#services" onClick={() => setMenuOpen(false)}>خدماتنا</a>
+            <a href="#gpa-calculator" onClick={() => setMenuOpen(false)}>حاسبة المعدل</a>
+            <a href="#testimonials" onClick={() => setMenuOpen(false)}>آراء العملاء</a>
+            <a href="#faq" onClick={() => setMenuOpen(false)}>الأسئلة الشائعة</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>اتصل بنا</a>
           </nav>
-
-          <div className="hidden md:flex items-center gap-4">
-            <a 
-              href="#contact" 
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium shadow-sm transition-all"
-            >
-              تواصل معنا
-            </a>
-          </div>
-
-          <button 
-            className="md:hidden text-slate-700 p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          <div className="nav-actions"><a className="primary-button header-order" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={17} /> اطلب خدمتك الآن</a><button className="menu-button" aria-label="فتح القائمة" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button></div>
         </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-slate-200 px-4 py-6 flex flex-col gap-4">
-            <a href="#services" onClick={() => setMobileMenuOpen(false)} className="text-slate-700 font-medium py-2">الخدمات</a>
-            <a href="#gpa" onClick={() => setMobileMenuOpen(false)} className="text-slate-700 font-medium py-2">حاسبة المعدل</a>
-            <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-slate-700 font-medium py-2">اطلب الآن</a>
-          </div>
-        )}
       </header>
 
-      {/* Hero Section */}
-      <section className="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-b from-blue-50/50 to-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <span className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-sm font-semibold mb-6">
-            <Sparkles size={16} /> منصتكم الأولى لإنجاز الأعمال الأكاديمية
-          </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6">
-            وجهتك الأكاديمية للإنجاز <span className="text-blue-600">والتميز العلمي</span>
-          </h1>
-          <p className="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed">
-            نساعدك في إعداد الأبحاث، التقارير الميدانية، حل الواجبات، وتصميم العروض التقديمية وفق المعايير واللوائح الجامعية المعتمدة.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a 
-              href="#contact" 
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2"
-            >
-              اطلب خدمتك عبر الواتساب <ArrowRight size={20} className="rotate-180" />
-            </a>
-            <a 
-              href="#gpa" 
-              className="w-full sm:w-auto bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 px-8 py-4 rounded-xl font-semibold shadow-sm transition-all flex items-center justify-center gap-2"
-            >
-              حاسبة المعدل التراكمي <Calculator size={20} />
-            </a>
+      <section id="top" className="hero container">
+        <div className="hero-copy"><span className="eyebrow"><span className="eyebrow-dot" /> شريكك الأكاديمي الموثوق</span><h1>نرتب لك طريقك<br /><strong>نحو النجاح الأكاديمي</strong></h1><p>منصة هديل للخدمات الطلابية والأكاديمية. حلول احترافية، جودة عالية، ومتابعة مستمرة تساعدك على إنجاز أعمالك بثقة.</p><div className="hero-buttons"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمتك الآن <MessageCircle size={18} /></a><a className="text-button" href="#services">استكشف خدماتنا <ArrowLeft size={18} /></a></div><div className="trust-row"><div className="avatars"><span>أ</span><span>م</span><span>س</span><span>+</span></div><div><strong>+10,000</strong><small>طالب وباحث يثقون بنا</small></div></div><div className="hero-blue-card"><div className="hero-card-badge">هديل</div><div className="art-top"><span>رحلتك الأكاديمية</span></div><p className="hero-card-caption">خطوات واضحة، إنجازات أكبر</p><div className="path-line"><span className="path-dot active" /><span /><span className="path-dot active" /><span /><span className="path-dot active" /></div><div className="art-labels"><span>خطط</span><span>أنجز</span><span>تفوّق</span></div><div className="floating-note"><Check size={16} /> عملك في أيدٍ أمينة</div></div></div>
+        <div className="hero-art hero-photo"><Image src="/images/hadeel-hero-family.png" alt="معلمة عربية تساعد طالبًا على التعلم" fill priority sizes="(max-width: 800px) 100vw, 48vw" /></div>
+      </section>
+
+      {/* شريط إحصائيات تفاعلي */}
+      <section className="stats-strip">
+        <div className="container stats">
+          <div><strong>+10K</strong><span>طالب مستفيد</span></div>
+          <div><strong>+15</strong><span>خدمة أكاديمية</span></div>
+          <div><strong>+8</strong><span>سنوات خبرة</span></div>
+          <div><strong>98%</strong><span>نسبة رضا العملاء</span></div>
+        </div>
+      </section>
+
+      <section id="story" className="section story-section container"><div className="story-visual"><div className="story-card"><BookOpen size={42} /><span>معرفة<br />تُنجز</span></div><div className="story-badge">منذ 2018</div></div><div className="story-copy"><span className="section-kicker">قصتنا</span><h2>بدأنا من إيماننا بأن<br /><em>كل طالب يستحق الدعم</em></h2><p>انطلقت منصة هديل لتكون الوجهة الموثوقة للطلاب والباحثين، وتحوّل التحديات الأكاديمية إلى خطوات واضحة قابلة للإنجاز. نعمل بشغف لنقدم حلولًا احترافية تراعي احتياجك وتساعدك على إكمال رحلتك بأعلى درجات الجودة.</p><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">تعرّف على هديل <ArrowLeft size={17} /></a></div></section>
+
+      <section id="values" data-reveal className="section soft-section reveal-section"><div className="container"><div className="center-heading"><span className="section-kicker">قيمنا الأساسية</span><h2>ثقة تُبنى على <em>المبادئ</em></h2><p>نضع احتياجك ونجاحك في مقدمة كل ما نقدمه.</p></div><div className="values-grid">{values.map(([title, text], index) => <article data-reveal className="value-card reveal-section" key={title}><span className="value-number">0{index + 1}</span><ShieldCheck size={25} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+
+      <Services />
+
+      {/* حاسبة المعدل التراكمي (GPA Calculator) */}
+      <section id="gpa-calculator" className="section soft-section container" style={{ marginTop: '2rem', borderRadius: '16px', padding: '2rem' }}>
+        <div className="center-heading">
+          <span className="section-kicker">أداة تفاعلية</span>
+          <h2>حاسبة <em>المعدل التراكمي (GPA)</em></h2>
+          <p>احسب معدلك الفصل المتوقع بسهولة ودقة وفق السلم الأكاديمي المعتمد.</p>
+        </div>
+
+        <div style={{ maxWidth: '650px', margin: '0 auto', background: '#fff', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+          <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.2rem', justifyContent: 'center' }}>
+            <button onClick={() => { setGpaSystem(5); setCalculatedGpa(null) }} style={{ padding: '0.4rem 1rem', borderRadius: '6px', border: '1px solid #10b981', background: gpaSystem === 5 ? '#10b981' : '#fff', color: gpaSystem === 5 ? '#fff' : '#333', fontWeight: 'bold', cursor: 'pointer' }}>نظام من 5</button>
+            <button onClick={() => { setGpaSystem(4); setCalculatedGpa(null) }} style={{ padding: '0.4rem 1rem', borderRadius: '6px', border: '1px solid #10b981', background: gpaSystem === 4 ? '#10b981' : '#fff', color: gpaSystem === 4 ? '#fff' : '#333', fontWeight: 'bold', cursor: 'pointer' }}>نظام من 4</button>
           </div>
 
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {[
-              { title: 'توثيق أكاديمي', desc: 'معايير APA 7th المعتمدة' },
-              { title: 'دقة وتسليم', desc: 'التزام تكتيكي بالمواعيد' },
-              { title: 'سرية تامة', desc: 'حماية خصوصية بياناتك' },
-              { title: 'مراجعة وتعديل', desc: 'متابعة مباشرة للطلب' },
-            ].map((item, idx) => (
-              <div key={idx} className="bg-white/80 backdrop-blur p-4 rounded-xl border border-slate-100 shadow-sm text-center">
-                <CheckCircle className="text-blue-600 mx-auto mb-2" size={24} />
-                <h4 className="font-bold text-slate-800">{item.title}</h4>
-                <p className="text-xs text-slate-500 mt-1">{item.desc}</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+            {courses.map((course, idx) => (
+              <div key={course.id} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', width: '60px' }}>مادة {idx + 1}</span>
+                <input type="number" min="1" max="6" value={course.hours} onChange={(e) => {
+                  const updated = [...courses]
+                  updated[idx].hours = Number(e.target.value)
+                  setCourses(updated)
+                }} style={{ width: '80px', padding: '0.4rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.85rem' }} placeholder="ساعات" />
+                
+                <select value={course.grade} onChange={(e) => {
+                  const updated = [...courses]
+                  updated[idx].grade = Number(e.target.value)
+                  setCourses(updated)
+                }} style={{ flex: 1, padding: '0.4rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.85rem' }}>
+                  {gpaSystem === 5 ? (
+                    <>
+                      <option value={5}>ممتاز مرتفع (+A) - 5.0</option>
+                      <option value={4.75}>ممتاز (A) - 4.75</option>
+                      <option value={4.5}>جيد جداً مرتفع (+B) - 4.5</option>
+                      <option value={4.0}>جيد جداً (B) - 4.0</option>
+                      <option value={3.5}>جيد مرتفع (+C) - 3.5</option>
+                      <option value={3.0}>جيد (C) - 3.0</option>
+                      <option value={2.5}>مقبول مرتفع (+D) - 2.5</option>
+                      <option value={2.0}>مقبول (D) - 2.0</option>
+                      <option value={1.0}>راسب (F) - 1.0</option>
+                    </>
+                  ) : (
+                    <>
+                      <option value={4.0}>ممتاز (A) - 4.0</option>
+                      <option value={3.5}>جيد جداً مرتفع (+B) - 3.5</option>
+                      <option value={3.0}>جيد جداً (B) - 3.0</option>
+                      <option value={2.5}>جيد مرتفع (+C) - 2.5</option>
+                      <option value={2.0}>جيد (C) - 2.0</option>
+                      <option value={1.5}>مقبول (+D) - 1.5</option>
+                      <option value={1.0}>مقبول (D) - 1.0</option>
+                      <option value={0.0}>راسب (F) - 0.0</option>
+                    </>
+                  )}
+                </select>
+
+                <button onClick={() => handleRemoveCourse(course.id)} style={{ background: '#fee2e2', border: 'none', borderRadius: '6px', padding: '0.4rem', cursor: 'pointer', color: '#ef4444' }}><Trash2 size={16} /></button>
               </div>
             ))}
           </div>
+
+          <div style={{ display: 'flex', gap: '0.8rem', marginTop: '1.2rem' }}>
+            <button onClick={handleAddCourse} style={{ display: 'flex', alignItems: 'center', gap: '4px', background: '#f3f4f6', border: '1px solid #ccc', padding: '0.5rem 0.8rem', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 'bold' }}><Plus size={16} /> إضافة مادة</button>
+            <button onClick={handleCalculateGpa} style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', background: '#10b981', color: '#fff', border: 'none', padding: '0.5rem', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9rem' }}><Calculator size={16} /> حساب المعدل</button>
+          </div>
+
+          {calculatedGpa !== null && (
+            <div style={{ marginTop: '1.2rem', padding: '1rem', background: '#ecfdf5', borderRadius: '8px', textAlign: 'center', border: '1px solid #a7f3d0' }}>
+              <span style={{ fontSize: '0.9rem', color: '#065f46', fontWeight: 'bold' }}>معدلك المتوقع:</span>
+              <strong style={{ display: 'block', fontSize: '1.8rem', color: '#047857', marginTop: '0.2rem' }}>{calculatedGpa} / {gpaSystem}</strong>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Services Section */}
-      <section id="services" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">خدمات منصة هديل</h2>
-            <p className="text-slate-600">نقدم خيارات متكاملة تلبي احتياجات كافة التخصصات والجامعات</p>
-            
-            <div className="flex flex-wrap justify-center gap-2 mt-8">
-              {[
-                { id: 'all', label: 'كافة الخدمات' },
-                { id: 'research', label: 'الأبحاث والتوثيق' },
-                { id: 'academic', label: 'التقارير والتكليفات' },
-                { id: 'translation', label: 'الترجمة والتلخيص' },
-                { id: 'design', label: 'العروض والعروض الذاتية' },
-              ].map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-5 py-2 rounded-lg font-medium text-sm transition-all ${
-                    activeCategory === cat.id 
-                      ? 'bg-blue-600 text-white shadow-md' 
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredServices.map((service) => {
-              const IconComponent = service.icon;
-              return (
-                <div key={service.id} className="bg-slate-50 rounded-2xl p-6 border border-slate-100 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
-                  <div>
-                    <div className="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                      <IconComponent size={24} />
-                    </div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h3>
-                    <p className="text-slate-600 text-sm leading-relaxed mb-6">{service.desc}</p>
-                  </div>
-                  
-                  <div className="flex items-center justify-between pt-4 border-t border-slate-200/60">
-                    <button 
-                      onClick={() => setSelectedService(service)}
-                      className="text-blue-600 font-semibold text-sm hover:underline flex items-center gap-1"
-                    >
-                      عرض التفاصيل <ArrowRight size={16} className="rotate-180" />
-                    </button>
-                    <button 
-                      onClick={() => handleCopyLink(service.id)}
-                      className="text-slate-400 hover:text-slate-600 p-2 rounded-lg transition-colors"
-                      title="مشاركة الرابط"
-                    >
-                      {copiedId === service.id ? <CheckCircle size={18} className="text-green-600" /> : <Copy size={18} />}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+      {/* قسم آراء العملاء والتجارب */}
+      <section id="testimonials" className="section container">
+        <div className="center-heading">
+          <span className="section-kicker">آراء العملاء</span>
+          <h2>ماذا يقول <em>طلابنا عنّا؟</em></h2>
+          <p>تجارب حقيقية لطلاب وباحثين اعتمدوا على منصتنا لتسيير أبحاثهم ومسيرتهم الأكاديمية.</p>
         </div>
-      </section>
 
-      {/* GPA Calculator */}
-      <section id="gpa" className="py-20 bg-slate-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 bg-blue-500/10 text-blue-400 border border-blue-500/20 px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
-              <Calculator size={18} /> حاسبة منصة هديل
-            </div>
-            <h2 className="text-3xl font-bold">حاسبة المعدل التراكمي الفصلية والجامعية</h2>
-            <p className="text-slate-400 mt-2">احسب معدلك بسهولة ودقة طبقاً للنظامين السداسي والخماسي</p>
-          </div>
-
-          <div className="bg-slate-800/80 backdrop-blur rounded-2xl p-6 md:p-8 border border-slate-700 shadow-2xl">
-            <div className="flex justify-center mb-8 gap-4">
-              <button
-                onClick={() => { setGpaSystem(5); setCalculatedGpa(null); setCourses(courses.map(c => ({ ...c, grade: 5 }))); }}
-                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${gpaSystem === 5 ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-700 text-slate-300'}`}
-              >
-                نظام من 5.00
-              </button>
-              <button
-                onClick={() => { setGpaSystem(4); setCalculatedGpa(null); setCourses(courses.map(c => ({ ...c, grade: 4 }))); }}
-                className={`px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${gpaSystem === 4 ? 'bg-blue-600 text-white shadow-lg' : 'bg-slate-700 text-slate-300'}`}
-              >
-                نظام من 4.00
-              </button>
-            </div>
-
-            <div className="space-y-4 mb-6">
-              {courses.map((course, idx) => (
-                <div key={idx} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center bg-slate-700/50 p-4 rounded-xl border border-slate-600">
-                  <input
-                    type="text"
-                    value={course.name}
-                    onChange={(e) => {
-                      const updated = [...courses];
-                      updated[idx].name = e.target.value;
-                      setCourses(updated);
-                    }}
-                    placeholder="اسم المادة"
-                    className="sm:col-span-5 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none"
-                  />
-                  <select
-                    value={course.hours}
-                    onChange={(e) => {
-                      const updated = [...courses];
-                      updated[idx].hours = Number(e.target.value);
-                      setCourses(updated);
-                    }}
-                    className="sm:col-span-3 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none"
-                  >
-                    {[1, 2, 3, 4, 5, 6].map(h => <option key={h} value={h}>{h} ساعات</option>)}
-                  </select>
-                  <select
-                    value={course.grade}
-                    onChange={(e) => {
-                      const updated = [...courses];
-                      updated[idx].grade = Number(e.target.value);
-                      setCourses(updated);
-                    }}
-                    className="sm:col-span-3 bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm text-white focus:outline-none"
-                  >
-                    {gpaSystem === 5 ? (
-                      <>
-                        <option value={5}>A+ ممتاز مرتفع (5.00)</option>
-                        <option value={4.75}>A ممتاز (4.75)</option>
-                        <option value={4.5}>B+ جيد جداً مرتفع (4.50)</option>
-                        <option value={4.0}>B جيد جداً (4.00)</option>
-                        <option value={3.5}>C+ جيد مرتفع (3.50)</option>
-                        <option value={3.0}>C جيد (3.00)</option>
-                        <option value={2.5}>D+ مقبول مرتفع (2.50)</option>
-                        <option value={2.0}>D مقبول (2.00)</option>
-                      </>
-                    ) : (
-                      <>
-                        <option value={4}>A ممتاز (4.00)</option>
-                        <option value={3.5}>B+ جيد جداً مرتفع (3.50)</option>
-                        <option value={3.0}>B جيد جداً (3.00)</option>
-                        <option value={2.5}>C+ جيد مرتفع (2.50)</option>
-                        <option value={2.0}>C جيد (2.00)</option>
-                      </>
-                    )}
-                  </select>
-                  <button onClick={() => handleRemoveCourse(idx)} className="sm:col-span-1 text-red-400 hover:text-red-300 flex justify-center py-2">
-                    <X size={20} />
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
-              <button
-                onClick={handleAddCourse}
-                className="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2.5 rounded-xl font-medium text-sm transition-colors"
-              >
-                + إضافة مادة جديدة
-              </button>
-              <button onClick={calculateGPA} className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-2.5 rounded-xl font-bold text-sm shadow-lg transition-all">
-                حساب المعدل الآن
-              </button>
-            </div>
-
-            {calculatedGpa !== null && (
-              <div className="bg-blue-600/20 border border-blue-500/40 rounded-xl p-6 text-center">
-                <span className="text-slate-300 text-sm font-medium block mb-1">المعدل التراكمي المتوقع:</span>
-                <span className="text-4xl font-extrabold text-blue-400">{calculatedGpa}</span>
-                <span className="text-slate-400 text-sm"> / {gpaSystem}.00</span>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
+          {testimonialsData.map((t, i) => (
+            <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)', textAlign: 'center' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '2px', color: '#f59e0b', marginBottom: '0.8rem' }}>
+                {[...Array(t.rating)].map((_, starIndex) => <Star key={starIndex} size={16} fill="#f59e0b" />)}
               </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-3">نموذج طلب خدمة من مكتبة منصة هديل</h2>
-            <p className="text-slate-600">تواصل مع فريقنا مباشرة لإنجاز أبحاثك وتكليفاتك بسرعة</p>
-          </div>
-
-          <form onSubmit={handleSendWhatsapp} className="bg-slate-50 border border-slate-100 p-8 rounded-2xl shadow-sm space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <p style={{ fontSize: '0.9rem', color: '#374151', lineHeight: '1.6', marginBottom: '1rem' }}>"{t.text}"</p>
               <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">اسم الطالب / الباحث</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="أدخل اسمك الكريم"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-blue-600"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-2">رقم التواصل / الواتساب</label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  placeholder="05xxxxxxxx"
-                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-blue-600"
-                />
+                <strong style={{ display: 'block', fontSize: '0.92rem', color: '#111827' }}>{t.name}</strong>
+                <small style={{ color: '#6b7280', fontSize: '0.8rem' }}>{t.role}</small>
               </div>
             </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">نوع الخدمة المطلوب</label>
-              <select
-                value={formData.service}
-                onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-blue-600"
-              >
-                <option value="إعداد الأبحاث والورقات العلمية">إعداد الأبحاث والورقات العلمية</option>
-                <option value="إعداد التقارير والمشاريع الميدانية">إعداد التقارير والمشاريع الميدانية</option>
-                <option value="حل التكليفات والواجبات">حل التكليفات والواجبات الأكاديمية</option>
-                <option value="تصميم العروض التقديمية (PowerPoint)">تصميم عروض تقديمية PowerPoint</option>
-                <option value="الترجمة الأكاديمية والتلخيص">الترجمة الأكاديمية والتلخيص</option>
-                <option value="تصميم السير الذاتية (CV)">تصميم سيرة ذاتية (CV)</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-2">تفاصيل وحجم العمل (التخصص، عدد الصفحات، الموعد المطلوب)</label>
-              <textarea
-                rows={4}
-                value={formData.details}
-                onChange={(e) => setFormData({ ...formData, details: e.target.value })}
-                placeholder="اكتب هنا كافة تفاصيل وشروط الدكتور أو التكليف..."
-                className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-slate-800 focus:outline-none focus:border-blue-600"
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2"
-            >
-              <MessageCircle size={20} /> إرسال الطلب عبر الواتساب المباشر
-            </button>
-          </form>
+          ))}
         </div>
       </section>
 
-      {/* Service Details Modal */}
-      {selectedService && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
-            <button 
-              onClick={() => setSelectedService(null)}
-              className="absolute top-4 left-4 text-slate-400 hover:text-slate-600 p-1"
-            >
-              <X size={24} />
-            </button>
-            <h3 className="text-2xl font-bold text-slate-900 mb-4">{selectedService.title}</h3>
-            <p className="text-slate-600 leading-relaxed mb-6">{selectedService.desc}</p>
-            <a
-              href="#contact"
-              onClick={() => setSelectedService(null)}
-              className="block w-full bg-blue-600 text-white text-center font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors"
-            >
-              اطلب هذه الخدمة الآن
-            </a>
-          </div>
+      {/* نماذج أعمال سابقة */}
+      <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
+
+      {selectedWork && <div className="pdf-modal-backdrop" role="presentation" onClick={() => setSelectedWork(null)}><section className="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-title" onClick={(event) => event.stopPropagation()}><div className="pdf-modal-header"><h2 id="pdf-title">{selectedWork.title}</h2><button onClick={() => setSelectedWork(null)} aria-label="إغلاق المعاينة"><X size={20} /></button></div><div className="pdf-viewer"><iframe src={selectedWork.preview} title={`معاينة ${selectedWork.title}`} /></div></section></div>}
+
+      <section className="student-showcase-section container"><div className="hero-art visual-hero"><div className="visual-orb" /><Image className="student-hero-image" src="/images/hadeel-student-hero.png" alt="طالبة وباحثة عربية تمثل خدمات منصة هديل" width={390} height={480} priority /><div className="floating-badge badge-research"><BookOpen size={18} /><span>إعداد البحوث<br /><small>والأوراق العلمية</small></span></div><div className="floating-badge badge-presentation"><Presentation size={18} /><span>تصميم العروض<br /><small>التقديمية PowerPoint</small></span></div><div className="floating-badge badge-assignments"><Check size={18} /><span>متابعة التكليفات<br /><small>والواجبات</small></span></div><div className="floating-badge badge-blackboard"><Headphones size={18} /><span>إدارة البلاك بورد<br /><small>متابعة مستمرة</small></span></div><div className="floating-badge badge-package"><Sparkles size={17} /><span>الباقة الأكاديمية الشاملة للطلاب</span></div></div></section>
+
+      <section className="academic-ad-section container"><div className="academic-ad"><span className="ad-badge"><span>⚡</span> خدمات أكاديمية متكاملة</span><h2>ارفع معدلك.<br />ووفر وقتك.</h2><p>من إعداد البحوث الموثقة إلى إدارة حساب البلاك بورد، تقدم لك منصة هديل كافة الأدوات والخدمات التي توفر وقتك وتضمن لك التفوق الأكاديمي.</p><a href={whatsapp} target="_blank" rel="noreferrer" className="ad-button">ابدأ طلبك الآن <ArrowLeft size={16} /></a></div></section>
+
+      <section className="achievements-section container"><div className="achievements-copy"><span className="section-kicker">إنجازاتنا بالأرقام</span><h2>نتائج تُثبت<br /><em>ثقة طلابنا</em></h2><p>نفخر بكل طالب ساعدناه على تحويل التحديات الأكاديمية إلى إنجازات واضحة ونتائج ملموسة.</p><div className="achievement-stats"><div><strong>+1,200</strong><span>خدمة منجزة</span></div><div><strong>98%</strong><span>رضا العملاء</span></div><div><strong>+6</strong><span>سنوات خبرة</span></div><div><strong>24/7</strong><span>دعم ومتابعة</span></div></div></div><div className="achievements-image" onMouseEnter={() => setAchievementPaused(true)} onMouseLeave={() => setAchievementPaused(false)}><div className="achievement-slides" aria-live="polite"><Image key={achievementImages[achievementIndex]} className="achievement-slide" src={achievementImages[achievementIndex]} alt={`نموذج إنجاز أكاديمي ${achievementIndex + 1}`} fill sizes="(max-width: 800px) 100vw, 45vw" /></div><button className="achievement-arrow achievement-next" onClick={() => setAchievementIndex((achievementIndex + 1) % achievementImages.length)} aria-label="الصورة التالية"><ChevronRight size={18} /></button><button className="achievement-arrow achievement-prev" onClick={() => setAchievementIndex((achievementIndex - 1 + achievementImages.length) % achievementImages.length)} aria-label="الصورة السابقة"><ChevronLeft size={18} /></button><div className="achievement-dots">{achievementImages.map((image, index) => <button key={image} className={index === achievementIndex ? 'active' : ''} onClick={() => setAchievementIndex(index)} aria-label={`عرض الصورة ${index + 1}`} />)}</div></div></section>
+
+      <section id="why" className="why-section"><div className="container why-inner"><div><span className="section-kicker">لماذا تختار منصة هديل؟</span><h2>معك من أول فكرة<br /><em>حتى التسليم النهائي</em></h2><p>فريق متخصص، تواصل واضح، وجودة نراجعها معك خطوة بخطوة.</p></div><div className="feature-list"><div><Check /><span><strong>سرعة فائقة في الإنجاز</strong><small>تنفيذ وتسليم في وقت قياسي.</small></span></div><div><Check /><span><strong>جودة أكاديمية عالية</strong><small>مراجعة تدقيقية متكاملة لجميع الأعمال.</small></span></div><div><Check /><span><strong>دعم ومتابعة مستمرة</strong><small>تواصل وتعديل حتى اعتماد العمل نهائيًا.</small></span></div></div></div></section>
+
+      {/* قسم الأسئلة الشائعة العامة (FAQ Accordion) */}
+      <section id="faq" className="section container">
+        <div className="center-heading">
+          <span className="section-kicker">الأسئلة الشائعة</span>
+          <h2>إجابات عن <em>استفساراتك</em></h2>
+          <p>إليك إجابات لأبرز الأسئلة والاستفسارات الشائعة حول خدماتنا وطريقة التعامل.</p>
         </div>
-      )}
 
-      {/* Floating Whatsapp Button */}
-      <a
-        href="https://wa.me/966500000000"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 left-6 z-40 bg-emerald-500 text-white p-4 rounded-full shadow-2xl hover:bg-emerald-600 hover:scale-110 transition-all flex items-center justify-center"
-      >
-        <MessageCircle size={28} />
-      </a>
-
-      {/* Footer */}
-      <footer className="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold">
-              هديل
+        <div style={{ maxWidth: '750px', margin: '2rem auto 0', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+          {generalFaqs.map((faq, idx) => (
+            <div key={idx} style={{ border: '1px solid #e5e7eb', borderRadius: '10px', overflow: 'hidden', background: '#fff' }}>
+              <button 
+                onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
+                style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.2rem', border: 'none', background: 'transparent', textAlign: 'right', fontWeight: 'bold', fontSize: '0.95rem', cursor: 'pointer', color: '#111827' }}
+              >
+                <span>{faq.q}</span>
+                <ChevronDown size={18} style={{ transform: openFaqIndex === idx ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
+              </button>
+              {openFaqIndex === idx && (
+                <div style={{ padding: '0 1.2rem 1rem', fontSize: '0.88rem', color: '#4b5563', lineHeight: '1.6', borderTop: '1px solid #f3f4f6', paddingTop: '0.8rem', textAlign: 'right' }}>
+                  {faq.a}
+                </div>
+              )}
             </div>
-            <span className="text-white font-bold text-lg">منصة ومكتبة هديل للخدمات الطلابية</span>
-          </div>
-          <p className="text-sm text-center">جميع الحقوق محفوظة © {new Date().getFullYear()} منصة هديل</p>
+          ))}
         </div>
-      </footer>
+      </section>
 
-    </div>
-  );
+      <section id="contact" className="cta-section container"><div><span className="section-kicker">جاهز تبدأ؟</span><h2>خلّنا ننجزها <em>معًا</em></h2><p>تواصل معنا الآن واحصل على استشارة مجانية لخدمتك.</p></div><a className="light-button" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={18} /> تواصل عبر واتساب</a></section>
+      
+      <footer className="footer"><div className="container footer-grid"><div><a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="brand-dot">.</span></span></a><p>منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز أكاديمي أفضل.</p></div><div><h4>روابط سريعة</h4><a href="#story">قصتنا</a><a href="#services">خدماتنا</a><a href="#gpa-calculator">حاسبة المعدل</a><a href="#testimonials">آراء العملاء</a></div><div><h4>تواصل معنا</h4><a href="mailto:Hadeelmubarak387@gmail.com">Hadeelmubarak387@gmail.com</a></div><div className="footer-note"><MessageCircle size={30} /><h4>تحتاج مساعدة؟</h4><p>فريقنا جاهز للإجابة عن استفساراتك.</p><a className="footer-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">راسلنا مباشرة <ArrowLeft size={15} /></a></div></div><div className="container footer-bottom"><span>© 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع الحقوق محفوظة.</span><span>صُنع بعناية للطلاب والباحثين</span></div></footer>
+      <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="تواصل معنا عبر واتساب"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/whatsapp/default.svg" alt="واتساب" /><span>تواصل معنا</span></a>
+    </main>
+  )
 }
