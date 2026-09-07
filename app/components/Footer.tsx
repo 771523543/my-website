@@ -1,11 +1,18 @@
-'use client'
-
-import { ArrowLeft, MessageCircle } from 'lucide-react'
-
-const whatsapp = 'https://wa.me/967776280186'
+'use client';
+import React from 'react';
 
 export default function Footer() {
   return (
-<footer className="footer"><div className="container footer-grid"><div><a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="brand-dot">.</span></span></a><p>منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز أكاديمي أفضل.</p></div><div><h4>روابط سريعة</h4><a href="#story">قصتنا</a><a href="#services">خدماتنا</a><a href="#gpa-calculator">حاسبة المعدل</a><a href="#testimonials">آراء العملاء</a></div><div><h4>تواصل معنا</h4><a href="mailto:Hadeelmubarak387@gmail.com">Hadeelmubarak387@gmail.com</a></div><div className="footer-note"><MessageCircle size={30} /><h4>تحتاج مساعدة؟</h4><p>فريقنا جاهز للإجابة عن استفساراتك.</p><a className="footer-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">راسلنا مباشرة <ArrowLeft size={15} /></a></div></div><div className="container footer-bottom"><span>© 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع الحقوق محفوظة.</span><span>صُنع بعناية للطلاب والباحثين</span></div></footer>
-  )
+    <footer className="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold">
+            هديل
+          </div>
+          <span className="text-white font-bold text-lg">منصة هديل للخدمات الطلابية</span>
+        </div>
+        <p className="text-sm text-center">جميع الحقوق محفوظة © {new Date().getFullYear()} منصة هديل</p>
+      </div>
+    </footer>
+  );
 }
