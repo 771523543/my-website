@@ -1,18 +1,13 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useEffect, useState, FC } from 'react'
 import {
   ArrowLeft, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, Calculator,
-  FileText, Headphones, Menu, MessageCircle, Presentation, Share2, ShieldCheck,
+  FileText, Headphones, Menu, MessageCircle, Presentation, Share2, ShieldCheck, 
   Sparkles, Star, X, Plus, Trash2
 } from 'lucide-react'
-
-export default function Page() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [selectedDetailService, setSelectedDetailService] = useState<any>(null)
-  const [formData, setFormData] = useState({ studentName: '', universityId: '', notes: '', fileName: '' })
-
 
 import { 
   whatsappUrl, 
@@ -24,19 +19,28 @@ import {
   achievementImages 
 } from '@/lib/data'
 
+interface ServiceItem {
+  id: string | number
+  title: string
+  shortText: string
+  about: string
+  category: 'research' | 'design' | 'academic' | string
+  image: string
+  icon: FC<{ size?: number; style?: React.CSSProperties }>
+  requirements?: string[]
+  faqs?: { q: string; a: string }[]
+}
+
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [selectedDetailService, setSelectedDetailService] = useState<typeof servicesDetailsData[0] | null>(null)
+  const [selectedDetailService, setSelectedDetailService] = useState<ServiceItem | null>(null)
   const [formData, setFormData] = useState({ studentName: '', universityId: '', notes: '', fileName: '' })
   
-  // تصفية الخدمات
   const [activeCategory, setActiveCategory] = useState<'all' | 'research' | 'design' | 'academic'>('all')
   const [toastMessage, setToastMessage] = useState<string | null>(null)
 
-  // حالة الأسئلة الشائعة العامة
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
 
-  // حاسبة المعدل التراكمي (GPA)
   const [gpaSystem, setGpaSystem] = useState<5 | 4>(5)
   const [courses, setCourses] = useState([
     { id: 1, hours: 3, grade: 5 },
@@ -76,10 +80,9 @@ export default function Page() {
   }
 
   const filteredServices = activeCategory === 'all' 
-    ? servicesDetailsData 
-    : servicesDetailsData.filter(s => s.category === activeCategory)
+    ? (servicesDetailsData as ServiceItem[]) 
+    : (servicesDetailsData as ServiceItem[]).filter(s => s.category === activeCategory)
 
-  // مصفوفة مكررة مضاعفة لضمان حركة السلايدر التلقائي السلس دون فراغات
   const marqueeServices = [...filteredServices, ...filteredServices, ...filteredServices]
 
   const handleSendToWhatsapp = () => {
@@ -99,7 +102,7 @@ export default function Page() {
   const [achievementPaused, setAchievementPaused] = useState(false)
 
   useEffect(() => {
-    if (achievementPaused) return
+    if (achievementPaused || achievementImages.length === 0) return
     const timer = window.setInterval(() => setAchievementIndex((current) => (current + 1) % achievementImages.length), 3000)
     return () => window.clearInterval(timer)
   }, [achievementPaused])
@@ -118,18 +121,12 @@ export default function Page() {
     revealItems.forEach((item) => observer.observe(item))
     return () => observer.disconnect()
   }, [])
-
   return (
     <main dir="rtl" className="min-h-screen overflow-hidden bg-background text-foreground">
-      {/* أنماط CSS للحركة التلقائية للخدمات */}
       <style jsx global>{`
         @keyframes servicesMarquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(33.333%);
-          }
+          0% { transform: translateX(0); }
+          100% { transform: translateX(33.333%); }
         }
         .services-marquee-track {
           display: flex;
@@ -142,7 +139,6 @@ export default function Page() {
         }
       `}</style>
 
-      {/* التنبيه الفوري */}
       {toastMessage && (
         <div style={{ position: 'fixed', bottom: '20px', left: '20px', backgroundColor: '#10b981', color: '#fff', padding: '0.8rem 1.2rem', borderRadius: '8px', zIndex: 99999, boxShadow: '0 4px 12px rgba(0,0,0,0.15)', fontWeight: 'bold', fontSize: '0.9rem' }}>
           {toastMessage}
@@ -171,7 +167,6 @@ export default function Page() {
         <div className="hero-art hero-photo"><Image src="/images/hadeel-hero-family.png" alt="معلمة عربية تساعد طالبًا على التعلم" fill priority sizes="(max-width: 800px) 100vw, 48vw" /></div>
       </section>
 
-      {/* شريط إحصائيات تفاعلي */}
       <section className="stats-strip">
         <div className="container stats">
           <div><strong>+10K</strong><span>طالب مستفيد</span></div>
@@ -185,7 +180,6 @@ export default function Page() {
 
       <section id="values" data-reveal className="section soft-section reveal-section"><div className="container"><div className="center-heading"><span className="section-kicker">قيمنا الأساسية</span><h2>ثقة تُبنى على <em>المبادئ</em></h2><p>نضع احتياجك ونجاحك في مقدمة كل ما نقدمه.</p></div><div className="values-grid">{values.map(([title, text], index) => <article data-reveal className="value-card reveal-section" key={title}><span className="value-number">0{index + 1}</span><ShieldCheck size={25} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
-      {/* قسم الخدمات التفاعلي المتحرك تلقائياً */}
       <section id="services" data-reveal className="section container reveal-section">
         <div className="section-heading">
           <div>
@@ -197,7 +191,6 @@ export default function Page() {
           </a>
         </div>
 
-        {/* مرشح/فلتر الخدمات */}
         <div style={{ display: 'flex', gap: '0.6rem', marginBottom: '1.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           <button onClick={() => setActiveCategory('all')} style={{ padding: '0.5rem 1.2rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'all' ? '#10b981' : 'transparent', color: activeCategory === 'all' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>الكل</button>
           <button onClick={() => setActiveCategory('research')} style={{ padding: '0.5rem 1.2rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'research' ? '#10b981' : 'transparent', color: activeCategory === 'research' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>بحوث وتقارير</button>
@@ -205,7 +198,6 @@ export default function Page() {
           <button onClick={() => setActiveCategory('academic')} style={{ padding: '0.5rem 1.2rem', borderRadius: '20px', border: '1px solid #10b981', background: activeCategory === 'academic' ? '#10b981' : 'transparent', color: activeCategory === 'academic' ? '#fff' : 'inherit', fontWeight: 'bold', cursor: 'pointer', fontSize: '0.88rem' }}>خدمات ومتابعة</button>
         </div>
 
-        {/* حاوية الحركة التلقائية للخدمات */}
         <div className="services-marquee-container" style={{ overflow: 'hidden', padding: '1rem 0' }}>
           <div className="services-marquee-track">
             {marqueeServices.map((service, index) => {
@@ -214,12 +206,7 @@ export default function Page() {
                 <article 
                   key={`${service.id}-${index}`} 
                   className="service-card" 
-                  style={{ 
-                    position: 'relative', 
-                    width: '320px', 
-                    flexShrink: 0,
-                    margin: 0
-                  }}
+                  style={{ position: 'relative', width: '320px', flexShrink: 0, margin: 0 }}
                 >
                   <button 
                     onClick={() => handleCopyServiceLink(service.title)}
@@ -234,7 +221,7 @@ export default function Page() {
                   <div className="service-content" style={{ padding: '1.2rem 1rem 1rem', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <div style={{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                       <span className="service-icon" style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', marginBottom: '0.4rem' }}>
-                        <Icon size={24} />
+                        {Icon && <Icon size={24} />}
                       </span>
                       <h3 style={{ fontSize: '1.15rem', marginTop: '0.2rem', fontWeight: 'bold', textAlign: 'center', width: '100%' }}>{service.title}</h3>
                       <p style={{ margin: '0.5rem 0 1rem', fontSize: '0.88rem', color: '#555', lineHeight: '1.5', textAlign: 'center', direction: 'rtl', height: '2.8rem', overflow: 'hidden', width: '100%' }}>
@@ -255,7 +242,6 @@ export default function Page() {
           </div>
         </div>
 
-        {/* النافذة المنبثقة للخدمة */}
         {selectedDetailService && (
           <div 
             className="service-modal-backdrop" 
@@ -342,8 +328,6 @@ export default function Page() {
           </div>
         )}
       </section>
-
-      {/* حاسبة المعدل التراكمي (GPA Calculator) */}
       <section id="gpa-calculator" className="section soft-section container" style={{ marginTop: '2rem', borderRadius: '16px', padding: '2rem' }}>
         <div className="center-heading">
           <span className="section-kicker">أداة تفاعلية</span>
@@ -417,7 +401,6 @@ export default function Page() {
         </div>
       </section>
 
-      {/* قسم آراء العملاء والتجارب */}
       <section id="testimonials" className="section container">
         <div className="center-heading">
           <span className="section-kicker">آراء العملاء</span>
@@ -441,7 +424,6 @@ export default function Page() {
         </div>
       </section>
 
-      {/* نماذج أعمال سابقة */}
       <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
 
       {selectedWork && <div className="pdf-modal-backdrop" role="presentation" onClick={() => setSelectedWork(null)}><section className="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-title" onClick={(event) => event.stopPropagation()}><div className="pdf-modal-header"><h2 id="pdf-title">{selectedWork.title}</h2><button onClick={() => setSelectedWork(null)} aria-label="إغلاق المعاينة"><X size={20} /></button></div><div className="pdf-viewer"><iframe src={selectedWork.preview} title={`معاينة ${selectedWork.title}`} /></div></section></div>}
@@ -450,11 +432,10 @@ export default function Page() {
 
       <section className="academic-ad-section container"><div className="academic-ad"><span className="ad-badge"><span>⚡</span> خدمات أكاديمية متكاملة</span><h2>ارفع معدلك.<br />ووفر وقتك.</h2><p>من إعداد البحوث الموثقة إلى إدارة حساب البلاك بورد، تقدم لك منصة هديل كافة الأدوات والخدمات التي توفر وقتك وتضمن لك التفوق الأكاديمي.</p><a href={whatsappUrl} target="_blank" rel="noreferrer" className="ad-button">ابدأ طلبك الآن <ArrowLeft size={16} /></a></div></section>
 
-      <section className="achievements-section container"><div className="achievements-copy"><span className="section-kicker">إنجازاتنا بالأرقام</span><h2>نتائج تُثبت<br /><em>ثقة طلابنا</em></h2><p>نفخر بكل طالب ساعدناه على تحويل التحديات الأكاديمية إلى إنجازات واضحة ونتائج ملموسة.</p><div className="achievement-stats"><div><strong>+1,200</strong><span>خدمة منجزة</span></div><div><strong>98%</strong><span>رضا العملاء</span></div><div><strong>+6</strong><span>سنوات خبرة</span></div><div><strong>24/7</strong><span>دعم ومتابعة</span></div></div></div><div className="achievements-image" onMouseEnter={() => setAchievementPaused(true)} onMouseLeave={() => setAchievementPaused(false)}><div className="achievement-slides" aria-live="polite"><Image key={achievementImages[achievementIndex]} className="achievement-slide" src={achievementImages[achievementIndex]} alt={`نموذج إنجاز أكاديمي ${achievementIndex + 1}`} fill sizes="(max-width: 800px) 100vw, 45vw" /></div><button className="achievement-arrow achievement-next" onClick={() => setAchievementIndex((achievementIndex + 1) % achievementImages.length)} aria-label="الصورة التالية"><ChevronRight size={18} /></button><button className="achievement-arrow achievement-prev" onClick={() => setAchievementIndex((achievementIndex - 1 + achievementImages.length) % achievementImages.length)} aria-label="الصورة السابقة"><ChevronLeft size={18} /></button><div className="achievement-dots">{achievementImages.map((image, index) => <button key={image} className={index === achievementIndex ? 'active' : ''} onClick={() => setAchievementIndex(index)} aria-label={`عرض الصورة ${index + 1}`} />)}</div></div></section>
+      <section className="achievements-section container"><div className="achievements-copy"><span className="section-kicker">إنجازاتنا بالأرقام</span><h2>نتائج تُثبت<br /><em>ثقة طلابنا</em></h2><p>نفخر بكل طالب ساعدناه على تحويل التحديات الأكاديمية إلى إنجازات واضحة ونتائج ملموسة.</p><div className="achievement-stats"><div><strong>+1,200</strong><span>خدمة منجزة</span></div><div><strong>98%</strong><span>رضا العملاء</span></div><div><strong>+6</strong><span>سنوات خبرة</span></div><div><strong>24/7</strong><span>دعم ومتابعة</span></div></div></div><div className="achievements-image" onMouseEnter={() => setAchievementPaused(true)} onMouseLeave={() => setAchievementPaused(false)}><div className="achievement-slides" aria-live="polite">{achievementImages.length > 0 && <Image key={achievementImages[achievementIndex]} className="achievement-slide" src={achievementImages[achievementIndex]} alt={`نموذج إنجاز أكاديمي ${achievementIndex + 1}`} fill sizes="(max-width: 800px) 100vw, 45vw" />}</div><button className="achievement-arrow achievement-next" onClick={() => setAchievementIndex((achievementIndex + 1) % achievementImages.length)} aria-label="الصورة التالية"><ChevronRight size={18} /></button><button className="achievement-arrow achievement-prev" onClick={() => setAchievementIndex((achievementIndex - 1 + achievementImages.length) % achievementImages.length)} aria-label="الصورة السابقة"><ChevronLeft size={18} /></button><div className="achievement-dots">{achievementImages.map((image, index) => <button key={image} className={index === achievementIndex ? 'active' : ''} onClick={() => setAchievementIndex(index)} aria-label={`عرض الصورة ${index + 1}`} />)}</div></div></section>
 
       <section id="why" className="why-section"><div className="container why-inner"><div><span className="section-kicker">لماذا تختار منصة هديل؟</span><h2>معك من أول فكرة<br /><em>حتى التسليم النهائي</em></h2><p>فريق متخصص، تواصل واضح، وجودة نراجعها معك خطوة بخطوة.</p></div><div className="feature-list"><div><Check /><span><strong>سرعة فائقة في الإنجاز</strong><small>تنفيذ وتسليم في وقت قياسي.</small></span></div><div><Check /><span><strong>جودة أكاديمية عالية</strong><small>مراجعة تدقيقية متكاملة لجميع الأعمال.</small></span></div><div><Check /><span><strong>دعم ومتابعة مستمرة</strong><small>تواصل وتعديل حتى اعتماد العمل نهائيًا.</small></span></div></div></div></section>
 
-      {/* قسم الأسئلة الشائعة العامة (FAQ Accordion) */}
       <section id="faq" className="section container">
         <div className="center-heading">
           <span className="section-kicker">الأسئلة الشائعة</span>
