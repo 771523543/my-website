@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import {
   ArrowLeft, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, Calculator,
-  FileText, Headphones, Menu, MessageCircle, Presentation, Share2, ShieldCheck, 
+  FileText, Headphones, Menu, MessageCircle, Presentation, Share2, ShieldCheck,
   Sparkles, Star, X, Plus, Trash2
 } from 'lucide-react'
 
