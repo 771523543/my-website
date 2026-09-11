@@ -8,6 +8,11 @@ import {
   Sparkles, Star, X, Plus, Trash2
 } from 'lucide-react'
 
+export default function Page() {
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [selectedDetailService, setSelectedDetailService] = useState<any>(null)
+  const [formData, setFormData] = useState({ studentName: '', universityId: '', notes: '', fileName: '' })
+
 import { 
   whatsappUrl, 
   servicesDetailsData, 
