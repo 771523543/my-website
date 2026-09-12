@@ -54,32 +54,27 @@ a { color: inherit; text-decoration: none; }
   width: max-content;
   animation: continuousScroll 28s linear infinite;
 }
-
-/* توقف الحركة عند وضع الماوس أو المساس بالبطاقات */
-.infinite-scroll-container:hover .infinite-scroll-track {
-  animation-play-state: paused;
-/* تعديل حجم بطاقات الخدمات في الشريط المتحرك */
+/* ==========================================
+   تعديل حجم بطاقات الخدمات في الشريط المتحرك
+   ========================================== */
 
 /* 1. تكبير عرض البطاقات في الشريط المتحرك */
 .infinite-scroll-track .service-card {
-  width: 500px !important;
-  min-width: 500px !important;
-  flex: 0 0 500px !important;
+  width: 380px !important; /* يمكنك زيادة الرقم إلى 400px أو 420px للتكبير أكثر */
+  flex-shrink: 0;
 }
 
 /* 2. زيادة ارتفاع صورة البطاقة */
 .infinite-scroll-track .service-card .service-image {
-  height: 280px !important;
+  height: 220px !important; /* يمكنك زيادة الارتفاع حسب الرغبة */
 }
 
-/* 3. ضوابط للشاشات الصغيرة والجوال */
+/* 3. ضوابط للشاشات الصغيرة والجوّال لضمان التنسيق */
 @media (max-width: 800px) {
   .infinite-scroll-track .service-card {
-    width: 320px !important;
-    min-width: 320px !important;
-    flex: 0 0 320px !important;
+    width: 300px !important;
   }
   .infinite-scroll-track .service-card .service-image {
-    height: 190px !important;
+    height: 180px !important;
   }
 }
