@@ -59,4 +59,28 @@ a { color: inherit; text-decoration: none; }
 .infinite-scroll-container:hover .infinite-scroll-track {
   animation-play-state: paused;
 }
+/* ==========================================
+   تعديل حجم بطاقات الخدمات في الشريط المتحرك
+   ========================================== */
+
+/* 1. تكبير عرض البطاقات في الشريط المتحرك */
+.infinite-scroll-track .service-card {
+  width: 380px !important; /* يمكنك زيادة الرقم إلى 400px أو 420px للتكبير أكثر */
+  flex-shrink: 0;
+}
+
+/* 2. زيادة ارتفاع صورة البطاقة */
+.infinite-scroll-track .service-card .service-image {
+  height: 220px !important; /* يمكنك زيادة الارتفاع حسب الرغبة */
+}
+
+/* 3. ضوابط للشاشات الصغيرة والجوّال لضمان التنسيق */
+@media (max-width: 800px) {
+  .infinite-scroll-track .service-card {
+    width: 300px !important;
+  }
+  .infinite-scroll-track .service-card .service-image {
+    height: 180px !important;
+  }
+}
 
