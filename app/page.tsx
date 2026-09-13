@@ -243,6 +243,7 @@ export default function Page() {
     revealItems.forEach((item) => observer.observe(item))
     return () => observer.disconnect()
   }, [])
+
   return (
     <main dir="rtl" className="min-h-screen overflow-hidden bg-background text-foreground">
       <style jsx global>{`
@@ -289,16 +290,38 @@ export default function Page() {
       </header>
       
       <section id="top" className="hero container">
-        <div className="hero-copy"><span className="eyebrow"><span className="eyebrow-dot" /> شريكك الأكاديمي الموثوق</span><h1>نرتب لك طريقك<br /><strong>نحو النجاح الأكاديمي</strong></h1><p>منصة هديل للخدمات الطلابية والأكاديمية. حلول احترافية، جودة عالية، ومتابعة مستمرة تساعدك على إنجاز أعمالك بثقة.</p><div className="hero-buttons"><a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمتك الآن <MessageCircle size={18} /></a><a className="text-button" href="#services">استكشف خدماتنا <ArrowLeft size={18} /></a></div><div className="trust-row"><div className="avatars"><span>أ</span><span>م</span><span>س</span><span>+</span></div><div><strong>+10,000</strong><small>طالب وباحث يثقون بنا</small></div></div><div className="hero-blue-card"><div className="hero-card-badge">هديل</div><div className="art-top"><span>رحلتك الأكاديمية</span></div><p className="hero-card-caption">خطوات واضحة، إنجازات أكبر</p><div className="path-line"><span className="path-dot active" /><span /><span className="path-dot active" /><span /><span className="path-dot active" /></div><div className="art-labels"><span>خطط</span><span>أنجز</span><span>تفوّق</span></div><div className="floating-note"><Check size={16} /> عملك في أيدٍ أمينة</div></div></div>
+        <div className="hero-copy">
+          <span className="eyebrow"><span className="eyebrow-dot" /> شريكك الأكاديمي الموثوق</span>
+          <h1>نرتب لك طريقك<br /><strong>نحو النجاح الأكاديمي</strong></h1>
+          <p>منصة هديل للخدمات الطلابية والأكاديمية. حلول احترافية، جودة عالية، ومتابعة مستمرة تساعدك على إنجاز أعمالك بثقة.</p>
+          <div className="hero-buttons">
+            <a className="primary-button" href={whatsapp} target="_blank" rel="noreferrer">اطلب خدمتك الآن <MessageCircle size={18} /></a>
+            <a className="text-button" href="#services">استكشف خدماتنا <ArrowLeft size={18} /></a>
+          </div>
+          <div className="trust-row">
+            <div className="avatars"><span>أ</span><span>م</span><span>س</span><span>+</span></div>
+            <div><strong>+10,000</strong><small>طالب وباحث يثقون بنا</small></div>
+          </div>
+          <div className="hero-blue-card">
+            <div className="hero-card-badge">هديل</div>
+            <div className="art-top"><span>رحلتك الأكاديمية</span></div>
+            <p className="hero-card-caption">خطوات واضحة، إنجازات أكبر</p>
+            <div className="path-line"><span className="path-dot active" /><span /><span className="path-dot active" /><span /><span className="path-dot active" /></div>
+            <div className="art-labels"><span>خطط</span><span>أنجز</span><span>تفوّق</span></div>
+            <div className="floating-note"><Check size={16} /> عملك في أيدٍ أمينة</div>
+          </div>
+        </div>
+        
         <div className="hero-art hero-photo">
-<div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
-  <img 
-    src="/images/hadel-1.png" 
-    alt="منصة هديل" 
-    style={{ maxWidth: '100%', height: 'auto', borderRadius: '20px' }} 
-  />
-</div>
-
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0', width: '100%' }}>
+            <img 
+              src="/images/hadel-1.png" 
+              alt="منصة هديل" 
+              style={{ maxWidth: '100%', height: 'auto', borderRadius: '20px' }} 
+            />
+          </div>
+        </div>
+      </section>
 
       <section className="stats-strip">
         <div className="container stats">
@@ -309,9 +332,38 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="story" className="section story-section container"><div className="story-visual"><div className="story-card"><BookOpen size={42} /><span>معرفة<br />تُنجز</span></div><div className="story-badge">منذ 2018</div></div><div className="story-copy"><span className="section-kicker">قصتنا</span><h2>بدأنا من إيماننا بأن<br /><em>كل طالب يستحق الدعم</em></h2><p>انطلقت منصة هديل لتكون الوجهة الموثوقة للطلاب والباحثين، وتحوّل التحديات الأكاديمية إلى خطوات واضحة قابلة للإنجاز. نعمل بشغف لنقدم حلولًا احترافية تراعي احتياجك وتساعدك على إكمال رحلتك بأعلى درجات الجودة.</p><a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">تعرّف على هديل <ArrowLeft size={17} /></a></div></section>
+      <section id="story" className="section story-section container">
+        <div className="story-visual">
+          <div className="story-card"><BookOpen size={42} /><span>معرفة<br />تُنجز</span></div>
+          <div className="story-badge">منذ 2018</div>
+        </div>
+        <div className="story-copy">
+          <span className="section-kicker">قصتنا</span>
+          <h2>بدأنا من إيماننا بأن<br /><em>كل طالب يستحق الدعم</em></h2>
+          <p>انطلقت منصة هديل لتكون الوجهة الموثوقة للطلاب والباحثين، وتحوّل التحديات الأكاديمية إلى خطوات واضحة قابلة للإنجاز. نعمل بشغف لنقدم حلولًا احترافية تراعي احتياجك وتساعدك على إكمال رحلتك بأعلى درجات الجودة.</p>
+          <a className="text-button" href={whatsapp} target="_blank" rel="noreferrer">تعرّف على هديل <ArrowLeft size={17} /></a>
+        </div>
+      </section>
 
-      <section id="values" data-reveal className="section soft-section reveal-section"><div className="container"><div className="center-heading"><span className="section-kicker">قيمنا الأساسية</span><h2>ثقة تُبنى على <em>المبادئ</em></h2><p>نضع احتياجك ونجاحك في مقدمة كل ما نقدمه.</p></div><div className="values-grid">{values.map(([title, text], index) => <article data-reveal className="value-card reveal-section" key={title}><span className="value-number">0{index + 1}</span><ShieldCheck size={25} /><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+      <section id="values" data-reveal className="section soft-section reveal-section">
+        <div className="container">
+          <div className="center-heading">
+            <span className="section-kicker">قيمنا الأساسية</span>
+            <h2>ثقة تُبنى على <em>المبادئ</em></h2>
+            <p>نضع احتياجك ونجاحك في مقدمة كل ما نقدمه.</p>
+          </div>
+          <div className="values-grid">
+            {values.map(([title, text], index) => (
+              <article data-reveal className="value-card reveal-section" key={title}>
+                <span className="value-number">0{index + 1}</span>
+                <ShieldCheck size={25} />
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section id="services" data-reveal className="section container reveal-section">
         <div className="section-heading">
@@ -466,6 +518,7 @@ export default function Page() {
           </div>
         )}
       </section>
+
       <HeroBanner />
 
       <section id="gpa-calculator" className="section soft-section container" style={{ marginTop: '2rem', borderRadius: '16px', padding: '2rem' }}>
@@ -564,17 +617,92 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="portfolio" className="portfolio-section container"><div className="section-heading"><div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div></div><div className="portfolio-grid">{previousWorks.map((work) => <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}><span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span><span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span><ChevronLeft size={18} /></button>)}</div></section>
+      <section id="portfolio" className="portfolio-section container">
+        <div className="section-heading">
+          <div><span className="section-kicker">أعمالنا السابقة</span><h2>نماذج من <em>أعمالنا</em></h2></div>
+        </div>
+        <div className="portfolio-grid">
+          {previousWorks.map((work) => (
+            <button className="portfolio-work-card" key={work.preview} onClick={() => setSelectedWork(work)}>
+              <span className="portfolio-file-icon"><FileText size={28} /><small>PDF</small></span>
+              <span className="portfolio-work-info"><strong>{work.title}</strong><small>اضغط للمعاينة</small></span>
+              <ChevronLeft size={18} />
+            </button>
+          ))}
+        </div>
+      </section>
 
-      {selectedWork && <div className="pdf-modal-backdrop" role="presentation" onClick={() => setSelectedWork(null)}><section className="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-title" onClick={(event) => event.stopPropagation()}><div className="pdf-modal-header"><h2 id="pdf-title">{selectedWork.title}</h2><button onClick={() => setSelectedWork(null)} aria-label="إغلاق المعاينة"><X size={20} /></button></div><div className="pdf-viewer"><iframe src={selectedWork.preview} title={`معاينة ${selectedWork.title}`} /></div></section></div>}
+      {selectedWork && (
+        <div className="pdf-modal-backdrop" role="presentation" onClick={() => setSelectedWork(null)}>
+          <section className="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-title" onClick={(event) => event.stopPropagation()}>
+            <div className="pdf-modal-header">
+              <h2 id="pdf-title">{selectedWork.title}</h2>
+              <button onClick={() => setSelectedWork(null)} aria-label="إغلاق المعاينة"><X size={20} /></button>
+            </div>
+            <div className="pdf-viewer"><iframe src={selectedWork.preview} title={`معاينة ${selectedWork.title}`} /></div>
+          </section>
+        </div>
+      )}
 
-      <section className="student-showcase-section container"><div className="hero-art visual-hero"><div className="visual-orb" /><Image className="student-hero-image" src="/images/hadeel-student-hero.png" alt="طالبة وباحثة عربية تمثل خدمات منصة هديل" width={390} height={480} priority /><div className="floating-badge badge-research"><BookOpen size={18} /><span>إعداد البحوث<br /><small>والأوراق العلمية</small></span></div><div className="floating-badge badge-presentation"><Presentation size={18} /><span>تصميم العروض<br /><small>التقديمية PowerPoint</small></span></div><div className="floating-badge badge-assignments"><Check size={18} /><span>متابعة التكليفات<br /><small>والواجبات</small></span></div><div className="floating-badge badge-blackboard"><Headphones size={18} /><span>إدارة البلاك بورد<br /><small>متابعة مستمرة</small></span></div><div className="floating-badge badge-package"><Sparkles size={17} /><span>الباقة الأكاديمية الشاملة للطلاب</span></div></div></section>
+      <section className="student-showcase-section container">
+        <div className="hero-art visual-hero">
+          <div className="visual-orb" />
+          <Image className="student-hero-image" src="/images/hadeel-student-hero.png" alt="طالبة وباحثة عربية تمثل خدمات منصة هديل" width={390} height={480} priority />
+          <div className="floating-badge badge-research"><BookOpen size={18} /><span>إعداد البحوث<br /><small>والأوراق العلمية</small></span></div>
+          <div className="floating-badge badge-presentation"><Presentation size={18} /><span>تصميم العروض<br /><small>التقديمية PowerPoint</small></span></div>
+          <div className="floating-badge badge-assignments"><Check size={18} /><span>متابعة التكليفات<br /><small>والواجبات</small></span></div>
+          <div className="floating-badge badge-blackboard"><Headphones size={18} /><span>إدارة البلاك بورد<br /><small>متابعة مستمرة</small></span></div>
+          <div className="floating-badge badge-package"><Sparkles size={17} /><span>الباقة الأكاديمية الشاملة للطلاب</span></div>
+        </div>
+      </section>
 
-      <section className="academic-ad-section container"><div className="academic-ad"><span className="ad-badge"><span>⚡</span> خدمات أكاديمية متكاملة</span><h2>ارفع معدلك.<br />ووفر وقتك.</h2><p>من إعداد البحوث الموثقة إلى إدارة حساب البلاك بورد، تقدم لك منصة هديل كافة الأدوات والخدمات التي توفر وقتك وتضمن لك التفوق الأكاديمي.</p><a href={whatsapp} target="_blank" rel="noreferrer" className="ad-button">ابدأ طلبك الآن <ArrowLeft size={16} /></a></div></section>
+      <section className="academic-ad-section container">
+        <div className="academic-ad">
+          <span className="ad-badge"><span>⚡</span> خدمات أكاديمية متكاملة</span>
+          <h2>ارفع معدلك.<br />ووفر وقتك.</h2>
+          <p>من إعداد البحوث الموثقة إلى إدارة حساب البلاك بورد، تقدم لك منصة هديل كافة الأدوات والخدمات التي توفر وقتك وتضمن لك التفوق الأكاديمي.</p>
+          <a href={whatsapp} target="_blank" rel="noreferrer" className="ad-button">ابدأ طلبك الآن <ArrowLeft size={16} /></a>
+        </div>
+      </section>
 
-      <section className="achievements-section container"><div className="achievements-copy"><span className="section-kicker">إنجازاتنا بالأرقام</span><h2>نتائج تُثبت<br /><em>ثقة طلابنا</em></h2><p>نفخر بكل طالب ساعدناه على تحويل التحديات الأكاديمية إلى إنجازات واضحة ونتائج ملموسة.</p><div className="achievement-stats"><div><strong>+1,200</strong><span>خدمة منجزة</span></div><div><strong>98%</strong><span>رضا العملاء</span></div><div><strong>+6</strong><span>سنوات خبرة</span></div><div><strong>24/7</strong><span>دعم ومتابعة</span></div></div></div><div className="achievements-image" onMouseEnter={() => setAchievementPaused(true)} onMouseLeave={() => setAchievementPaused(false)}><div className="achievement-slides" aria-live="polite"><Image key={achievementImages[achievementIndex]} className="achievement-slide" src={achievementImages[achievementIndex]} alt={`نموذج إنجاز أكاديمي ${achievementIndex + 1}`} fill sizes="(max-width: 800px) 100vw, 45vw" /></div><button className="achievement-arrow achievement-next" onClick={() => setAchievementIndex((achievementIndex + 1) % achievementImages.length)} aria-label="الصورة التالية"><ChevronRight size={18} /></button><button className="achievement-arrow achievement-prev" onClick={() => setAchievementIndex((achievementIndex - 1 + achievementImages.length) % achievementImages.length)} aria-label="الصورة السابقة"><ChevronLeft size={18} /></button><div className="achievement-dots">{achievementImages.map((image, index) => <button key={image} className={index === achievementIndex ? 'active' : ''} onClick={() => setAchievementIndex(index)} aria-label={`عرض الصورة ${index + 1}`} />)}</div></div></section>
+      <section className="achievements-section container">
+        <div className="achievements-copy">
+          <span className="section-kicker">إنجازاتنا بالأرقام</span>
+          <h2>نتائج تُثبت<br /><em>ثقة طلابنا</em></h2>
+          <p>نفخر بكل طالب ساعدناه على تحويل التحديات الأكاديمية إلى إنجازات واضحة ونتائج ملموسة.</p>
+          <div className="achievement-stats">
+            <div><strong>+1,200</strong><span>خدمة منجزة</span></div>
+            <div><strong>98%</strong><span>رضا العملاء</span></div>
+            <div><strong>+6</strong><span>سنوات خبرة</span></div>
+            <div><strong>24/7</strong><span>دعم ومتابعة</span></div>
+          </div>
+        </div>
+        <div className="achievements-image" onMouseEnter={() => setAchievementPaused(true)} onMouseLeave={() => setAchievementPaused(false)}>
+          <div className="achievement-slides" aria-live="polite">
+            <Image key={achievementImages[achievementIndex]} className="achievement-slide" src={achievementImages[achievementIndex]} alt={`نموذج إنجاز أكاديمي ${achievementIndex + 1}`} fill sizes="(max-width: 800px) 100vw, 45vw" />
+          </div>
+          <button className="achievement-arrow achievement-next" onClick={() => setAchievementIndex((achievementIndex + 1) % achievementImages.length)} aria-label="الصورة التالية"><ChevronRight size={18} /></button>
+          <button className="achievement-arrow achievement-prev" onClick={() => setAchievementIndex((achievementIndex - 1 + achievementImages.length) % achievementImages.length)} aria-label="الصورة السابقة"><ChevronLeft size={18} /></button>
+          <div className="achievement-dots">
+            {achievementImages.map((image, index) => <button key={image} className={index === achievementIndex ? 'active' : ''} onClick={() => setAchievementIndex(index)} aria-label={`عرض الصورة ${index + 1}`} />)}
+          </div>
+        </div>
+      </section>
 
-      <section id="why" className="why-section"><div className="container why-inner"><div><span className="section-kicker">لماذا تختار منصة هديل؟</span><h2>معك من أول فكرة<br /><em>حتى التسليم النهائي</em></h2><p>فريق متخصص، تواصل واضح، وجودة نراجعها معك خطوة بخطوة.</p></div><div className="feature-list"><div><Check /><span><strong>سرعة فائقة في الإنجاز</strong><small>تنفيذ وتسليم في وقت قياسي.</small></span></div><div><Check /><span><strong>جودة أكاديمية عالية</strong><small>مراجعة تدقيقية متكاملة لجميع الأعمال.</small></span></div><div><Check /><span><strong>دعم ومتابعة مستمرة</strong><small>تواصل وتعديل حتى اعتماد العمل نهائيًا.</small></span></div></div></div></section>
+      <section id="why" className="why-section">
+        <div className="container why-inner">
+          <div>
+            <span className="section-kicker">لماذا تختار منصة هديل؟</span>
+            <h2>معك من أول فكرة<br /><em>حتى التسليم النهائي</em></h2>
+            <p>فريق متخصص، تواصل واضح، وجودة نراجعها معك خطوة بخطوة.</p>
+          </div>
+          <div className="feature-list">
+            <div><Check /><span><strong>سرعة فائقة في الإنجاز</strong><small>تنفيذ وتسليم في وقت قياسي.</small></span></div>
+            <div><Check /><span><strong>جودة أكاديمية عالية</strong><small>مراجعة تدقيقية متكاملة لجميع الأعمال.</small></span></div>
+            <div><Check /><span><strong>دعم ومتابعة مستمرة</strong><small>تواصل وتعديل حتى اعتماد العمل نهائيًا.</small></span></div>
+          </div>
+        </div>
+      </section>
 
       <section id="faq" className="section container">
         <div className="center-heading">
@@ -603,11 +731,49 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="contact" className="cta-section container"><div><span className="section-kicker">جاهز تبدأ؟</span><h2>خلّنا ننجزها <em>معًا</em></h2><p>تواصل معنا الآن واحصل على استشارة مجانية لخدمتك.</p></div><a className="light-button" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={18} /> تواصل عبر واتساب</a></section>
+      <section id="contact" className="cta-section container">
+        <div>
+          <span className="section-kicker">جاهز تبدأ؟</span>
+          <h2>خلّنا ننجزها <em>معًا</em></h2>
+          <p>تواصل معنا الآن واحصل على استشارة مجانية لخدمتك.</p>
+        </div>
+        <a className="light-button" href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle size={18} /> تواصل عبر واتساب</a>
+      </section>
       
-      <footer className="footer"><div className="container footer-grid"><div><a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="brand-dot">.</span></span></a><p>منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز أكاديمي أفضل.</p></div><div><h4>روابط سريعة</h4><a href="#story">قصتنا</a><a href="#services">خدماتنا</a><a href="#gpa-calculator">حاسبة المعدل</a><a href="#testimonials">آراء العملاء</a></div><div><h4>تواصل معنا</h4><a href="mailto:Hadeelmubarak387@gmail.com">Hadeelmubarak387@gmail.com</a></div><div className="footer-note"><MessageCircle size={30} /><h4>تحتاج مساعدة؟</h4><p>فريقنا جاهز للإجابة عن استفساراتك.</p><a className="footer-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">راسلنا مباشرة <ArrowLeft size={15} /></a></div></div><div className="container footer-bottom"><span>© 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع الحقوق محفوظة.</span><span>صُنع بعناية للطلاب والباحثين</span></div></footer>
-      <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="تواصل معنا عبر واتساب"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/whatsapp/default.svg" alt="واتساب" /><span>تواصل معنا</span></a>
+      <footer className="footer">
+        <div className="container footer-grid">
+          <div>
+            <a className="brand footer-brand" href="#top"><span className="brand-mark">هـ</span><span>منصة هديل<span className="brand-dot">.</span></span></a>
+            <p>منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز أكاديمي أفضل.</p>
+          </div>
+          <div>
+            <h4>روابط سريعة</h4>
+            <a href="#story">قصتنا</a>
+            <a href="#services">خدماتنا</a>
+            <a href="#gpa-calculator">حاسبة المعدل</a>
+            <a href="#testimonials">آراء العملاء</a>
+          </div>
+          <div>
+            <h4>تواصل معنا</h4>
+            <a href="mailto:Hadeelmubarak387@gmail.com">Hadeelmubarak387@gmail.com</a>
+          </div>
+          <div className="footer-note">
+            <MessageCircle size={30} />
+            <h4>تحتاج مساعدة؟</h4>
+            <p>فريقنا جاهز للإجابة عن استفساراتك.</p>
+            <a className="footer-whatsapp" href={whatsapp} target="_blank" rel="noreferrer">راسلنا مباشرة <ArrowLeft size={15} /></a>
+          </div>
+        </div>
+        <div className="container footer-bottom">
+          <span>© 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع الحقوق محفوظة.</span>
+          <span>صُنع بعناية للطلاب والباحثين</span>
+        </div>
+      </footer>
+      
+      <a className="floating-whatsapp" href={whatsapp} target="_blank" rel="noreferrer" aria-label="تواصل معنا عبر واتساب">
+        <img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/whatsapp/default.svg" alt="واتساب" />
+        <span>تواصل معنا</span>
+      </a>
     </main>
   )
 }
-
