@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import {
   ArrowLeft, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, Calculator,
   FileText, GraduationCap, Headphones, Menu, MessageCircle, Presentation,
@@ -92,9 +92,8 @@ export default function Page() {
   const [selectedService, setSelectedService] = useState(servicesDetailsData[0])
 
   const achievementImages = [
-    '/images/achievement-1.png',
-    '/images/achievement-2.png',
-    '/images/achievement-3.png'
+    '/images/hadeel-achievement-test.jpg',
+    '/images/hadeel-achievements.png'
   ]
 
   const generalFaqs = [
@@ -103,13 +102,25 @@ export default function Page() {
     { q: 'ما هي طرق الدفع المتاحة؟', a: 'نوفر عدة طرق دفع مرنة تناسب الطلاب والعملاء.' }
   ]
 
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const message = [
+      'السلام عليكم، أرغب في طلب خدمة من منصة هديل.',
+      formData.fileName ? `عنوان الملف أو الرابط: ${formData.fileName}` : '',
+      formData.notes ? `الملاحظات: ${formData.notes}` : '',
+    ].filter(Boolean).join('\n')
+
+    window.open(`${whatsapp}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+  }
+
   return (
-    <main>
-      <section className="section container">
+    <main id="top">
+      <form className="section container" onSubmit={handleSubmit}>
         <div>
           <input 
             type="text" 
-            placeholder="أدخل عنوان الملف أو رابط جوجل درايف" 
+            placeholder="أدخل عنوان الملف أو رابط جوجل درايف"
+            required 
             value={formData.fileName} 
             onChange={(e) => setFormData({ ...formData, fileName: e.target.value })} 
             style={{ width: '100%', padding: '0.5rem 0.75rem', borderRadius: '6px', border: '1px solid #ccc', fontSize: '0.88rem' }} 
@@ -131,7 +142,7 @@ export default function Page() {
         >
           تأكيد وإرسال الطلب عبر الواتساب <MessageCircle size={18} />
         </button>
-      </section>
+      </form>
 
       <HeroBanner />
 
@@ -149,7 +160,7 @@ export default function Page() {
         </div>
       </section>
 
-      <section className="achievements-section container">
+      <section id="achievements" className="achievements-section container">
         <div className="achievements-copy">
           <span className="section-kicker">إنجازاتنا بالأرقام</span>
           <h2>نتائج تُثبت<br /><em>ثقة طلابنا</em></h2>
@@ -254,10 +265,10 @@ export default function Page() {
           </div>
           <div>
             <h4>روابط سريعة</h4>
-            <a href="#story">قصتنا</a>
+            <a href="#why">لماذا نحن</a>
             <a href="#services">خدماتنا</a>
             <a href="#gpa-calculator">حاسبة المعدل</a>
-            <a href="#testimonials">آراء العملاء</a>
+            <a href="#faq">الأسئلة الشائعة</a>
           </div>
           <div>
             <h4>تواصل معنا</h4>
