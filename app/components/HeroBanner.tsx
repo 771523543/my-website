@@ -73,7 +73,7 @@ export default function HeroBanner() {
   const currentPkg = packagesData[currentIndex];
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '2rem auto', padding: '0 1rem', direction: 'rtl' }}>
+    <div id="services" style={{ maxWidth: '1200px', margin: '2rem auto', padding: '0 1rem', direction: 'rtl' }}>
       <div
         style={{
           position: 'relative',
