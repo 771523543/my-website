@@ -311,17 +311,6 @@ export default function Page() {
             <div className="floating-note"><Check size={16} /> عملك في أيدٍ أمينة</div>
           </div>
         </div>
-        
-        <div className="hero-art hero-photo">
-          <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0', width: '100%' }}>
-            <img 
-              src="/images/hadel-1.png" 
-              alt="منصة هديل" 
-              style={{ maxWidth: '100%', height: 'auto', borderRadius: '20px' }} 
-            />
-          </div>
-        </div>
-      </section>
 
       <section className="stats-strip">
         <div className="container stats">
