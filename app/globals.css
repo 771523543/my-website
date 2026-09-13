@@ -78,3 +78,25 @@ a { color: inherit; text-decoration: none; }
     height: 180px !important;
   }
 }
+/* تعديل وإلغاء التنسيقات القديمة للصورة الرئيسية وضبط أبعادها */
+.hero-art {
+  min-height: auto !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.hero-photo {
+  min-height: auto !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.hero-photo img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 480px !important;
+  object-fit: contain !important;
+  border-radius: 20px !important;
+}
+
