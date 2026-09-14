@@ -1,84 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import { useState, type FormEvent } from 'react'
-import {
-  ArrowLeft, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, Calculator,
-  FileText, GraduationCap, Headphones, Menu, MessageCircle, Presentation,
-  Share2, ShieldCheck, Sparkles, Star, UserRound, X, Plus, Trash2
-} from 'lucide-react'
+import { ArrowLeft, ChevronDown, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react'
 import HeroBanner from './components/HeroBanner';
 
 const whatsapp = 'https://wa.me/967776280186'
-
-const servicesDetailsData = [
-  {
-    id: 'research',
-    category: 'research',
-    image: '/images/service-research.png',
-    title: 'إعداد البحوث والتقارير',
-    shortText: 'بحوث وتقارير علمية وفق منهجية أكاديمية وتوثيق معتمد خالية من الاقتباس.',
-    about: 'نقدم لك إعداداً شاملاً للبحوث والتقارير الأكاديمية وفق المناهج العلمية المعتمدة. نلتزم بالأمانة العلمية وتقديم عمل أصيل خالي تماماً من السرقات الأدبية مع التوثيق المرجعي الدقيق (APA 7th, Harvard, IEEE).',
-    previousWorks: [],
-    requirements: [
-      'عنوان البحث واسم المادة الدراسية.',
-      'أسلوب التوثيق المعتمد (APA, Harvard, IEEE...).',
-      'عدد الصفحات أو كلمات البحث المطلوبة.',
-      'ملف التعليمات أو دليل الإرشادات من أستاذ المادة.'
-    ],
-    faqs: [
-      { q: 'هل يتم الفحص ضد السرقات الأدبية (Plagiarism)؟', a: 'نعم، يتم فحص الأعمال ببرامج معتمدة لضمان أصالتها وتزويدك بتقارير نسبة الاقتباس.' },
-      { q: 'هل يمكن التعديل بعد الاستلام؟', a: 'نعم، نقدم تعديلات مجانية حتى اعتماد العمل نهائياً وفق الشروط المحددة.' }
-    ]
-  },
-  {
-    id: 'presentation',
-    category: 'design',
-    image: '/images/service-presentation.png',
-    title: 'العروض التقديمية',
-    shortText: 'تصميم شرائح PowerPoint احترافية وتفاعلية لمشاريع التخرج والمناقشات.',
-    about: 'تصميم عروض تقديمية جذابة وبصرية تعكس احترافية محتواك، مع مراعاة اختصار النصوص واستخدام الرسوم البيانية والأيقونات الموضحة لتسهيل الإلقاء أمام اللجان.',
-    previousWorks: [],
-    requirements: [
-      'ملف البحث أو النص المراد تحويله لعرض.',
-      'عدد الشرائح المطلوبة (إن وجد).',
-      'الألوان المفضلة أو الهوية البصرية للجامعة.'
-    ],
-    faqs: [
-      { q: 'هل يتم إضافة بطاقات وشروح للملقي؟', a: 'نعم، يمكننا إضافة ملاحظات الملقي (Speaker Notes) أسفل كل شريحة لمساعدتك أثناء العرض.' }
-    ]
-  },
-  {
-    id: 'assignments',
-    category: 'academic',
-    image: '/images/service-assignments.png',
-    title: 'التكليفات والواجبات',
-    shortText: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية بمختلف التخصصات.',
-    about: 'تقديم حلول نموذجية ومفصلة لكافة التكليفات والأنشطة والواجبات اليومية لمختلف التخصصات مع توضيح خطوات الحل لضمان تحصيل كامل الدرجات.',
-    previousWorks: [],
-    requirements: [
-      'ملف الواجب أو الأسئلة المطلوبة.',
-      'الموعد النهائي للتسليم (Deadline).',
-      'أي ملاحظات أو شروط خاصة من الدكتور.'
-    ],
-    faqs: [
-      { q: 'كم يستغرق حل الواجب؟', a: 'يتم التسليم عادةً خلال 24 إلى 48 ساعة كحد أقصى حسب حجم الواجب.' }
-    ]
-  },
-  {
-    id: 'cv',
-    category: 'design',
-    image: '/images/service-cv.png',
-    title: 'السيرة الذاتية CV',
-    shortText: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة الفرز الآلي ATS.',
-    about: 'صياغة وتصميم سيرتك الذاتية بأسلوب تسويقي حديث متوافق مع أنظمة الفرز الآلي (ATS) باللغتين العربية والإنجليزية لزيادة فرص قبولك الوظيفي والتدريبي.',
-    previousWorks: [],
-    requirements: [
-      'البيانات الشخصية ووسائل التواصل.',
-      'المؤهلات العلمية، الخبرات، والدورات.'
-    ]
-  }
-]
 
 export default function Page() {
   const [formData, setFormData] = useState({ fileName: '', notes: '' })
