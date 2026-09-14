@@ -8,6 +8,8 @@ import {
   Share2, ShieldCheck, Sparkles, Star, UserRound, X, Plus, Trash2
 } from 'lucide-react'
 
+import HeroBanner from './components/HeroBanner';
+
 const whatsapp = 'https://wa.me/967776280186'
 
 const servicesDetailsData = [
@@ -517,7 +519,7 @@ export default function Page() {
           </div>
         )}
       </section>
-
+<HeroBanner />
       <section id="gpa-calculator" className="section soft-section container" style={{ marginTop: '2rem', borderRadius: '16px', padding: '2rem' }}>
         <div className="center-heading">
           <span className="section-kicker">أداة تفاعلية</span>
