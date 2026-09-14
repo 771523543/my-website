@@ -15,7 +15,6 @@ const servicesDetailsData = [
   {
     id: 'research',
     category: 'research',
-    icon: BookOpen,
     image: '/images/service-research.png',
     title: 'إعداد البحوث والتقارير',
     shortText: 'بحوث وتقارير علمية وفق منهجية أكاديمية وتوثيق معتمد خالية من الاقتباس.',
@@ -35,7 +34,6 @@ const servicesDetailsData = [
   {
     id: 'presentation',
     category: 'design',
-    icon: Presentation,
     image: '/images/service-presentation.png',
     title: 'العروض التقديمية',
     shortText: 'تصميم شرائح PowerPoint احترافية وتفاعلية لمشاريع التخرج والمناقشات.',
@@ -53,7 +51,6 @@ const servicesDetailsData = [
   {
     id: 'assignments',
     category: 'academic',
-    icon: GraduationCap,
     image: '/images/service-assignments.png',
     title: 'التكليفات والواجبات',
     shortText: 'حل ومتابعة وافية للأنشطة والواجبات الجامعية بمختلف التخصصات.',
@@ -71,7 +68,6 @@ const servicesDetailsData = [
   {
     id: 'cv',
     category: 'design',
-    icon: UserRound,
     image: '/images/service-cv.png',
     title: 'السيرة الذاتية CV',
     shortText: 'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة الفرز الآلي ATS.',
@@ -89,7 +85,6 @@ export default function Page() {
   const [achievementIndex, setAchievementIndex] = useState(0)
   const [achievementPaused, setAchievementPaused] = useState(false)
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null)
-  const [selectedService, setSelectedService] = useState(servicesDetailsData[0])
 
   const achievementImages = [
     '/images/hadeel-achievement-test.jpg',
