@@ -8,9 +8,9 @@ import {
   Share2, ShieldCheck, Sparkles, Star, UserRound, X, Plus, Trash2
 } from 'lucide-react'
 
-import HeroBanner from './components/HeroBanner';
-
 import Services from './components/Services'
+
+import HeroBanner from './components/HeroBanner';
 
 const whatsapp = 'https://wa.me/967776280186'
 
