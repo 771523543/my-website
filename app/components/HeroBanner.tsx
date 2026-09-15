@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import {
   Sparkles,
@@ -66,8 +66,15 @@ const packagesData = [
 
 export default function HeroBanner() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  
+  // متغيرات لتتبع السحب (Touch / Swipe) للجوال
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   useEffect(() => {
+    if (isPaused) return;
+
     const timer = setInterval(() => {
       setCurrentIndex(
         (prevIndex) => (prevIndex + 1) % packagesData.length
@@ -75,7 +82,7 @@ export default function HeroBanner() {
     }, 6000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [isPaused]);
 
   const nextSlide = () => {
     setCurrentIndex(
@@ -88,6 +95,26 @@ export default function HeroBanner() {
       (prevIndex) =>
         (prevIndex - 1 + packagesData.length) % packagesData.length
     );
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsPaused(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const distance = touchStartX.current - touchEndX.current;
+    const threshold = 50;
+
+    if (distance > threshold) {
+      nextSlide();
+    } else if (distance < -threshold) {
+      prevSlide();
+    }
   };
 
   const currentPkg = packagesData[currentIndex];
@@ -103,6 +130,12 @@ export default function HeroBanner() {
       }}
     >
       <div
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onClick={() => setIsPaused((prev) => !prev)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         style={{
           position: 'relative',
           overflow: 'hidden',
@@ -113,11 +146,15 @@ export default function HeroBanner() {
           boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3)',
           padding: '2.5rem 2rem',
           transition: 'all 0.5s ease-in-out',
+          cursor: 'pointer',
         }}
       >
         {/* السهم السابق */}
         <button
-          onClick={prevSlide}
+          onClick={(e) => {
+            e.stopPropagation();
+            prevSlide();
+          }}
           aria-label="السلايد السابق"
           style={{
             position: 'absolute',
@@ -143,7 +180,10 @@ export default function HeroBanner() {
 
         {/* السهم التالي */}
         <button
-          onClick={nextSlide}
+          onClick={(e) => {
+            e.stopPropagation();
+            nextSlide();
+          }}
           aria-label="السلايد التالي"
           style={{
             position: 'absolute',
@@ -292,6 +332,7 @@ export default function HeroBanner() {
                 )}`}
                 target="_blank"
                 rel="noreferrer"
+                onClick={(e) => e.stopPropagation()}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -347,7 +388,10 @@ export default function HeroBanner() {
           {packagesData.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => setCurrentIndex(idx)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentIndex(idx);
+              }}
               aria-label={`انتقال للسلايد ${idx + 1}`}
               style={{
                 width:
