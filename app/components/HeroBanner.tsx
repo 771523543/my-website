@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import {
   Sparkles,
-  ChevronLeft,
-  ChevronRight,
   CheckCircle2,
+  ExternalLink,
+  X,
+  ChevronLeft,
 } from 'lucide-react';
 
 const packagesData = [
@@ -15,8 +16,7 @@ const packagesData = [
     badge: 'راحتك طول الفصل 🎓',
     title: 'اشتراك الترم الكامل',
     subtitle: 'راحة بال وإنجاز مضمون طوال الفصل الدراسي',
-    description:
-      'نرافقك خطوة بخطوة في رحلتك الجامعية للتعامل مع كافة متطلبات البلاك بورد والتكاليف اليومية لضمان التفوق.',
+    description: 'نرافقك خطوة بخطوة في رحلتك الجامعية للتعامل مع كافة متطلبات البلاك بورد والتكاليف اليومية.',
     image: '/images/banner1.png',
     features: [
       'متابعة شاملة للبلاك بورد',
@@ -24,17 +24,14 @@ const packagesData = [
       'إعداد البحوث والعروض التقديمية',
       'تنبيهات فورية للمهام ودعم طلابي مخصص',
     ],
-    whatsappText:
-      'السلام عليكم، أرغب في الاستفسار والتسجيل في اشتراك الترم الكامل مع منصة هديل.',
+    whatsappText: 'السلام عليكم، أرغب في الاستفسار والتسجيل في اشتراك الترم الكامل مع منصة هديل.',
   },
   {
     id: 'academic-excellence',
     badge: 'شركاؤك في النجاح 🌟',
     title: 'باقة التميز الأكاديمي',
-    subtitle:
-      'شركاؤك في رحلتك الجامعية نحو النجاح والتميز طوال الفصل',
-    description:
-      'حلول أكاديمية شاملة ومصممة خصيصاً للطلاب والطالبات للوصول إلى أقصى معدلات النجاح الأكاديمي.',
+    subtitle: 'شركاؤك في رحلتك الجامعية نحو النجاح والتميز طوال الفصل',
+    description: 'حلول أكاديمية شاملة ومصممة خصيصاً للطلاب والطالبات للوصول إلى أقصى معدلات النجاح.',
     image: '/images/banner2.png',
     features: [
       'متابعة شاملة للبلاك بورد',
@@ -42,16 +39,14 @@ const packagesData = [
       'إعداد البحوث والعروض التقديمية',
       'إشعارات ذكية للمهام ودعم طلابي متكامل',
     ],
-    whatsappText:
-      'السلام عليكم، أرغب في الاستفسار عن باقة التميز الأكاديمي عبر منصة هديل.',
+    whatsappText: 'السلام عليكم، أرغب في الاستفسار عن باقة التميز الأكاديمي عبر منصة هديل.',
   },
   {
     id: 'future-generation',
     badge: 'معاً نصنع التميز 🚀',
     title: 'باقة هدفنا تفوقكم!',
     subtitle: 'منصة هديل - بوابتك للتعليم المتطور',
-    description:
-      'انضم لباقة التميز الآن واحصل على تجربة تعليمية متطورة تضمن لك الارتقاء بمستواك الأكاديمي بثقة.',
+    description: 'انضم لباقة التميز الآن واحصل على تجربة تعليمية متطورة تضمن لك الارتقاء بمستواك.',
     image: '/images/banner3.png',
     features: [
       'حلول تعليمية وتطويرية متكاملة',
@@ -59,356 +54,278 @@ const packagesData = [
       'إنجاز التكاليف الجامعية أولاً بأول',
       'متابعة وإشراف أكاديمي مستمر',
     ],
-    whatsappText:
-      'السلام عليكم، أرغب في الانضمام لباقة التميز والتعرف على خدمات منصة هديل.',
+    whatsappText: 'السلام عليكم، أرغب في الانضمام لباقة التميز والتعرف على خدمات منصة هديل.',
   },
 ];
 
-export default function HeroBanner() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  
-  // متغيرات لتتبع السحب (Touch / Swipe) للجوال
-  const touchStartX = useRef(0);
-  const touchEndX = useRef(0);
+export default function PackagesSection() {
+  const [openPackageId, setOpenPackageId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (isPaused) return;
-
-    const timer = setInterval(() => {
-      setCurrentIndex(
-        (prevIndex) => (prevIndex + 1) % packagesData.length
-      );
-    }, 6000);
-
-    return () => clearInterval(timer);
-  }, [isPaused]);
-
-  const nextSlide = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex + 1) % packagesData.length
-    );
+  const toggleDetails = (id: string) => {
+    setOpenPackageId(openPackageId === id ? null : id);
   };
-
-  const prevSlide = () => {
-    setCurrentIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + packagesData.length) % packagesData.length
-    );
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    setIsPaused(true);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    touchEndX.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = () => {
-    const distance = touchStartX.current - touchEndX.current;
-    const threshold = 50;
-
-    if (distance > threshold) {
-      nextSlide();
-    } else if (distance < -threshold) {
-      prevSlide();
-    }
-  };
-
-  const currentPkg = packagesData[currentIndex];
 
   return (
     <div
       id="packages"
       style={{
         maxWidth: '1200px',
-        margin: '2rem auto',
+        margin: '4rem auto',
         padding: '0 1rem',
         direction: 'rtl',
       }}
     >
+      {/* رأس القسم مع تأثير ظهور تدريجي */}
+      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+        <span
+          style={{
+            display: 'inline-block',
+            backgroundColor: 'rgba(0, 242, 254, 0.1)',
+            padding: '0.4rem 1.2rem',
+            borderRadius: '50px',
+            fontSize: '0.85rem',
+            color: '#00f2fe',
+            marginBottom: '0.8rem',
+            border: '1px solid rgba(0, 242, 254, 0.25)',
+            boxShadow: '0 0 15px rgba(0, 242, 254, 0.15)',
+          }}
+        >
+          حلول أكاديمية مصممة لأهدافك
+        </span>
+        <h2 style={{ fontSize: '2.4rem', fontWeight: '800', color: '#ffffff', marginBottom: '0.6rem' }}>
+          اختر الباقة المناسبة لنجاحك
+        </h2>
+        <p style={{ color: '#4cc9f0', fontSize: '1.05rem', maxWidth: '600px', margin: '0 auto', lineHeight: '1.6' }}>
+          باقات مرنة تمنحك التنظيم والدعم الأكاديمي الذي تحتاجه لتكمل رحلتك الجامعية بثقة.
+        </p>
+      </div>
+
+      {/* شبكة البطاقات */}
       <div
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onClick={() => setIsPaused((prev) => !prev)}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
         style={{
-          position: 'relative',
-          overflow: 'hidden',
-          borderRadius: '24px',
-          background:
-            'linear-gradient(135deg, #0b132b 0%, #1c2541 50%, #3a506b 100%)',
-          color: '#ffffff',
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3)',
-          padding: '2.5rem 2rem',
-          transition: 'all 0.5s ease-in-out',
-          cursor: 'pointer',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: '2.5rem',
         }}
       >
-        {/* السهم السابق */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            prevSlide();
-          }}
-          aria-label="السلايد السابق"
-          style={{
-            position: 'absolute',
-            right: '15px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            background: 'rgba(255, 255, 255, 0.15)',
-            border: 'none',
-            color: '#fff',
-            width: '42px',
-            height: '42px',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            zIndex: 10,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backdropFilter: 'blur(6px)',
-          }}
-        >
-          <ChevronRight size={26} />
-        </button>
+        {packagesData.map((pkg) => {
+          const isOpen = openPackageId === pkg.id;
 
-        {/* السهم التالي */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            nextSlide();
-          }}
-          aria-label="السلايد التالي"
-          style={{
-            position: 'absolute',
-            left: '15px',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            background: 'rgba(255, 255, 255, 0.15)',
-            border: 'none',
-            color: '#fff',
-            width: '42px',
-            height: '42px',
-            borderRadius: '50%',
-            cursor: 'pointer',
-            zIndex: 10,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backdropFilter: 'blur(6px)',
-          }}
-        >
-          <ChevronLeft size={26} />
-        </button>
-
-        {/* محتوى الباقة */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap-reverse',
-            alignItems: 'center',
-            gap: '2.5rem',
-            justifyContent: 'space-between',
-          }}
-        >
-          {/* النص والبيانات */}
-          <div
-            style={{
-              flex: '1 1 480px',
-              textAlign: 'right',
-            }}
-          >
-            <span
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                backgroundColor: 'rgba(255, 255, 255, 0.12)',
-                padding: '0.4rem 1.2rem',
-                borderRadius: '50px',
-                fontSize: '0.9rem',
-                fontWeight: 'bold',
-                marginBottom: '1rem',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-              }}
-            >
-              <Sparkles
-                size={16}
-                style={{ color: '#00f2fe' }}
-              />
-              {currentPkg.badge}
-            </span>
-
-            <h2
-              style={{
-                fontSize: '2rem',
-                fontWeight: '800',
-                marginBottom: '0.4rem',
-                color: '#ffffff',
-              }}
-            >
-              {currentPkg.title}
-            </h2>
-
-            <p
-              style={{
-                color: '#4cc9f0',
-                fontSize: '1.05rem',
-                fontWeight: '600',
-                marginBottom: '0.8rem',
-              }}
-            >
-              {currentPkg.subtitle}
-            </p>
-
-            <p
-              style={{
-                color: '#e0e1dd',
-                lineHeight: '1.6',
-                marginBottom: '1.5rem',
-                fontSize: '0.95rem',
-              }}
-            >
-              {currentPkg.description}
-            </p>
-
-            {/* المميزات */}
+          return (
             <div
+              key={pkg.id}
               style={{
-                display: 'grid',
-                gridTemplateColumns:
-                  'repeat(auto-fit, minmax(210px, 1fr))',
-                gap: '0.8rem',
-                marginBottom: '2rem',
-              }}
-            >
-              {currentPkg.features.map((feature, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.6rem',
-                  }}
-                >
-                  <CheckCircle2
-                    size={18}
-                    style={{
-                      color: '#00f2fe',
-                      flexShrink: 0,
-                    }}
-                  />
-
-                  <span
-                    style={{
-                      fontSize: '0.9rem',
-                      color: '#f8f9fa',
-                      fontWeight: '500',
-                    }}
-                  >
-                    {feature}
-                  </span>
-                </div>
-              ))}
-            </div>
-
-            {/* زر الواتساب */}
-            <div
-              style={{
+                background: 'linear-gradient(135deg, #0b132b 0%, #1c2541 50%, #3a506b 100%)',
+                borderRadius: '24px',
+                overflow: 'hidden',
+                boxShadow: isOpen 
+                  ? '0 25px 35px -5px rgba(0, 242, 254, 0.25)' 
+                  : '0 20px 25px -5px rgba(0, 0, 0, 0.4)',
+                border: isOpen ? '1px solid #00f2fe' : '1px solid rgba(255, 255, 255, 0.1)',
                 display: 'flex',
-                gap: '1rem',
-                flexWrap: 'wrap',
+                flexDirection: 'column',
+                position: 'relative',
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: isOpen ? 'translateY(-6px)' : 'translateY(0)',
               }}
             >
-              <a
-                href={`https://wa.me/967776280186?text=${encodeURIComponent(
-                  currentPkg.whatsappText
-                )}`}
-                target="_blank"
-                rel="noreferrer"
-                onClick={(e) => e.stopPropagation()}
+              {/* الحالة العادية للبطاقة */}
+              <div
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  backgroundColor: '#25d366',
-                  color: '#ffffff',
-                  padding: '0.85rem 1.8rem',
-                  borderRadius: '12px',
-                  fontWeight: 'bold',
-                  textDecoration: 'none',
-                  boxShadow:
-                    '0 10px 15px -3px rgba(37, 211, 102, 0.3)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  opacity: isOpen ? 0 : 1,
+                  maxHeight: isOpen ? '0px' : '1000px',
+                  overflow: 'hidden',
+                  transition: 'all 0.35s ease-in-out',
+                  pointerEvents: isOpen ? 'none' : 'auto',
                 }}
               >
-                اشترك الآن عبر الواتساب
-                <ChevronLeft size={18} />
-              </a>
+                {/* صورة الباقة مع تأثير تكبير خفيف */}
+                <div style={{ height: '210px', position: 'relative', width: '100%', overflow: 'hidden' }}>
+                  <Image 
+                    src={pkg.image} 
+                    alt={pkg.title} 
+                    fill 
+                    style={{ 
+                      objectFit: 'cover',
+                      transition: 'transform 0.5s ease',
+                    }} 
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '15px',
+                      right: '15px',
+                      backgroundColor: 'rgba(11, 19, 43, 0.85)',
+                      backdropFilter: 'blur(8px)',
+                      padding: '0.35rem 1rem',
+                      borderRadius: '50px',
+                      fontSize: '0.85rem',
+                      fontWeight: 'bold',
+                      color: '#00f2fe',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                    }}
+                  >
+                    <Sparkles size={14} style={{ display: 'inline', marginLeft: '4px' }} />
+                    {pkg.badge}
+                  </div>
+                </div>
+
+                {/* النصوص */}
+                <div style={{ padding: '1.8rem', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
+                  <h3 style={{ fontSize: '1.4rem', fontWeight: '800', color: '#ffffff', marginBottom: '0.4rem' }}>
+                    {pkg.title}
+                  </h3>
+
+                  <p style={{ color: '#4cc9f0', fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.8rem' }}>
+                    {pkg.subtitle}
+                  </p>
+
+                  <p style={{ color: '#e0e1dd', fontSize: '0.88rem', lineHeight: '1.6', marginBottom: '1.8rem' }}>
+                    {pkg.description}
+                  </p>
+
+                  {/* زر تفاصيل الباقة المتحرك */}
+                  <div style={{ marginTop: 'auto' }}>
+                    <button
+                      onClick={() => toggleDetails(pkg.id)}
+                      style={{
+                        width: '100%',
+                        backgroundColor: '#00f2fe',
+                        color: '#0b132b',
+                        border: 'none',
+                        padding: '0.85rem 1rem',
+                        borderRadius: '12px',
+                        fontWeight: 'bold',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.5rem',
+                        cursor: 'pointer',
+                        boxShadow: '0 4px 15px rgba(0, 242, 254, 0.3)',
+                        transition: 'all 0.3s ease',
+                      }}
+                    >
+                      <span>تفاصيل الباقة</span>
+                      <ChevronLeft size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* حالة فتح التفاصيل (تظهر بسلاسة عند الضغط) */}
+              <div
+                style={{
+                  padding: '1.8rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  minHeight: '460px',
+                  opacity: isOpen ? 1 : 0,
+                  maxHeight: isOpen ? '1000px' : '0px',
+                  overflow: 'hidden',
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  position: isOpen ? 'relative' : 'absolute',
+                  width: '100%',
+                  pointerEvents: isOpen ? 'auto' : 'none',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.2rem' }}>
+                  <h4 style={{ color: '#ffffff', fontSize: '1.15rem', fontWeight: 'bold' }}>
+                    ماذا تشمل هذه الباقة؟
+                  </h4>
+                  <button
+                    onClick={() => toggleDetails(pkg.id)}
+                    style={{
+                      background: 'rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      color: '#fff',
+                      borderRadius: '50%',
+                      width: '34px',
+                      height: '34px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: 'pointer',
+                      transition: 'background 0.2s',
+                    }}
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                {/* قائمة الميزات مع حركة انسيابية للعناصر */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '1.5rem', flexGrow: 1 }}>
+                  {pkg.features.map((feature, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                        padding: '0.75rem 1rem',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        transition: 'transform 0.2s ease',
+                      }}
+                    >
+                      <span style={{ fontSize: '0.88rem', color: '#f8f9fa', fontWeight: '500' }}>
+                        {feature}
+                      </span>
+                      <CheckCircle2 size={20} style={{ color: '#00f2fe', flexShrink: '0' }} />
+                    </div>
+                  ))}
+                </div>
+
+                {/* أزرار الإجراءات داخل تفاصيل الباقة */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.7rem' }}>
+                  <a
+                    href={`https://wa.me/967776280186?text=${encodeURIComponent(pkg.whatsappText)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      backgroundColor: '#25d366',
+                      color: '#ffffff',
+                      padding: '0.85rem 1rem',
+                      borderRadius: '12px',
+                      fontWeight: 'bold',
+                      textDecoration: 'none',
+                      boxShadow: '0 8px 20px rgba(37, 211, 102, 0.35)',
+                      transition: 'transform 0.2s ease',
+                    }}
+                  >
+                    اشترك الآن عبر الواتساب
+                    <ExternalLink size={16} />
+                  </a>
+
+                  <button
+                    onClick={() => toggleDetails(pkg.id)}
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      padding: '0.75rem 1rem',
+                      `borderRadius`: '12px',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                      transition: 'background 0.2s ease',
+                    }}
+                  >
+                    إخفاء التفاصيل
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-
-          {/* الصورة */}
-          <div
-            style={{
-              flex: '1 1 360px',
-              height: '380px',
-              position: 'relative',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              boxShadow: '0 12px 30px rgba(0,0,0,0.4)',
-              border:
-                '2px solid rgba(255,255,255,0.1)',
-            }}
-          >
-            <Image
-              src={currentPkg.image}
-              alt={currentPkg.title}
-              fill
-              style={{ objectFit: 'cover' }}
-              priority
-            />
-          </div>
-        </div>
-
-        {/* المؤشرات */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '10px',
-            marginTop: '1.8rem',
-          }}
-        >
-          {packagesData.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={(e) => {
-                e.stopPropagation();
-                setCurrentIndex(idx);
-              }}
-              aria-label={`انتقال للسلايد ${idx + 1}`}
-              style={{
-                width:
-                  currentIndex === idx ? '28px' : '9px',
-                height: '9px',
-                borderRadius: '5px',
-                backgroundColor:
-                  currentIndex === idx
-                    ? '#00f2fe'
-                    : 'rgba(255, 255, 255, 0.25)',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-              }}
-            />
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );
