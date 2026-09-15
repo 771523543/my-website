@@ -10,6 +10,8 @@ import {
 
 import HeroBanner from './components/HeroBanner';
 
+import Services from './components/Services'
+
 const whatsapp = 'https://wa.me/967776280186'
 
 const servicesDetailsData = [
