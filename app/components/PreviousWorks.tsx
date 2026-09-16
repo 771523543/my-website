@@ -1,153 +1,120 @@
 'use client'
 
-import { useState } from 'react'
-import { ChevronLeft, FileText, X } from 'lucide-react'
-
-const previousWorks = [
-  {
-    title: 'تأثير التكنولوجيا على الخدمات التعليمية',
-    type: 'بحث أكاديمي',
-    description:
-      'بحث أكاديمي حول تأثير التكنولوجيا على الخدمات التعليمية وتطوير تجربة التعلم.',
-    image: '/images/works/technology.jpg',
-    preview:
-      'https://drive.google.com/file/d/1eFtsqZqRJsWDCcTYcZQXSmIeU0w02NLI/preview',
-  },
-  {
-    title: 'حماية البيئة في ظل رؤية المملكة 2030',
-    type: 'بحث أكاديمي',
-    description:
-      'بحث حول حماية البيئة والمبادرات المرتبطة برؤية المملكة 2030.',
-    image: '/images/works/environment.jpg',
-    preview:
-      'https://drive.google.com/file/d/1KriLId4ui_lb8UusGwanwVUHQ4dk3oLC/preview',
-  },
-  {
-    title: 'تطوير الصناعات المحلية والخدمات اللوجستية',
-    type: 'بحث أكاديمي',
-    description:
-      'دراسة حول تطوير الصناعات المحلية والخدمات اللوجستية ودورها في دعم الاقتصاد.',
-    image: '/images/works/logistics.jpg',
-    preview:
-      'https://drive.google.com/file/d/1nDeMLBHtyiyNn_N6EZ0mAsmdOQ_qTiyG/preview',
-  },
-  {
-    title: 'المبتدأ والخبر في القرآن الكريم',
-    type: 'بحث لغوي',
-    description:
-      'دراسة لغوية متخصصة حول المبتدأ والخبر في القرآن الكريم.',
-    image: '/images/works/arabic.jpg',
-    preview:
-      'https://drive.google.com/file/d/15tZAI1j_ppP-YiKWwJQtMlStvqnRebMJ/preview',
-  },
-  {
-    title: 'مشروع إقامة ذكية SmartStay',
-    type: 'مشروع تخرج',
-    description:
-      'مشروع SmartStay لفكرة الإقامة الذكية وتطوير تجربة المستخدم.',
-    image: '/images/works/smartstay.jpg',
-    preview:
-      'https://drive.google.com/file/d/1M3M6BW7RVOBvOMyH9MVnmJugwVwzrW1I/preview',
-  },
-  {
-    title: 'الفروق الفقهية في الأحوال الشخصية',
-    type: 'بحث أكاديمي',
-    description:
-      'بحث متخصص في الفروق الفقهية المتعلقة بالأحوال الشخصية.',
-    image: '/images/works/fiqh.jpg',
-    preview:
-      'https://drive.google.com/file/d/1iaOiQbgtcqJUJdYeSEU48FBcgWR9E88M/preview',
-  },
-]
+import Link from 'next/link'
+import { ArrowLeft, FolderOpen } from 'lucide-react'
 
 export default function PreviousWorks() {
-  const [selectedWork, setSelectedWork] = useState<
-    (typeof previousWorks)[number] | null
-  >(null)
-
   return (
-    <>
-      <section className="previous-works-section container" id="previous-works">
-        <div className="section-heading">
-          <span className="section-kicker">أعمالنا السابقة</span>
+    <section className="previous-works-preview container" id="previous-works">
+      <div className="previous-works-preview-card">
+        <div className="previous-works-preview-icon">
+          <FolderOpen size={34} />
+        </div>
 
-          <h2>نماذج من أعمالنا الأكاديمية</h2>
+        <div className="previous-works-preview-content">
+          <span>أعمالنا السابقة</span>
+
+          <h2>أعمالنا السابقة</h2>
 
           <p>
-            نستعرض لكم مجموعة من الأعمال والمشاريع الأكاديمية التي تم تنفيذها
-            بعناية واهتمام بالتفاصيل.
+            تعرّف على نماذج الأعمال السابقة لكل خدمة من خدمات منصة هديل.
           </p>
         </div>
 
-        <div className="previous-works-grid">
-          {previousWorks.map((work) => (
-            <article className="previous-work-card" key={work.title}>
-              <div className="previous-work-icon">
-                <FileText size={28} />
-              </div>
-
-              <div className="previous-work-content">
-                <span className="previous-work-type">{work.type}</span>
-
-                <h3>{work.title}</h3>
-
-                <p>{work.description}</p>
-
-                <button
-                  type="button"
-                  className="previous-work-button"
-                  onClick={() => setSelectedWork(work)}
-                >
-                  عرض العمل
-                  <ChevronLeft size={18} />
-                </button>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {selectedWork && (
-        <div
-          className="previous-work-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label={selectedWork.title}
+        <Link
+          href="/previous-works"
+          className="previous-works-preview-button"
         >
-          <div
-            className="previous-work-modal-overlay"
-            onClick={() => setSelectedWork(null)}
-          />
+          انظر إلى أعمالنا السابقة
+          <ArrowLeft size={19} />
+        </Link>
+      </div>
 
-          <div className="previous-work-modal-content">
-            <div className="previous-work-modal-header">
-              <div>
-                <span>{selectedWork.type}</span>
-                <h3>{selectedWork.title}</h3>
-              </div>
+      <style jsx>{`
+        .previous-works-preview {
+          margin-top: 70px;
+          margin-bottom: 70px;
+        }
 
-              <button
-                type="button"
-                className="previous-work-modal-close"
-                onClick={() => setSelectedWork(null)}
-                aria-label="إغلاق"
-              >
-                <X size={22} />
-              </button>
-            </div>
+        .previous-works-preview-card {
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          padding: 30px;
+          border-radius: 24px;
+          background: linear-gradient(135deg, #ffffff, #f8f6ff);
+          border: 1px solid rgba(100, 70, 160, 0.12);
+          box-shadow: 0 12px 35px rgba(30, 20, 60, 0.08);
+        }
 
-            <div className="previous-work-preview">
-              <iframe
-                src={selectedWork.preview}
-                title={selectedWork.title}
-                width="100%"
-                height="100%"
-                allow="autoplay"
-              />
-            </div>
-          </div>
-        </div>
-      )}
-    </>
+        .previous-works-preview-icon {
+          min-width: 72px;
+          height: 72px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 20px;
+          background: #f0eaff;
+          color: #6d4bc3;
+        }
+
+        .previous-works-preview-content {
+          flex: 1;
+        }
+
+        .previous-works-preview-content span {
+          display: inline-block;
+          margin-bottom: 6px;
+          font-size: 14px;
+          font-weight: 700;
+          color: #7956c7;
+        }
+
+        .previous-works-preview-content h2 {
+          margin: 0 0 8px;
+          font-size: 28px;
+          font-weight: 800;
+          color: #211936;
+        }
+
+        .previous-works-preview-content p {
+          margin: 0;
+          color: #6d6878;
+          line-height: 1.8;
+        }
+
+        .previous-works-preview-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
+          padding: 14px 20px;
+          border-radius: 14px;
+          background: #6d4bc3;
+          color: white;
+          text-decoration: none;
+          font-weight: 700;
+          white-space: nowrap;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .previous-works-preview-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(109, 75, 195, 0.25);
+        }
+
+        @media (max-width: 768px) {
+          .previous-works-preview-card {
+            flex-direction: column;
+            text-align: center;
+            padding: 25px 20px;
+          }
+
+          .previous-works-preview-button {
+            width: 100%;
+          }
+        }
+      `}</style>
+    </section>
   )
 }
