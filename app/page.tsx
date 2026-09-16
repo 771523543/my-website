@@ -20,7 +20,7 @@ import {
 } from 'lucide-react'
 
 import ServicesPreview from './components/ServicesPreview'
-import HeroBanner from './components/HeroBanner'
+import Packages from './components/Packages'
 import PreviousWorks from './components/PreviousWorks'
 
 const whatsapp = 'https://wa.me/967776280186'
@@ -460,7 +460,7 @@ export default function Page() {
       {/* قسم الخدمات في ملف مستقل */}
       <ServicesPreview />
 
-      <HeroBanner />
+      <Packages />
 
       <section
         id="gpa-calculator"
