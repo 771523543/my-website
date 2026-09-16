@@ -7,14 +7,10 @@ import {
   BookOpen,
   Check,
   ChevronDown,
-  ChevronLeft,
   ChevronRight,
   Calculator,
-  FileText,
-  Headphones,
   Menu,
   MessageCircle,
-  Presentation,
   ShieldCheck,
   Sparkles,
   Star,
@@ -25,6 +21,7 @@ import {
 
 import Services from './components/Services'
 import HeroBanner from './components/HeroBanner'
+import PreviousWorks from './components/PreviousWorks'
 
 const whatsapp = 'https://wa.me/967776280186'
 
@@ -120,44 +117,6 @@ export default function Page() {
       setCalculatedGpa((totalPoints / totalHours).toFixed(2))
     }
   }
-
-  const [selectedWork, setSelectedWork] = useState<{
-    title: string
-    preview: string
-  } | null>(null)
-
-  const previousWorks = [
-    {
-      title: 'تأثير التكنولوجيا على الخدمات التعليمية',
-      preview:
-        'https://drive.google.com/file/d/1eFtsqZqRJsWDCcTYcZQXSmIeU0w02NLI/preview',
-    },
-    {
-      title: 'حماية البيئة في ظل رؤية المملكة 2030',
-      preview:
-        'https://drive.google.com/file/d/1KriLId4ui_lb8UusGwanwVUHQ4dk3oLC/preview',
-    },
-    {
-      title: 'تطوير الصناعات المحلية والخدمات اللوجستية',
-      preview:
-        'https://drive.google.com/file/d/1nDeMLBHtyiyNn_N6EZ0mAsmdOQ_qTiyG/preview',
-    },
-    {
-      title: 'المبتدأ والخبر في القرآن الكريم',
-      preview:
-        'https://drive.google.com/file/d/15tZAI1j_ppP-YiKWwJQtMlStvqnRebMJ/preview',
-    },
-    {
-      title: 'مشروع إقامة ذكية SmartStay',
-      preview:
-        'https://drive.google.com/file/d/1M3M6BW7RVOBvOMyH9MVnmJugwVwzrW1I/preview',
-    },
-    {
-      title: 'الفروق الفقهية في الأحوال الشخصية',
-      preview:
-        'https://drive.google.com/file/d/1iaOiQbgtcqJUJdYeSEU48FBcgWR9E88M/preview',
-    },
-  ]
 
   const [achievementIndex, setAchievementIndex] = useState(0)
   const [achievementPaused, setAchievementPaused] = useState(false)
@@ -304,8 +263,8 @@ export default function Page() {
           </h1>
 
           <p>
-            منصة هديل للخدمات الطلابية والأكاديمية. حلول احترافية، جودة
-            عالية، ومتابعة مستمرة تساعدك على إنجاز أعمالك بثقة.
+            منصة هديل للخدمات الطلابية والأكاديمية. حلول احترافية،
+            جودة عالية، ومتابعة مستمرة تساعدك على إنجاز أعمالك بثقة.
           </p>
 
           <div className="hero-buttons">
@@ -421,6 +380,7 @@ export default function Page() {
         <div className="story-visual">
           <div className="story-card">
             <BookOpen size={42} />
+
             <span>
               معرفة
               <br />
@@ -497,7 +457,7 @@ export default function Page() {
         </div>
       </section>
 
-      {/* قسم الخدمات أصبح في ملف مستقل */}
+      {/* قسم الخدمات في ملف مستقل */}
       <Services />
 
       <HeroBanner />
@@ -614,9 +574,11 @@ export default function Page() {
                   value={course.hours}
                   onChange={(e) => {
                     const updated = [...courses]
+
                     updated[idx].hours = Number(
                       e.target.value
                     )
+
                     setCourses(updated)
                   }}
                   style={{
@@ -633,9 +595,11 @@ export default function Page() {
                   value={course.grade}
                   onChange={(e) => {
                     const updated = [...courses]
+
                     updated[idx].grade = Number(
                       e.target.value
                     )
+
                     setCourses(updated)
                   }}
                   style={{
@@ -651,27 +615,35 @@ export default function Page() {
                       <option value={5}>
                         ممتاز مرتفع (+A) - 5.0
                       </option>
+
                       <option value={4.75}>
                         ممتاز (A) - 4.75
                       </option>
+
                       <option value={4.5}>
                         جيد جداً مرتفع (+B) - 4.5
                       </option>
+
                       <option value={4.0}>
                         جيد جداً (B) - 4.0
                       </option>
+
                       <option value={3.5}>
                         جيد مرتفع (+C) - 3.5
                       </option>
+
                       <option value={3.0}>
                         جيد (C) - 3.0
                       </option>
+
                       <option value={2.5}>
                         مقبول مرتفع (+D) - 2.5
                       </option>
+
                       <option value={2.0}>
                         مقبول (D) - 2.0
                       </option>
+
                       <option value={1.0}>
                         راسب (F) - 1.0
                       </option>
@@ -681,24 +653,31 @@ export default function Page() {
                       <option value={4.0}>
                         ممتاز (A) - 4.0
                       </option>
+
                       <option value={3.5}>
                         جيد جداً مرتفع (+B) - 3.5
                       </option>
+
                       <option value={3.0}>
                         جيد جداً (B) - 3.0
                       </option>
+
                       <option value={2.5}>
                         جيد مرتفع (+C) - 2.5
                       </option>
+
                       <option value={2.0}>
                         جيد (C) - 2.0
                       </option>
+
                       <option value={1.5}>
                         مقبول (+D) - 1.5
                       </option>
+
                       <option value={1.0}>
                         مقبول (D) - 1.0
                       </option>
+
                       <option value={0.0}>
                         راسب (F) - 0.0
                       </option>
@@ -899,138 +878,8 @@ export default function Page() {
         </div>
       </section>
 
-      <section id="portfolio" className="portfolio-section container">
-        <div className="section-heading">
-          <div>
-            <span className="section-kicker">
-              أعمالنا السابقة
-            </span>
-
-            <h2>
-              نماذج من <em>أعمالنا</em>
-            </h2>
-          </div>
-        </div>
-
-        <div className="portfolio-grid">
-          {previousWorks.map((work) => (
-            <button
-              className="portfolio-work-card"
-              key={work.preview}
-              onClick={() => setSelectedWork(work)}
-            >
-              <span className="portfolio-file-icon">
-                <FileText size={28} />
-                <small>PDF</small>
-              </span>
-
-              <span className="portfolio-work-info">
-                <strong>{work.title}</strong>
-                <small>اضغط للمعاينة</small>
-              </span>
-
-              <ChevronLeft size={18} />
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {selectedWork && (
-        <div
-          className="pdf-modal-backdrop"
-          role="presentation"
-          onClick={() => setSelectedWork(null)}
-        >
-          <section
-            className="pdf-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="pdf-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="pdf-modal-header">
-              <h2 id="pdf-title">{selectedWork.title}</h2>
-
-              <button
-                onClick={() => setSelectedWork(null)}
-                aria-label="إغلاق المعاينة"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="pdf-viewer">
-              <iframe
-                src={selectedWork.preview}
-                title={`معاينة ${selectedWork.title}`}
-              />
-            </div>
-          </section>
-        </div>
-      )}
-
-      <section className="student-showcase-section container">
-        <div className="hero-art visual-hero">
-          <div className="visual-orb" />
-
-          <Image
-            className="student-hero-image"
-            src="/images/hadeel-student-hero.png"
-            alt="طالبة وباحثة عربية تمثل خدمات منصة هديل"
-            width={390}
-            height={480}
-            priority
-          />
-
-          <div className="floating-badge badge-research">
-            <BookOpen size={18} />
-
-            <span>
-              إعداد البحوث
-              <br />
-              <small>والأوراق العلمية</small>
-            </span>
-          </div>
-
-          <div className="floating-badge badge-presentation">
-            <Presentation size={18} />
-
-            <span>
-              تصميم العروض
-              <br />
-              <small>التقديمية PowerPoint</small>
-            </span>
-          </div>
-
-          <div className="floating-badge badge-assignments">
-            <Check size={18} />
-
-            <span>
-              متابعة التكليفات
-              <br />
-              <small>والواجبات</small>
-            </span>
-          </div>
-
-          <div className="floating-badge badge-blackboard">
-            <Headphones size={18} />
-
-            <span>
-              إدارة البلاك بورد
-              <br />
-              <small>متابعة مستمرة</small>
-            </span>
-          </div>
-
-          <div className="floating-badge badge-package">
-            <Sparkles size={17} />
-
-            <span>
-              الباقة الأكاديمية الشاملة للطلاب
-            </span>
-          </div>
-        </div>
-      </section>
+      {/* قسم أعمالنا السابقة في ملف مستقل */}
+      <PreviousWorks />
 
       <section className="academic-ad-section container">
         <div className="academic-ad">
@@ -1149,7 +998,12 @@ export default function Page() {
             }
             aria-label="الصورة السابقة"
           >
-            <ChevronLeft size={18} />
+            <ChevronRight
+              size={18}
+              style={{
+                transform: 'rotate(180deg)',
+              }}
+            />
           </button>
 
           <div className="achievement-dots">
