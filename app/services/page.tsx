@@ -1,386 +1,194 @@
-'use client'
-
-import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight } from 'lucide-react'
+import {
+  ArrowRight,
+  ArrowLeft,
+  CheckCircle2,
+  Sparkles,
+} from 'lucide-react'
+
 import { services } from '../components/Services'
 
 export default function ServicesPage() {
-  const sliderRef = useRef<HTMLDivElement>(null)
-  const animationRef = useRef<number | null>(null)
-  const isDragging = useRef(false)
-  const startX = useRef(0)
-  const startScrollLeft = useRef(0)
-  const [isInteracting, setIsInteracting] = useState(false)
-
-  useEffect(() => {
-    const slider = sliderRef.current
-
-    if (!slider) return
-
-    const speed = 0.45
-
-    const animate = () => {
-      if (!isInteracting && !isDragging.current) {
-        slider.scrollLeft -= speed
-
-        /*
-         * عند الوصول إلى بداية المحتوى نرجع للنهاية
-         * حتى تستمر الحركة بشكل دائري.
-         */
-        if (Math.abs(slider.scrollLeft) >= slider.scrollWidth - slider.clientWidth - 2) {
-          slider.scrollLeft = 0
-        }
-      }
-
-      animationRef.current = requestAnimationFrame(animate)
-    }
-
-    animationRef.current = requestAnimationFrame(animate)
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
-      }
-    }
-  }, [isInteracting])
-
-  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    const slider = sliderRef.current
-
-    if (!slider) return
-
-    isDragging.current = true
-    setIsInteracting(true)
-
-    startX.current = event.clientX
-    startScrollLeft.current = slider.scrollLeft
-
-    slider.setPointerCapture(event.pointerId)
-  }
-
-  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    const slider = sliderRef.current
-
-    if (!slider || !isDragging.current) return
-
-    const distance = event.clientX - startX.current
-
-    slider.scrollLeft = startScrollLeft.current - distance
-  }
-
-  const handlePointerUp = () => {
-    isDragging.current = false
-    setIsInteracting(false)
-  }
-
-  const handlePointerCancel = () => {
-    isDragging.current = false
-    setIsInteracting(false)
-  }
-
   return (
-    <main className="services-page" dir="rtl">
-      <section className="services-header">
-        <Link href="/" className="back-link">
-          <ArrowRight size={18} />
-          العودة للرئيسية
-        </Link>
-
-        <div className="services-title">
-          <h1>خدماتنا</h1>
-
-          <p>
-            اختر الخدمة التي تحتاجها للاطلاع على تفاصيلها وطلبها.
-          </p>
+    <main
+      dir="rtl"
+      className="min-h-screen bg-white text-slate-900"
+    >
+      {/* =========================
+          Hero
+      ========================== */}
+      <section className="relative overflow-hidden border-b border-slate-100">
+        {/* خلفيات زخرفية */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-purple-100/60 blur-3xl" />
+          <div className="absolute -left-32 top-40 h-80 w-80 rounded-full bg-blue-100/50 blur-3xl" />
+          <div className="absolute right-1/3 bottom-0 h-64 w-64 rounded-full bg-indigo-50/70 blur-3xl" />
         </div>
-      </section>
 
-      <section className="services-slider-section">
-        <div
-          ref={sliderRef}
-          className={`services-slider ${
-            isDragging.current ? 'is-dragging' : ''
-          }`}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerCancel}
-          onPointerLeave={handlePointerUp}
-        >
-          <div className="services-track">
-            {services.map((service) => {
-              const Icon = service.icon
+        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          {/* العودة للرئيسية */}
+          <Link
+            href="/"
+            className="mb-10 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-600 shadow-sm transition-all hover:-translate-x-1 hover:border-purple-200 hover:text-purple-700 hover:shadow-md"
+          >
+            <ArrowRight className="h-4 w-4" />
+            العودة للرئيسية
+          </Link>
 
-              return (
-                <Link
-                  key={service.id}
-                  href={`/services/${service.id}`}
-                  className="service-card"
-                  onClick={(event) => {
-                    if (Math.abs(sliderRef.current?.scrollLeft ?? 0) > 0) {
-                      // السماح بالضغط الطبيعي على البطاقة
-                    }
-                  }}
-                >
-                  <div className="service-icon">
-                    <Icon size={38} strokeWidth={1.8} />
-                  </div>
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-purple-100 bg-purple-50 px-4 py-2 text-sm font-semibold text-purple-700">
+              <Sparkles className="h-4 w-4" />
+              خدمات منصة هديل
+            </div>
 
-                  <div className="service-content">
-                    <h2>{service.title}</h2>
+            <h1 className="text-4xl font-black leading-tight tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
+              خدماتنا
+              <span className="block bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 bg-clip-text text-transparent">
+                الأكاديمية المتكاملة
+              </span>
+            </h1>
 
-                    <p className="service-subtitle">
-                      {service.subtitle}
-                    </p>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
+              مجموعة متكاملة من الخدمات الأكاديمية والطلابية المصممة
+              لمساعدتك في إنجاز مهامك ومشاريعك باحترافية وتنظيم.
+            </p>
 
-                    <p className="service-description">
-                      {service.shortText}
-                    </p>
-                  </div>
-
-                  <div className="service-link">
-                    عرض تفاصيل الخدمة
-                    <ArrowLeft size={18} />
-                  </div>
-                </Link>
-              )
-            })}
+            {/* إحصائية بسيطة */}
+            <div className="mt-8 inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 shadow-sm">
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-purple-100 text-purple-700">
+                {services.length}
+              </span>
+              خدمة أكاديمية متخصصة
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="slider-hint">
-          <ArrowRight size={16} />
-          اسحب للخلف أو للأمام لاستعراض الخدمات
-          <ArrowLeft size={16} />
+      {/* =========================
+          Services Grid
+      ========================== */}
+      <section className="relative py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="mb-2 text-sm font-bold text-purple-600">
+                اختر الخدمة المناسبة لك
+              </p>
+
+              <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                جميع الخدمات
+              </h2>
+            </div>
+
+            <p className="max-w-xl text-sm leading-7 text-slate-500">
+              استعرض تفاصيل كل خدمة لمعرفة ما نقدمه والمتطلبات وطريقة طلب
+              الخدمة.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {services.map((service) => (
+              <article
+                key={service.id}
+                className="group relative overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-purple-200 hover:shadow-xl"
+              >
+                {/* الخط العلوي */}
+                <div className="h-1.5 bg-gradient-to-r from-purple-500 via-indigo-500 to-blue-500" />
+
+                <div className="relative p-6 sm:p-7">
+                  {/* رقم الخدمة */}
+                  <div className="pointer-events-none absolute left-4 top-2 text-7xl font-black text-slate-100 transition-colors duration-300 group-hover:text-purple-50">
+                    {service.number}
+                  </div>
+
+                  {/* الأيقونة والتصنيف */}
+                  <div className="relative mb-6 flex items-center justify-between">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-lg shadow-purple-200 transition-transform duration-300 group-hover:scale-105 group-hover:rotate-1">
+                      {service.icon}
+                    </div>
+
+                    <span className="rounded-full border border-purple-100 bg-purple-50 px-3 py-1.5 text-xs font-bold text-purple-700">
+                      {service.tag}
+                    </span>
+                  </div>
+
+                  {/* العنوان */}
+                  <div className="relative">
+                    <h3 className="text-xl font-black leading-8 text-slate-900">
+                      {service.title}
+                    </h3>
+
+                    <p className="mt-2 text-sm font-semibold leading-6 text-purple-600">
+                      {service.subtitle}
+                    </p>
+                  </div>
+
+                  {/* الوصف الكامل */}
+                  <p className="mt-5 text-sm leading-7 text-slate-600">
+                    {service.description}
+                  </p>
+
+                  {/* أبرز الخدمات */}
+                  <div className="mt-6 space-y-3 border-t border-slate-100 pt-5">
+                    {service.features.map((feature, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start gap-2.5 text-sm leading-6 text-slate-600"
+                      >
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-purple-600" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* زر التفاصيل */}
+                  <Link
+                    href={`/services/${service.id}`}
+                    className="mt-7 flex items-center justify-between rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-bold text-slate-800 transition-all duration-300 group-hover:border-purple-200 group-hover:bg-purple-50 group-hover:text-purple-700"
+                  >
+                    <span>عرض تفاصيل الخدمة</span>
+
+                    <ArrowLeft className="h-5 w-5 transition-transform duration-300 group-hover:-translate-x-1" />
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <style jsx>{`
-        .services-page {
-          min-height: 100vh;
-          padding: 40px 0 80px;
-          overflow: hidden;
-        }
+      {/* =========================
+          CTA
+      ========================== */}
+      <section className="relative overflow-hidden border-t border-slate-100 bg-slate-50">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-purple-100/50 blur-3xl" />
+          <div className="absolute -left-20 bottom-0 h-64 w-64 rounded-full bg-blue-100/50 blur-3xl" />
+        </div>
 
-        .services-header {
-          max-width: 1200px;
-          margin: 0 auto 45px;
-          padding: 0 20px;
-        }
+        <div className="relative mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 lg:px-8">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-lg">
+            <Sparkles className="h-6 w-6" />
+          </div>
 
-        .back-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          text-decoration: none;
-          color: inherit;
-          opacity: 0.8;
-          font-weight: 600;
-          margin-bottom: 35px;
-          transition: opacity 0.2s ease;
-        }
+          <h2 className="mt-6 text-2xl font-black text-slate-900 sm:text-3xl">
+            هل وجدت الخدمة التي تبحث عنها؟
+          </h2>
 
-        .back-link:hover {
-          opacity: 1;
-        }
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600 sm:text-base">
+            اختر الخدمة المناسبة لك واطلع على تفاصيلها ومتطلباتها، ثم
+            تواصل معنا لبدء العمل.
+          </p>
 
-        .services-title {
-          text-align: center;
-        }
-
-        .services-title h1 {
-          margin: 0 0 12px;
-          font-size: clamp(34px, 5vw, 52px);
-          font-weight: 900;
-        }
-
-        .services-title p {
-          margin: 0 auto;
-          max-width: 650px;
-          font-size: 17px;
-          line-height: 1.8;
-          opacity: 0.75;
-        }
-
-        .services-slider-section {
-          width: 100%;
-          position: relative;
-        }
-
-        .services-slider {
-          width: 100%;
-          overflow-x: auto;
-          overflow-y: hidden;
-          cursor: grab;
-          user-select: none;
-          -webkit-user-select: none;
-          touch-action: pan-x;
-          scrollbar-width: none;
-          padding: 20px 0 35px;
-        }
-
-        .services-slider::-webkit-scrollbar {
-          display: none;
-        }
-
-        .services-slider:active {
-          cursor: grabbing;
-        }
-
-        .services-track {
-          display: flex;
-          width: max-content;
-          gap: 22px;
-          padding: 0 30px;
-        }
-
-        .service-card {
-          width: 350px;
-          min-width: 350px;
-          min-height: 330px;
-          padding: 30px 26px;
-          border-radius: 26px;
-          text-decoration: none;
-          color: inherit;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-
-          transition:
-            transform 0.3s ease,
-            background 0.3s ease,
-            border-color 0.3s ease,
-            box-shadow 0.3s ease;
-
-          flex-shrink: 0;
-        }
-
-        .service-card:hover {
-          transform: translateY(-8px) scale(1.015);
-          background: rgba(255, 255, 255, 0.09);
-          border-color: rgba(255, 255, 255, 0.24);
-          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.14);
-        }
-
-        .service-icon {
-          width: 78px;
-          height: 78px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 22px;
-          margin-bottom: 22px;
-          background: rgba(255, 255, 255, 0.08);
-          flex-shrink: 0;
-        }
-
-        .service-content {
-          flex: 1;
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
-
-        .service-content h2 {
-          margin: 0 0 10px;
-          font-size: 22px;
-          font-weight: 800;
-          line-height: 1.5;
-        }
-
-        .service-subtitle {
-          margin: 0 0 12px;
-          font-size: 15px;
-          font-weight: 700;
-          line-height: 1.7;
-          opacity: 0.75;
-        }
-
-        .service-description {
-          max-width: 290px;
-          margin: 0;
-          font-size: 15px;
-          line-height: 1.9;
-          opacity: 0.68;
-        }
-
-        .service-link {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin-top: 24px;
-          font-size: 14px;
-          font-weight: 800;
-          opacity: 0.9;
-        }
-
-        .slider-hint {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin-top: 5px;
-          padding: 0 20px;
-          font-size: 13px;
-          opacity: 0.5;
-          text-align: center;
-        }
-
-        @media (max-width: 700px) {
-          .services-page {
-            padding-top: 25px;
-          }
-
-          .services-header {
-            margin-bottom: 30px;
-          }
-
-          .services-slider {
-            padding-top: 10px;
-          }
-
-          .services-track {
-            gap: 16px;
-            padding: 0 18px;
-          }
-
-          .service-card {
-            width: 290px;
-            min-width: 290px;
-            min-height: 315px;
-            padding: 26px 20px;
-          }
-
-          .service-content h2 {
-            font-size: 20px;
-          }
-
-          .service-description {
-            max-width: 245px;
-            font-size: 14px;
-          }
-        }
-
-        @media (max-width: 400px) {
-          .service-card {
-            width: 275px;
-            min-width: 275px;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .service-card {
-            transition: none;
-          }
-        }
-      `}</style>
+          <Link
+            href="/#contact"
+            className="mt-7 inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-purple-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+          >
+            تواصل معنا
+            <ArrowLeft className="h-5 w-5" />
+          </Link>
+        </div>
+      </section>
     </main>
   )
 }
