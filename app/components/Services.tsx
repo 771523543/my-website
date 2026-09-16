@@ -14,6 +14,9 @@ import {
   BarChart3,
   GraduationCap,
   ArrowLeft,
+  Sparkles,
+  CheckCircle2,
+  ChevronLeft,
 } from 'lucide-react'
 
 type Category = 'all' | 'research' | 'design' | 'academic'
@@ -21,307 +24,123 @@ type Category = 'all' | 'research' | 'design' | 'academic'
 export const services = [
   {
     id: 'research',
-    category: 'research' as Category,
-    icon: BookOpen,
     title: 'الخدمات البحثية والأكاديمية',
-    subtitle: 'بحوث، أوراق عمل، خطط بحوث',
-    shortText:
-      'خدمة متكاملة لمساعدة الطلاب والباحثين في إعداد البحوث العلمية وأوراق العمل وخطط البحوث بأعلى المعايير الأكاديمية.',
-    about:
-      'خدمة متكاملة مخصصة لمساعدة الطلاب والباحثين في إعداد البحوث العلمية، أوراق العمل، وخطط البحوث (Proposals) بأعلى معايير الجودة والأصول المنهجية الأكاديمية.',
-    whatWeOffer: [
-      'كتابة وتنسيق البحوث العلمية والتقارير الأكاديمية ومشاريع التخرج.',
-      'صياغة مقترحات البحوث (Proposals) وتحديد الإشكالية والأسئلة والأهداف.',
-      'إعداد المراجعات المرجعية (Literature Reviews) وتلخيص الدراسات السابقة.',
-      'التوثيق العلمي الدقيق للمراجع والمصادر وفق نظام (APA، Harvard، وغيرها).',
-    ],
-    requirements: [
-      'عنوان البحث أو موضوعه بدقة.',
-      'عدد الكلمات أو الصفحات المطلوب.',
-      'نظام التوثيق المعتمد (APA، إلخ).',
-      'الموعد النهائي للتسليم وأي شروط خاصة من أستاذ المادة.',
-    ],
-    faqs: [
-      {
-        q: 'هل البحوث خالية من الاقتباس والانتحال؟',
-        a: 'نعم، جميع الأعمال تُكتب حصرياً وتُفحص ببرامج كشف السرقة الأدبية لضمان الأصالة.',
-      },
-    ],
-    orderText:
-      'لطلب الخدمة، يرجى تزويدنا بتفاصيل موضوع البحث والموعد النهائي.',
-  },
-
-  {
-    id: 'reports',
-    category: 'research' as Category,
-    icon: FileText,
-    title: 'التقارير الجامعية',
-    subtitle: 'تقارير علمية وعملية وميدانية',
-    shortText:
-      'إعداد وصياغة التقارير العلمية والعملية للمقررات الجامعية المختلفة باحترافية.',
-    about:
-      'خدمة متخصصة لإعداد وصياغة التقارير العلمية والعملية للمقررات الجامعية المختلفة، بما يشمل التقارير المخبرية، الميدانية، والتقييمية.',
-    whatWeOffer: [
-      'بناء هيكل تقرير متكامل (مقدمة، عرض، تحليل، نتائج، وتوصيات).',
-      'تنظيم وتحليل البيانات الخاصة بالتقارير العملية والمخبرية أو الزيارات الميدانية.',
-      'التدقيق اللغوي والإملائي والتنسيق الاحترافي للشرائح والجداول داخل التقرير.',
-    ],
-    requirements: [
-      'نموذج التقرير أو التعليمات الخاصة به (Guidelines).',
-      'البيانات أو النتائج الأولية (إن وجدت) المراد تحليلها وكتابتها.',
-      'عدد الصفحات والموعد النهائي للتسليم.',
-    ],
-    faqs: [
-      {
-        q: 'هل تخدمون التقارير الطبية والتمريضية؟',
-        a: 'نعم، نوفر تغطية شاملة للتقارير والمهام الخاصة بالتخصصات الصحية والتمريضية.',
-      },
-    ],
-    orderText:
-      'لطلب الخدمة، شاركنا تفاصيل التقرير وشروطه لنبدأ العمل فوراً.',
-  },
-
-  {
-    id: 'assignments',
-    category: 'academic' as Category,
-    icon: ClipboardList,
-    title: 'التكاليف الجامعية',
-    subtitle: 'التكاليف الفصلية والكبرى',
-    shortText:
-      'حل وإنجاز التكاليف الفصلية الكبرى والمشاريع الدراسية وفق متطلبات المقرر.',
-    about:
-      'خدمة مخصصة لحل وإنجاز التكاليف الفصلية الكبرى والمشاريع الدراسية التي تشكل وزناً نسبياً عالياً في درجات المقررات.',
-    whatWeOffer: [
-      'دراسة وتحليل متطلبات التكليف بعناية فائقة لضمان مطابقة معايير التقييم.',
-      'إعداد الحلول والإجابات النموذجية للمشاريع الفصلية والمهام الكبرى.',
-      'مراجعة العمل وتدقيقه للتأكد من خلوه من أي أخطاء حسابية أو منهجية.',
-    ],
-    requirements: [
-      'ملف التكليف أو الأسئلة بصيغة (PDF أو Word).',
-      'المراجع أو المحاضرات المرتبطة بالتكليف (إن توفرت).',
-      'موعد التسليم النهائي.',
-    ],
-    faqs: [
-      {
-        q: 'هل تضمنون الدرجات العالية في التكاليف؟',
-        a: 'نعمل بأعلى معايير الدقة والاحترافية لمساعدتك في تحقيق أفضل الدرجات الممكنة.',
-      },
-    ],
-    orderText:
-      'أرسل ملف التكليف الآن لتحديد الوقت والتكلفة المناسبة.',
-  },
-
-  {
-    id: 'homework',
-    category: 'academic' as Category,
-    icon: PencilLine,
-    title: 'الواجبات الدراسية',
-    subtitle: 'اليومية والأسبوعية',
-    shortText:
-      'متابعة وحل الواجبات والمهام القصيرة الدورية للمقررات الدراسية المختلفة.',
-    about:
-      'متابعة وحل الواجبات والمهام القصيرة الدورية للمقررات الدراسية المختلفة لضمان جمع الدرجات باستمرار دون تأخير.',
-    whatWeOffer: [
-      'حل الواجبات الأسبوعية واليومية لمختلف التخصصات (العلمية، النظرية، والإدارية).',
-      'الالتزام التام بتسليم الواجب في وقته المحدد وقبل الموعد النهائي.',
-      'تقديم الإجابات بطريقة واضحة ومبسطة تدعم فهم الطالب.',
-    ],
-    requirements: [
-      'تفاصيل السؤال أو الواجب المطلوب.',
-      'موعد التسليم باليوم والساعة.',
-    ],
-    faqs: [
-      {
-        q: 'هل يمكن تسليم الواجب في نفس يوم الطلب؟',
-        a: 'نعم، حسب طبيعة وحجم الواجب وقابليته للإنجاز السريع.',
-      },
-    ],
-    orderText:
-      'ارسل واجبك الآن لنقوم بإنجازه في أسرع وقت.',
-  },
-
-  {
-    id: 'lms',
-    category: 'academic' as Category,
-    icon: Laptop,
-    title: 'إدارة المنصات والمهام الدراسية',
-    subtitle: 'LMS & Quizzes',
-    shortText:
-      'إدارة ومتابعة منصات التعلم عن بعد مثل Blackboard وCanvas وMoodle.',
-    about:
-      'خدمة احترافية لإدارة ومتابعة منصات التعلم عن بعد (Blackboard، Canvas، Moodle وغيرها) لضمان عدم تفويت أي مهمة أو اختبار قصير.',
-    whatWeOffer: [
-      'المتابعة الدورية والدخول المنتظم للمنصات التعليمية.',
-      'تسليم المهام والواجبات في مواعيدها بدقة.',
-      'المشاركة الفعالة في المنتديات النقاشية الخاصة بالمقررات.',
-      'المساعدة في حل الاختبارات القصيرة (Quizzes) ضمن وقتها المحدد.',
-    ],
-    requirements: [
-      'بيانات الدخول الخاصة بالمنصة التعليمية (بسرية وخصوصية تامة).',
-      'جدول المقررات والمواعيد الهامة للاختبارات والمهام.',
-    ],
-    faqs: [
-      {
-        q: 'هل بيانات حسابي آمنة؟',
-        a: 'نعم، نضمن لك سرية تامة وأمان كامل لبيانات الدخول الخاصة بك.',
-      },
-    ],
-    orderText:
-      'تواصل معنا لتنظيم متابعة منصتك التعليمية بشكل دوري.',
-  },
-
-  {
-    id: 'presentation',
-    category: 'design' as Category,
-    icon: Presentation,
-    title: 'العروض التقديمية والتصميم',
-    subtitle: 'PowerPoint & Infographics',
-    shortText:
-      'تحويل البحوث والتقارير إلى عروض تقديمية جذابة وتصاميم وإنفوجرافيك احترافية.',
-    about:
-      'خدمة تحويل النصوص والبحوث والتقارير إلى عروض تقديمية (PowerPoint) جذابة وتصاميم بصرية وإنفوجرافيك تسهل الشرح والعرض أمام الأساتذة والزملاء.',
-    whatWeOffer: [
-      'تصميم عروض PowerPoint احترافية ومتناسقة بصرياً.',
-      'تحويل الأبحاث المعقدة إلى شرائح عرض ملخصة ومباشرة.',
-      'إعداد خرائط ذهنية وإنفوجرافيك توضيحي للمشاريع.',
-    ],
-    requirements: [
-      'المحتوى أو الملف المراد تحويله إلى عرض تقديمي.',
-      'عدد الشرائح المطلوبة أو الوقت المخصص للعرض.',
-      'النمط المفضل (رسمي، أكاديمي، إبداعي، إلخ).',
-    ],
-    faqs: [
-      {
-        q: 'هل تتضمن الشرائح تأثيرات حركية ورسوم؟',
-        a: 'نعم، نصممها بصور وتنسيقات عصرية تدعم جمالية العرض وتجتذب الانتباه.',
-      },
-    ],
-    orderText:
-      'أرسل محتواك وحدد موعد العرض لنبدأ بتصميم شرائحك الاحترافية.',
-  },
-
-  {
-    id: 'cv',
-    category: 'design' as Category,
-    icon: UserRound,
-    title: 'السيرة الذاتية والخدمات المهنية',
-    subtitle: 'CV',
-    shortText:
-      'تصميم وتطوير السيرة الذاتية بالعربية أو الإنجليزية بما يتوافق مع ATS.',
-    about:
-      'خدمة تصميم وتطوير السيرة الذاتية (CV) احترافياً لتبرز مؤهلاتك وخبراتك التعليمية والتدريبية بالشكل الأمثل أمام جهات العمل وأنظمة الفرز الآلي (ATS).',
-    whatWeOffer: [
-      'بناء وصياغة السيرة الذاتية باللغتين العربية أو الإنجليزية.',
-      'تنسيق القوالب الحديثة المتوافقة مع أنظمة الفرز الإلكتروني (ATS).',
-      'إبراز المؤهلات الأكاديمية والمهارات والتدريب العملي بأسلوب تسويقي مهني.',
-    ],
-    requirements: [
-      'المؤهل العلمي والتخصص.',
-      'الخبرات، التدريب، أو الدورات الحاصل عليها.',
-      'معلومات الاتصال واللغة المطلوبة (عربي / إنجليزي).',
-    ],
-    faqs: [
-      {
-        q: 'هل السيرة الذاتية متوافقة مع أنظمة الـ ATS؟',
-        a: 'نعم، نصممها بعناية لتعبر الفلاتر الإلكترونية لجهات التوظيف بنجاح.',
-      },
-    ],
-    orderText:
-      'أرسل بياناتك الحالية أو تواصل معنا لبناء سيرة ذاتية جديدة كلياً.',
-  },
-
-  {
-    id: 'case-study',
+    shortTitle: 'البحوث الأكاديمية',
+    description:
+      'نساعدك في إعداد البحوث والدراسات الأكاديمية بصورة منظمة وواضحة، مع ترتيب الأفكار وتنسيق المحتوى والمراجع بما يتناسب مع متطلباتك الجامعية.',
     category: 'research' as Category,
     icon: Search,
-    title: 'دراسة الحالة',
-    subtitle: 'Case Studies',
-    shortText:
-      'تحليل وحل دراسات الحالة الواقعية والأكاديمية بأسلوب منهجي وعلمي دقيق.',
-    about:
-      'خدمة متخصصة لتحليل وحل دراسات الحالة الواقعية والأكاديمية لمختلف المقررات (مثل إدارة الأعمال، الموارد البشرية، الرعاية الصحية، والاقتصاد) بأسلوب منهجي وعلمي دقيق.',
-    whatWeOffer: [
-      'تحليل تفصيلي لمعطيات المشكلة أو الحالة المطروحة.',
-      'ربط المشكلة والنظريات العلمية المقررة بالمنهج الدراسي.',
-      'صياغة التوصيات، الحلول الاستراتيجية، واتخاذ القرارات بدقة.',
-      'كتابة التقرير النهائي بالهيكل الأكاديمي المطلوب (المشكلة، التحليل، الحلول).',
-    ],
-    requirements: [
-      'نص دراسة الحالة أو الملف المرفق.',
-      'الأسئلة المطلوبة الإجابة عنها بشأن الحالة (إن وجدت).',
-      'نظام التوثيق والموعد النهائي للتسليم.',
-    ],
-    faqs: [
-      {
-        q: 'هل الحلول مبنية على أسس أكاديمية؟',
-        a: 'نعم، نعتمد على النظريات والنماذج العلمية المرتبطة بمقرر دراسة الحالة لضمان أعلى الدرجات.',
-      },
-    ],
-    orderText:
-      'أرسل نص دراسة الحالة والأسئلة لنبدأ التحليل فوراً.',
+    number: '01',
+    tag: 'بحث وأكاديميا',
+    features: ['إعداد البحث', 'تنسيق المراجع', 'تنظيم المحتوى'],
   },
-
   {
-    id: 'feasibility',
+    id: 'reports',
+    title: 'التقارير الجامعية',
+    shortTitle: 'التقارير',
+    description:
+      'نجهز لك التقارير الجامعية بأسلوب احترافي ومنظم، بداية من ترتيب المعلومات وحتى التنسيق النهائي، لتقدم عملاً واضحًا وسهل القراءة.',
+    category: 'research' as Category,
+    icon: FileText,
+    number: '02',
+    tag: 'تقارير',
+    features: ['كتابة منظمة', 'تنسيق احترافي', 'مراجع ومصادر'],
+  },
+  {
+    id: 'assignments',
+    title: 'التكاليف الجامعية',
+    shortTitle: 'التكاليف',
+    description:
+      'حل وتنظيم التكاليف والمهمات الجامعية بمحتوى مرتب وواضح، مع الاهتمام بتفاصيل المطلوب وتجهيز الملف بالشكل المناسب للتسليم.',
+    category: 'academic' as Category,
+    icon: ClipboardList,
+    number: '03',
+    tag: 'أكاديمي',
+    features: ['حل التكليف', 'تنسيق الملف', 'مراجعة المحتوى'],
+  },
+  {
+    id: 'homework',
+    title: 'الواجبات الدراسية',
+    shortTitle: 'الواجبات',
+    description:
+      'مساعدة أكاديمية في إنجاز الواجبات الدراسية وفهم المطلوب وترتيب الإجابات بطريقة واضحة، مع الالتزام بالتعليمات والمواعيد المحددة.',
+    category: 'academic' as Category,
+    icon: PencilLine,
+    number: '04',
+    tag: 'دراسي',
+    features: ['حل الواجبات', 'مراجعة الإجابات', 'تنظيم التسليم'],
+  },
+  {
+    id: 'lms',
+    title: 'إدارة المنصات والمهام الدراسية',
+    shortTitle: 'إدارة المهام',
+    description:
+      'نساعدك في تنظيم ومتابعة المهام الدراسية والمنصات التعليمية، حتى تكون متطلباتك مرتبة أمامك ولا تضيع بين المواعيد والتكليفات.',
+    category: 'academic' as Category,
+    icon: Laptop,
+    number: '05',
+    tag: 'منصات تعليمية',
+    features: ['تنظيم المهام', 'متابعة المواعيد', 'ترتيب المتطلبات'],
+  },
+  {
+    id: 'presentation',
+    title: 'العروض التقديمية والتصميم',
+    shortTitle: 'العروض والتصميم',
+    description:
+      'نحوّل المحتوى الأكاديمي إلى عروض تقديمية جذابة ومنظمة بصريًا، مع توزيع مناسب للمعلومات وعناصر تصميم تساعد على إيصال الفكرة.',
+    category: 'design' as Category,
+    icon: Presentation,
+    number: '06',
+    tag: 'تصميم',
+    features: ['PowerPoint', 'تصميم جذاب', 'تنظيم بصري'],
+  },
+  {
+    id: 'cv',
+    title: 'السيرة الذاتية والخدمات المهنية',
+    shortTitle: 'السيرة الذاتية',
+    description:
+      'نساعدك في إعداد سيرة ذاتية احترافية ومنظمة تبرز مهاراتك وخبراتك بصورة واضحة، وتمنح ملفك المهني مظهرًا أكثر احترافية.',
+    category: 'design' as Category,
+    icon: UserRound,
+    number: '07',
+    tag: 'مهني',
+    features: ['CV احترافي', 'تنسيق عصري', 'إبراز المهارات'],
+  },
+  {
+    id: 'case-study',
+    title: 'دراسة الحالة',
+    shortTitle: 'دراسة الحالة',
+    description:
+      'إعداد وتنظيم دراسات الحالة بطريقة منهجية تساعد على عرض المشكلة وتحليلها ومناقشة النتائج والحلول بصورة مرتبة وواضحة.',
     category: 'research' as Category,
     icon: BarChart3,
-    title: 'دراسات الجدوى',
-    subtitle: 'Feasibility Studies',
-    shortText:
-      'إعداد دراسات الجدوى الاقتصادية والتشغيلية للمشاريع التجارية والريادية.',
-    about:
-      'خدمة متكاملة لإعداد دراسات الجدوى الاقتصادية والتشغيلية للمشاريع التجارية والريادية، بما يشمل الجوانب التسويقية، المالية، والفنية بدقة عالية.',
-    whatWeOffer: [
-      'الدراسة التسويقية: تحليل السوق، المستهدفين، والمنافسين.',
-      'الدراسة الفنية والتشغيلية: تحديد المتطلبات، الموارد، وخطوات سير العمل.',
-      'الدراسة المالية: تقدير التكاليف، الأرباح المتوقعة، والجدوى الاستثمارية.',
-      'إخراج التقرير النهائي بتنسيق احترافي جاهز للعرض أو التسليم الأكاديمي.',
-    ],
-    requirements: [
-      'فكرة المشروع أو نوع النشاط المقترح.',
-      'النطاق الجغرافي أو حجم المشروع المطلوب.',
-      'المتطلبات الخاصة بالدراسة (أكاديمية أم تطبيقية لعمل مشروع حقيقي).',
-    ],
-    faqs: [
-      {
-        q: 'هل تشمل الدراسة جداول وحسابات مالية واضحة؟',
-        a: 'نعم، نتكفل بتقدير التكاليف والجداول المالية بدقة متناهية.',
-      },
-    ],
-    orderText:
-      'شاركنا فكرة مشروعك لنبدأ في صياغة دراسة الجدوى المتكاملة.',
+    number: '08',
+    tag: 'تحليل وبحث',
+    features: ['تحليل الحالة', 'تنظيم البيانات', 'عرض النتائج'],
   },
-
+  {
+    id: 'feasibility',
+    title: 'دراسات الجدوى',
+    shortTitle: 'دراسة الجدوى',
+    description:
+      'تنظيم وتحليل عناصر دراسة الجدوى وتقديمها بصورة واضحة تشمل فكرة المشروع ومكوناته وتحليل السوق والجوانب المالية الأساسية.',
+    category: 'research' as Category,
+    icon: BookOpen,
+    number: '09',
+    tag: 'مشاريع',
+    features: ['تحليل المشروع', 'دراسة السوق', 'تنظيم التقرير'],
+  },
   {
     id: 'graduation',
-    category: 'research' as Category,
-    icon: GraduationCap,
     title: 'مشاريع التخرج',
-    subtitle: 'Graduation Projects',
-    shortText:
-      'دعم شامل لمشروع التخرج من الفكرة حتى التسليم النهائي لمختلف التخصصات.',
-    about:
-      'دعم شامل ومواكب لخطوات مشروع التخرج من الفكرة حتى التسليم النهائي، لمختلف التخصصات العلمية، الإدارية، الصحية، والتقنية.',
-    whatWeOffer: [
-      'المساعدة في اختيار واقتراح عناوين مبتكرة لمشاريع التخرج.',
-      'إعداد خطة المشروع (Project Proposal) وهيكل البحث أو النظام.',
-      'كتابة فصول المشروع كاملة (المقدمة، الأدبيات، المنهجية، التحليل، والنتائج).',
-      'توفير الجانب التطبيقي أو البرمجي أو الميداني (حسب تخصص المشروع).',
-      'التنسيق والتوثيق العلمي الكامل وفقاً لدليل الجامعة المعتمد.',
-    ],
-    requirements: [
-      'دليل مشروع التخرج أو الشروط الخاصة بالجامعة.',
-      'التخصص ومجال المشروع المطلوب.',
-      'الموعد النهائي للمراحل المختلفة أو التسليم النهائي.',
-    ],
-    faqs: [
-      {
-        q: 'هل يتم تسليم المشروع على مراحل للمراجعة؟',
-        a: 'نعم، يتم تقسيم العمل إلى مراحل (Proposal، الفصول الأولى، التطبيق، التقرير النهائي) لضمان المتابعة المستمرة مع الطالب.',
-      },
-    ],
-    orderText:
-      'تواصل معنا بتفاصيل تخصصك وشروط مشروع التخرج لنبدأ العمل خطوة بخطوة.',
+    shortTitle: 'مشاريع التخرج',
+    description:
+      'نرافقك في تنظيم مشروع التخرج من الفكرة وحتى إخراج الملفات بصورة احترافية، مع الاهتمام بالتنسيق والعرض وترتيب أجزاء المشروع.',
+    category: 'academic' as Category,
+    icon: GraduationCap,
+    number: '10',
+    tag: 'تخرج',
+    features: ['تنظيم المشروع', 'التقرير', 'العرض النهائي'],
   },
 ]
 
@@ -334,708 +153,825 @@ const categories = [
 
 export default function Services() {
   const [activeCategory, setActiveCategory] = useState<Category>('all')
-
-  const sliderRef = useRef<HTMLDivElement>(null)
-  const animationRef = useRef<number | null>(null)
-
-  const isInteractingRef = useRef(false)
-  const isDraggingRef = useRef(false)
-
-  const startXRef = useRef(0)
-  const startScrollLeftRef = useRef(0)
+  const [visibleCards, setVisibleCards] = useState<number[]>([])
+  const sectionRef = useRef<HTMLElement | null>(null)
 
   const filteredServices =
     activeCategory === 'all'
       ? services
-      : services.filter(
-          (service) => service.category === activeCategory,
-        )
+      : services.filter((service) => service.category === activeCategory)
 
-  /*
-   * نكرر الخدمات 3 مرات للحصول على حركة مستمرة.
-   */
-  const marqueeServices = [
-    ...filteredServices,
-    ...filteredServices,
-    ...filteredServices,
-  ]
-
-  /*
-   * الحركة التلقائية.
-   */
   useEffect(() => {
-    const slider = sliderRef.current
+    setVisibleCards([])
 
-    if (!slider || filteredServices.length === 0) {
-      return
-    }
+    const timers = filteredServices.map((_, index) =>
+      window.setTimeout(() => {
+        setVisibleCards((current) => [...current, index])
+      }, index * 70)
+    )
 
-    let lastTime = performance.now()
-
-    const animate = (time: number) => {
-      const currentSlider = sliderRef.current
-
-      if (!currentSlider) return
-
-      const delta = time - lastTime
-      lastTime = time
-
-      if (
-        !isInteractingRef.current &&
-        !isDraggingRef.current
-      ) {
-        currentSlider.scrollLeft += delta * 0.035
-
-        const oneThird =
-          currentSlider.scrollWidth / 3
-
-        if (currentSlider.scrollLeft >= oneThird) {
-          currentSlider.scrollLeft -= oneThird
-        }
-      }
-
-      animationRef.current =
-        requestAnimationFrame(animate)
-    }
-
-    animationRef.current =
-      requestAnimationFrame(animate)
-
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current)
-      }
-    }
+    return () => timers.forEach((timer) => window.clearTimeout(timer))
   }, [activeCategory, filteredServices.length])
 
-  /*
-   * بدء السحب باللمس أو الماوس.
-   */
-  const handlePointerDown = (
-    event: React.PointerEvent<HTMLDivElement>,
-  ) => {
-    const slider = sliderRef.current
-
-    if (!slider) return
-
-    isDraggingRef.current = true
-    isInteractingRef.current = true
-
-    startXRef.current = event.clientX
-    startScrollLeftRef.current =
-      slider.scrollLeft
-
-    slider.setPointerCapture(event.pointerId)
-
-    slider.style.cursor = 'grabbing'
-  }
-
-  /*
-   * أثناء السحب.
-   */
-  const handlePointerMove = (
-    event: React.PointerEvent<HTMLDivElement>,
-  ) => {
-    const slider = sliderRef.current
-
-    if (!slider || !isDraggingRef.current) {
-      return
-    }
-
-    const distance =
-      event.clientX - startXRef.current
-
-    slider.scrollLeft =
-      startScrollLeftRef.current - distance
-  }
-
-  /*
-   * انتهاء السحب.
-   */
-  const handlePointerUp = (
-    event: React.PointerEvent<HTMLDivElement>,
-  ) => {
-    const slider = sliderRef.current
-
-    isDraggingRef.current = false
-
-    if (slider) {
-      try {
-        slider.releasePointerCapture(
-          event.pointerId,
-        )
-      } catch {
-        // لا شيء
-      }
-
-      slider.style.cursor = 'grab'
-    }
-
-    window.setTimeout(() => {
-      isInteractingRef.current = false
-    }, 700)
-  }
-
-  /*
-   * إيقاف الحركة عند وضع المؤشر فوق البطاقات.
-   */
-  const handleMouseEnter = () => {
-    isInteractingRef.current = true
-  }
-
-  const handleMouseLeave = () => {
-    if (!isDraggingRef.current) {
-      isInteractingRef.current = false
-    }
-  }
-
-  /*
-   * عجلة الماوس تتحول إلى تمرير أفقي.
-   */
-  const handleWheel = (
-    event: React.WheelEvent<HTMLDivElement>,
-  ) => {
-    const slider = sliderRef.current
-
-    if (!slider) return
-
-    if (
-      Math.abs(event.deltaY) >
-      Math.abs(event.deltaX)
-    ) {
-      event.preventDefault()
-      slider.scrollLeft += event.deltaY
-    }
-  }
-
   return (
-    <section
-      id="services"
-      className="section soft-section"
-    >
+    <>
+      <section
+        ref={sectionRef}
+        id="services"
+        className="services-section"
+      >
+        <div className="services-background-orb services-orb-one" />
+        <div className="services-background-orb services-orb-two" />
+
+        <div className="container services-container">
+          {/* عنوان القسم */}
+          <div className="services-heading">
+            <div className="services-heading-badge">
+              <Sparkles size={16} />
+              <span>خدمات منصة هديل</span>
+            </div>
+
+            <h2>
+              كل ما تحتاجه
+              <span> في مكان واحد</span>
+            </h2>
+
+            <p>
+              خدمات أكاديمية وطلابية مصممة لتسهّل عليك رحلتك الدراسية،
+              من البحوث والتكاليف إلى التصاميم والمشاريع الجامعية.
+            </p>
+          </div>
+
+          {/* التصنيفات */}
+          <div className="services-filters">
+            {categories.map((category) => {
+              const isActive = activeCategory === category.id
+
+              return (
+                <button
+                  key={category.id}
+                  type="button"
+                  onClick={() => setActiveCategory(category.id)}
+                  className={`services-filter ${
+                    isActive ? 'services-filter-active' : ''
+                  }`}
+                >
+                  {isActive && <CheckCircle2 size={16} />}
+                  <span>{category.label}</span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* البطاقات */}
+          <div className="services-grid">
+            {filteredServices.map((service, index) => {
+              const Icon = service.icon
+              const isVisible = visibleCards.includes(index)
+
+              return (
+                <article
+                  key={service.id}
+                  className={`service-card ${
+                    isVisible ? 'service-card-visible' : ''
+                  }`}
+                >
+                  {/* رقم البطاقة */}
+                  <div className="service-number">
+                    {service.number}
+                  </div>
+
+                  {/* زخرفة */}
+                  <div className="service-card-glow" />
+
+                  {/* الأيقونة */}
+                  <div className="service-icon-wrapper">
+                    <div className="service-icon">
+                      <Icon size={30} strokeWidth={1.8} />
+                    </div>
+
+                    <div className="service-icon-ring" />
+                  </div>
+
+                  {/* المحتوى */}
+                  <div className="service-content">
+                    <div className="service-tag">
+                      <span />
+                      {service.tag}
+                    </div>
+
+                    <h3>{service.title}</h3>
+
+                    <p>{service.description}</p>
+
+                    {/* المميزات الصغيرة */}
+                    <div className="service-features">
+                      {service.features.map((feature) => (
+                        <span key={feature}>
+                          <CheckCircle2 size={14} />
+                          {feature}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* الأزرار */}
+                  <div className="service-actions">
+                    <Link
+                      href={`/services/${service.id}`}
+                      className="service-details-button"
+                    >
+                      <span>عرض التفاصيل</span>
+                      <ArrowLeft size={17} />
+                    </Link>
+
+                    <Link
+                      href={`/services/${service.id}#order`}
+                      className="service-order-button"
+                    >
+                      اطلب الخدمة
+                    </Link>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
+
+          {/* أسفل الخدمات */}
+          <div className="services-bottom">
+            <div className="services-bottom-line" />
+
+            <Link href="/services" className="services-all-button">
+              <span>استعرض جميع خدماتنا</span>
+              <ChevronLeft size={20} />
+            </Link>
+
+            <div className="services-bottom-line" />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
+          فاصل واضح بين الخدمات والباقات
+          ============================================ */}
+      <div className="services-packages-divider">
+        <div className="services-packages-divider-line" />
+
+        <div className="services-packages-divider-badge">
+          <Sparkles size={15} />
+          <span>اكتشف باقات منصة هديل</span>
+          <Sparkles size={15} />
+        </div>
+
+        <div className="services-packages-divider-line" />
+      </div>
+
       <style jsx>{`
-        .services-wrapper {
+        .services-section {
           position: relative;
-          width: 100%;
+          overflow: hidden;
+          padding: 95px 0 80px;
+          background:
+            radial-gradient(
+              circle at 8% 18%,
+              rgba(37, 99, 235, 0.09),
+              transparent 27%
+            ),
+            radial-gradient(
+              circle at 92% 78%,
+              rgba(124, 58, 237, 0.08),
+              transparent 30%
+            ),
+            linear-gradient(180deg, #f8fbff 0%, #ffffff 52%, #f7f9ff 100%);
         }
 
-        .services-category-bar {
+        .services-container {
+          position: relative;
+          z-index: 2;
+        }
+
+        .services-background-orb {
+          position: absolute;
+          border-radius: 999px;
+          pointer-events: none;
+          filter: blur(1px);
+        }
+
+        .services-orb-one {
+          width: 300px;
+          height: 300px;
+          top: 160px;
+          right: -190px;
+          background: rgba(37, 99, 235, 0.06);
+        }
+
+        .services-orb-two {
+          width: 260px;
+          height: 260px;
+          bottom: 80px;
+          left: -160px;
+          background: rgba(124, 58, 237, 0.06);
+        }
+
+        .services-heading {
+          max-width: 760px;
+          margin: 0 auto 38px;
+          text-align: center;
+        }
+
+        .services-heading-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 9px 16px;
+          margin-bottom: 17px;
+          color: #2563eb;
+          font-size: 13px;
+          font-weight: 800;
+          border: 1px solid rgba(37, 99, 235, 0.15);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.9);
+          box-shadow:
+            0 8px 25px rgba(37, 99, 235, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .services-heading h2 {
+          margin: 0;
+          color: #10203a;
+          font-size: clamp(32px, 5vw, 50px);
+          line-height: 1.2;
+          font-weight: 950;
+          letter-spacing: -1.5px;
+        }
+
+        .services-heading h2 span {
+          display: inline-block;
+          margin-right: 8px;
+          background: linear-gradient(135deg, #2563eb, #7c3aed);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+        }
+
+        .services-heading p {
+          max-width: 650px;
+          margin: 17px auto 0;
+          color: #64748b;
+          font-size: 16px;
+          line-height: 1.9;
+        }
+
+        .services-filters {
           display: flex;
           justify-content: center;
-          align-items: center;
           flex-wrap: wrap;
-          gap: 0.75rem;
-          margin: 0 auto 2.5rem;
+          gap: 10px;
+          margin-bottom: 38px;
         }
 
-        .services-category {
-          position: relative;
-          border: 1px solid rgba(15, 23, 42, 0.1);
+        .services-filter {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 7px;
+          min-height: 44px;
+          padding: 0 18px;
+          border: 1px solid #e2e8f0;
           border-radius: 999px;
-          padding: 0.85rem 1.5rem;
-          min-width: 125px;
-          background: rgba(255, 255, 255, 0.8);
-          color: inherit;
-          cursor: pointer;
-          font-family: inherit;
-          font-size: 0.95rem;
+          background: rgba(255, 255, 255, 0.86);
+          color: #64748b;
+          font-size: 13px;
           font-weight: 800;
+          cursor: pointer;
           transition:
             transform 0.25s ease,
-            box-shadow 0.25s ease,
+            border-color 0.25s ease,
             background 0.25s ease,
             color 0.25s ease,
-            border-color 0.25s ease;
-          backdrop-filter: blur(12px);
+            box-shadow 0.25s ease;
         }
 
-        .services-category:hover {
-          transform: translateY(-3px);
+        .services-filter:hover {
+          transform: translateY(-2px);
+          color: #2563eb;
+          border-color: rgba(37, 99, 235, 0.25);
+          box-shadow: 0 8px 20px rgba(37, 99, 235, 0.08);
+        }
+
+        .services-filter-active {
+          color: white;
+          border-color: transparent;
+          background: linear-gradient(135deg, #2563eb, #4f46e5);
           box-shadow:
-            0 10px 25px rgba(15, 23, 42, 0.1);
+            0 10px 25px rgba(37, 99, 235, 0.24),
+            0 2px 7px rgba(37, 99, 235, 0.15);
         }
 
-        .services-category.active {
-          background:
-            var(--foreground, #111827);
-          color:
-            var(--background, #ffffff);
-          border-color:
-            var(--foreground, #111827);
-          box-shadow:
-            0 12px 28px rgba(15, 23, 42, 0.18);
+        .services-filter-active:hover {
+          color: white;
+          border-color: transparent;
         }
 
-        .services-slider-shell {
-          position: relative;
-          width: 100%;
-        }
-
-        .services-slider-shell::before,
-        .services-slider-shell::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 70px;
-          z-index: 3;
-          pointer-events: none;
-        }
-
-        .services-slider-shell::before {
-          left: 0;
-          background:
-            linear-gradient(
-              to right,
-              var(--background, #ffffff),
-              transparent
-            );
-        }
-
-        .services-slider-shell::after {
-          right: 0;
-          background:
-            linear-gradient(
-              to left,
-              var(--background, #ffffff),
-              transparent
-            );
-        }
-
-        .services-slider {
-          width: 100%;
-          display: flex;
-          gap: 1.5rem;
-          overflow-x: auto;
-          overflow-y: hidden;
-          padding: 1.25rem 3rem 2rem;
-          cursor: grab;
-          user-select: none;
-          -webkit-user-select: none;
-          -webkit-overflow-scrolling: touch;
-          scrollbar-width: none;
-          scroll-behavior: auto;
-          overscroll-behavior-x: contain;
-          touch-action: pan-x;
-          direction: ltr;
-        }
-
-        .services-slider::-webkit-scrollbar {
-          display: none;
+        .services-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 22px;
         }
 
         .service-card {
           position: relative;
-          flex: 0 0 360px;
-          min-height: 440px;
+          min-width: 0;
+          overflow: hidden;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          text-align: center;
-          direction: rtl;
-          padding: 2rem 1.8rem 1.65rem;
-          border-radius: 28px;
-          border: 1px solid rgba(15, 23, 42, 0.09);
+          min-height: 475px;
+          padding: 26px;
+          border: 1px solid rgba(148, 163, 184, 0.22);
+          border-radius: 26px;
           background:
-            radial-gradient(
-              circle at 50% 0%,
-              rgba(59, 130, 246, 0.09),
-              transparent 42%
-            ),
-            rgba(255, 255, 255, 0.96);
+            linear-gradient(
+              145deg,
+              rgba(255, 255, 255, 0.98),
+              rgba(248, 250, 255, 0.96)
+            );
           box-shadow:
-            0 15px 45px rgba(15, 23, 42, 0.08),
-            0 3px 12px rgba(15, 23, 42, 0.04);
-          overflow: hidden;
+            0 15px 45px rgba(15, 23, 42, 0.07),
+            0 3px 12px rgba(37, 99, 235, 0.04),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95);
+          opacity: 0;
+          transform: translateY(20px);
           transition:
-            transform 0.35s ease,
-            box-shadow 0.35s ease,
-            border-color 0.35s ease;
+            opacity 0.55s ease,
+            transform 0.55s ease,
+            box-shadow 0.3s ease,
+            border-color 0.3s ease;
+        }
+
+        .service-card-visible {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         .service-card::before {
           content: '';
           position: absolute;
-          top: 0;
-          left: 10%;
-          right: 10%;
-          height: 3px;
-          border-radius: 0 0 999px 999px;
-          background: currentColor;
-          opacity: 0.18;
+          inset: 0;
+          border-radius: inherit;
+          padding: 1px;
+          background: linear-gradient(
+            145deg,
+            rgba(37, 99, 235, 0.2),
+            transparent 38%,
+            rgba(124, 58, 237, 0.15)
+          );
+          -webkit-mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+          -webkit-mask-composite: xor;
+          mask-composite: exclude;
+          pointer-events: none;
         }
 
-        .service-card::after {
+        .service-card:hover {
+          transform: translateY(-9px);
+          border-color: rgba(37, 99, 235, 0.25);
+          box-shadow:
+            0 25px 65px rgba(37, 99, 235, 0.12),
+            0 10px 25px rgba(15, 23, 42, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        .service-card-glow {
+          position: absolute;
+          width: 180px;
+          height: 180px;
+          top: -90px;
+          right: -70px;
+          border-radius: 50%;
+          background: rgba(37, 99, 235, 0.08);
+          filter: blur(5px);
+          transition: transform 0.4s ease;
+          pointer-events: none;
+        }
+
+        .service-card:hover .service-card-glow {
+          transform: scale(1.35);
+        }
+
+        .service-number {
+          position: absolute;
+          top: 22px;
+          left: 23px;
+          color: #cbd5e1;
+          font-size: 12px;
+          font-weight: 950;
+          letter-spacing: 1px;
+        }
+
+        .service-icon-wrapper {
+          position: relative;
+          width: 76px;
+          height: 76px;
+          margin-bottom: 23px;
+        }
+
+        .service-icon {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 68px;
+          height: 68px;
+          border: 1px solid rgba(37, 99, 235, 0.18);
+          border-radius: 21px;
+          color: #2563eb;
+          background:
+            linear-gradient(
+              145deg,
+              rgba(239, 246, 255, 0.98),
+              rgba(238, 242, 255, 0.9)
+            );
+          box-shadow:
+            0 13px 28px rgba(37, 99, 235, 0.13),
+            inset 0 1px 0 white;
+          transition:
+            transform 0.35s ease,
+            border-radius 0.35s ease,
+            color 0.35s ease;
+        }
+
+        .service-icon-ring {
+          position: absolute;
+          width: 55px;
+          height: 55px;
+          right: -1px;
+          bottom: -1px;
+          border: 1px dashed rgba(124, 58, 237, 0.28);
+          border-radius: 50%;
+          transition: transform 0.4s ease;
+        }
+
+        .service-card:hover .service-icon {
+          transform: translateY(-4px) rotate(-3deg);
+          border-radius: 24px;
+          color: #4f46e5;
+        }
+
+        .service-card:hover .service-icon-ring {
+          transform: rotate(35deg) scale(1.08);
+        }
+
+        .service-content {
+          flex: 1;
+        }
+
+        .service-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 9px;
+          color: #64748b;
+          font-size: 11px;
+          font-weight: 800;
+        }
+
+        .service-tag span {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #2563eb, #7c3aed);
+          box-shadow: 0 0 8px rgba(37, 99, 235, 0.35);
+        }
+
+        .service-content h3 {
+          margin: 0 0 12px;
+          color: #17243a;
+          font-size: 20px;
+          line-height: 1.45;
+          font-weight: 900;
+        }
+
+        .service-content p {
+          margin: 0;
+          color: #64748b;
+          font-size: 13px;
+          line-height: 1.9;
+        }
+
+        .service-features {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          margin-top: 19px;
+        }
+
+        .service-features span {
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 6px 9px;
+          border: 1px solid #e5eaf2;
+          border-radius: 9px;
+          color: #64748b;
+          background: #fff;
+          font-size: 10px;
+          font-weight: 800;
+        }
+
+        .service-features svg {
+          color: #2563eb;
+          flex-shrink: 0;
+        }
+
+        .service-actions {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 8px;
+          margin-top: 25px;
+        }
+
+        .service-details-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          min-height: 45px;
+          padding: 0 13px;
+          border-radius: 13px;
+          color: white;
+          background: linear-gradient(135deg, #2563eb, #4f46e5);
+          box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
+          font-size: 12px;
+          font-weight: 900;
+          text-decoration: none;
+          transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+        }
+
+        .service-details-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 25px rgba(37, 99, 235, 0.26);
+        }
+
+        .service-order-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 45px;
+          padding: 0 13px;
+          border: 1px solid rgba(37, 99, 235, 0.18);
+          border-radius: 13px;
+          color: #2563eb;
+          background: #f8fbff;
+          font-size: 11px;
+          font-weight: 900;
+          text-decoration: none;
+          transition:
+            transform 0.25s ease,
+            background 0.25s ease,
+            color 0.25s ease;
+        }
+
+        .service-order-button:hover {
+          transform: translateY(-2px);
+          color: white;
+          background: #2563eb;
+        }
+
+        .services-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+          margin-top: 48px;
+        }
+
+        .services-bottom-line {
+          width: min(180px, 18vw);
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(148, 163, 184, 0.4),
+            transparent
+          );
+        }
+
+        .services-all-button {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 12px 20px;
+          border: 1px solid #e2e8f0;
+          border-radius: 999px;
+          color: #475569;
+          background: white;
+          box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+          font-size: 12px;
+          font-weight: 900;
+          text-decoration: none;
+          transition:
+            transform 0.25s ease,
+            color 0.25s ease,
+            border-color 0.25s ease;
+        }
+
+        .services-all-button:hover {
+          transform: translateY(-2px);
+          color: #2563eb;
+          border-color: rgba(37, 99, 235, 0.2);
+        }
+
+        /* ================================
+           الفاصل بين الخدمات والباقات
+           ================================ */
+
+        .services-packages-divider {
+          position: relative;
+          z-index: 5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 22px;
+          min-height: 115px;
+          padding: 20px;
+          background:
+            linear-gradient(
+              180deg,
+              #f7f9ff 0%,
+              #eef4ff 48%,
+              #f8f5ff 100%
+            );
+          border-top: 1px solid rgba(37, 99, 235, 0.08);
+          border-bottom: 1px solid rgba(124, 58, 237, 0.08);
+        }
+
+        .services-packages-divider::before,
+        .services-packages-divider::after {
           content: '';
           position: absolute;
           width: 180px;
           height: 180px;
           border-radius: 50%;
-          top: -100px;
-          right: -70px;
-          background: currentColor;
-          opacity: 0.035;
           pointer-events: none;
+          opacity: 0.45;
         }
 
-        .service-card:hover {
-          transform: translateY(-10px);
-          box-shadow:
-            0 25px 60px rgba(15, 23, 42, 0.13),
-            0 8px 20px rgba(15, 23, 42, 0.06);
-          border-color:
-            rgba(15, 23, 42, 0.15);
+        .services-packages-divider::before {
+          left: -100px;
+          background: rgba(37, 99, 235, 0.08);
+          filter: blur(20px);
         }
 
-        .service-icon-wrap {
-          position: relative;
-          z-index: 1;
-          width: 88px;
-          height: 88px;
-          flex: 0 0 88px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 auto 1.35rem;
-          border-radius: 25px;
-          background:
-            linear-gradient(
-              145deg,
-              rgba(59, 130, 246, 0.15),
-              rgba(99, 102, 241, 0.06)
-            );
-          border: 1px solid rgba(59, 130, 246, 0.12);
-          box-shadow:
-            0 12px 30px rgba(59, 130, 246, 0.09),
-            inset 0 1px 0
-              rgba(255, 255, 255, 0.8);
-          transition:
-            transform 0.35s ease,
-            box-shadow 0.35s ease;
+        .services-packages-divider::after {
+          right: -100px;
+          background: rgba(124, 58, 237, 0.08);
+          filter: blur(20px);
         }
 
-        .service-card:hover
-          .service-icon-wrap {
-          transform:
-            translateY(-4px) scale(1.04);
-          box-shadow:
-            0 18px 38px rgba(59, 130, 246, 0.14),
-            inset 0 1px 0
-              rgba(255, 255, 255, 0.9);
+        .services-packages-divider-line {
+          width: min(230px, 22vw);
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(37, 99, 235, 0.28),
+            rgba(124, 58, 237, 0.2),
+            transparent
+          );
         }
 
-        .service-icon {
-          width: 39px;
-          height: 39px;
-          stroke-width: 1.8;
-        }
-
-        .service-title {
-          position: relative;
-          z-index: 1;
-          margin: 0;
-          font-size: 1.3rem;
-          line-height: 1.5;
-          font-weight: 900;
-          letter-spacing: -0.02em;
-        }
-
-        .service-subtitle {
-          position: relative;
-          z-index: 1;
-          margin-top: 0.6rem;
-          min-height: 27px;
-          font-size: 0.84rem;
-          font-weight: 800;
-          opacity: 0.58;
-        }
-
-        .service-description {
-          position: relative;
-          z-index: 1;
-          margin: 1.15rem auto 0;
-          max-width: 300px;
-          font-size: 0.96rem;
-          line-height: 1.95;
-          opacity: 0.76;
-        }
-
-        .service-buttons {
+        .services-packages-divider-badge {
           position: relative;
           z-index: 2;
-          width: 100%;
-          display: flex;
-          gap: 0.7rem;
-          margin-top: auto;
-        }
-
-        .service-action,
-        .service-order-button {
-          flex: 1;
-          min-height: 52px;
-          padding: 0.85rem 0.75rem;
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          justify-content: center;
-          gap: 0.45rem;
-          border-radius: 16px;
-          text-decoration: none;
-          font-family: inherit;
-          font-size: 0.9rem;
-          font-weight: 900;
-          transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease,
-            background 0.25s ease,
-            border-color 0.25s ease;
-        }
-
-        .service-action {
-          margin-top: 0;
-        }
-
-        .service-action:hover,
-        .service-order-button:hover {
-          transform: translateY(-3px);
-        }
-
-        .service-order-button {
-          border: 1px solid rgba(15, 23, 42, 0.12);
-          background: rgba(255, 255, 255, 0.78);
-          color: inherit;
-        }
-
-        .service-order-button:hover {
-          background: rgba(255, 255, 255, 1);
-          border-color:
-            rgba(15, 23, 42, 0.2);
+          gap: 9px;
+          padding: 11px 19px;
+          border: 1px solid rgba(37, 99, 235, 0.13);
+          border-radius: 999px;
+          color: #334155;
+          background: rgba(255, 255, 255, 0.8);
           box-shadow:
-            0 10px 25px rgba(15, 23, 42, 0.08);
+            0 10px 30px rgba(37, 99, 235, 0.08),
+            inset 0 1px 0 white;
+          font-size: 12px;
+          font-weight: 900;
         }
 
-        .services-hint {
-          margin-top: 0.35rem;
-          text-align: center;
-          font-size: 0.8rem;
-          opacity: 0.48;
-          user-select: none;
+        .services-packages-divider-badge svg {
+          color: #6366f1;
         }
 
-        @media (max-width: 768px) {
-          .services-category-bar {
-            gap: 0.55rem;
-            margin-bottom: 1.5rem;
+        @media (max-width: 1050px) {
+          .services-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+        }
+
+        @media (max-width: 700px) {
+          .services-section {
+            padding: 70px 0 60px;
           }
 
-          .services-category {
-            padding: 0.7rem 1rem;
-            min-width: auto;
-            font-size: 0.84rem;
+          .services-heading {
+            margin-bottom: 28px;
           }
 
-          .services-slider-shell::before,
-          .services-slider-shell::after {
-            width: 28px;
+          .services-heading h2 {
+            font-size: 31px;
           }
 
-          .services-slider {
-            gap: 1rem;
-            padding:
-              0.9rem 1.25rem 1.5rem;
+          .services-heading p {
+            padding: 0 8px;
+            font-size: 14px;
+          }
+
+          .services-filters {
+            gap: 7px;
+            margin-bottom: 27px;
+          }
+
+          .services-filter {
+            min-height: 41px;
+            padding: 0 13px;
+            font-size: 11px;
+          }
+
+          .services-grid {
+            grid-template-columns: 1fr;
+            gap: 17px;
           }
 
           .service-card {
-            flex-basis: 310px;
-            min-height: 420px;
-            padding:
-              1.75rem 1.45rem 1.4rem;
-            border-radius: 25px;
+            min-height: auto;
+            padding: 23px;
+            border-radius: 22px;
           }
 
-          .service-icon-wrap {
-            width: 80px;
-            height: 80px;
-            flex-basis: 80px;
-            border-radius: 23px;
+          .service-content h3 {
+            font-size: 19px;
           }
 
-          .service-icon {
+          .service-content p {
+            font-size: 13px;
+          }
+
+          .service-actions {
+            grid-template-columns: 1fr 1fr;
+          }
+
+          .services-bottom {
+            margin-top: 35px;
+          }
+
+          .services-bottom-line {
+            display: none;
+          }
+
+          .services-packages-divider {
+            min-height: 95px;
+            gap: 9px;
+            padding: 16px 10px;
+          }
+
+          .services-packages-divider-line {
             width: 35px;
-            height: 35px;
           }
 
-          .service-title {
-            font-size: 1.2rem;
-          }
-
-          .service-description {
-            font-size: 0.91rem;
-            line-height: 1.85;
-          }
-
-          .service-buttons {
-            gap: 0.55rem;
-          }
-
-          .service-action,
-          .service-order-button {
-            min-height: 50px;
-            font-size: 0.82rem;
-          }
-
-          .services-hint {
-            font-size: 0.75rem;
+          .services-packages-divider-badge {
+            padding: 10px 13px;
+            font-size: 10px;
+            text-align: center;
           }
         }
 
-        @media (max-width: 380px) {
-          .service-card {
-            flex-basis: 285px;
+        @media (max-width: 390px) {
+          .service-actions {
+            grid-template-columns: 1fr;
           }
 
-          .service-action,
-          .service-order-button {
-            font-size: 0.78rem;
+          .services-filter {
+            padding: 0 10px;
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
           .service-card,
-          .service-icon-wrap,
-          .services-category,
-          .service-action,
-          .service-order-button {
+          .service-icon,
+          .service-icon-ring,
+          .service-card-glow,
+          .services-filter,
+          .service-details-button,
+          .service-order-button,
+          .services-all-button {
             transition: none;
           }
         }
       `}</style>
-
-      <div className="container">
-        <div className="center-heading">
-          <span className="section-kicker">
-            خدماتنا
-          </span>
-
-          <h2>
-            خدمات مصممة من أجلك <em>ولنجاحك</em>
-          </h2>
-
-          <p>
-            اختر التصنيف المناسب لتظهر لك الخدمات المرتبطة به.
-          </p>
-        </div>
-
-        <div className="services-wrapper">
-          {/* التصنيفات */}
-          <div className="services-category-bar">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                type="button"
-                className={`services-category ${
-                  activeCategory === category.id
-                    ? 'active'
-                    : ''
-                }`}
-                onClick={() => {
-                  setActiveCategory(category.id)
-
-                  requestAnimationFrame(() => {
-                    if (sliderRef.current) {
-                      sliderRef.current.scrollLeft = 0
-                    }
-                  })
-                }}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
-
-          {/* شريط الخدمات */}
-          <div className="services-slider-shell">
-            <div
-              ref={sliderRef}
-              className="services-slider"
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              onPointerCancel={handlePointerUp}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onWheel={handleWheel}
-            >
-              {marqueeServices.map(
-                (service, index) => {
-                  const Icon = service.icon
-
-                  return (
-                    <article
-                      key={`${service.id}-${index}`}
-                      className="service-card"
-                    >
-                      {/* الأيقونة */}
-                      <div className="service-icon-wrap">
-                        <Icon className="service-icon" />
-                      </div>
-
-                      {/* العنوان */}
-                      <h3 className="service-title">
-                        {service.title}
-                      </h3>
-
-                      {/* العنوان الفرعي */}
-                      <div className="service-subtitle">
-                        {service.subtitle}
-                      </div>
-
-                      {/* الوصف */}
-                      <p className="service-description">
-                        {service.shortText}
-                      </p>
-
-                      {/* الأزرار */}
-                      <div className="service-buttons">
-                        {/* عرض الخدمة */}
-                        <Link
-                          href={`/services/${service.id}`}
-                          className="primary-button service-action"
-                          onPointerDown={(event) => {
-                            event.stopPropagation()
-                          }}
-                        >
-                          <span>
-                            عرض الخدمة
-                          </span>
-
-                          <ArrowLeft size={18} />
-                        </Link>
-
-                        {/* طلب الخدمة */}
-                        <Link
-                          href={`/services/${service.id}#order`}
-                          className="service-order-button"
-                          onPointerDown={(event) => {
-                            event.stopPropagation()
-                          }}
-                        >
-                          <span>
-                            اطلب الخدمة
-                          </span>
-                        </Link>
-                      </div>
-                    </article>
-                  )
-                },
-              )}
-            </div>
-          </div>
-
-          <div className="services-hint">
-            اسحب البطاقات يمينًا ويسارًا لاستعراض جميع الخدمات
-          </div>
-        </div>
-      </div>
-    </section>
+    </>
   )
 }
