@@ -1,38 +1,49 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Check, MessageCircle } from 'lucide-react'
+import { useState } from 'react'
+import {
+  ArrowRight,
+  BookOpen,
+  Check,
+  ChevronDown,
+  FileText,
+  MessageCircle,
+  ClipboardList,
+  GraduationCap,
+} from 'lucide-react'
+
 import { services } from '../../components/Services'
 
 const whatsapp = 'https://wa.me/967776280186'
 
-export default function ServiceDetailsPage({
+export default function ServiceDetails({
   params,
 }: {
   params: { id: string }
 }) {
   const service = services.find((item) => item.id === params.id)
 
+  const [openSection, setOpenSection] = useState<string | null>(null)
+
   if (!service) {
     return (
-      <main
-        style={{
-          minHeight: '70vh',
-          display: 'grid',
-          placeItems: 'center',
-          padding: '3rem 1rem',
-          textAlign: 'center',
-        }}
-      >
-        <div>
+      <main dir="rtl" className="min-h-screen bg-background text-foreground">
+        <div
+          className="container"
+          style={{
+            padding: '5rem 1rem',
+            textAlign: 'center',
+          }}
+        >
           <h1>الخدمة غير موجودة</h1>
+          <p>عذرًا، لم نتمكن من العثور على الخدمة المطلوبة.</p>
 
-          <p style={{ margin: '1rem 0 2rem' }}>
-            عذرًا، لم يتم العثور على الخدمة المطلوبة.
-          </p>
-
-          <Link href="/#services" className="text-button">
+          <Link
+            href="/#services"
+            className="primary-button"
+            style={{ display: 'inline-flex', marginTop: '1rem' }}
+          >
             <ArrowRight size={18} />
             العودة للخدمات
           </Link>
@@ -41,168 +52,223 @@ export default function ServiceDetailsPage({
     )
   }
 
-  const whatsappMessage = encodeURIComponent(
-    `السلام عليكم، أرغب بطلب خدمة: ${service.title}`
-  )
+  const Icon = service.icon
+
+  const toggleSection = (section: string) => {
+    setOpenSection((current) => (current === section ? null : section))
+  }
 
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        padding: '7rem 1rem 4rem',
-      }}
-    >
-      <div
-        className="container"
-        style={{
-          maxWidth: '1000px',
-          margin: '0 auto',
-        }}
-      >
+    <main dir="rtl" className="min-h-screen bg-background text-foreground">
+      <div className="container" style={{ padding: '2rem 1rem 5rem' }}>
         <Link
           href="/#services"
           className="text-button"
           style={{
             display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
             marginBottom: '2rem',
           }}
         >
           <ArrowRight size={18} />
-          العودة للخدمات
+          العودة إلى الخدمات
         </Link>
 
-        <article
+        <div
           style={{
-            background: '#fff',
-            borderRadius: '24px',
-            overflow: 'hidden',
-            boxShadow: '0 15px 50px rgba(0,0,0,0.08)',
+            maxWidth: 850,
+            margin: '0 auto',
           }}
         >
           <div
             style={{
-              position: 'relative',
-              height: '360px',
+              textAlign: 'center',
+              marginBottom: '2.5rem',
             }}
           >
-            <Image
-              src={service.image}
-              alt={service.title}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 1000px"
-              style={{ objectFit: 'cover' }}
-            />
+            <div
+              style={{
+                width: 80,
+                height: 80,
+                borderRadius: 24,
+                display: 'grid',
+                placeItems: 'center',
+                margin: '0 auto 1rem',
+                background: 'rgba(37, 99, 235, 0.09)',
+              }}
+            >
+              <Icon size={40} />
+            </div>
+
+            <h1 style={{ marginBottom: '0.5rem' }}>{service.title}</h1>
+
+            <p style={{ opacity: 0.65, fontWeight: 700 }}>
+              {service.subtitle}
+            </p>
           </div>
 
-          <div
-            style={{
-              padding: '2.5rem',
-            }}
-          >
-            <div
-              style={{
-                marginBottom: '1rem',
-                fontSize: '0.9rem',
-                opacity: 0.7,
-              }}
+          <div style={{ display: 'grid', gap: '0.9rem' }}>
+            <Accordion
+              icon={<BookOpen size={21} />}
+              title="نبذة عن الخدمة"
+              isOpen={openSection === 'about'}
+              onClick={() => toggleSection('about')}
             >
-              خدمات هديل الطلابية
-            </div>
+              <p>{service.about}</p>
+            </Accordion>
 
-            <h1
-              style={{
-                marginBottom: '1rem',
-              }}
+            <Accordion
+              icon={<ClipboardList size={21} />}
+              title="ماذا نقدم؟"
+              isOpen={openSection === 'offer'}
+              onClick={() => toggleSection('offer')}
             >
-              {service.title}
-            </h1>
+              <ul>
+                {service.whatWeOffer.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </Accordion>
 
-            <p
-              style={{
-                fontSize: '1.1rem',
-                lineHeight: 2,
-                marginBottom: '2rem',
-              }}
+            <Accordion
+              icon={<FileText size={21} />}
+              title="متطلبات الخدمة"
+              isOpen={openSection === 'requirements'}
+              onClick={() => toggleSection('requirements')}
             >
-              {service.about}
-            </p>
+              <ul>
+                {service.requirements.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            </Accordion>
 
-            <h2 style={{ marginBottom: '1.2rem' }}>
-              ماذا نقدم لك؟
-            </h2>
-
-            <div
-              style={{
-                display: 'grid',
-                gap: '1rem',
-                marginBottom: '2.5rem',
-              }}
+            <Accordion
+              icon={<GraduationCap size={21} />}
+              title="الأسئلة الشائعة"
+              isOpen={openSection === 'faq'}
+              onClick={() => toggleSection('faq')}
             >
-              {service.features.map((feature) => (
-                <div
-                  key={feature}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.7rem',
-                  }}
-                >
-                  <span
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '50%',
-                      display: 'grid',
-                      placeItems: 'center',
-                      background: 'rgba(37, 99, 235, 0.1)',
-                      flexShrink: 0,
-                    }}
-                  >
-                    <Check size={17} />
-                  </span>
+              <div style={{ display: 'grid', gap: '1rem' }}>
+                {service.faqs.map((faq, index) => (
+                  <div key={index}>
+                    <strong>س: {faq.q}</strong>
+                    <p style={{ marginTop: '0.35rem' }}>ج: {faq.a}</p>
+                  </div>
+                ))}
+              </div>
+            </Accordion>
 
-                  <span>{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                gap: '1rem',
-                flexWrap: 'wrap',
-              }}
+            <Accordion
+              icon={<MessageCircle size={21} />}
+              title="طلب الخدمة"
+              isOpen={openSection === 'order'}
+              onClick={() => toggleSection('order')}
             >
+              <p>{service.orderText}</p>
+
               <a
-                href={`${whatsapp}?text=${whatsappMessage}`}
+                href={`${whatsapp}?text=${encodeURIComponent(
+                  `مرحباً منصة هديل، أرغب بطلب خدمة: ${service.title}`
+                )}`}
                 target="_blank"
                 rel="noreferrer"
-                className="text-button"
+                className="primary-button"
                 style={{
                   display: 'inline-flex',
-                  padding: '0.9rem 1.4rem',
+                  marginTop: '1rem',
                 }}
               >
-                <MessageCircle size={19} />
-                اطلب الخدمة عبر واتساب
+                <MessageCircle size={18} />
+                طلب الخدمة عبر واتساب
               </a>
-
-              <Link
-                href="/#services"
-                className="text-button"
-                style={{
-                  display: 'inline-flex',
-                  padding: '0.9rem 1.4rem',
-                }}
-              >
-                <ArrowRight size={19} />
-                جميع الخدمات
-              </Link>
-            </div>
+            </Accordion>
           </div>
-        </article>
+        </div>
       </div>
     </main>
+  )
+}
+
+function Accordion({
+  icon,
+  title,
+  isOpen,
+  onClick,
+  children,
+}: {
+  icon: React.ReactNode
+  title: string
+  isOpen: boolean
+  onClick: () => void
+  children: React.ReactNode
+}) {
+  return (
+    <div
+      style={{
+        border: '1px solid var(--border, #e5e7eb)',
+        borderRadius: 18,
+        overflow: 'hidden',
+        background: 'var(--background, #fff)',
+        boxShadow: '0 5px 20px rgba(0,0,0,0.04)',
+      }}
+    >
+      <button
+        type="button"
+        onClick={onClick}
+        style={{
+          width: '100%',
+          border: 0,
+          background: 'transparent',
+          padding: '1.15rem 1.25rem',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.8rem',
+          cursor: 'pointer',
+          color: 'inherit',
+          fontFamily: 'inherit',
+          fontWeight: 800,
+          fontSize: '1rem',
+          textAlign: 'right',
+        }}
+      >
+        <span
+          style={{
+            width: 42,
+            height: 42,
+            minWidth: 42,
+            borderRadius: 12,
+            display: 'grid',
+            placeItems: 'center',
+            background: 'rgba(37, 99, 235, 0.09)',
+          }}
+        >
+          {icon}
+        </span>
+
+        <span style={{ flex: 1 }}>{title}</span>
+
+        <ChevronDown
+          size={21}
+          style={{
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0)',
+            transition: 'transform 0.2s ease',
+          }}
+        />
+      </button>
+
+      {isOpen && (
+        <div
+          style={{
+            padding: '0 1.25rem 1.3rem',
+            lineHeight: 1.9,
+            borderTop: '1px solid var(--border, #e5e7eb)',
+          }}
+        >
+          <div style={{ paddingTop: '1rem' }}>{children}</div>
+        </div>
+      )}
+    </div>
   )
 }
