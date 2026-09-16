@@ -1,305 +1,478 @@
 'use client'
 
-import Image from 'next/image'
+import { useState } from 'react'
+import Link from 'next/link'
 import {
-  ArrowLeft,
   BookOpen,
-  GraduationCap,
-  Headphones,
+  FileText,
+  ClipboardList,
+  PencilLine,
+  Laptop,
   Presentation,
-  Sparkles,
   UserRound,
+  Search,
+  BarChart3,
+  GraduationCap,
+  ArrowLeft,
+  FlaskConical,
+  BriefcaseBusiness,
 } from 'lucide-react'
 
-export type Service = {
-  id: string
-  category: 'research' | 'design' | 'academic'
-  icon: any
-  image: string
-  title: string
-  shortText: string
-  about: string
-  features: string[]
-}
+type Category = 'all' | 'research' | 'design' | 'academic'
 
-export const services: Service[] = [
+export const services = [
   {
     id: 'research',
-    category: 'research',
+    category: 'research' as Category,
     icon: BookOpen,
-    image: '/images/service-research.png',
-    title: 'إعداد البحوث والتقارير',
+    title: 'الخدمات البحثية والأكاديمية',
+    subtitle: 'بحوث، أوراق عمل، خطط بحوث',
     shortText:
-      'بحوث وتقارير علمية وفق منهجية أكاديمية وتوثيق معتمد خالية من الاقتباس.',
+      'خدمة متكاملة لمساعدة الطلاب والباحثين في إعداد البحوث العلمية وأوراق العمل وخطط البحوث بأعلى المعايير الأكاديمية.',
     about:
-      'نقدم خدمة إعداد البحوث والتقارير الأكاديمية بأسلوب منظم واحترافي، مع الاهتمام بالمنهجية الأكاديمية والتنسيق والتوثيق وإخراج البحث بصورة مناسبة للتسليم الجامعي.',
-    features: [
-      'تنسيق أكاديمي احترافي.',
-      'تنظيم العناوين والمراجع والمحتوى.',
-      'توثيق المصادر والمراجع.',
-      'مراجعة وتنسيق البحث قبل التسليم.',
+      'خدمة متكاملة مخصصة لمساعدة الطلاب والباحثين في إعداد البحوث العلمية، أوراق العمل، وخطط البحوث (Proposals) بأعلى معايير الجودة والأصول المنهجية الأكاديمية.',
+    whatWeOffer: [
+      'كتابة وتنسيق البحوث العلمية والتقارير الأكاديمية ومشاريع التخرج.',
+      'صياغة مقترحات البحوث (Proposals) وتحديد الإشكالية والأسئلة والأهداف.',
+      'إعداد المراجعات المرجعية (Literature Reviews) وتلخيص الدراسات السابقة.',
+      'التوثيق العلمي الدقيق للمراجع والمصادر وفق نظام (APA، Harvard، وغيرها).',
     ],
+    requirements: [
+      'عنوان البحث أو موضوعه بدقة.',
+      'عدد الكلمات أو الصفحات المطلوب.',
+      'نظام التوثيق المعتمد (APA، إلخ).',
+      'الموعد النهائي للتسليم وأي شروط خاصة من أستاذ المادة.',
+    ],
+    faqs: [
+      {
+        q: 'هل البحوث خالية من الاقتباس والانتحال؟',
+        a: 'نعم، جميع الأعمال تُكتب حصرياً وتُفحص ببرامج كشف السرقة الأدبية لضمان الأصالة.',
+      },
+    ],
+    orderText:
+      'لطلب الخدمة، يرجى تزويدنا بتفاصيل موضوع البحث والموعد النهائي.',
   },
 
   {
-    id: 'presentation',
-    category: 'design',
-    icon: Presentation,
-    image: '/images/service-presentation.png',
-    title: 'العروض التقديمية',
+    id: 'reports',
+    category: 'research' as Category,
+    icon: FileText,
+    title: 'التقارير الجامعية',
+    subtitle: 'تقارير علمية وعملية وميدانية',
     shortText:
-      'تصميم شرائح PowerPoint احترافية وتفاعلية لمشاريع التخرج والمناقشات.',
+      'إعداد وصياغة التقارير العلمية والعملية للمقررات الجامعية المختلفة باحترافية.',
     about:
-      'نصمم عروض PowerPoint احترافية تساعدك على تقديم مشروعك أو بحثك بصورة واضحة وجذابة، مع تنظيم المحتوى وتوزيعه على الشرائح بطريقة مناسبة.',
-    features: [
-      'تصميم احترافي للشرائح.',
-      'تنظيم المحتوى بطريقة واضحة.',
-      'مناسب لمشاريع التخرج والمناقشات.',
-      'إضافة الصور والعناصر البصرية المناسبة.',
+      'خدمة متخصصة لإعداد وصياغة التقارير العلمية والعملية للمقررات الجامعية المختلفة، بما يشمل التقارير المخبرية، الميدانية، والتقييمية.',
+    whatWeOffer: [
+      'بناء هيكل تقرير متكامل (مقدمة، عرض، تحليل، نتائج، وتوصيات).',
+      'تنظيم وتحليل البيانات الخاصة بالتقارير العملية والمخبرية أو الزيارات الميدانية.',
+      'التدقيق اللغوي والإملائي والتنسيق الاحترافي للشرائح والجداول داخل التقرير.',
     ],
+    requirements: [
+      'نموذج التقرير أو التعليمات الخاصة به (Guidelines).',
+      'البيانات أو النتائج الأولية (إن وجدت) المراد تحليلها وكتابتها.',
+      'عدد الصفحات والموعد النهائي للتسليم.',
+    ],
+    faqs: [
+      {
+        q: 'هل تخدمون التقارير الطبية والتمريضية؟',
+        a: 'نعم، نوفر تغطية شاملة للتقارير والمهام الخاصة بالتخصصات الصحية والتمريضية.',
+      },
+    ],
+    orderText:
+      'لطلب الخدمة، شاركنا تفاصيل التقرير وشروطه لنبدأ العمل فوراً.',
   },
 
   {
     id: 'assignments',
-    category: 'academic',
-    icon: GraduationCap,
-    image: '/images/service-assignments.png',
-    title: 'التكليفات والواجبات',
+    category: 'academic' as Category,
+    icon: ClipboardList,
+    title: 'التكاليف الجامعية',
+    subtitle: 'التكاليف الفصلية والكبرى',
     shortText:
-      'حل ومتابعة وافية للأنشطة والواجبات الجامعية بمختلف التخصصات.',
+      'حل وإنجاز التكاليف الفصلية الكبرى والمشاريع الدراسية وفق متطلبات المقرر.',
     about:
-      'خدمة تساعدك في تنظيم وفهم متطلبات التكليفات والواجبات الجامعية وتجهيزها بصورة مرتبة وواضحة وفق المطلوب.',
-    features: [
-      'تنظيم متطلبات التكليف.',
-      'مساعدة في إعداد المحتوى.',
-      'تنسيق وتسليم العمل بصورة احترافية.',
+      'خدمة مخصصة لحل وإنجاز التكاليف الفصلية الكبرى والمشاريع الدراسية التي تشكل وزناً نسبياً عالياً في درجات المقررات.',
+    whatWeOffer: [
+      'دراسة وتحليل متطلبات التكليف بعناية فائقة لضمان مطابقة معايير التقييم.',
+      'إعداد الحلول والإجابات النموذجية للمشاريع الفصلية والمهام الكبرى.',
+      'مراجعة العمل وتدقيقه للتأكد من خلوه من أي أخطاء حسابية أو منهجية.',
     ],
+    requirements: [
+      'ملف التكليف أو الأسئلة بصيغة (PDF أو Word).',
+      'المراجع أو المحاضرات المرتبطة بالتكليف (إن توفرت).',
+      'موعد التسليم النهائي.',
+    ],
+    faqs: [
+      {
+        q: 'هل تضمنون الدرجات العالية في التكاليف؟',
+        a: 'نعمل بأعلى معايير الدقة والاحترافية لمساعدتك في تحقيق أفضل الدرجات الممكنة.',
+      },
+    ],
+    orderText:
+      'أرسل ملف التكليف الآن لتحديد الوقت والتكلفة المناسبة.',
+  },
+
+  {
+    id: 'homework',
+    category: 'academic' as Category,
+    icon: PencilLine,
+    title: 'الواجبات الدراسية',
+    subtitle: 'اليومية والأسبوعية',
+    shortText:
+      'متابعة وحل الواجبات والمهام القصيرة الدورية للمقررات الدراسية المختلفة.',
+    about:
+      'متابعة وحل الواجبات والمهام القصيرة الدورية للمقررات الدراسية المختلفة لضمان جمع الدرجات باستمرار دون تأخير.',
+    whatWeOffer: [
+      'حل الواجبات الأسبوعية واليومية لمختلف التخصصات (العلمية، النظرية، والإدارية).',
+      'الالتزام التام بتسليم الواجب في وقته المحدد وقبل الموعد النهائي.',
+      'تقديم الإجابات بطريقة واضحة ومبسطة تدعم فهم الطالب.',
+    ],
+    requirements: [
+      'تفاصيل السؤال أو الواجب المطلوب.',
+      'موعد التسليم باليوم والساعة.',
+    ],
+    faqs: [
+      {
+        q: 'هل يمكن تسليم الواجب في نفس يوم الطلب؟',
+        a: 'نعم، حسب طبيعة وحجم الواجب وقابليته للإنجاز السريع.',
+      },
+    ],
+    orderText:
+      'ارسل واجبك الآن لنقوم بإنجازه في أسرع وقت.',
+  },
+
+  {
+    id: 'lms',
+    category: 'academic' as Category,
+    icon: Laptop,
+    title: 'إدارة المنصات والمهام الدراسية',
+    subtitle: 'LMS & Quizzes',
+    shortText:
+      'إدارة ومتابعة منصات التعلم عن بعد مثل Blackboard وCanvas وMoodle.',
+    about:
+      'خدمة احترافية لإدارة ومتابعة منصات التعلم عن بعد (Blackboard، Canvas، Moodle وغيرها) لضمان عدم تفويت أي مهمة أو اختبار قصير.',
+    whatWeOffer: [
+      'المتابعة الدورية والدخول المنتظم للمنصات التعليمية.',
+      'تسليم المهام والواجبات في مواعيدها بدقة.',
+      'المشاركة الفعالة في المنتديات النقاشية الخاصة بالمقررات.',
+      'المساعدة في حل الاختبارات القصيرة (Quizzes) ضمن وقتها المحدد.',
+    ],
+    requirements: [
+      'بيانات الدخول الخاصة بالمنصة التعليمية (بسرية وخصوصية تامة).',
+      'جدول المقررات والمواعيد الهامة للاختبارات والمهام.',
+    ],
+    faqs: [
+      {
+        q: 'هل بيانات حسابي آمنة؟',
+        a: 'نعم، نضمن لك سرية تامة وأمان كامل لبيانات الدخول الخاصة بك.',
+      },
+    ],
+    orderText:
+      'تواصل معنا لتنظيم متابعة منصتك التعليمية بشكل دوري.',
+  },
+
+  {
+    id: 'presentation',
+    category: 'design' as Category,
+    icon: Presentation,
+    title: 'العروض التقديمية والتصميم',
+    subtitle: 'PowerPoint & Infographics',
+    shortText:
+      'تحويل البحوث والتقارير إلى عروض تقديمية جذابة وتصاميم وإنفوجرافيك احترافية.',
+    about:
+      'خدمة تحويل النصوص والبحوث والتقارير إلى عروض تقديمية (PowerPoint) جذابة وتصاميم بصرية وإنفوجرافيك تسهل الشرح والعرض أمام الأساتذة والزملاء.',
+    whatWeOffer: [
+      'تصميم عروض PowerPoint احترافية ومتناسقة بصرياً.',
+      'تحويل الأبحاث المعقدة إلى شرائح عرض ملخصة ومباشرة.',
+      'إعداد خرائط ذهنية وإنفوجرافيك توضيحي للمشاريع.',
+    ],
+    requirements: [
+      'المحتوى أو الملف المراد تحويله إلى عرض تقديمي.',
+      'عدد الشرائح المطلوبة أو الوقت المخصص للعرض.',
+      'النمط المفضل (رسمي، أكاديمي، إبداعي، إلخ).',
+    ],
+    faqs: [
+      {
+        q: 'هل تتضمن الشرائح تأثيرات حركية ورسوم؟',
+        a: 'نعم، نصممها بصور وتنسيقات عصرية تدعم جمالية العرض وتجتذب الانتباه.',
+      },
+    ],
+    orderText:
+      'أرسل محتواك وحدد موعد العرض لنبدأ بتصميم شرائحك الاحترافية.',
   },
 
   {
     id: 'cv',
-    category: 'design',
+    category: 'design' as Category,
     icon: UserRound,
-    image: '/images/service-cv.png',
-    title: 'السيرة الذاتية CV',
+    title: 'السيرة الذاتية والخدمات المهنية',
+    subtitle: 'CV',
     shortText:
-      'سير ذاتية عربية وإنجليزية متوافقة مع أنظمة الفرز الآلي ATS.',
+      'تصميم وتطوير السيرة الذاتية بالعربية أو الإنجليزية بما يتوافق مع ATS.',
     about:
-      'نصمم سيرًا ذاتية احترافية بالعربية والإنجليزية مع تنظيم الخبرات والمؤهلات والمهارات بطريقة مناسبة للتقديم على الفرص الوظيفية.',
-    features: [
-      'تصميم عربي وإنجليزي.',
-      'تنسيق مناسب لأنظمة ATS.',
-      'تنظيم الخبرات والمهارات والمؤهلات.',
+      'خدمة تصميم وتطوير السيرة الذاتية (CV) احترافياً لتبرز مؤهلاتك وخبراتك التعليمية والتدريبية بالشكل الأمثل أمام جهات العمل وأنظمة الفرز الآلي (ATS).',
+    whatWeOffer: [
+      'بناء وصياغة السيرة الذاتية باللغتين العربية أو الإنجليزية.',
+      'تنسيق القوالب الحديثة المتوافقة مع أنظمة الفرز الإلكتروني (ATS).',
+      'إبراز المؤهلات الأكاديمية والمهارات والتدريب العملي بأسلوب تسويقي مهني.',
     ],
+    requirements: [
+      'المؤهل العلمي والتخصص.',
+      'الخبرات، التدريب، أو الدورات الحاصل عليها.',
+      'معلومات الاتصال واللغة المطلوبة (عربي / إنجليزي).',
+    ],
+    faqs: [
+      {
+        q: 'هل السيرة الذاتية متوافقة مع أنظمة الـ ATS؟',
+        a: 'نعم، نصممها بعناية لتعبر الفلاتر الإلكترونية لجهات التوظيف بنجاح.',
+      },
+    ],
+    orderText:
+      'أرسل بياناتك الحالية أو تواصل معنا لبناء سيرة ذاتية جديدة كلياً.',
   },
 
   {
-    id: 'invitations',
-    category: 'design',
-    icon: Sparkles,
-    image: '/images/service-invitations.png',
-    title: 'الدعوات الإلكترونية',
+    id: 'case-study',
+    category: 'research' as Category,
+    icon: Search,
+    title: 'دراسة الحالة',
+    subtitle: 'Case Studies',
     shortText:
-      'بطاقات تخرج ومناسبات بتصاميم حديثة ومميزة تناسب ذوقك.',
+      'تحليل وحل دراسات الحالة الواقعية والأكاديمية بأسلوب منهجي وعلمي دقيق.',
     about:
-      'نقدم تصاميم دعوات إلكترونية للمناسبات والتخرج وغيرها، مع إمكانية تخصيص النصوص والمعلومات حسب المناسبة.',
-    features: [
-      'تصاميم حديثة ومميزة.',
-      'تخصيص النصوص والمعلومات.',
-      'مناسبة للتخرج والمناسبات المختلفة.',
+      'خدمة متخصصة لتحليل وحل دراسات الحالة الواقعية والأكاديمية لمختلف المقررات (مثل إدارة الأعمال، الموارد البشرية، الرعاية الصحية، والاقتصاد) بأسلوب منهجي وعلمي دقيق.',
+    whatWeOffer: [
+      'تحليل تفصيلي لمعطيات المشكلة أو الحالة المطروحة.',
+      'ربط المشكلة والنظريات العلمية المقررة بالمنهج الدراسي.',
+      'صياغة التوصيات، الحلول الاستراتيجية، واتخاذ القرارات بدقة.',
+      'كتابة التقرير النهائي بالهيكل الأكاديمي المطلوب (المشكلة، التحليل، الحلول).',
     ],
+    requirements: [
+      'نص دراسة الحالة أو الملف المرفق.',
+      'الأسئلة المطلوبة الإجابة عنها بشأن الحالة (إن وجدت).',
+      'نظام التوثيق والموعد النهائي للتسليم.',
+    ],
+    faqs: [
+      {
+        q: 'هل الحلول مبنية على أسس أكاديمية؟',
+        a: 'نعم، نعتمد على النظريات والنماذج العلمية المرتبطة بمقرر دراسة الحالة لضمان أعلى الدرجات.',
+      },
+    ],
+    orderText:
+      'أرسل نص دراسة الحالة والأسئلة لنبدأ التحليل فوراً.',
   },
 
   {
-    id: 'blackboard',
-    category: 'academic',
-    icon: Headphones,
-    image: '/images/service-followup.png',
-    title: 'متابعة مواد البلاك بورد',
+    id: 'feasibility',
+    category: 'research' as Category,
+    icon: BarChart3,
+    title: 'دراسات الجدوى',
+    subtitle: 'Feasibility Studies',
     shortText:
-      'إدارة ومتابعة المقررات والمحاضرات والاختبارات طوال الترم.',
+      'إعداد دراسات الجدوى الاقتصادية والتشغيلية للمشاريع التجارية والريادية.',
     about:
-      'خدمة لمتابعة وتنظيم متطلبات المقررات الدراسية على منصة البلاك بورد خلال الفصل الدراسي.',
-    features: [
-      'متابعة المقررات والمحاضرات.',
-      'تنظيم المهام والمتطلبات.',
-      'متابعة الاختبارات والتنبيهات.',
+      'خدمة متكاملة لإعداد دراسات الجدوى الاقتصادية والتشغيلية للمشاريع التجارية والريادية، بما يشمل الجوانب التسويقية، المالية، والفنية بدقة عالية.',
+    whatWeOffer: [
+      'الدراسة التسويقية: تحليل السوق، المستهدفين، والمنافسين.',
+      'الدراسة الفنية والتشغيلية: تحديد المتطلبات، الموارد، وخطوات سير العمل.',
+      'الدراسة المالية: تقدير التكاليف، الأرباح المتوقعة، والجدوى الاستثمارية.',
+      'إخراج التقرير النهائي بتنسيق احترافي جاهز للعرض أو التسليم الأكاديمي.',
     ],
+    requirements: [
+      'فكرة المشروع أو نوع النشاط المقترح.',
+      'النطاق الجغرافي أو حجم المشروع المطلوب.',
+      'المتطلبات الخاصة بالدراسة (أكاديمية أم تطبيقية لعمل مشروع حقيقي).',
+    ],
+    faqs: [
+      {
+        q: 'هل تشمل الدراسة جداول وحسابات مالية واضحة؟',
+        a: 'نعم، نتكفل بتقدير التكاليف والجداول المالية بدقة متناهية.',
+      },
+    ],
+    orderText:
+      'شاركنا فكرة مشروعك لنبدأ في صياغة دراسة الجدوى المتكاملة.',
+  },
+
+  {
+    id: 'graduation',
+    category: 'research' as Category,
+    icon: GraduationCap,
+    title: 'مشاريع التخرج',
+    subtitle: 'Graduation Projects',
+    shortText:
+      'دعم شامل لمشروع التخرج من الفكرة حتى التسليم النهائي لمختلف التخصصات.',
+    about:
+      'دعم شامل ومواكب لخطوات مشروع التخرج من الفكرة حتى التسليم النهائي، لمختلف التخصصات العلمية، الإدارية، الصحية، والتقنية.',
+    whatWeOffer: [
+      'المساعدة في اختيار واقتراح عناوين مبتكرة لمشاريع التخرج.',
+      'إعداد خطة المشروع (Project Proposal) وهيكل البحث أو النظام.',
+      'كتابة فصول المشروع كاملة (المقدمة، الأدبيات، المنهجية، التحليل، والنتائج).',
+      'توفير الجانب التطبيقي أو البرمجي أو الميداني (حسب تخصص المشروع).',
+      'التنسيق والتوثيق العلمي الكامل وفقاً لدليل الجامعة المعتمد.',
+    ],
+    requirements: [
+      'دليل مشروع التخرج أو الشروط الخاصة بالجامعة.',
+      'التخصص ومجال المشروع المطلوب.',
+      'الموعد النهائي للمراحل المختلفة أو التسليم النهائي.',
+    ],
+    faqs: [
+      {
+        q: 'هل يتم تسليم المشروع على مراحل للمراجعة؟',
+        a: 'نعم، يتم تقسيم العمل إلى مراحل (Proposal، الفصول الأولى، التطبيق، التقرير النهائي) لضمان المتابعة المستمرة مع الطالب.',
+      },
+    ],
+    orderText:
+      'تواصل معنا بتفاصيل تخصصك وشروط مشروع التخرج لنبدأ العمل خطوة بخطوة.',
   },
 ]
 
-const whatsapp = 'https://wa.me/967776280186'
+const categories = [
+  { id: 'all' as Category, label: 'جميع الخدمات' },
+  { id: 'research' as Category, label: 'البحوث' },
+  { id: 'design' as Category, label: 'التصاميم' },
+  { id: 'academic' as Category, label: 'الخدمات الأكاديمية' },
+]
 
 export default function Services() {
-  return (
-    <section
-      id="services"
-      data-reveal
-      className="section container reveal-section"
-    >
-      <div className="section-heading">
-        <div>
-          <span className="section-kicker">خدماتنا</span>
+  const [activeCategory, setActiveCategory] = useState<Category>('all')
 
+  const filteredServices =
+    activeCategory === 'all'
+      ? services
+      : services.filter((service) => service.category === activeCategory)
+
+  return (
+    <section id="services" className="section soft-section">
+      <div className="container">
+        <div className="center-heading">
+          <span className="section-kicker">خدماتنا</span>
           <h2>
-            حلول أكاديمية <em>شاملة وباحترافية</em>
+            خدمات مصممة من أجلك <em>ولنجاحك</em>
           </h2>
+          <p>
+            اختر التصنيف المناسب لتظهر لك الخدمات المرتبطة به.
+          </p>
         </div>
 
-        <a
-          className="text-button"
-          href={whatsapp}
-          target="_blank"
-          rel="noreferrer"
-        >
-          اطلب الآن <ArrowLeft size={17} />
-        </a>
-      </div>
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: '0.7rem',
-          flexWrap: 'wrap',
-          marginBottom: '2rem',
-        }}
-      >
-        <span
+        <div
           style={{
-            padding: '0.65rem 1.2rem',
-            borderRadius: '999px',
-            background: 'var(--primary, #2563eb)',
-            color: '#fff',
-            fontWeight: 700,
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: '0.75rem',
+            marginBottom: '2rem',
           }}
         >
-          جميع الخدمات
-        </span>
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              type="button"
+              onClick={() => setActiveCategory(category.id)}
+              style={{
+                border: '1px solid var(--border, #e5e7eb)',
+                borderRadius: '999px',
+                padding: '0.75rem 1.25rem',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                fontWeight: 700,
+                background:
+                  activeCategory === category.id
+                    ? 'var(--foreground, #111827)'
+                    : 'var(--background, #fff)',
+                color:
+                  activeCategory === category.id
+                    ? 'var(--background, #fff)'
+                    : 'var(--foreground, #111827)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
 
-        <span
+        <div
           style={{
-            padding: '0.65rem 1.2rem',
-            borderRadius: '999px',
-            background: 'rgba(37, 99, 235, 0.08)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+            gap: '1.25rem',
           }}
         >
-          البحوث
-        </span>
-
-        <span
-          style={{
-            padding: '0.65rem 1.2rem',
-            borderRadius: '999px',
-            background: 'rgba(37, 99, 235, 0.08)',
-          }}
-        >
-          التصميم
-        </span>
-
-        <span
-          style={{
-            padding: '0.65rem 1.2rem',
-            borderRadius: '999px',
-            background: 'rgba(37, 99, 235, 0.08)',
-          }}
-        >
-          الخدمات الأكاديمية
-        </span>
-      </div>
-
-      <div
-        className="services-marquee-container"
-        style={{
-          overflow: 'hidden',
-          padding: '1rem 0',
-        }}
-      >
-        <div className="services-marquee-track">
-          {[...services, ...services].map((service, index) => {
+          {filteredServices.map((service) => {
             const Icon = service.icon
 
             return (
               <article
-                className="service-card"
-                key={`${service.id}-${index}`}
+                key={service.id}
                 style={{
-                  width: '320px',
-                  flexShrink: 0,
-                  margin: 0,
+                  background: 'var(--background, #fff)',
+                  border: '1px solid var(--border, #e5e7eb)',
+                  borderRadius: '20px',
+                  padding: '1.5rem',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minHeight: '290px',
+                  boxShadow: '0 8px 30px rgba(0,0,0,0.05)',
                 }}
               >
                 <div
-                  className="service-image"
                   style={{
-                    height: '180px',
-                    position: 'relative',
+                    width: 58,
+                    height: 58,
+                    borderRadius: 16,
+                    display: 'grid',
+                    placeItems: 'center',
+                    background: 'rgba(37, 99, 235, 0.09)',
+                    marginBottom: '1rem',
                   }}
                 >
-                  <Image
-                    src={service.image}
-                    alt={service.title}
-                    fill
-                    sizes="320px"
-                    style={{ objectFit: 'cover' }}
-                  />
+                  <Icon size={28} />
                 </div>
+
+                <h3 style={{ margin: '0 0 0.5rem', fontSize: '1.15rem' }}>
+                  {service.title}
+                </h3>
 
                 <div
-                  className="service-content"
                   style={{
-                    padding: '1.25rem',
-                    textAlign: 'center',
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    opacity: 0.65,
+                    marginBottom: '0.8rem',
                   }}
                 >
-                  <div className="service-icon">
-                    <Icon size={25} />
-                  </div>
-
-                  <h3>{service.title}</h3>
-
-                  <p>{service.shortText}</p>
-
-                  <a
-                    href={`/services/${service.id}`}
-                    className="text-button"
-                    style={{
-                      marginTop: '1rem',
-                      display: 'inline-flex',
-                    }}
-                  >
-                    عرض الخدمة
-                    <ArrowLeft size={17} />
-                  </a>
+                  {service.subtitle}
                 </div>
+
+                <p
+                  style={{
+                    lineHeight: 1.8,
+                    margin: 0,
+                    opacity: 0.8,
+                    flex: 1,
+                  }}
+                >
+                  {service.shortText}
+                </p>
+
+                <Link
+                  href={`/services/${service.id}`}
+                  className="primary-button"
+                  style={{
+                    marginTop: '1.25rem',
+                    justifyContent: 'center',
+                    textDecoration: 'none',
+                  }}
+                >
+                  عرض الخدمة
+                  <ArrowLeft size={17} />
+                </Link>
               </article>
             )
           })}
         </div>
       </div>
-
-      <style jsx global>{`
-        @keyframes servicesMarquee {
-          0% {
-            transform: translateX(0);
-          }
-
-          100% {
-            transform: translateX(50%);
-          }
-        }
-
-        .services-marquee-track {
-          display: flex;
-          gap: 1.5rem;
-          width: max-content;
-          animation: servicesMarquee 35s linear infinite;
-        }
-
-        .services-marquee-container:hover .services-marquee-track {
-          animation-play-state: paused;
-        }
-      `}</style>
     </section>
   )
 }
