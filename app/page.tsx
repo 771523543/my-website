@@ -250,6 +250,7 @@ export default function Page() {
         </div>
       </header>
 
+      {/* ==================== HERO ==================== */}
       <section id="top" className="hero container">
         <div className="hero-copy">
           <span className="eyebrow">
@@ -284,7 +285,8 @@ export default function Page() {
               <ArrowLeft size={18} />
             </a>
           </div>
-<QuickSections />
+
+          {/* QuickSections تم نقله خارج الـ Hero */}
           <div className="trust-row">
             <div className="avatars">
               <span>أ</span>
@@ -353,6 +355,12 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ==================================================
+          شريط الأقسام المتحرك
+          يظهر مباشرة بعد الـ Hero
+          ================================================== */}
+      <QuickSections />
+
       <section className="stats-strip">
         <div className="container stats">
           <div>
@@ -377,6 +385,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ==================== STORY ==================== */}
       <section id="story" className="section story-section container">
         <div className="story-visual">
           <div className="story-card">
@@ -420,6 +429,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ==================== VALUES ==================== */}
       <section
         id="values"
         data-reveal
@@ -458,11 +468,13 @@ export default function Page() {
         </div>
       </section>
 
-      {/* قسم الخدمات في ملف مستقل */}
+      {/* ==================== SERVICES ==================== */}
       <ServicesPreview />
 
+      {/* ==================== PACKAGES ==================== */}
       <Packages />
 
+      {/* ==================== GPA CALCULATOR ==================== */}
       <section
         id="gpa-calculator"
         className="section soft-section container"
@@ -790,6 +802,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ==================== TESTIMONIALS ==================== */}
       <section id="testimonials" className="section container">
         <div className="center-heading">
           <span className="section-kicker">آراء العملاء</span>
@@ -879,9 +892,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* قسم أعمالنا السابقة في ملف مستقل */}
+      {/* ==================== PREVIOUS WORKS ==================== */}
       <PreviousWorks />
 
+      {/* ==================== ACADEMIC AD ==================== */}
       <section className="academic-ad-section container">
         <div className="academic-ad">
           <span className="ad-badge">
@@ -913,6 +927,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ==================== ACHIEVEMENTS ==================== */}
       <section className="achievements-section container">
         <div className="achievements-copy">
           <span className="section-kicker">
@@ -1024,6 +1039,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ==================== WHY ==================== */}
       <section id="why" className="why-section">
         <div className="container why-inner">
           <div>
@@ -1077,6 +1093,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ==================== FAQ ==================== */}
       <section id="faq" className="section container">
         <div className="center-heading">
           <span className="section-kicker">
@@ -1167,6 +1184,7 @@ export default function Page() {
         </div>
       </section>
 
+      {/* ==================== CONTACT ==================== */}
       <section id="contact" className="cta-section container">
         <div>
           <span className="section-kicker">جاهز تبدأ؟</span>
@@ -1191,6 +1209,7 @@ export default function Page() {
         </a>
       </section>
 
+      {/* ==================== FOOTER ==================== */}
       <footer className="footer">
         <div className="container footer-grid">
           <div>
@@ -1259,6 +1278,7 @@ export default function Page() {
         </div>
       </footer>
 
+      {/* ==================== FLOATING WHATSAPP ==================== */}
       <a
         className="floating-whatsapp"
         href={whatsapp}
