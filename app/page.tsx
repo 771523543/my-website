@@ -19,6 +19,7 @@ import {
   Trash2,
 } from 'lucide-react'
 
+import QuickSections from './components/QuickSections'
 import ServicesPreview from './components/ServicesPreview'
 import Packages from './components/Packages'
 import PreviousWorks from './components/PreviousWorks'
@@ -283,7 +284,7 @@ export default function Page() {
               <ArrowLeft size={18} />
             </a>
           </div>
-
+<QuickSections />
           <div className="trust-row">
             <div className="avatars">
               <span>أ</span>
