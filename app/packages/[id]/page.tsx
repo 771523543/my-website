@@ -10,6 +10,12 @@ import {
   ChevronDown,
   MessageCircle,
   Sparkles,
+  GraduationCap,
+  ShieldCheck,
+  Zap,
+  Star,
+  BookOpen,
+  ClipboardCheck,
 } from 'lucide-react'
 
 import { packagesData } from '../../components/packagesData'
@@ -22,9 +28,8 @@ export default function PackageDetailsPage() {
     (item) => item.id === id
   )
 
-  const [openSection, setOpenSection] = useState<
-    number | null
-  >(0)
+  const [openSection, setOpenSection] =
+    useState<number | null>(0)
 
   if (!packageData) {
     return (
@@ -39,12 +44,29 @@ export default function PackageDetailsPage() {
           textAlign: 'center',
         }}
       >
-        <div>
+        <div
+          style={{
+            maxWidth: '500px',
+            padding: '45px 30px',
+            borderRadius: '28px',
+            background:
+              'linear-gradient(145deg, rgba(120,90,255,0.12), rgba(0,190,255,0.06))',
+            border:
+              '1px solid rgba(120,90,255,0.2)',
+            boxShadow:
+              '0 25px 70px rgba(60,40,130,0.15)',
+          }}
+        >
+          <Sparkles
+            size={45}
+            style={{ marginBottom: '15px' }}
+          />
+
           <h1
             style={{
-              fontSize: '32px',
-              fontWeight: 800,
-              marginBottom: '15px',
+              fontSize: '30px',
+              fontWeight: 900,
+              marginBottom: '12px',
             }}
           >
             الباقة غير موجودة
@@ -52,8 +74,9 @@ export default function PackageDetailsPage() {
 
           <p
             style={{
+              lineHeight: 1.9,
+              opacity: 0.7,
               marginBottom: '25px',
-              opacity: 0.75,
             }}
           >
             عذراً، لم يتم العثور على الباقة المطلوبة.
@@ -66,6 +89,7 @@ export default function PackageDetailsPage() {
               alignItems: 'center',
               gap: '8px',
               textDecoration: 'none',
+              fontWeight: 800,
             }}
           >
             <ArrowRight size={19} />
@@ -86,12 +110,13 @@ export default function PackageDetailsPage() {
       dir="rtl"
       style={{
         minHeight: '100vh',
-        padding: '40px 20px 80px',
+        padding: '35px 18px 90px',
+        overflow: 'hidden',
       }}
     >
       <div
         style={{
-          maxWidth: '1100px',
+          maxWidth: '1150px',
           margin: '0 auto',
         }}
       >
@@ -103,146 +128,313 @@ export default function PackageDetailsPage() {
             alignItems: 'center',
             gap: '8px',
             textDecoration: 'none',
-            marginBottom: '30px',
-            fontWeight: 700,
+            marginBottom: '35px',
+            fontWeight: 800,
+            opacity: 0.8,
           }}
         >
           <ArrowRight size={20} />
           العودة إلى الباقات
         </Link>
 
-        {/* الهيدر */}
+        {/* Hero التفاصيل */}
+        <section
+          style={{
+            position: 'relative',
+            overflow: 'hidden',
+            borderRadius: '32px',
+            padding:
+              'clamp(30px, 6vw, 65px) 25px',
+            textAlign: 'center',
+            background:
+              'linear-gradient(145deg, rgba(105,75,255,0.14), rgba(0,190,255,0.07))',
+            border:
+              '1px solid rgba(120,100,255,0.22)',
+            boxShadow:
+              '0 30px 90px rgba(65,45,140,0.13)',
+            marginBottom: '45px',
+          }}
+        >
+          {/* دوائر زخرفية */}
+          <div
+            style={{
+              position: 'absolute',
+              width: '230px',
+              height: '230px',
+              borderRadius: '50%',
+              top: '-100px',
+              right: '-70px',
+              background:
+                'radial-gradient(circle, rgba(110,75,255,0.25), transparent 70%)',
+              filter: 'blur(8px)',
+            }}
+          />
+
+          <div
+            style={{
+              position: 'absolute',
+              width: '230px',
+              height: '230px',
+              borderRadius: '50%',
+              bottom: '-120px',
+              left: '-70px',
+              background:
+                'radial-gradient(circle, rgba(0,190,255,0.22), transparent 70%)',
+              filter: 'blur(8px)',
+            }}
+          />
+
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 2,
+            }}
+          >
+            {/* الشارة */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '9px 17px',
+                borderRadius: '999px',
+                marginBottom: '18px',
+                color: '#fff',
+                background:
+                  'linear-gradient(90deg, #694cff, #08aeea)',
+                boxShadow:
+                  '0 10px 30px rgba(90,70,220,0.25)',
+                fontSize: '13px',
+                fontWeight: 900,
+              }}
+            >
+              <Sparkles size={16} />
+              {packageData.badge}
+            </div>
+
+            <p
+              style={{
+                margin: '0 0 10px',
+                fontSize: '14px',
+                fontWeight: 800,
+                opacity: 0.65,
+              }}
+            >
+              {packageData.platform}
+            </p>
+
+            <h1
+              style={{
+                margin: 0,
+                fontSize:
+                  'clamp(32px, 7vw, 58px)',
+                fontWeight: 950,
+                lineHeight: 1.25,
+                background:
+                  'linear-gradient(90deg, #6748ff, #079fd7, #6748ff)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor:
+                  'transparent',
+                backgroundSize: '200% auto',
+              }}
+            >
+              {packageData.title}
+            </h1>
+
+            <p
+              style={{
+                maxWidth: '800px',
+                margin: '18px auto 0',
+                fontSize:
+                  'clamp(17px, 2.7vw, 22px)',
+                lineHeight: 1.9,
+                fontWeight: 700,
+              }}
+            >
+              {packageData.subtitle}
+            </p>
+          </div>
+        </section>
+
+        {/* مقدمة */}
         <section
           style={{
             textAlign: 'center',
-            marginBottom: '45px',
+            maxWidth: '850px',
+            margin: '0 auto 55px',
           }}
         >
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px',
-              marginBottom: '15px',
-              fontWeight: 700,
+              justifyContent: 'center',
+              width: '58px',
+              height: '58px',
+              borderRadius: '18px',
+              marginBottom: '16px',
+              background:
+                'linear-gradient(135deg, #694cff, #08aeea)',
+              color: '#fff',
+              boxShadow:
+                '0 12px 30px rgba(90,70,220,0.2)',
             }}
           >
-            <Sparkles size={20} />
-            <span>{packageData.badge}</span>
+            <GraduationCap size={30} />
           </div>
 
-          <p
+          <h2
             style={{
-              margin: '0 0 10px',
-              fontSize: '15px',
-              opacity: 0.7,
-              fontWeight: 700,
-            }}
-          >
-            {packageData.platform}
-          </p>
-
-          <h1
-            style={{
-              margin: 0,
-              fontSize: 'clamp(30px, 6vw, 52px)',
+              margin: '0 0 15px',
+              fontSize:
+                'clamp(25px, 4vw, 34px)',
               fontWeight: 900,
-              lineHeight: 1.3,
             }}
           >
-            {packageData.title}
-          </h1>
+            لماذا هذه الباقة؟
+          </h2>
 
-          <p
-            style={{
-              maxWidth: '750px',
-              margin: '18px auto 0',
-              fontSize: 'clamp(17px, 2.5vw, 21px)',
-              lineHeight: 1.8,
-              fontWeight: 600,
-            }}
-          >
-            {packageData.subtitle}
-          </p>
-        </section>
-
-        {/* الوصف */}
-        <section
-          style={{
-            maxWidth: '850px',
-            margin: '0 auto 45px',
-            textAlign: 'center',
-          }}
-        >
           <p
             style={{
               margin: 0,
               fontSize: '17px',
               lineHeight: 2,
-              opacity: 0.85,
+              opacity: 0.78,
             }}
           >
             {packageData.description}
           </p>
         </section>
 
-        {/* المميزات */}
+        {/* شريط المزايا */}
         <section
           style={{
-            marginBottom: '45px',
+            marginBottom: '60px',
           }}
         >
-          <h2
+          <div
             style={{
               textAlign: 'center',
-              fontSize: '28px',
-              fontWeight: 800,
-              marginBottom: '25px',
+              marginBottom: '28px',
             }}
           >
-            ماذا تشمل الباقة؟
-          </h2>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '7px',
+                fontSize: '14px',
+                fontWeight: 900,
+                color: '#6748ff',
+              }}
+            >
+              <Zap size={17} />
+              مميزات الباقة
+            </span>
+
+            <h2
+              style={{
+                margin: '8px 0 0',
+                fontSize:
+                  'clamp(27px, 4vw, 38px)',
+                fontWeight: 900,
+              }}
+            >
+              كل ما تحتاجه في مكان واحد
+            </h2>
+          </div>
 
           <div
             style={{
               display: 'grid',
               gridTemplateColumns:
                 'repeat(auto-fit, minmax(240px, 1fr))',
-              gap: '15px',
+              gap: '18px',
             }}
           >
             {packageData.features.map(
-              (feature, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '12px',
-                    padding: '20px',
-                    borderRadius: '18px',
-                    background:
-                      'rgba(128,128,128,0.08)',
-                  }}
-                >
-                  <CheckCircle2
-                    size={22}
-                    style={{
-                      flexShrink: 0,
-                      marginTop: '2px',
-                    }}
-                  />
+              (feature, index) => {
+                const icons = [
+                  <ClipboardCheck
+                    key="1"
+                    size={26}
+                  />,
+                  <BookOpen
+                    key="2"
+                    size={26}
+                  />,
+                  <ShieldCheck
+                    key="3"
+                    size={26}
+                  />,
+                  <Zap
+                    key="4"
+                    size={26}
+                  />,
+                ]
 
-                  <span
+                return (
+                  <div
+                    key={index}
                     style={{
-                      lineHeight: 1.7,
-                      fontWeight: 600,
+                      position: 'relative',
+                      padding: '25px 20px',
+                      borderRadius: '24px',
+                      background:
+                        'linear-gradient(145deg, rgba(110,80,255,0.10), rgba(0,180,230,0.05))',
+                      border:
+                        '1px solid rgba(110,90,230,0.18)',
+                      boxShadow:
+                        '0 15px 40px rgba(60,45,130,0.08)',
                     }}
                   >
-                    {feature}
-                  </span>
-                </div>
-              )
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent:
+                          'center',
+                        width: '58px',
+                        height: '58px',
+                        borderRadius: '18px',
+                        marginBottom: '18px',
+                        color: '#fff',
+                        background:
+                          'linear-gradient(135deg, #694cff, #08aeea)',
+                        boxShadow:
+                          '0 10px 25px rgba(90,70,220,0.22)',
+                      }}
+                    >
+                      {icons[index % icons.length]}
+                    </div>
+
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: '8px',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      <CheckCircle2
+                        size={18}
+                        style={{
+                          flexShrink: 0,
+                          marginTop: '4px',
+                        }}
+                      />
+
+                      <span
+                        style={{
+                          fontWeight: 800,
+                          lineHeight: 1.8,
+                        }}
+                      >
+                        {feature}
+                      </span>
+                    </div>
+                  </div>
+                )
+              }
             )}
           </div>
         </section>
@@ -250,26 +442,47 @@ export default function PackageDetailsPage() {
         {/* التفاصيل */}
         <section
           style={{
-            maxWidth: '900px',
-            margin: '0 auto 45px',
+            maxWidth: '950px',
+            margin: '0 auto 60px',
           }}
         >
-          <h2
+          <div
             style={{
               textAlign: 'center',
-              fontSize: '28px',
-              fontWeight: 800,
-              marginBottom: '25px',
+              marginBottom: '28px',
             }}
           >
-            تفاصيل الباقة
-          </h2>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '7px',
+                fontSize: '14px',
+                fontWeight: 900,
+                color: '#08a1d5',
+              }}
+            >
+              <BookOpen size={17} />
+              تفاصيل الخدمات
+            </span>
+
+            <h2
+              style={{
+                margin: '8px 0 0',
+                fontSize:
+                  'clamp(27px, 4vw, 38px)',
+                fontWeight: 900,
+              }}
+            >
+              تعرف على ما تحصل عليه
+            </h2>
+          </div>
 
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '12px',
+              gap: '13px',
             }}
           >
             {packageData.detailsSections.map(
@@ -281,10 +494,21 @@ export default function PackageDetailsPage() {
                   <div
                     key={index}
                     style={{
-                      borderRadius: '18px',
                       overflow: 'hidden',
+                      borderRadius: '22px',
+                      border:
+                        isOpen
+                          ? '1px solid rgba(105,75,255,0.35)'
+                          : '1px solid rgba(120,120,120,0.13)',
                       background:
-                        'rgba(128,128,128,0.08)',
+                        isOpen
+                          ? 'linear-gradient(145deg, rgba(105,75,255,0.09), rgba(0,180,230,0.04))'
+                          : 'rgba(128,128,128,0.045)',
+                      boxShadow: isOpen
+                        ? '0 15px 40px rgba(80,60,170,0.10)'
+                        : 'none',
+                      transition:
+                        'all 0.3s ease',
                     }}
                   >
                     <button
@@ -299,7 +523,7 @@ export default function PackageDetailsPage() {
                         border: 'none',
                         background: 'transparent',
                         cursor: 'pointer',
-                        padding: '20px',
+                        padding: '21px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent:
@@ -307,20 +531,51 @@ export default function PackageDetailsPage() {
                         gap: '15px',
                         textAlign: 'right',
                         font: 'inherit',
-                        fontWeight: 800,
                       }}
                     >
-                      <span>
-                        {section.title}
-                      </span>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '14px',
+                        }}
+                      >
+                        <span
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent:
+                              'center',
+                            width: '42px',
+                            height: '42px',
+                            borderRadius: '13px',
+                            flexShrink: 0,
+                            color: '#fff',
+                            background:
+                              'linear-gradient(135deg, #694cff, #08aeea)',
+                          }}
+                        >
+                          {index + 1}
+                        </span>
+
+                        <span
+                          style={{
+                            fontSize: '16px',
+                            fontWeight: 900,
+                            lineHeight: 1.6,
+                          }}
+                        >
+                          {section.title}
+                        </span>
+                      </div>
 
                       <ChevronDown
-                        size={21}
+                        size={22}
                         style={{
                           flexShrink: 0,
                           transform: isOpen
                             ? 'rotate(180deg)'
-                            : 'rotate(0deg)',
+                            : 'rotate(0)',
                           transition:
                             'transform 0.25s ease',
                         }}
@@ -331,9 +586,12 @@ export default function PackageDetailsPage() {
                       <div
                         style={{
                           padding:
-                            '0 20px 22px',
+                            '0 21px 24px',
+                          paddingRight:
+                            '77px',
                           lineHeight: 2,
-                          opacity: 0.82,
+                          fontSize: '15px',
+                          opacity: 0.78,
                         }}
                       >
                         {section.content}
@@ -346,52 +604,134 @@ export default function PackageDetailsPage() {
           </div>
         </section>
 
-        {/* زر الواتساب */}
+        {/* دعوة للتواصل */}
         <section
           style={{
+            position: 'relative',
+            overflow: 'hidden',
             textAlign: 'center',
-            marginTop: '50px',
+            borderRadius: '32px',
+            padding:
+              '45px 20px 50px',
+            background:
+              'linear-gradient(135deg, #6245ee, #079ed4)',
+            color: '#fff',
+            boxShadow:
+              '0 25px 70px rgba(80,60,190,0.25)',
           }}
         >
-          <h2
+          <div
             style={{
-              fontSize: '28px',
-              fontWeight: 800,
-              marginBottom: '15px',
+              position: 'absolute',
+              width: '220px',
+              height: '220px',
+              borderRadius: '50%',
+              top: '-100px',
+              right: '-60px',
+              background:
+                'rgba(255,255,255,0.10)',
+            }}
+          />
+
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 2,
             }}
           >
-            هل ترغب في الاشتراك؟
-          </h2>
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '65px',
+                height: '65px',
+                borderRadius: '20px',
+                marginBottom: '15px',
+                background:
+                  'rgba(255,255,255,0.16)',
+                border:
+                  '1px solid rgba(255,255,255,0.25)',
+              }}
+            >
+              <MessageCircle size={31} />
+            </div>
 
-          <p
-            style={{
-              marginBottom: '25px',
-              opacity: 0.75,
-            }}
-          >
-            تواصل معنا عبر الواتساب للاستفسار والتسجيل.
-          </p>
+            <h2
+              style={{
+                margin: '0 0 12px',
+                fontSize:
+                  'clamp(27px, 5vw, 40px)',
+                fontWeight: 950,
+              }}
+            >
+              جاهز تبدأ رحلتك؟
+            </h2>
 
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            <p
+              style={{
+                maxWidth: '650px',
+                margin: '0 auto 25px',
+                lineHeight: 1.9,
+                opacity: 0.9,
+              }}
+            >
+              تواصل معنا الآن واحصل على المساعدة
+              المناسبة لك وابدأ الاستفادة من
+              باقتك.
+            </p>
+
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                padding:
+                  '15px 25px',
+                borderRadius: '15px',
+                background: '#fff',
+                color: '#159447',
+                textDecoration: 'none',
+                fontWeight: 900,
+                boxShadow:
+                  '0 12px 30px rgba(0,0,0,0.15)',
+                transition:
+                  'transform 0.25s ease',
+              }}
+            >
+              <MessageCircle size={21} />
+              اطلب الباقة عبر الواتساب
+              <ArrowLeft size={19} />
+            </a>
+          </div>
+        </section>
+
+        {/* العودة */}
+        <div
+          style={{
+            textAlign: 'center',
+            marginTop: '35px',
+          }}
+        >
+          <Link
+            href="/#packages"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              padding: '15px 28px',
-              borderRadius: '14px',
+              gap: '8px',
               textDecoration: 'none',
               fontWeight: 800,
+              opacity: 0.75,
             }}
           >
-            <MessageCircle size={21} />
-            اطلب الخدمة الآن عبر الواتساب
-            <ArrowLeft size={19} />
-          </a>
-        </section>
+            <ArrowRight size={18} />
+            استعرض جميع الباقات
+          </Link>
+        </div>
       </div>
     </main>
   )
