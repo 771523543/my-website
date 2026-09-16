@@ -337,18 +337,22 @@ export default function Services() {
 
   const sliderRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
+
   const isInteractingRef = useRef(false)
   const isDraggingRef = useRef(false)
+
   const startXRef = useRef(0)
   const startScrollLeftRef = useRef(0)
 
   const filteredServices =
     activeCategory === 'all'
       ? services
-      : services.filter((service) => service.category === activeCategory)
+      : services.filter(
+          (service) => service.category === activeCategory,
+        )
 
   /*
-   * نكرر البطاقات حتى تستمر الحركة بدون ظهور فراغ.
+   * نكرر الخدمات 3 مرات للحصول على حركة مستمرة.
    */
   const marqueeServices = [
     ...filteredServices,
@@ -358,12 +362,13 @@ export default function Services() {
 
   /*
    * الحركة التلقائية.
-   * المستخدم يستطيع إيقافها باللمس أو الماوس والسحب بشكل طبيعي.
    */
   useEffect(() => {
     const slider = sliderRef.current
 
-    if (!slider || filteredServices.length === 0) return
+    if (!slider || filteredServices.length === 0) {
+      return
+    }
 
     let lastTime = performance.now()
 
@@ -375,27 +380,26 @@ export default function Services() {
       const delta = time - lastTime
       lastTime = time
 
-      if (!isInteractingRef.current && !isDraggingRef.current) {
-        /*
-         * سرعة الحركة منخفضة وناعمة حتى تكون مناسبة للجوال والكمبيوتر.
-         */
+      if (
+        !isInteractingRef.current &&
+        !isDraggingRef.current
+      ) {
         currentSlider.scrollLeft += delta * 0.035
 
-        /*
-         * عند الوصول إلى نهاية المجموعة الأولى
-         * نرجع للخلف بدون أن يشعر المستخدم بالقفزة.
-         */
-        const oneThird = currentSlider.scrollWidth / 3
+        const oneThird =
+          currentSlider.scrollWidth / 3
 
         if (currentSlider.scrollLeft >= oneThird) {
           currentSlider.scrollLeft -= oneThird
         }
       }
 
-      animationRef.current = requestAnimationFrame(animate)
+      animationRef.current =
+        requestAnimationFrame(animate)
     }
 
-    animationRef.current = requestAnimationFrame(animate)
+    animationRef.current =
+      requestAnimationFrame(animate)
 
     return () => {
       if (animationRef.current) {
@@ -405,7 +409,7 @@ export default function Services() {
   }, [activeCategory, filteredServices.length])
 
   /*
-   * سحب بالماوس + اللمس.
+   * بدء السحب باللمس أو الماوس.
    */
   const handlePointerDown = (
     event: React.PointerEvent<HTMLDivElement>,
@@ -418,29 +422,36 @@ export default function Services() {
     isInteractingRef.current = true
 
     startXRef.current = event.clientX
-    startScrollLeftRef.current = slider.scrollLeft
+    startScrollLeftRef.current =
+      slider.scrollLeft
 
     slider.setPointerCapture(event.pointerId)
 
     slider.style.cursor = 'grabbing'
-    slider.style.scrollBehavior = 'auto'
   }
 
+  /*
+   * أثناء السحب.
+   */
   const handlePointerMove = (
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
     const slider = sliderRef.current
 
-    if (!slider || !isDraggingRef.current) return
+    if (!slider || !isDraggingRef.current) {
+      return
+    }
 
-    const distance = event.clientX - startXRef.current
+    const distance =
+      event.clientX - startXRef.current
 
-    /*
-     * الاتجاه عكسي حتى يكون السحب طبيعيًا.
-     */
-    slider.scrollLeft = startScrollLeftRef.current - distance
+    slider.scrollLeft =
+      startScrollLeftRef.current - distance
   }
 
+  /*
+   * انتهاء السحب.
+   */
   const handlePointerUp = (
     event: React.PointerEvent<HTMLDivElement>,
   ) => {
@@ -450,7 +461,9 @@ export default function Services() {
 
     if (slider) {
       try {
-        slider.releasePointerCapture(event.pointerId)
+        slider.releasePointerCapture(
+          event.pointerId,
+        )
       } catch {
         // لا شيء
       }
@@ -458,15 +471,14 @@ export default function Services() {
       slider.style.cursor = 'grab'
     }
 
-    /*
-     * نترك الحركة متوقفة لحظة قصيرة بعد السحب
-     * حتى لا يبدأ الكرت بالتحرك مباشرة تحت إصبع المستخدم.
-     */
     window.setTimeout(() => {
       isInteractingRef.current = false
     }, 700)
   }
 
+  /*
+   * إيقاف الحركة عند وضع المؤشر فوق البطاقات.
+   */
   const handleMouseEnter = () => {
     isInteractingRef.current = true
   }
@@ -480,19 +492,27 @@ export default function Services() {
   /*
    * عجلة الماوس تتحول إلى تمرير أفقي.
    */
-  const handleWheel = (event: React.WheelEvent<HTMLDivElement>) => {
+  const handleWheel = (
+    event: React.WheelEvent<HTMLDivElement>,
+  ) => {
     const slider = sliderRef.current
 
     if (!slider) return
 
-    if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+    if (
+      Math.abs(event.deltaY) >
+      Math.abs(event.deltaX)
+    ) {
       event.preventDefault()
       slider.scrollLeft += event.deltaY
     }
   }
 
   return (
-    <section id="services" className="section soft-section">
+    <section
+      id="services"
+      className="section soft-section"
+    >
       <style jsx>{`
         .services-wrapper {
           position: relative;
@@ -531,14 +551,19 @@ export default function Services() {
 
         .services-category:hover {
           transform: translateY(-3px);
-          box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+          box-shadow:
+            0 10px 25px rgba(15, 23, 42, 0.1);
         }
 
         .services-category.active {
-          background: var(--foreground, #111827);
-          color: var(--background, #ffffff);
-          border-color: var(--foreground, #111827);
-          box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
+          background:
+            var(--foreground, #111827);
+          color:
+            var(--background, #ffffff);
+          border-color:
+            var(--foreground, #111827);
+          box-shadow:
+            0 12px 28px rgba(15, 23, 42, 0.18);
         }
 
         .services-slider-shell {
@@ -559,20 +584,22 @@ export default function Services() {
 
         .services-slider-shell::before {
           left: 0;
-          background: linear-gradient(
-            to right,
-            var(--background, #ffffff),
-            transparent
-          );
+          background:
+            linear-gradient(
+              to right,
+              var(--background, #ffffff),
+              transparent
+            );
         }
 
         .services-slider-shell::after {
           right: 0;
-          background: linear-gradient(
-            to left,
-            var(--background, #ffffff),
-            transparent
-          );
+          background:
+            linear-gradient(
+              to left,
+              var(--background, #ffffff),
+              transparent
+            );
         }
 
         .services-slider {
@@ -600,7 +627,7 @@ export default function Services() {
         .service-card {
           position: relative;
           flex: 0 0 360px;
-          min-height: 430px;
+          min-height: 440px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -656,7 +683,8 @@ export default function Services() {
           box-shadow:
             0 25px 60px rgba(15, 23, 42, 0.13),
             0 8px 20px rgba(15, 23, 42, 0.06);
-          border-color: rgba(15, 23, 42, 0.15);
+          border-color:
+            rgba(15, 23, 42, 0.15);
         }
 
         .service-icon-wrap {
@@ -679,17 +707,21 @@ export default function Services() {
           border: 1px solid rgba(59, 130, 246, 0.12);
           box-shadow:
             0 12px 30px rgba(59, 130, 246, 0.09),
-            inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            inset 0 1px 0
+              rgba(255, 255, 255, 0.8);
           transition:
             transform 0.35s ease,
             box-shadow 0.35s ease;
         }
 
-        .service-card:hover .service-icon-wrap {
-          transform: translateY(-4px) scale(1.04);
+        .service-card:hover
+          .service-icon-wrap {
+          transform:
+            translateY(-4px) scale(1.04);
           box-shadow:
             0 18px 38px rgba(59, 130, 246, 0.14),
-            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            inset 0 1px 0
+              rgba(255, 255, 255, 0.9);
         }
 
         .service-icon {
@@ -728,27 +760,57 @@ export default function Services() {
           opacity: 0.76;
         }
 
-        .service-action {
+        .service-buttons {
           position: relative;
-          z-index: 1;
+          z-index: 2;
           width: 100%;
-          min-height: 52px;
+          display: flex;
+          gap: 0.7rem;
           margin-top: auto;
-          padding: 0.85rem 1.15rem;
+        }
+
+        .service-action,
+        .service-order-button {
+          flex: 1;
+          min-height: 52px;
+          padding: 0.85rem 0.75rem;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.55rem;
+          gap: 0.45rem;
           border-radius: 16px;
           text-decoration: none;
+          font-family: inherit;
+          font-size: 0.9rem;
           font-weight: 900;
           transition:
             transform 0.25s ease,
-            box-shadow 0.25s ease;
+            box-shadow 0.25s ease,
+            background 0.25s ease,
+            border-color 0.25s ease;
         }
 
-        .service-action:hover {
-          transform: translateY(-2px);
+        .service-action {
+          margin-top: 0;
+        }
+
+        .service-action:hover,
+        .service-order-button:hover {
+          transform: translateY(-3px);
+        }
+
+        .service-order-button {
+          border: 1px solid rgba(15, 23, 42, 0.12);
+          background: rgba(255, 255, 255, 0.78);
+          color: inherit;
+        }
+
+        .service-order-button:hover {
+          background: rgba(255, 255, 255, 1);
+          border-color:
+            rgba(15, 23, 42, 0.2);
+          box-shadow:
+            0 10px 25px rgba(15, 23, 42, 0.08);
         }
 
         .services-hint {
@@ -778,13 +840,15 @@ export default function Services() {
 
           .services-slider {
             gap: 1rem;
-            padding: 0.9rem 1.25rem 1.5rem;
+            padding:
+              0.9rem 1.25rem 1.5rem;
           }
 
           .service-card {
             flex-basis: 310px;
-            min-height: 410px;
-            padding: 1.75rem 1.45rem 1.4rem;
+            min-height: 420px;
+            padding:
+              1.75rem 1.45rem 1.4rem;
             border-radius: 25px;
           }
 
@@ -809,8 +873,29 @@ export default function Services() {
             line-height: 1.85;
           }
 
+          .service-buttons {
+            gap: 0.55rem;
+          }
+
+          .service-action,
+          .service-order-button {
+            min-height: 50px;
+            font-size: 0.82rem;
+          }
+
           .services-hint {
             font-size: 0.75rem;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .service-card {
+            flex-basis: 285px;
+          }
+
+          .service-action,
+          .service-order-button {
+            font-size: 0.78rem;
           }
         }
 
@@ -818,7 +903,8 @@ export default function Services() {
           .service-card,
           .service-icon-wrap,
           .services-category,
-          .service-action {
+          .service-action,
+          .service-order-button {
             transition: none;
           }
         }
@@ -826,7 +912,9 @@ export default function Services() {
 
       <div className="container">
         <div className="center-heading">
-          <span className="section-kicker">خدماتنا</span>
+          <span className="section-kicker">
+            خدماتنا
+          </span>
 
           <h2>
             خدمات مصممة من أجلك <em>ولنجاحك</em>
@@ -845,14 +933,13 @@ export default function Services() {
                 key={category.id}
                 type="button"
                 className={`services-category ${
-                  activeCategory === category.id ? 'active' : ''
+                  activeCategory === category.id
+                    ? 'active'
+                    : ''
                 }`}
                 onClick={() => {
                   setActiveCategory(category.id)
 
-                  /*
-                   * نعيد الشريط للبداية عند تغيير التصنيف.
-                   */
                   requestAnimationFrame(() => {
                     if (sliderRef.current) {
                       sliderRef.current.scrollLeft = 0
@@ -865,7 +952,7 @@ export default function Services() {
             ))}
           </div>
 
-          {/* بطاقات الخدمات */}
+          {/* شريط الخدمات */}
           <div className="services-slider-shell">
             <div
               ref={sliderRef}
@@ -878,46 +965,69 @@ export default function Services() {
               onMouseLeave={handleMouseLeave}
               onWheel={handleWheel}
             >
-              {marqueeServices.map((service, index) => {
-                const Icon = service.icon
+              {marqueeServices.map(
+                (service, index) => {
+                  const Icon = service.icon
 
-                return (
-                  <article
-                    key={`${service.id}-${index}`}
-                    className="service-card"
-                  >
-                    <div className="service-icon-wrap">
-                      <Icon className="service-icon" />
-                    </div>
-
-                    <h3 className="service-title">
-                      {service.title}
-                    </h3>
-
-                    <div className="service-subtitle">
-                      {service.subtitle}
-                    </div>
-
-                    <p className="service-description">
-                      {service.shortText}
-                    </p>
-
-                    <Link
-                      href={`/services/${service.id}`}
-                      className="primary-button service-action"
-                      onPointerDown={(event) => {
-                        /*
-                         * السماح للزر بالعمل بدون اعتباره سحبًا.
-                         */
-                        event.stopPropagation()
-                      }}
+                  return (
+                    <article
+                      key={`${service.id}-${index}`}
+                      className="service-card"
                     >
-                      <span>عرض الخدمة</span>
-                      <ArrowLeft size={18} />
-                    </Link>
-                  </article>
-                )
-              })}
+                      {/* الأيقونة */}
+                      <div className="service-icon-wrap">
+                        <Icon className="service-icon" />
+                      </div>
+
+                      {/* العنوان */}
+                      <h3 className="service-title">
+                        {service.title}
+                      </h3>
+
+                      {/* العنوان الفرعي */}
+                      <div className="service-subtitle">
+                        {service.subtitle}
+                      </div>
+
+                      {/* الوصف */}
+                      <p className="service-description">
+                        {service.shortText}
+                      </p>
+
+                      {/* الأزرار */}
+                      <div className="service-buttons">
+                        {/* عرض الخدمة */}
+                        <Link
+                          href={`/services/${service.id}`}
+                          className="primary-button service-action"
+                          onPointerDown={(event) => {
+                            event.stopPropagation()
+                          }}
+                        >
+                          <span>
+                            عرض الخدمة
+                          </span>
+
+                          <ArrowLeft size={18} />
+                        </Link>
+
+                        {/* طلب الخدمة */}
+                        <Link
+                          href={`/services/${service.id}#order`}
+                          className="service-order-button"
+                          onPointerDown={(event) => {
+                            event.stopPropagation()
+                          }}
+                        >
+                          <span>
+                            اطلب الخدمة
+                          </span>
+                        </Link>
+                      </div>
+                    </article>
+                  )
+                },
+              )}
             </div>
           </div>
 
