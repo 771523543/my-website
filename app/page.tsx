@@ -19,7 +19,7 @@ import {
   Trash2,
 } from 'lucide-react'
 
-import Services from './components/Services'
+import ServicesPreview from './components/ServicesPreview'
 import HeroBanner from './components/HeroBanner'
 import PreviousWorks from './components/PreviousWorks'
 
@@ -458,7 +458,7 @@ export default function Page() {
       </section>
 
       {/* قسم الخدمات في ملف مستقل */}
-      <Services />
+      <ServicesPreview />
 
       <HeroBanner />
 
