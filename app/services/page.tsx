@@ -1,5 +1,5 @@
-import Services from '../components/Services'
+import ServicesPreview from '../components/ServicesPreview'
 
 export default function ServicesPage() {
-  return <Services />
+  return <ServicesPreview />
 }
