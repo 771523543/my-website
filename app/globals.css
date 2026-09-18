@@ -3671,9 +3671,8 @@ em {
     height: auto !important;
   }
 }
-
 /* ==========================================
-   تثبيت شريط الإعلان + الهيدر الرسمي
+   شريط الإعلان + الهيدر بدون فاصل
    ========================================== */
 
 .announcement {
@@ -3683,6 +3682,7 @@ em {
   right: 0 !important;
   width: 100% !important;
   z-index: 1100 !important;
+  margin: 0 !important;
 }
 
 .site-header {
@@ -3692,9 +3692,9 @@ em {
   right: 0 !important;
   width: 100% !important;
   z-index: 1000 !important;
+  margin: 0 !important;
 }
 
-/* على الجوال */
 @media (max-width: 800px) {
   .site-header {
     top: 40px !important;
