@@ -116,7 +116,9 @@ export default function ServiceDetailsPage() {
 
   return (
     <main className="service-details-page">
-      {/* Hero */}
+      {/* =========================
+          Hero
+      ========================= */}
       <section className="service-details-hero">
         <div className="container">
           <Link href="/services" className="service-back-link">
@@ -125,6 +127,7 @@ export default function ServiceDetailsPage() {
           </Link>
 
           <div className="service-details-hero-content">
+            {/* الأيقونة في الوسط */}
             <div className="service-details-icon">
               <Icon size={40} strokeWidth={1.7} />
             </div>
@@ -137,11 +140,13 @@ export default function ServiceDetailsPage() {
                   : 'التصميم والخدمات المهنية'}
             </div>
 
+            {/* العنوان في الوسط */}
             <h1>{service.title}</h1>
 
+            {/* الوصف المختصر في الوسط */}
             <p>{service.subtitle}</p>
 
-            {/* زر اطلب خدمتك الآن */}
+            {/* زر الطلب */}
             <a
               href={whatsappUrl}
               target="_blank"
@@ -155,12 +160,17 @@ export default function ServiceDetailsPage() {
         </div>
       </section>
 
-      {/* Main content */}
+      {/* =========================
+          Main Content
+      ========================= */}
       <section className="service-details-content">
         <div className="container">
           <div className="service-details-layout">
-            {/* المحتوى */}
+
+            {/* المحتوى الرئيسي */}
             <div className="service-details-main">
+
+              {/* عن الخدمة */}
               <section className="details-card">
                 <div className="details-card-heading">
                   <div className="details-heading-icon">
@@ -173,11 +183,13 @@ export default function ServiceDetailsPage() {
                   </div>
                 </div>
 
+                {/* الشرح باليمين */}
                 <p className="details-description">
                   {service.about}
                 </p>
               </section>
 
+              {/* ما تتضمنه الخدمة */}
               <section className="details-card">
                 <div className="details-card-heading">
                   <div className="details-heading-icon">
@@ -192,7 +204,10 @@ export default function ServiceDetailsPage() {
 
                 <div className="details-list">
                   {service.whatWeOffer.map((item) => (
-                    <div key={item} className="details-list-item">
+                    <div
+                      key={item}
+                      className="details-list-item"
+                    >
                       <CheckCircle2 size={18} />
                       <span>{item}</span>
                     </div>
@@ -200,6 +215,7 @@ export default function ServiceDetailsPage() {
                 </div>
               </section>
 
+              {/* متطلبات الخدمة */}
               <section className="details-card">
                 <div className="details-card-heading">
                   <div className="details-heading-icon">
@@ -257,7 +273,9 @@ export default function ServiceDetailsPage() {
                             type="button"
                             className="faq-question"
                             onClick={() =>
-                              setOpenFaq(isOpen ? null : index)
+                              setOpenFaq(
+                                isOpen ? null : index,
+                              )
                             }
                             aria-expanded={isOpen}
                           >
@@ -282,9 +300,12 @@ export default function ServiceDetailsPage() {
               )}
             </div>
 
-            {/* بطاقة الطلب */}
+            {/* =========================
+                بطاقة الطلب
+            ========================= */}
             <aside className="service-order-column">
               <div className="service-order-card">
+
                 <div className="order-card-top">
                   <div className="order-card-icon">
                     <Send size={25} />
@@ -296,11 +317,10 @@ export default function ServiceDetailsPage() {
                 <h2>هل أنت جاهز لطلب الخدمة؟</h2>
 
                 <p>
-                  أرسل طلبك الآن عبر واتساب وسنتواصل معك لمعرفة التفاصيل
-                  المطلوبة والبدء في تنفيذ الخدمة.
+                  أرسل طلبك الآن عبر واتساب وسنتواصل معك لمعرفة
+                  التفاصيل المطلوبة والبدء في تنفيذ الخدمة.
                 </p>
 
-                {/* الزر الرئيسي */}
                 <a
                   href={whatsappUrl}
                   target="_blank"
@@ -402,6 +422,7 @@ export default function ServiceDetailsPage() {
           text-align: center;
         }
 
+        /* الأيقونة في الوسط */
         .service-details-icon {
           display: flex;
           align-items: center;
@@ -429,21 +450,27 @@ export default function ServiceDetailsPage() {
           font-weight: 850;
         }
 
+        /* العنوان في الوسط */
         .service-details-hero h1 {
           margin: 16px 0 8px;
           font-size: clamp(31px, 5vw, 48px);
           font-weight: 900;
           line-height: 1.3;
+          text-align: center;
         }
 
+        /* الوصف المختصر في الوسط */
         .service-details-hero p {
           margin: 0;
           color: rgba(255, 255, 255, 0.82);
           font-size: 16px;
           line-height: 1.8;
+          text-align: center;
         }
 
-        /* زر اطلب خدمتك الآن داخل الـ Hero */
+        /* =========================
+           زر اطلب خدمتك الآن
+        ========================= */
 
         .hero-order-button {
           display: inline-flex;
@@ -468,7 +495,7 @@ export default function ServiceDetailsPage() {
         }
 
         .hero-order-button:hover {
-          background: #ffffff;
+          background: white;
           transform: translateY(-2px);
           box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
         }
@@ -500,33 +527,38 @@ export default function ServiceDetailsPage() {
           border: 1px solid var(--border);
           border-radius: 17px;
           box-shadow: 0 10px 25px rgba(25, 56, 100, 0.055);
-          text-align: right;
         }
 
+        /* الأيقونة + العنوان في الوسط */
         .details-card-heading {
           display: flex;
+          flex-direction: column;
           align-items: center;
-          justify-content: flex-start;
-          gap: 13px;
-          margin-bottom: 20px;
-          text-align: right;
+          justify-content: center;
+          gap: 10px;
+          margin-bottom: 22px;
+          text-align: center;
         }
 
         .details-heading-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 46px;
-          height: 46px;
+          width: 52px;
+          height: 52px;
           flex-shrink: 0;
           color: var(--primary);
           background: var(--secondary);
-          border-radius: 13px;
+          border-radius: 15px;
+        }
+
+        .details-card-heading > div:last-child {
+          text-align: center;
         }
 
         .details-card-heading span {
           display: block;
-          margin-bottom: 2px;
+          margin-bottom: 3px;
           color: var(--accent);
           font-size: 12px;
           font-weight: 850;
@@ -539,16 +571,21 @@ export default function ServiceDetailsPage() {
           font-weight: 850;
         }
 
+        /* =========================
+           الشرح باليمين
+        ========================= */
+
         .details-description {
           margin: 0;
           color: var(--muted-foreground);
           font-size: 15px;
           line-height: 2;
           text-align: right;
+          direction: rtl;
         }
 
         /* =========================
-           What we offer
+           What We Offer
         ========================= */
 
         .details-list {
@@ -569,6 +606,7 @@ export default function ServiceDetailsPage() {
           font-size: 13px;
           line-height: 1.7;
           text-align: right;
+          direction: rtl;
         }
 
         .details-list-item svg {
@@ -599,6 +637,7 @@ export default function ServiceDetailsPage() {
           font-size: 13px;
           line-height: 1.6;
           text-align: right;
+          direction: rtl;
         }
 
         .requirement-number {
@@ -646,6 +685,7 @@ export default function ServiceDetailsPage() {
           font-size: 13px;
           font-weight: 800;
           text-align: right;
+          direction: rtl;
           cursor: pointer;
         }
 
@@ -665,6 +705,7 @@ export default function ServiceDetailsPage() {
           font-size: 13px;
           line-height: 1.9;
           text-align: right;
+          direction: rtl;
         }
 
         /* =========================
@@ -684,6 +725,7 @@ export default function ServiceDetailsPage() {
           border-radius: 18px;
           box-shadow: 0 14px 35px rgba(25, 56, 100, 0.08);
           text-align: right;
+          direction: rtl;
         }
 
         .order-card-top {
@@ -757,7 +799,6 @@ export default function ServiceDetailsPage() {
         .order-note {
           display: flex;
           align-items: center;
-          justify-content: flex-start;
           gap: 8px;
           margin-top: 14px;
           color: #65738a;
