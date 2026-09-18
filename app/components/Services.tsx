@@ -38,7 +38,7 @@ export const services: Service[] = [
     id: 'research',
     category: 'research',
     icon: BookOpen,
-    image: '/images/research.png',
+    image: '/images/research.jpg',
     title: 'الخدمات البحثية والأكاديمية',
     subtitle: 'بحوث، أوراق عمل، خطط بحوث',
     about:
@@ -72,7 +72,7 @@ export const services: Service[] = [
     id: 'reports',
     category: 'research',
     icon: FileText,
-    image: '/images/reports.png',
+    image: '/images/reports.jpg',
     title: 'التقارير الجامعية',
     subtitle: 'تقارير علمية وعملية وميدانية',
     about:
@@ -106,7 +106,7 @@ export const services: Service[] = [
     id: 'assignments',
     category: 'academic',
     icon: ClipboardList,
-    image: '/images/assignments.png',
+    image: '/images/assignments.jpg',
     title: 'التكاليف الجامعية',
     subtitle: 'التكاليف الفصلية والكبرى',
     about:
@@ -140,7 +140,7 @@ export const services: Service[] = [
     id: 'homework',
     category: 'academic',
     icon: PencilLine,
-    image: '/images/homework.png',
+    image: '/images/homework.jpg',
     title: 'الواجبات الدراسية',
     subtitle: 'اليومية والأسبوعية',
     about:
@@ -173,7 +173,7 @@ export const services: Service[] = [
     id: 'lms',
     category: 'academic',
     icon: Laptop,
-    image: '/images/Bb.png',
+    image: '/images/Bb.jpg',
     title: 'إدارة المنصات والمهام الدراسية',
     subtitle: 'LMS & Quizzes',
     about:
@@ -203,7 +203,7 @@ export const services: Service[] = [
     id: 'presentation',
     category: 'design',
     icon: Presentation,
-    image: '/images/presentation.png',
+    image: '/images/presentation.jpeg',
     title: 'العروض التقديمية والتصميم',
     subtitle: 'PowerPoint & Infographics',
     about:
@@ -233,7 +233,7 @@ export const services: Service[] = [
     id: 'cv',
     category: 'design',
     icon: UserRound,
-    image: '/images/cv.png',
+    image: '/images/cv.jpeg',
     title: 'السيرة الذاتية والخدمات المهنية',
     subtitle: 'CV',
     about:
@@ -263,7 +263,7 @@ export const services: Service[] = [
     id: 'case-study',
     category: 'research',
     icon: Search,
-    image: '/images/case-study.png',
+    image: '/images/case-study.jpeg',
     title: 'دراسة الحالة',
     subtitle: 'Case Studies',
     about:
@@ -293,7 +293,7 @@ export const services: Service[] = [
     id: 'feasibility',
     category: 'research',
     icon: BarChart3,
-    image: '/images/feasibility.png',
+    image: '/images/feasibility.jpeg',
     title: 'دراسات الجدوى',
     subtitle: 'Feasibility Studies',
     about:
@@ -323,7 +323,7 @@ export const services: Service[] = [
     id: 'graduation',
     category: 'research',
     icon: GraduationCap,
-    image: '/images/graduation.png',
+    image: '/images/graduation.jpeg',
     title: 'مشاريع التخرج',
     subtitle: 'Graduation Projects',
     about:
