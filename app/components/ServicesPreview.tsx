@@ -4,910 +4,338 @@ import Link from 'next/link'
 import {
   ArrowLeft,
   BookOpen,
-  CheckCircle2,
+  BriefcaseBusiness,
   GraduationCap,
-  MessageCircle,
+  LayoutGrid,
   Sparkles,
 } from 'lucide-react'
 
-const whatsappNumber = '967776280186'
-
 export default function ServicesPreview() {
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    'السلام عليكم، أرغب في الاستفسار عن خدمات منصة هديل.',
-  )}`
-
   return (
-    <section
-      className="services-preview-section"
-      id="services"
-    >
-      <div className="services-preview-container">
-
-        {/* =========================
-            عنوان القسم
-        ========================= */}
-
-        <div className="services-preview-heading">
-
-          <span className="services-preview-kicker">
-            <Sparkles size={15} />
+    <section className="section services-preview" id="services">
+      <div className="container">
+        {/* رأس القسم */}
+        <div className="section-heading services-preview-heading">
+          <div className="section-kicker">
+            <span className="section-kicker-dot" />
             خدمات منصة هديل
-          </span>
+          </div>
 
           <h2>
-            خدماتنا
-            <span>.</span>
+            خدماتنا <span>الأكاديمية والطلابية</span>
           </h2>
 
           <p>
-            حلول طلابية وأكاديمية متكاملة تساعدك على
-            تنظيم أعمالك الدراسية والبحثية وتقديمها
-            بصورة احترافية.
+            مجموعة متكاملة من الخدمات الأكاديمية والبحثية والتصميمية لمساعدتك
+            في إنجاز متطلباتك الدراسية والمهنية بصورة منظمة واحترافية.
           </p>
-
         </div>
 
-        {/* =========================
-            البطاقة الرئيسية
-        ========================= */}
-
+        {/* بوابة الخدمات */}
         <div className="services-preview-card">
-
-          <div className="services-preview-glow glow-one" />
-          <div className="services-preview-glow glow-two" />
-
           <div className="services-preview-content">
-
-            {/* =========================
-                الجانب البصري
-            ========================= */}
-
-            <div className="services-preview-visual">
-
-              <div className="services-preview-icon">
-
-                <div className="services-preview-icon-ring ring-one" />
-                <div className="services-preview-icon-ring ring-two" />
-
-                <div className="services-preview-icon-inner">
-                  <BookOpen
-                    size={43}
-                    strokeWidth={1.7}
-                  />
-                </div>
-
-                <span className="services-preview-mini-icon">
-                  <GraduationCap size={19} />
-                </span>
-
-              </div>
-
-              <div className="services-preview-visual-label">
-                <span>منصة هديل</span>
-                <strong>خدماتك تبدأ من هنا</strong>
-              </div>
-
+            <div className="services-preview-icon">
+              <LayoutGrid size={34} strokeWidth={1.8} />
             </div>
 
-            {/* =========================
-                المحتوى
-            ========================= */}
-
-            <div className="services-preview-text">
-
-              <span className="services-preview-small-title">
-                خدمات طلابية وأكاديمية
+            <div>
+              <span className="services-preview-label">
+                منصة هديل للخدمات الطلابية
               </span>
 
-              <h3>
-                كل ما تحتاجه
-                <br />
-                في مكان واحد
-              </h3>
+              <h3>كل ما تحتاجه في مكان واحد</h3>
 
               <p>
-                اكتشف مجموعة متنوعة من الخدمات البحثية
-                والأكاديمية والتصميمية والمهنية المصممة
-                لتناسب احتياجاتك الدراسية.
+                استكشف خدماتنا المتنوعة في المجالات البحثية والأكاديمية
+                والتصميمية، واختر الخدمة المناسبة لاحتياجك بسهولة.
               </p>
 
-              {/* المميزات */}
+              <Link href="/services" className="services-preview-button">
+                <span>استكشف خدماتنا</span>
+                <ArrowLeft size={18} />
+              </Link>
+            </div>
+          </div>
 
-              <div className="services-preview-features">
-
-                <div>
-                  <CheckCircle2 size={17} />
-                  <span>خدمات أكاديمية متنوعة</span>
-                </div>
-
-                <div>
-                  <CheckCircle2 size={17} />
-                  <span>تنظيم واهتمام بالتفاصيل</span>
-                </div>
-
-                <div>
-                  <CheckCircle2 size={17} />
-                  <span>تصاميم وعروض احترافية</span>
-                </div>
-
+          {/* الإحصاءات المختصرة */}
+          <div className="services-preview-features">
+            <div className="services-preview-feature">
+              <div className="services-preview-feature-icon">
+                <BookOpen size={21} />
               </div>
 
-              {/* الأزرار */}
-
-              <div className="services-preview-actions">
-
-                <Link
-                  href="/services"
-                  className="services-preview-button"
-                >
-                  <span>استكشف خدماتنا</span>
-
-                  <span className="services-preview-button-icon">
-                    <ArrowLeft size={19} />
-                  </span>
-                </Link>
-
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="services-preview-whatsapp"
-                >
-                  <MessageCircle size={18} />
-                  <span>استفسر عبر واتساب</span>
-                </a>
-
+              <div>
+                <strong>خدمات بحثية</strong>
+                <span>بحوث وتقارير ودراسات</span>
               </div>
-
             </div>
 
+            <div className="services-preview-feature">
+              <div className="services-preview-feature-icon">
+                <GraduationCap size={21} />
+              </div>
+
+              <div>
+                <strong>خدمات أكاديمية</strong>
+                <span>واجبات وتكاليف ومهام</span>
+              </div>
+            </div>
+
+            <div className="services-preview-feature">
+              <div className="services-preview-feature-icon">
+                <BriefcaseBusiness size={21} />
+              </div>
+
+              <div>
+                <strong>خدمات مهنية</strong>
+                <span>تصميم وعروض وسيرة ذاتية</span>
+              </div>
+            </div>
+          </div>
+
+          {/* الشارة */}
+          <div className="services-preview-badge">
+            <Sparkles size={16} />
+            <span>خدمات متنوعة تناسب احتياجاتك</span>
           </div>
         </div>
-
-        {/* =========================
-            أسفل القسم
-        ========================= */}
-
-        <div className="services-preview-bottom">
-
-          <span>
-            اختر الخدمة المناسبة لك
-          </span>
-
-          <div className="services-preview-line" />
-
-          <span>
-            وابدأ طلبك بسهولة
-          </span>
-
-        </div>
-
       </div>
 
       <style jsx>{`
-
-        /* =========================================
-           القسم
-        ========================================= */
-
-        .services-preview-section {
-          position: relative;
-          padding: 90px 20px;
-          overflow: hidden;
-
-          background:
-            radial-gradient(
-              circle at 12% 18%,
-              rgba(125, 93, 177, 0.075),
-              transparent 32%
-            ),
-            radial-gradient(
-              circle at 88% 82%,
-              rgba(68, 145, 160, 0.065),
-              transparent 32%
-            );
+        .services-preview {
+          background: var(--background);
         }
-
-        .services-preview-container {
-          width: min(1120px, 100%);
-          margin: 0 auto;
-        }
-
-        /* =========================================
-           العنوان
-        ========================================= */
 
         .services-preview-heading {
-          max-width: 720px;
-          margin: 0 auto 42px;
+          max-width: 760px;
+          margin-inline: auto;
           text-align: center;
         }
 
-        .services-preview-kicker {
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-
-          padding: 8px 14px;
-          border-radius: 999px;
-
-          color: #7556a8;
-
-          background:
-            rgba(125, 93, 177, 0.09);
-
-          border:
-            1px solid rgba(125, 93, 177, 0.14);
-
-          font-size: 13px;
-          font-weight: 800;
-        }
-
         .services-preview-heading h2 {
-          margin: 17px 0 0;
-
-          color: #28243a;
-
-          font-size:
-            clamp(35px, 5vw, 52px);
-
-          line-height: 1.1;
-          font-weight: 950;
-
-          letter-spacing: -1.5px;
+          color: var(--foreground);
         }
 
         .services-preview-heading h2 span {
-          color: #8160b5;
+          color: var(--primary);
         }
 
         .services-preview-heading p {
           max-width: 650px;
-
-          margin: 17px auto 0;
-
-          color: #716c7e;
-
-          font-size: 16px;
+          margin: 14px auto 0;
+          color: var(--muted-foreground);
           line-height: 1.9;
         }
 
-        /* =========================================
-           البطاقة
-        ========================================= */
-
         .services-preview-card {
           position: relative;
-
           overflow: hidden;
-
-          padding: 1px;
-
-          border-radius: 30px;
-
-          background:
-            linear-gradient(
-              135deg,
-              rgba(126, 94, 178, 0.34),
-              rgba(255, 255, 255, 0.85),
-              rgba(74, 145, 160, 0.25)
-            );
-
-          box-shadow:
-            0 25px 70px
-            rgba(50, 39, 76, 0.10),
-
-            0 5px 20px
-            rgba(50, 39, 76, 0.05);
+          margin-top: 38px;
+          padding: 34px;
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 22px;
+          box-shadow: 0 16px 40px rgba(25, 56, 100, 0.07);
         }
 
         .services-preview-card::before {
           content: '';
-
           position: absolute;
-          inset: 0;
-
-          background:
-            linear-gradient(
-              120deg,
-              rgba(255, 255, 255, 0.82),
-              rgba(250, 248, 253, 0.95)
-            );
+          top: 0;
+          inset-inline: 0;
+          height: 4px;
+          background: linear-gradient(
+            90deg,
+            var(--primary),
+            var(--accent),
+            var(--primary)
+          );
         }
 
         .services-preview-content {
-          position: relative;
-          z-index: 2;
-
           display: grid;
-
-          grid-template-columns:
-            330px minmax(0, 1fr);
-
-          gap: 55px;
-
+          grid-template-columns: auto 1fr;
           align-items: center;
-
-          padding: 62px;
-        }
-
-        /* =========================================
-           الجانب البصري
-        ========================================= */
-
-        .services-preview-visual {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
+          gap: 24px;
         }
 
         .services-preview-icon {
-          position: relative;
-
-          width: 245px;
-          height: 245px;
-
           display: flex;
           align-items: center;
           justify-content: center;
-        }
-
-        .services-preview-icon-ring {
-          position: absolute;
-
-          border-radius: 50%;
-
-          pointer-events: none;
-        }
-
-        .ring-one {
-          width: 215px;
-          height: 215px;
-
-          border:
-            1px solid
-            rgba(125, 93, 177, 0.17);
-
-          background:
-            radial-gradient(
-              circle,
-              rgba(132, 100, 184, 0.15),
-              rgba(132, 100, 184, 0.035) 67%,
-              transparent 69%
-            );
-        }
-
-        .ring-two {
-          width: 153px;
-          height: 153px;
-
-          border:
-            1px dashed
-            rgba(84, 139, 153, 0.27);
-        }
-
-        .services-preview-icon-inner {
-          position: relative;
-          z-index: 3;
-
-          width: 112px;
-          height: 112px;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          border-radius: 32px;
-
-          color: #7656a9;
-
-          background:
-            linear-gradient(
-              145deg,
-              #ffffff,
-              #f1ecf8
-            );
-
-          border:
-            1px solid
-            rgba(125, 93, 177, 0.16);
-
-          box-shadow:
-            0 18px 35px
-            rgba(100, 75, 139, 0.15),
-
-            inset 0 1px 0
-            rgba(255, 255, 255, 0.9);
-        }
-
-        .services-preview-mini-icon {
-          position: absolute;
-
-          z-index: 5;
-
-          right: 13px;
-          bottom: 23px;
-
-          width: 43px;
-          height: 43px;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          border-radius: 14px;
-
-          color: #4f8997;
-
-          background: #ffffff;
-
-          border:
-            1px solid
-            rgba(79, 137, 151, 0.15);
-
-          box-shadow:
-            0 10px 25px
-            rgba(58, 93, 105, 0.12);
-        }
-
-        .services-preview-visual-label {
-          display: flex;
-          flex-direction: column;
-
-          margin-top: 3px;
-
-          text-align: center;
-        }
-
-        .services-preview-visual-label span {
-          color: #8b8495;
-
-          font-size: 11px;
-          font-weight: 700;
-        }
-
-        .services-preview-visual-label strong {
-          margin-top: 4px;
-
-          color: #5f5770;
-
-          font-size: 13px;
-          font-weight: 850;
-        }
-
-        /* =========================================
-           النص
-        ========================================= */
-
-        .services-preview-text {
-          min-width: 0;
-        }
-
-        .services-preview-small-title {
-          display: inline-block;
-
-          margin-bottom: 11px;
-
-          color: #795bad;
-
-          font-size: 14px;
-          font-weight: 850;
-        }
-
-        .services-preview-text h3 {
-          margin: 0;
-
-          color: #28243a;
-
-          font-size:
-            clamp(29px, 4vw, 43px);
-
-          line-height: 1.3;
-
-          font-weight: 950;
-
-          letter-spacing: -0.9px;
-        }
-
-        .services-preview-text > p {
-          max-width: 670px;
-
-          margin: 17px 0 0;
-
-          color: #6c6877;
-
-          font-size: 16px;
-          line-height: 1.95;
-        }
-
-        /* =========================================
-           المميزات
-        ========================================= */
-
-        .services-preview-features {
-          display: flex;
-          flex-wrap: wrap;
-
-          gap: 12px 20px;
-
-          margin-top: 25px;
-        }
-
-        .services-preview-features div {
-          display: inline-flex;
-          align-items: center;
-
-          gap: 7px;
-
-          color: #575265;
-
-          font-size: 12px;
-          font-weight: 750;
-        }
-
-        .services-preview-features svg {
+          width: 76px;
+          height: 76px;
           flex-shrink: 0;
-
-          color: #6d9e9e;
+          color: var(--primary);
+          background: var(--secondary);
+          border: 1px solid #d5e4fb;
+          border-radius: 20px;
         }
 
-        /* =========================================
-           الأزرار
-        ========================================= */
+        .services-preview-label {
+          display: inline-block;
+          margin-bottom: 8px;
+          color: var(--accent);
+          font-size: 14px;
+          font-weight: 800;
+        }
 
-        .services-preview-actions {
-          display: flex;
-          flex-wrap: wrap;
+        .services-preview-content h3 {
+          margin: 0;
+          color: var(--foreground);
+          font-size: clamp(25px, 3vw, 34px);
+          font-weight: 850;
+          line-height: 1.35;
+        }
 
-          align-items: center;
-
-          gap: 10px;
-
-          margin-top: 30px;
+        .services-preview-content p {
+          max-width: 720px;
+          margin: 10px 0 20px;
+          color: var(--muted-foreground);
+          line-height: 1.9;
         }
 
         .services-preview-button {
           display: inline-flex;
           align-items: center;
-
-          gap: 12px;
-
-          padding: 7px 8px 7px 20px;
-
-          border-radius: 999px;
-
-          color: #ffffff;
-
-          background:
-            linear-gradient(
-              135deg,
-              #7656aa,
-              #624590
-            );
-
-          box-shadow:
-            0 12px 28px
-            rgba(103, 75, 147, 0.24);
-
+          justify-content: center;
+          gap: 9px;
+          min-height: 48px;
+          padding: 0 20px;
+          color: var(--primary-foreground);
+          background: var(--primary);
+          border: 1px solid var(--primary);
+          border-radius: 12px;
+          font-weight: 800;
           text-decoration: none;
-
-          font-size: 13px;
-          font-weight: 850;
-
           transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease,
-            filter 0.25s ease;
+            transform 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
         }
 
         .services-preview-button:hover {
-          transform: translateY(-3px);
-
-          filter: brightness(1.04);
-
-          box-shadow:
-            0 16px 34px
-            rgba(103, 75, 147, 0.30);
+          background: #1e48a8;
+          transform: translateY(-2px);
+          box-shadow: 0 10px 22px rgba(36, 85, 196, 0.2);
         }
 
-        .services-preview-button-icon {
-          width: 38px;
-          height: 38px;
+        .services-preview-features {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 14px;
+          margin-top: 28px;
+          padding-top: 26px;
+          border-top: 1px solid var(--border);
+        }
 
+        .services-preview-feature {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          min-width: 0;
+          padding: 15px;
+          background: var(--muted);
+          border: 1px solid var(--border);
+          border-radius: 15px;
+        }
+
+        .services-preview-feature-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-
-          border-radius: 50%;
-
-          background:
-            rgba(255, 255, 255, 0.15);
-
-          border:
-            1px solid
-            rgba(255, 255, 255, 0.16);
+          width: 42px;
+          height: 42px;
+          flex-shrink: 0;
+          color: var(--primary);
+          background: var(--secondary);
+          border-radius: 12px;
         }
 
-        .services-preview-whatsapp {
-          min-height: 52px;
+        .services-preview-feature strong,
+        .services-preview-feature span {
+          display: block;
+        }
 
+        .services-preview-feature strong {
+          margin-bottom: 3px;
+          color: var(--foreground);
+          font-size: 14px;
+          font-weight: 800;
+        }
+
+        .services-preview-feature span {
+          color: var(--muted-foreground);
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .services-preview-badge {
+          position: absolute;
+          top: 22px;
+          inset-inline-end: 24px;
           display: inline-flex;
           align-items: center;
-          justify-content: center;
-
-          gap: 8px;
-
-          padding: 0 17px;
-
+          gap: 7px;
+          padding: 8px 12px;
+          color: var(--foreground);
+          background: #fff8e8;
+          border: 1px solid #f2d79e;
           border-radius: 999px;
-
-          color: #4d858b;
-
-          background:
-            rgba(79, 137, 151, 0.07);
-
-          border:
-            1px solid
-            rgba(79, 137, 151, 0.15);
-
-          text-decoration: none;
-
           font-size: 12px;
-          font-weight: 850;
-
-          transition:
-            transform 0.25s ease,
-            background 0.25s ease;
+          font-weight: 750;
         }
 
-        .services-preview-whatsapp:hover {
-          transform: translateY(-2px);
-
-          background:
-            rgba(79, 137, 151, 0.12);
+        .services-preview-badge svg {
+          color: #d18d24;
         }
 
-        .services-preview-whatsapp svg {
-          color: #4d9295;
-        }
-
-        /* =========================================
-           الزخارف
-        ========================================= */
-
-        .services-preview-glow {
-          position: absolute;
-
-          border-radius: 50%;
-
-          pointer-events: none;
-        }
-
-        .glow-one {
-          width: 180px;
-          height: 180px;
-
-          top: -90px;
-          right: -60px;
-
-          background:
-            rgba(125, 93, 177, 0.09);
-
-          filter: blur(3px);
-        }
-
-        .glow-two {
-          width: 150px;
-          height: 150px;
-
-          bottom: -80px;
-          left: 18%;
-
-          background:
-            rgba(73, 143, 157, 0.08);
-
-          filter: blur(3px);
-        }
-
-        /* =========================================
-           أسفل القسم
-        ========================================= */
-
-        .services-preview-bottom {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          gap: 15px;
-
-          margin-top: 25px;
-
-          color: #918c99;
-
-          font-size: 12px;
-          font-weight: 700;
-        }
-
-        .services-preview-line {
-          width: 45px;
-          height: 1px;
-
-          background:
-            linear-gradient(
-              90deg,
-              transparent,
-              #c7c1d0,
-              transparent
-            );
-        }
-
-        /* =========================================
-           الأجهزة المتوسطة
-        ========================================= */
-
-        @media (max-width: 900px) {
-
-          .services-preview-content {
-            grid-template-columns: 270px minmax(0, 1fr);
-
-            gap: 35px;
-
-            padding: 45px;
-          }
-
-          .services-preview-icon {
-            width: 205px;
-            height: 205px;
-          }
-
-          .ring-one {
-            width: 180px;
-            height: 180px;
-          }
-
-          .ring-two {
-            width: 135px;
-            height: 135px;
-          }
-
-          .services-preview-icon-inner {
-            width: 96px;
-            height: 96px;
-
-            border-radius: 28px;
-          }
-
-          .services-preview-text h3 {
-            font-size: 32px;
-          }
-
-          .services-preview-text > p {
-            font-size: 14px;
-          }
-
-          .services-preview-features {
-            flex-direction: column;
-            gap: 9px;
-          }
-        }
-
-        /* =========================================
-           الجوال
-        ========================================= */
-
-        @media (max-width: 700px) {
-
-          .services-preview-section {
-            padding: 70px 15px;
-          }
-
-          .services-preview-heading {
-            margin-bottom: 30px;
-          }
-
-          .services-preview-heading p {
-            font-size: 14px;
-            line-height: 1.85;
-          }
-
+        @media (max-width: 800px) {
           .services-preview-card {
-            border-radius: 25px;
+            padding: 25px 20px;
+            border-radius: 18px;
           }
 
           .services-preview-content {
             grid-template-columns: 1fr;
-
-            gap: 20px;
-
-            padding: 38px 22px 40px;
-
-            text-align: center;
+            gap: 16px;
+            padding-top: 28px;
           }
 
           .services-preview-icon {
-            width: 190px;
-            height: 190px;
-          }
-
-          .ring-one {
-            width: 165px;
-            height: 165px;
-          }
-
-          .ring-two {
-            width: 120px;
-            height: 120px;
-          }
-
-          .services-preview-icon-inner {
-            width: 88px;
-            height: 88px;
-
-            border-radius: 25px;
-          }
-
-          .services-preview-icon-inner svg {
-            width: 34px;
-            height: 34px;
-          }
-
-          .services-preview-mini-icon {
-            width: 39px;
-            height: 39px;
-
-            right: 12px;
-            bottom: 20px;
-          }
-
-          .services-preview-text h3 {
-            font-size: 29px;
-          }
-
-          .services-preview-text > p {
-            font-size: 14px;
-            line-height: 1.9;
+            width: 64px;
+            height: 64px;
+            border-radius: 17px;
           }
 
           .services-preview-features {
-            align-items: center;
+            grid-template-columns: 1fr;
           }
 
-          .services-preview-actions {
-            justify-content: center;
+          .services-preview-badge {
+            position: static;
+            width: fit-content;
+            margin-bottom: 2px;
+          }
+        }
 
-            flex-direction: column;
+        @media (max-width: 480px) {
+          .services-preview-card {
+            padding: 22px 16px;
           }
 
-          .services-preview-button,
-          .services-preview-whatsapp {
-            width: 100%;
+          .services-preview-content h3 {
+            font-size: 24px;
+          }
+
+          .services-preview-content p {
+            font-size: 14px;
           }
 
           .services-preview-button {
-            justify-content: space-between;
-          }
-
-          .services-preview-bottom {
-            gap: 8px;
-
-            font-size: 10px;
-          }
-
-          .services-preview-line {
-            width: 28px;
+            width: 100%;
           }
         }
-
-        @media (prefers-reduced-motion: reduce) {
-
-          .services-preview-button,
-          .services-preview-whatsapp {
-            transition: none;
-          }
-        }
-
       `}</style>
     </section>
   )
