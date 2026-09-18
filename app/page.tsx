@@ -346,7 +346,7 @@ export default function Page() {
           </div>
         </div>
 
-        {/* الصورة الرئيسية */}
+        {/* ==================== الصورة الرئيسية ==================== */}
         <div className="hero-art hero-photo">
           <div
             style={{
@@ -367,58 +367,162 @@ export default function Page() {
                 height: 'auto',
                 borderRadius: '20px',
                 objectFit: 'contain',
+                display: 'block',
               }}
             />
 
-            {/* شارات بصرية خفيفة */}
+            {/* ==================== الشريط الأول ==================== */}
             <div
               style={{
                 position: 'absolute',
-                right: '4%',
-                top: '10%',
-                display: 'flex',
-                alignItems: 'center',
+                bottom: '11%',
+                left: '5%',
+                width: '90%',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '7px',
-                background: '#fff',
-                color: '#17233d',
-                padding: '9px 12px',
-                borderRadius: '12px',
-                boxShadow: '0 12px 25px #17233d1c',
-                fontSize: '10px',
-                fontWeight: 800,
+                zIndex: 5,
               }}
             >
-              <ShieldCheck
-                size={18}
-                color="#2455c4"
-              />
+              {/* جودة موثوقة */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  background: '#fff',
+                  color: '#17233d',
+                  padding: '9px 7px',
+                  borderRadius: '11px',
+                  boxShadow: '0 10px 22px #17233d1c',
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <ShieldCheck size={16} color="#2455c4" />
+                <span>جودة موثوقة</span>
+              </div>
 
-              <span>جودة موثوقة</span>
+              {/* خصوصية وأمان */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  background: '#fff',
+                  color: '#17233d',
+                  padding: '9px 7px',
+                  borderRadius: '11px',
+                  boxShadow: '0 10px 22px #17233d1c',
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <LockKeyhole size={16} color="#2455c4" />
+                <span>خصوصية وأمان</span>
+              </div>
+
+              {/* دعم مستمر */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  background: '#fff',
+                  color: '#17233d',
+                  padding: '9px 7px',
+                  borderRadius: '11px',
+                  boxShadow: '0 10px 22px #17233d1c',
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <MessageCircle size={16} color="#2455c4" />
+                <span>دعم مستمر</span>
+              </div>
             </div>
 
+            {/* ==================== الشريط الثاني ==================== */}
             <div
               style={{
                 position: 'absolute',
-                left: '3%',
-                bottom: '12%',
-                display: 'flex',
-                alignItems: 'center',
+                bottom: '0',
+                left: '5%',
+                width: '90%',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: '7px',
-                background: '#fff',
-                color: '#17233d',
-                padding: '9px 12px',
-                borderRadius: '12px',
-                boxShadow: '0 12px 25px #17233d1c',
-                fontSize: '10px',
-                fontWeight: 800,
+                zIndex: 5,
               }}
             >
-              <LockKeyhole
-                size={17}
-                color="#2455c4"
-              />
+              {/* خبرة أكاديمية */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  background: '#fff',
+                  color: '#17233d',
+                  padding: '9px 7px',
+                  borderRadius: '11px 11px 0 0',
+                  boxShadow: '0 8px 20px #17233d1c',
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <GraduationCap size={16} color="#2455c4" />
+                <span>خبرة أكاديمية</span>
+              </div>
 
-              <span>خصوصية وأمان</span>
+              {/* إنجازات موثوقة */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  background: '#fff',
+                  color: '#17233d',
+                  padding: '9px 7px',
+                  borderRadius: '11px 11px 0 0',
+                  boxShadow: '0 8px 20px #17233d1c',
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Award size={16} color="#2455c4" />
+                <span>إنجازات موثوقة</span>
+              </div>
+
+              {/* تميز وجودة */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  background: '#fff',
+                  color: '#17233d',
+                  padding: '9px 7px',
+                  borderRadius: '11px 11px 0 0',
+                  boxShadow: '0 8px 20px #17233d1c',
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                <Sparkles size={16} color="#2455c4" />
+                <span>تميز وجودة</span>
+              </div>
             </div>
           </div>
         </div>
