@@ -33,12 +33,21 @@ export default function ServicesPreview() {
 
         {/* بوابة الخدمات */}
         <div className="services-preview-card">
+          {/* الشارة */}
+          <div className="services-preview-badge">
+            <Sparkles size={16} />
+            <span>خدمات متنوعة تناسب احتياجاتك</span>
+          </div>
+
+          {/* المحتوى الرئيسي */}
           <div className="services-preview-content">
+            {/* الأيقونة - في الوسط */}
             <div className="services-preview-icon">
-              <LayoutGrid size={34} strokeWidth={1.8} />
+              <LayoutGrid size={36} strokeWidth={1.8} />
             </div>
 
-            <div>
+            {/* النصوص - في الوسط */}
+            <div className="services-preview-main">
               <span className="services-preview-label">
                 منصة هديل للخدمات الطلابية
               </span>
@@ -57,11 +66,11 @@ export default function ServicesPreview() {
             </div>
           </div>
 
-          {/* الإحصاءات المختصرة */}
+          {/* أنواع الخدمات */}
           <div className="services-preview-features">
             <div className="services-preview-feature">
               <div className="services-preview-feature-icon">
-                <BookOpen size={21} />
+                <BookOpen size={21} strokeWidth={1.8} />
               </div>
 
               <div>
@@ -72,7 +81,7 @@ export default function ServicesPreview() {
 
             <div className="services-preview-feature">
               <div className="services-preview-feature-icon">
-                <GraduationCap size={21} />
+                <GraduationCap size={21} strokeWidth={1.8} />
               </div>
 
               <div>
@@ -83,7 +92,7 @@ export default function ServicesPreview() {
 
             <div className="services-preview-feature">
               <div className="services-preview-feature-icon">
-                <BriefcaseBusiness size={21} />
+                <BriefcaseBusiness size={21} strokeWidth={1.8} />
               </div>
 
               <div>
@@ -91,12 +100,6 @@ export default function ServicesPreview() {
                 <span>تصميم وعروض وسيرة ذاتية</span>
               </div>
             </div>
-          </div>
-
-          {/* الشارة */}
-          <div className="services-preview-badge">
-            <Sparkles size={16} />
-            <span>خدمات متنوعة تناسب احتياجاتك</span>
           </div>
         </div>
       </div>
@@ -106,6 +109,7 @@ export default function ServicesPreview() {
           background: var(--background);
         }
 
+        /* رأس القسم */
         .services-preview-heading {
           max-width: 760px;
           margin-inline: auto;
@@ -127,6 +131,7 @@ export default function ServicesPreview() {
           line-height: 1.9;
         }
 
+        /* بطاقة بوابة الخدمات */
         .services-preview-card {
           position: relative;
           overflow: hidden;
@@ -134,8 +139,8 @@ export default function ServicesPreview() {
           padding: 34px;
           background: var(--card);
           border: 1px solid var(--border);
-          border-radius: 22px;
-          box-shadow: 0 16px 40px rgba(25, 56, 100, 0.07);
+          border-radius: 20px;
+          box-shadow: 0 12px 30px rgba(25, 56, 100, 0.07);
         }
 
         .services-preview-card::before {
@@ -152,31 +157,76 @@ export default function ServicesPreview() {
           );
         }
 
-        .services-preview-content {
-          display: grid;
-          grid-template-columns: auto 1fr;
+        /* الشارة */
+        .services-preview-badge {
+          position: absolute;
+          top: 22px;
+          inset-inline-end: 24px;
+          display: inline-flex;
           align-items: center;
-          gap: 24px;
+          gap: 7px;
+          padding: 8px 12px;
+          color: var(--foreground);
+          background: #fff8e8;
+          border: 1px solid #f2d79e;
+          border-radius: 999px;
+          font-size: 12px;
+          font-weight: 750;
         }
 
+        .services-preview-badge svg {
+          color: #d18d24;
+          flex-shrink: 0;
+        }
+
+        /* المحتوى */
+        .services-preview-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          padding-top: 32px;
+        }
+
+        /* الأيقونة في الوسط */
         .services-preview-icon {
           display: flex;
           align-items: center;
           justify-content: center;
           width: 76px;
           height: 76px;
-          flex-shrink: 0;
+          margin-bottom: 18px;
           color: var(--primary);
           background: var(--secondary);
           border: 1px solid #d5e4fb;
           border-radius: 20px;
+          transition:
+            color 0.2s ease,
+            background 0.2s ease,
+            transform 0.2s ease;
+        }
+
+        .services-preview-card:hover .services-preview-icon {
+          color: white;
+          background: var(--primary);
+          transform: translateY(-2px);
+        }
+
+        /* النصوص في الوسط */
+        .services-preview-main {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
         }
 
         .services-preview-label {
           display: inline-block;
           margin-bottom: 8px;
-          color: var(--accent);
-          font-size: 14px;
+          color: #d18d24;
+          font-size: 13px;
           font-weight: 800;
         }
 
@@ -186,15 +236,18 @@ export default function ServicesPreview() {
           font-size: clamp(25px, 3vw, 34px);
           font-weight: 850;
           line-height: 1.35;
+          text-align: center;
         }
 
         .services-preview-content p {
-          max-width: 720px;
-          margin: 10px 0 20px;
+          max-width: 680px;
+          margin: 12px auto 20px;
           color: var(--muted-foreground);
           line-height: 1.9;
+          text-align: center;
         }
 
+        /* الزر */
         .services-preview-button {
           display: inline-flex;
           align-items: center;
@@ -220,11 +273,20 @@ export default function ServicesPreview() {
           box-shadow: 0 10px 22px rgba(36, 85, 196, 0.2);
         }
 
+        .services-preview-button svg {
+          transition: transform 0.2s ease;
+        }
+
+        .services-preview-button:hover svg {
+          transform: translateX(-3px);
+        }
+
+        /* أنواع الخدمات */
         .services-preview-features {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 14px;
-          margin-top: 28px;
+          margin-top: 30px;
           padding-top: 26px;
           border-top: 1px solid var(--border);
         }
@@ -238,6 +300,16 @@ export default function ServicesPreview() {
           background: var(--muted);
           border: 1px solid var(--border);
           border-radius: 15px;
+          transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            background 0.2s ease;
+        }
+
+        .services-preview-feature:hover {
+          transform: translateY(-3px);
+          background: #f5f9ff;
+          border-color: #cbdcf5;
         }
 
         .services-preview-feature-icon {
@@ -270,52 +342,32 @@ export default function ServicesPreview() {
           line-height: 1.6;
         }
 
-        .services-preview-badge {
-          position: absolute;
-          top: 22px;
-          inset-inline-end: 24px;
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-          padding: 8px 12px;
-          color: var(--foreground);
-          background: #fff8e8;
-          border: 1px solid #f2d79e;
-          border-radius: 999px;
-          font-size: 12px;
-          font-weight: 750;
-        }
-
-        .services-preview-badge svg {
-          color: #d18d24;
-        }
-
+        /* الجوال */
         @media (max-width: 800px) {
           .services-preview-card {
             padding: 25px 20px;
             border-radius: 18px;
           }
 
+          .services-preview-badge {
+            position: static;
+            width: fit-content;
+            margin: 0 auto 18px;
+          }
+
           .services-preview-content {
-            grid-template-columns: 1fr;
-            gap: 16px;
-            padding-top: 28px;
+            padding-top: 0;
           }
 
           .services-preview-icon {
-            width: 64px;
-            height: 64px;
+            width: 66px;
+            height: 66px;
+            margin-bottom: 16px;
             border-radius: 17px;
           }
 
           .services-preview-features {
             grid-template-columns: 1fr;
-          }
-
-          .services-preview-badge {
-            position: static;
-            width: fit-content;
-            margin-bottom: 2px;
           }
         }
 
