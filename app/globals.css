@@ -1233,3 +1233,53 @@ iframe {
     transition-duration: .01ms !important;
   }
 }
+
+/* ================================
+   تعديل صورة الهيرو - الجوال
+   ================================ */
+
+.hero-art.hero-photo {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible !important;
+}
+
+.hero-art.hero-photo > div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-art.hero-photo img {
+  width: 100% !important;
+  max-width: 620px !important;
+  height: auto !important;
+  object-fit: contain !important;
+  display: block;
+}
+
+/* الجوال */
+@media (max-width: 800px) {
+  .hero-art.hero-photo {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .hero-art.hero-photo > div {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .hero-art.hero-photo img {
+    width: calc(100% + 24px) !important;
+    max-width: none !important;
+    height: auto !important;
+    margin-inline: -12px !important;
+    border-radius: 18px !important;
+  }
+}
