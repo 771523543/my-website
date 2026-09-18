@@ -140,6 +140,17 @@ export default function ServiceDetailsPage() {
             <h1>{service.title}</h1>
 
             <p>{service.subtitle}</p>
+
+            {/* زر اطلب خدمتك الآن */}
+            <a
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hero-order-button"
+            >
+              <Send size={18} />
+              اطلب خدمتك الآن
+            </a>
           </div>
         </div>
       </section>
@@ -289,6 +300,7 @@ export default function ServiceDetailsPage() {
                   المطلوبة والبدء في تنفيذ الخدمة.
                 </p>
 
+                {/* الزر الرئيسي */}
                 <a
                   href={whatsappUrl}
                   target="_blank"
@@ -296,7 +308,7 @@ export default function ServiceDetailsPage() {
                   className="order-whatsapp-button"
                 >
                   <MessageCircle size={20} />
-                  طلب الخدمة عبر واتساب
+                  اطلب خدمتك الآن
                 </a>
 
                 <div className="order-note">
@@ -431,6 +443,36 @@ export default function ServiceDetailsPage() {
           line-height: 1.8;
         }
 
+        /* زر اطلب خدمتك الآن داخل الـ Hero */
+
+        .hero-order-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
+          min-height: 50px;
+          margin-top: 24px;
+          padding: 0 25px;
+          color: #17233d;
+          background: #f7c25e;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 900;
+          text-decoration: none;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+          transition:
+            transform 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
+        }
+
+        .hero-order-button:hover {
+          background: #ffffff;
+          transform: translateY(-2px);
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+        }
+
         /* =========================
            Content
         ========================= */
@@ -458,13 +500,16 @@ export default function ServiceDetailsPage() {
           border: 1px solid var(--border);
           border-radius: 17px;
           box-shadow: 0 10px 25px rgba(25, 56, 100, 0.055);
+          text-align: right;
         }
 
         .details-card-heading {
           display: flex;
           align-items: center;
+          justify-content: flex-start;
           gap: 13px;
           margin-bottom: 20px;
+          text-align: right;
         }
 
         .details-heading-icon {
@@ -499,6 +544,7 @@ export default function ServiceDetailsPage() {
           color: var(--muted-foreground);
           font-size: 15px;
           line-height: 2;
+          text-align: right;
         }
 
         /* =========================
@@ -522,6 +568,7 @@ export default function ServiceDetailsPage() {
           border-radius: 12px;
           font-size: 13px;
           line-height: 1.7;
+          text-align: right;
         }
 
         .details-list-item svg {
@@ -551,6 +598,7 @@ export default function ServiceDetailsPage() {
           border-radius: 12px;
           font-size: 13px;
           line-height: 1.6;
+          text-align: right;
         }
 
         .requirement-number {
@@ -616,6 +664,7 @@ export default function ServiceDetailsPage() {
           color: var(--muted-foreground);
           font-size: 13px;
           line-height: 1.9;
+          text-align: right;
         }
 
         /* =========================
@@ -634,11 +683,13 @@ export default function ServiceDetailsPage() {
           border: 1px solid var(--border);
           border-radius: 18px;
           box-shadow: 0 14px 35px rgba(25, 56, 100, 0.08);
+          text-align: right;
         }
 
         .order-card-top {
           display: flex;
           align-items: center;
+          justify-content: flex-start;
           gap: 10px;
           margin-bottom: 18px;
         }
@@ -666,6 +717,7 @@ export default function ServiceDetailsPage() {
           font-size: 23px;
           font-weight: 900;
           line-height: 1.5;
+          text-align: right;
         }
 
         .service-order-card > p {
@@ -673,6 +725,7 @@ export default function ServiceDetailsPage() {
           color: var(--muted-foreground);
           font-size: 13px;
           line-height: 1.9;
+          text-align: right;
         }
 
         .order-whatsapp-button {
@@ -681,13 +734,13 @@ export default function ServiceDetailsPage() {
           justify-content: center;
           gap: 9px;
           width: 100%;
-          min-height: 50px;
+          min-height: 52px;
           padding: 0 16px;
           color: white;
           background: #1fa463;
           border-radius: 12px;
-          font-size: 13px;
-          font-weight: 850;
+          font-size: 14px;
+          font-weight: 900;
           text-decoration: none;
           transition:
             transform 0.2s ease,
@@ -704,10 +757,12 @@ export default function ServiceDetailsPage() {
         .order-note {
           display: flex;
           align-items: center;
+          justify-content: flex-start;
           gap: 8px;
           margin-top: 14px;
           color: #65738a;
           font-size: 12px;
+          text-align: right;
         }
 
         .order-note svg {
@@ -755,6 +810,11 @@ export default function ServiceDetailsPage() {
 
           .service-details-hero p {
             font-size: 14px;
+          }
+
+          .hero-order-button {
+            width: 100%;
+            max-width: 320px;
           }
 
           .service-details-content {
