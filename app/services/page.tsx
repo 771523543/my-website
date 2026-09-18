@@ -1,8 +1,13 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, CheckCircle2, Send, Sparkles } from 'lucide-react'
-import { services, type ServiceCategory, whatsappNumber } from '../components/Services'
+import {
+  services,
+  type ServiceCategory,
+  whatsappNumber,
+} from '../components/Services'
 
 const categories: {
   id: 'all' | ServiceCategory
@@ -96,13 +101,15 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          {/* بطاقات الخدمات */}
+          {/* =========================
+              بطاقات الخدمات
+          ========================= */}
           <div id="all-services" className="services-grid">
             {services.map((service) => {
               const Icon = service.icon
 
               const whatsappMessage = encodeURIComponent(
-                `السلام عليكم، أرغب في طلب خدمة: ${service.title}`,
+                service.orderText,
               )
 
               const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
@@ -110,16 +117,21 @@ export default function ServicesPage() {
               return (
                 <article
                   key={service.id}
-                  id={`category-${service.category}`}
+                  id={`category-${service.category}-${service.id}`}
                   className="service-page-card"
                 >
                   {/* =========================
-                      Icon + Category
+                      صورة الخدمة
                   ========================= */}
-                  <div className="service-page-card-top">
-                    <div className="service-page-icon">
-                      <Icon size={30} strokeWidth={1.8} />
-                    </div>
+                  <div className="service-page-image">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      fill
+                      sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
+                    />
+
+                    <div className="service-page-image-overlay" />
 
                     <span className="service-page-category">
                       {service.category === 'research'
@@ -131,7 +143,16 @@ export default function ServicesPage() {
                   </div>
 
                   {/* =========================
-                      Card Content
+                      الأيقونة
+                  ========================= */}
+                  <div className="service-page-card-top">
+                    <div className="service-page-icon">
+                      <Icon size={30} strokeWidth={1.8} />
+                    </div>
+                  </div>
+
+                  {/* =========================
+                      محتوى البطاقة
                   ========================= */}
                   <div className="service-page-card-body">
                     {/* العنوان في الوسط */}
@@ -164,7 +185,7 @@ export default function ServicesPage() {
                   </div>
 
                   {/* =========================
-                      Buttons
+                      الأزرار
                   ========================= */}
                   <div className="service-page-card-footer">
                     <Link
@@ -435,16 +456,66 @@ export default function ServicesPage() {
         }
 
         /* =========================
+           صورة الخدمة
+        ========================= */
+
+        .service-page-image {
+          position: relative;
+          width: 100%;
+          height: 205px;
+          overflow: hidden;
+          background: #e8f1ff;
+        }
+
+        .service-page-image img {
+          object-fit: cover;
+          transition: transform 0.45s ease;
+        }
+
+        .service-page-card:hover .service-page-image img {
+          transform: scale(1.045);
+        }
+
+        .service-page-image-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(23, 35, 61, 0.02) 45%,
+            rgba(23, 35, 61, 0.28) 100%
+          );
+          pointer-events: none;
+        }
+
+        /* التصنيف فوق الصورة */
+        .service-page-category {
+          position: absolute;
+          top: 14px;
+          inset-inline-end: 14px;
+          z-index: 2;
+          padding: 6px 10px;
+          color: var(--primary);
+          background: rgba(255, 255, 255, 0.94);
+          border: 1px solid rgba(255, 255, 255, 0.8);
+          border-radius: 999px;
+          font-size: 11px;
+          font-weight: 800;
+          box-shadow: 0 5px 12px rgba(23, 35, 61, 0.08);
+        }
+
+        /* =========================
            Icon
         ========================= */
 
         .service-page-card-top {
-          position: relative;
           display: flex;
           align-items: center;
           justify-content: center;
           width: 100%;
-          padding: 25px 23px 0;
+          padding: 0;
+          margin-top: -31px;
+          position: relative;
+          z-index: 3;
         }
 
         .service-page-icon {
@@ -454,8 +525,10 @@ export default function ServicesPage() {
           width: 62px;
           height: 62px;
           color: var(--primary);
-          background: #e6efff;
-          border-radius: 16px;
+          background: white;
+          border: 5px solid white;
+          border-radius: 17px;
+          box-shadow: 0 8px 20px rgba(25, 56, 100, 0.13);
           transition:
             color 0.2s ease,
             background 0.2s ease,
@@ -468,28 +541,15 @@ export default function ServicesPage() {
           transform: translateY(-2px);
         }
 
-        .service-page-category {
-          position: absolute;
-          top: 25px;
-          inset-inline-end: 23px;
-          padding: 6px 10px;
-          color: var(--primary);
-          background: var(--secondary);
-          border-radius: 999px;
-          font-size: 11px;
-          font-weight: 800;
-        }
-
         /* =========================
            Card Body
         ========================= */
 
         .service-page-card-body {
           flex: 1;
-          padding: 20px 23px 23px;
+          padding: 18px 23px 23px;
         }
 
-        /* عنوان الخدمة في الوسط */
         .service-page-card h3 {
           margin: 0;
           color: var(--foreground);
@@ -499,7 +559,6 @@ export default function ServicesPage() {
           text-align: center;
         }
 
-        /* الوصف المختصر في الوسط */
         .service-page-subtitle {
           margin: 6px 0 17px;
           color: #d18d24;
@@ -509,7 +568,6 @@ export default function ServicesPage() {
           text-align: center;
         }
 
-        /* الشرح التفصيلي باليمين */
         .service-page-about {
           margin: 0;
           color: var(--muted-foreground);
@@ -723,6 +781,10 @@ export default function ServicesPage() {
           .services-whatsapp-button {
             width: 100%;
           }
+
+          .service-page-image {
+            height: 190px;
+          }
         }
 
         @media (max-width: 400px) {
@@ -730,13 +792,12 @@ export default function ServicesPage() {
             grid-template-columns: 1fr;
           }
 
-          .service-page-card-top,
-          .service-page-card-body {
-            padding-inline: 18px;
+          .service-page-image {
+            height: 180px;
           }
 
-          .service-page-category {
-            inset-inline-end: 18px;
+          .service-page-card-body {
+            padding-inline: 18px;
           }
 
           .service-page-card-footer {
