@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowLeft, CheckCircle2, Sparkles } from 'lucide-react'
-import { services, type ServiceCategory } from '../components/Services'
+import { ArrowLeft, CheckCircle2, Send, Sparkles } from 'lucide-react'
+import { services, type ServiceCategory, whatsappNumber } from '../components/Services'
 
 const categories: {
   id: 'all' | ServiceCategory
@@ -17,6 +17,9 @@ const categories: {
 export default function ServicesPage() {
   return (
     <main className="services-page">
+      {/* =========================
+          Hero
+      ========================= */}
       <section className="services-hero">
         <div className="container">
           <div className="services-hero-content">
@@ -43,11 +46,17 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* =========================
+          Services Content
+      ========================= */}
       <section className="services-content">
         <div className="container">
           <div className="services-intro">
             <div>
-              <span className="services-section-label">استكشف خدماتنا</span>
+              <span className="services-section-label">
+                استكشف خدماتنا
+              </span>
+
               <h2>اختر الخدمة المناسبة لاحتياجك</h2>
             </div>
 
@@ -57,7 +66,11 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          <div className="services-categories" aria-label="تصنيفات الخدمات">
+          {/* التصنيفات */}
+          <div
+            className="services-categories"
+            aria-label="تصنيفات الخدمات"
+          >
             {categories.map((category) => (
               <button
                 key={category.id}
@@ -83,9 +96,16 @@ export default function ServicesPage() {
             ))}
           </div>
 
+          {/* بطاقات الخدمات */}
           <div id="all-services" className="services-grid">
             {services.map((service) => {
               const Icon = service.icon
+
+              const whatsappMessage = encodeURIComponent(
+                `السلام عليكم، أرغب في طلب خدمة: ${service.title}`,
+              )
+
+              const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
 
               return (
                 <article
@@ -93,9 +113,12 @@ export default function ServicesPage() {
                   id={`category-${service.category}`}
                   className="service-page-card"
                 >
+                  {/* =========================
+                      Icon + Category
+                  ========================= */}
                   <div className="service-page-card-top">
                     <div className="service-page-icon">
-                      <Icon size={28} strokeWidth={1.8} />
+                      <Icon size={30} strokeWidth={1.8} />
                     </div>
 
                     <span className="service-page-category">
@@ -107,25 +130,42 @@ export default function ServicesPage() {
                     </span>
                   </div>
 
+                  {/* =========================
+                      Card Content
+                  ========================= */}
                   <div className="service-page-card-body">
+                    {/* العنوان في الوسط */}
                     <h3>{service.title}</h3>
 
+                    {/* الوصف المختصر في الوسط */}
                     <p className="service-page-subtitle">
                       {service.subtitle}
                     </p>
 
-                    <p className="service-page-about">{service.about}</p>
+                    {/* الشرح باليمين */}
+                    <p className="service-page-about">
+                      {service.about}
+                    </p>
 
+                    {/* التفاصيل باليمين */}
                     <div className="service-page-points">
-                      {service.whatWeOffer.slice(0, 3).map((item) => (
-                        <div key={item} className="service-page-point">
-                          <CheckCircle2 size={16} />
-                          <span>{item}</span>
-                        </div>
-                      ))}
+                      {service.whatWeOffer
+                        .slice(0, 3)
+                        .map((item) => (
+                          <div
+                            key={item}
+                            className="service-page-point"
+                          >
+                            <CheckCircle2 size={16} />
+                            <span>{item}</span>
+                          </div>
+                        ))}
                     </div>
                   </div>
 
+                  {/* =========================
+                      Buttons
+                  ========================= */}
                   <div className="service-page-card-footer">
                     <Link
                       href={`/services/${service.id}`}
@@ -134,6 +174,16 @@ export default function ServicesPage() {
                       <span>تفاصيل الخدمة</span>
                       <ArrowLeft size={17} />
                     </Link>
+
+                    <a
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="service-order-button"
+                    >
+                      <Send size={16} />
+                      <span>اطلب خدمتك الآن</span>
+                    </a>
                   </div>
                 </article>
               )
@@ -142,19 +192,24 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* =========================
+          Bottom CTA
+      ========================= */}
       <section className="services-bottom-cta">
         <div className="container">
           <div className="services-bottom-card">
             <div>
               <span>هل تحتاج إلى مساعدة؟</span>
+
               <h2>لم تجد الخدمة المناسبة؟</h2>
+
               <p>
                 تواصل معنا وسنساعدك في معرفة الخدمة المناسبة لاحتياجك.
               </p>
             </div>
 
             <a
-              href="https://wa.me/967776280186"
+              href={`https://wa.me/${whatsappNumber}`}
               target="_blank"
               rel="noopener noreferrer"
               className="services-whatsapp-button"
@@ -172,6 +227,10 @@ export default function ServicesPage() {
           background: var(--background);
           color: var(--foreground);
         }
+
+        /* =========================
+           Hero
+        ========================= */
 
         .services-hero {
           position: relative;
@@ -229,6 +288,7 @@ export default function ServicesPage() {
           font-weight: 900;
           line-height: 1.2;
           letter-spacing: -1px;
+          text-align: center;
         }
 
         .services-hero h1 span {
@@ -241,6 +301,7 @@ export default function ServicesPage() {
           color: rgba(255, 255, 255, 0.84);
           font-size: 17px;
           line-height: 2;
+          text-align: center;
         }
 
         .services-hero-badge {
@@ -260,6 +321,10 @@ export default function ServicesPage() {
         .services-hero-badge svg {
           color: #d18d24;
         }
+
+        /* =========================
+           Content
+        ========================= */
 
         .services-content {
           padding: 70px 0 85px;
@@ -286,6 +351,7 @@ export default function ServicesPage() {
           color: var(--foreground);
           font-size: clamp(27px, 4vw, 37px);
           font-weight: 900;
+          text-align: center;
         }
 
         .services-intro p {
@@ -293,7 +359,12 @@ export default function ServicesPage() {
           margin: 0;
           color: var(--muted-foreground);
           line-height: 1.9;
+          text-align: right;
         }
+
+        /* =========================
+           Categories
+        ========================= */
 
         .services-categories {
           display: flex;
@@ -332,6 +403,10 @@ export default function ServicesPage() {
           border-color: var(--primary);
         }
 
+        /* =========================
+           Services Grid
+        ========================= */
+
         .services-grid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -359,34 +434,44 @@ export default function ServicesPage() {
           box-shadow: 0 18px 35px rgba(25, 56, 100, 0.1);
         }
 
+        /* =========================
+           Icon
+        ========================= */
+
         .service-page-card-top {
+          position: relative;
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          gap: 15px;
-          padding: 23px 23px 0;
+          justify-content: center;
+          width: 100%;
+          padding: 25px 23px 0;
         }
 
         .service-page-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 58px;
-          height: 58px;
+          width: 62px;
+          height: 62px;
           color: var(--primary);
           background: #e6efff;
-          border-radius: 15px;
+          border-radius: 16px;
           transition:
             color 0.2s ease,
-            background 0.2s ease;
+            background 0.2s ease,
+            transform 0.2s ease;
         }
 
         .service-page-card:hover .service-page-icon {
           color: white;
           background: var(--primary);
+          transform: translateY(-2px);
         }
 
         .service-page-category {
+          position: absolute;
+          top: 25px;
+          inset-inline-end: 23px;
           padding: 6px 10px;
           color: var(--primary);
           background: var(--secondary);
@@ -395,37 +480,53 @@ export default function ServicesPage() {
           font-weight: 800;
         }
 
+        /* =========================
+           Card Body
+        ========================= */
+
         .service-page-card-body {
           flex: 1;
           padding: 20px 23px 23px;
         }
 
+        /* عنوان الخدمة في الوسط */
         .service-page-card h3 {
           margin: 0;
           color: var(--foreground);
           font-size: 21px;
           font-weight: 850;
           line-height: 1.5;
+          text-align: center;
         }
 
+        /* الوصف المختصر في الوسط */
         .service-page-subtitle {
-          margin: 5px 0 13px;
+          margin: 6px 0 17px;
           color: #d18d24;
           font-size: 13px;
           font-weight: 750;
+          line-height: 1.7;
+          text-align: center;
         }
 
+        /* الشرح التفصيلي باليمين */
         .service-page-about {
           margin: 0;
           color: var(--muted-foreground);
           font-size: 14px;
           line-height: 1.9;
+          text-align: right;
+          direction: rtl;
         }
+
+        /* =========================
+           Points
+        ========================= */
 
         .service-page-points {
           display: grid;
-          gap: 8px;
-          margin-top: 17px;
+          gap: 9px;
+          margin-top: 18px;
           padding-top: 16px;
           border-top: 1px solid var(--border);
         }
@@ -433,10 +534,12 @@ export default function ServicesPage() {
         .service-page-point {
           display: flex;
           align-items: flex-start;
-          gap: 7px;
+          gap: 8px;
           color: #66738b;
           font-size: 12px;
-          line-height: 1.7;
+          line-height: 1.8;
+          text-align: right;
+          direction: rtl;
         }
 
         .service-page-point svg {
@@ -445,27 +548,39 @@ export default function ServicesPage() {
           color: var(--primary);
         }
 
+        /* =========================
+           Buttons
+        ========================= */
+
         .service-page-card-footer {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 9px;
           padding: 0 23px 23px;
         }
 
-        .service-details-button {
+        .service-details-button,
+        .service-order-button {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 8px;
+          gap: 7px;
           min-height: 46px;
-          color: var(--primary);
-          background: var(--secondary);
-          border: 1px solid #d4e3fa;
           border-radius: 11px;
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 850;
           text-decoration: none;
           transition:
             color 0.2s ease,
             background 0.2s ease,
-            transform 0.2s ease;
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+        }
+
+        .service-details-button {
+          color: var(--primary);
+          background: var(--secondary);
+          border: 1px solid #d4e3fa;
         }
 
         .service-details-button:hover {
@@ -473,6 +588,23 @@ export default function ServicesPage() {
           background: var(--primary);
           transform: translateY(-1px);
         }
+
+        .service-order-button {
+          color: white;
+          background: #1fa463;
+          border: 1px solid #1fa463;
+        }
+
+        .service-order-button:hover {
+          background: #198e56;
+          border-color: #198e56;
+          transform: translateY(-1px);
+          box-shadow: 0 8px 18px rgba(31, 164, 99, 0.18);
+        }
+
+        /* =========================
+           Bottom CTA
+        ========================= */
 
         .services-bottom-cta {
           padding: 0 0 80px;
@@ -496,7 +628,7 @@ export default function ServicesPage() {
         }
 
         .services-bottom-card h2 {
-          margin: 5px 0 5px;
+          margin: 5px 0;
           font-size: 25px;
           font-weight: 850;
         }
@@ -506,6 +638,7 @@ export default function ServicesPage() {
           color: rgba(255, 255, 255, 0.78);
           line-height: 1.8;
           font-size: 14px;
+          text-align: right;
         }
 
         .services-whatsapp-button {
@@ -531,6 +664,10 @@ export default function ServicesPage() {
           background: #fff8e8;
           transform: translateY(-2px);
         }
+
+        /* =========================
+           Responsive
+        ========================= */
 
         @media (max-width: 950px) {
           .services-grid {
@@ -573,6 +710,10 @@ export default function ServicesPage() {
             width: 100%;
           }
 
+          .service-page-card-footer {
+            grid-template-columns: 1fr;
+          }
+
           .services-bottom-card {
             align-items: stretch;
             flex-direction: column;
@@ -592,6 +733,10 @@ export default function ServicesPage() {
           .service-page-card-top,
           .service-page-card-body {
             padding-inline: 18px;
+          }
+
+          .service-page-category {
+            inset-inline-end: 18px;
           }
 
           .service-page-card-footer {
