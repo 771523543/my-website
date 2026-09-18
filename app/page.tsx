@@ -17,6 +17,9 @@ import {
   X,
   Plus,
   Trash2,
+  GraduationCap,
+  Award,
+  LockKeyhole,
 } from 'lucide-react'
 
 import QuickSections from './components/QuickSections'
@@ -252,6 +255,7 @@ export default function Page() {
 
       {/* ==================== HERO ==================== */}
       <section id="top" className="hero container">
+        {/* الجانب النصي */}
         <div className="hero-copy">
           <span className="eyebrow">
             <span className="eyebrow-dot" />
@@ -269,6 +273,7 @@ export default function Page() {
             جودة عالية، ومتابعة مستمرة تساعدك على إنجاز أعمالك بثقة.
           </p>
 
+          {/* الأزرار */}
           <div className="hero-buttons">
             <a
               className="primary-button"
@@ -286,7 +291,7 @@ export default function Page() {
             </a>
           </div>
 
-          {/* QuickSections تم نقله خارج الـ Hero */}
+          {/* الثقة */}
           <div className="trust-row">
             <div className="avatars">
               <span>أ</span>
@@ -301,11 +306,19 @@ export default function Page() {
             </div>
           </div>
 
+          {/* بطاقة الرحلة الأكاديمية */}
           <div className="hero-blue-card">
-            <div className="hero-card-badge">هديل</div>
+            <div className="hero-card-badge">
+              <GraduationCap size={27} />
+            </div>
 
             <div className="art-top">
               <span>رحلتك الأكاديمية</span>
+
+              <Award
+                size={23}
+                className="sparkle"
+              />
             </div>
 
             <p className="hero-card-caption">
@@ -333,34 +346,90 @@ export default function Page() {
           </div>
         </div>
 
+        {/* الصورة الرئيسية */}
         <div className="hero-art hero-photo">
           <div
             style={{
               display: 'flex',
               justifyContent: 'center',
+              alignItems: 'center',
               margin: '20px 0',
               width: '100%',
+              position: 'relative',
             }}
           >
             <img
               src="/images/hadel-1.png"
               alt="منصة هديل"
               style={{
+                width: '100%',
                 maxWidth: '100%',
                 height: 'auto',
                 borderRadius: '20px',
+                objectFit: 'contain',
               }}
             />
+
+            {/* شارات بصرية خفيفة */}
+            <div
+              style={{
+                position: 'absolute',
+                right: '4%',
+                top: '10%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '7px',
+                background: '#fff',
+                color: '#17233d',
+                padding: '9px 12px',
+                borderRadius: '12px',
+                boxShadow: '0 12px 25px #17233d1c',
+                fontSize: '10px',
+                fontWeight: 800,
+              }}
+            >
+              <ShieldCheck
+                size={18}
+                color="#2455c4"
+              />
+
+              <span>جودة موثوقة</span>
+            </div>
+
+            <div
+              style={{
+                position: 'absolute',
+                left: '3%',
+                bottom: '12%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '7px',
+                background: '#fff',
+                color: '#17233d',
+                padding: '9px 12px',
+                borderRadius: '12px',
+                boxShadow: '0 12px 25px #17233d1c',
+                fontSize: '10px',
+                fontWeight: 800,
+              }}
+            >
+              <LockKeyhole
+                size={17}
+                color="#2455c4"
+              />
+
+              <span>خصوصية وأمان</span>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ==================================================
           شريط الأقسام المتحرك
-          يظهر مباشرة بعد الـ Hero
           ================================================== */}
       <QuickSections />
 
+      {/* ==================== STATS ==================== */}
       <section className="stats-strip">
         <div className="container stats">
           <div>
