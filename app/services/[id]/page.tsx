@@ -4,836 +4,567 @@ import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import {
   ArrowRight,
-  ArrowLeft,
   CheckCircle2,
+  ChevronDown,
   ClipboardCheck,
   MessageCircle,
-  Phone,
-  Sparkles,
-  HelpCircle,
-  FileCheck2,
+  Send,
+  ShieldCheck,
 } from 'lucide-react'
 import { useState } from 'react'
-
-import {
-  services,
-  type ServiceCategory,
-} from '../../components/Services'
-
-const whatsappNumber = '967776280186'
-
-const categoryLabels: Record<ServiceCategory, string> = {
-  research: 'خدمة بحثية',
-  academic: 'خدمة أكاديمية',
-  design: 'تصميم وخدمات مهنية',
-}
+import { services, whatsappNumber } from '../../components/Services'
 
 export default function ServiceDetailsPage() {
   const params = useParams()
-  const serviceId = Array.isArray(params.id)
-    ? params.id[0]
-    : params.id
+  const id = Array.isArray(params.id) ? params.id[0] : params.id
 
-  const service = services.find(
-    (item) => item.id === serviceId,
-  )
+  const service = services.find((item) => item.id === id)
 
   const [openFaq, setOpenFaq] = useState<number | null>(0)
 
   if (!service) {
     return (
-      <main className="not-found-page">
-        <div className="not-found-card">
-          <div className="not-found-icon">
-            <Sparkles size={30} />
+      <main className="service-not-found">
+        <div className="container">
+          <div className="service-not-found-card">
+            <div className="not-found-icon">
+              <ClipboardCheck size={34} />
+            </div>
+
+            <h1>الخدمة غير موجودة</h1>
+
+            <p>
+              عذرًا، لم نتمكن من العثور على الخدمة المطلوبة.
+            </p>
+
+            <Link href="/services" className="back-services-button">
+              <ArrowRight size={18} />
+              العودة إلى الخدمات
+            </Link>
           </div>
-
-          <h1>الخدمة غير موجودة</h1>
-
-          <p>
-            يبدو أن الخدمة التي تبحث عنها غير متاحة أو أن الرابط
-            غير صحيح.
-          </p>
-
-          <Link href="/services" className="back-services">
-            <ArrowRight size={18} />
-            العودة إلى جميع الخدمات
-          </Link>
         </div>
 
         <style jsx>{`
-          .not-found-page {
+          .service-not-found {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 30px 20px;
-            background:
-              radial-gradient(
-                circle at 10% 20%,
-                rgba(118, 86, 169, 0.12),
-                transparent 30%
-              ),
-              #faf8fc;
-            direction: rtl;
+            padding: 100px 20px;
+            background: var(--background);
           }
 
-          .not-found-card {
-            width: min(520px, 100%);
+          .service-not-found-card {
+            width: min(100%, 560px);
             padding: 45px 30px;
             text-align: center;
-            background: white;
-            border: 1px solid #e8e2ef;
-            border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(54, 38, 76, 0.08);
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(25, 56, 100, 0.08);
           }
 
           .not-found-icon {
-            width: 65px;
-            height: 65px;
-            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 20px;
-            color: white;
-            background: linear-gradient(
-              135deg,
-              #7656a9,
-              #4d9295
-            );
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            background: var(--secondary);
+            border-radius: 18px;
           }
 
-          .not-found-card h1 {
+          .service-not-found h1 {
             margin: 0;
-            color: #28243a;
-            font-size: 28px;
+            color: var(--foreground);
+            font-size: 30px;
             font-weight: 900;
           }
 
-          .not-found-card p {
-            margin: 12px 0 25px;
-            color: #777487;
-            font-size: 14px;
-            line-height: 1.8;
+          .service-not-found p {
+            margin: 10px 0 25px;
+            color: var(--muted-foreground);
           }
 
-          .back-services {
-            min-height: 46px;
+          .back-services-button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            min-height: 46px;
             padding: 0 20px;
-            border-radius: 13px;
             color: white;
-            background: linear-gradient(
-              135deg,
-              #7656a9,
-              #4d9295
-            );
-            text-decoration: none;
-            font-size: 13px;
+            background: var(--primary);
+            border-radius: 11px;
             font-weight: 800;
+            text-decoration: none;
           }
         `}</style>
       </main>
     )
   }
 
-  const ServiceIcon = service.icon
+  const Icon = service.icon
 
   const whatsappMessage = encodeURIComponent(
-    `${service.orderText}
-
-أرغب في معرفة التفاصيل والتكلفة ومدة التنفيذ.`,
+    `السلام عليكم، أرغب في طلب خدمة: ${service.title}`,
   )
 
-  const whatsappUrl =
-    `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
+  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
 
   return (
     <main className="service-details-page">
-      {/* =========================
-          Hero
-      ========================= */}
-      <section className="details-hero">
-        <div className="hero-circle hero-circle-one" />
-        <div className="hero-circle hero-circle-two" />
-
-        <div className="page-container">
-          <Link href="/services" className="back-link">
-            <ArrowRight size={18} />
-            العودة إلى الخدمات
+      {/* Hero */}
+      <section className="service-details-hero">
+        <div className="container">
+          <Link href="/services" className="service-back-link">
+            <ArrowRight size={17} />
+            العودة إلى جميع الخدمات
           </Link>
 
-          <div className="hero-content">
-            <div className="large-service-icon">
-              <ServiceIcon size={40} strokeWidth={1.7} />
+          <div className="service-details-hero-content">
+            <div className="service-details-icon">
+              <Icon size={40} strokeWidth={1.7} />
             </div>
 
-            <div className="category-badge">
-              <span />
-              {categoryLabels[service.category]}
+            <div className="service-details-category">
+              {service.category === 'research'
+                ? 'الخدمات البحثية'
+                : service.category === 'academic'
+                  ? 'الخدمات الأكاديمية'
+                  : 'التصميم والخدمات المهنية'}
             </div>
 
             <h1>{service.title}</h1>
 
-            <div className="subtitle">
-              {service.subtitle}
-            </div>
-
-            <p>{service.about}</p>
-
-            <div className="hero-actions">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="primary-action"
-              >
-                <MessageCircle size={19} />
-                طلب الخدمة عبر واتساب
-                <ArrowLeft size={17} />
-              </a>
-
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="secondary-action"
-              >
-                <Phone size={18} />
-                استفسار
-              </a>
-            </div>
+            <p>{service.subtitle}</p>
           </div>
         </div>
       </section>
 
-      {/* =========================
-          Main Content
-      ========================= */}
-      <section className="details-section">
-        <div className="page-container">
-          <div className="details-layout">
-            {/* Main */}
-            <div className="details-main">
-              {/* What we offer */}
-              <section className="content-card">
-                <div className="section-title">
-                  <div className="section-icon purple">
+      {/* Main content */}
+      <section className="service-details-content">
+        <div className="container">
+          <div className="service-details-layout">
+            {/* المحتوى */}
+            <div className="service-details-main">
+              <section className="details-card">
+                <div className="details-card-heading">
+                  <div className="details-heading-icon">
                     <ClipboardCheck size={21} />
                   </div>
 
                   <div>
-                    <span>الخدمة تشمل</span>
-                    <h2>ماذا نقدم لك؟</h2>
+                    <span>عن الخدمة</span>
+                    <h2>نبذة عن الخدمة</h2>
                   </div>
                 </div>
 
-                <div className="offer-grid">
-                  {service.whatWeOffer.map(
-                    (item, index) => (
-                      <div
-                        className="offer-card"
-                        key={item}
-                      >
-                        <div className="offer-number">
-                          {String(index + 1).padStart(2, '0')}
-                        </div>
-
-                        <div>
-                          <strong>{item}</strong>
-
-                          <p>
-                            يتم تنفيذ هذا الجزء وفق
-                            متطلبات الخدمة والتعليمات
-                            المرسلة.
-                          </p>
-                        </div>
-
-                        <CheckCircle2
-                          className="offer-check"
-                          size={19}
-                        />
-                      </div>
-                    ),
-                  )}
-                </div>
-              </section>
-
-              {/* Requirements */}
-              <section className="content-card">
-                <div className="section-title">
-                  <div className="section-icon teal">
-                    <FileCheck2 size={21} />
-                  </div>
-
-                  <div>
-                    <span>قبل بدء العمل</span>
-                    <h2>المعلومات المطلوبة</h2>
-                  </div>
-                </div>
-
-                <p className="section-description">
-                  لتسهيل تنفيذ طلبك، يرجى توفير المعلومات
-                  التالية قدر الإمكان:
+                <p className="details-description">
+                  {service.about}
                 </p>
-
-                <div className="requirements-list">
-                  {service.requirements.map(
-                    (item, index) => (
-                      <div
-                        className="requirement-item"
-                        key={item}
-                      >
-                        <div className="requirement-number">
-                          {index + 1}
-                        </div>
-
-                        <span>{item}</span>
-
-                        <CheckCircle2 size={17} />
-                      </div>
-                    ),
-                  )}
-                </div>
               </section>
 
-              {/* FAQ */}
-              <section className="content-card">
-                <div className="section-title">
-                  <div className="section-icon purple">
-                    <HelpCircle size={21} />
+              <section className="details-card">
+                <div className="details-card-heading">
+                  <div className="details-heading-icon">
+                    <CheckCircle2 size={21} />
                   </div>
 
                   <div>
-                    <span>أسئلة شائعة</span>
-                    <h2>هل لديك استفسار؟</h2>
+                    <span>ماذا نقدم؟</span>
+                    <h2>ما تتضمنه الخدمة</h2>
                   </div>
                 </div>
 
-                <div className="faq-list">
-                  {service.faqs.map((faq, index) => {
-                    const isOpen = openFaq === index
+                <div className="details-list">
+                  {service.whatWeOffer.map((item) => (
+                    <div key={item} className="details-list-item">
+                      <CheckCircle2 size={18} />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
 
-                    return (
-                      <div
-                        className={`faq-item ${
-                          isOpen ? 'open' : ''
-                        }`}
-                        key={faq.q}
-                      >
-                        <button
-                          type="button"
-                          className="faq-question"
-                          onClick={() =>
-                            setOpenFaq(
-                              isOpen ? null : index,
-                            )
-                          }
-                          aria-expanded={isOpen}
-                        >
-                          <span>{faq.q}</span>
+              <section className="details-card">
+                <div className="details-card-heading">
+                  <div className="details-heading-icon">
+                    <ShieldCheck size={21} />
+                  </div>
 
-                          <span className="faq-plus">
-                            {isOpen ? '−' : '+'}
-                          </span>
-                        </button>
+                  <div>
+                    <span>قبل الطلب</span>
+                    <h2>متطلبات الخدمة</h2>
+                  </div>
+                </div>
 
+                <div className="requirements-grid">
+                  {service.requirements.map((item, index) => (
+                    <div
+                      key={item}
+                      className="requirement-item"
+                    >
+                      <span className="requirement-number">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* الأسئلة الشائعة */}
+              {service.faqs.length > 0 && (
+                <section className="details-card faq-card">
+                  <div className="details-card-heading">
+                    <div className="details-heading-icon">
+                      <MessageCircle size={21} />
+                    </div>
+
+                    <div>
+                      <span>الأسئلة الشائعة</span>
+                      <h2>هل لديك استفسار؟</h2>
+                    </div>
+                  </div>
+
+                  <div className="faq-list">
+                    {service.faqs.map((faq, index) => {
+                      const isOpen = openFaq === index
+
+                      return (
                         <div
-                          className={`faq-answer ${
-                            isOpen ? 'show' : ''
+                          key={faq.q}
+                          className={`faq-item ${
+                            isOpen ? 'open' : ''
                           }`}
                         >
-                          <p>{faq.a}</p>
+                          <button
+                            type="button"
+                            className="faq-question"
+                            onClick={() =>
+                              setOpenFaq(isOpen ? null : index)
+                            }
+                            aria-expanded={isOpen}
+                          >
+                            <span>{faq.q}</span>
+
+                            <ChevronDown
+                              size={19}
+                              className="faq-chevron"
+                            />
+                          </button>
+
+                          {isOpen && (
+                            <div className="faq-answer">
+                              {faq.a}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </section>
+                      )
+                    })}
+                  </div>
+                </section>
+              )}
             </div>
 
-            {/* Sidebar */}
-            <aside className="details-sidebar">
-              <div className="order-card">
-                <div className="order-card-icon">
-                  <Sparkles size={24} />
+            {/* بطاقة الطلب */}
+            <aside className="service-order-column">
+              <div className="service-order-card">
+                <div className="order-card-top">
+                  <div className="order-card-icon">
+                    <Send size={25} />
+                  </div>
+
+                  <span>طلب الخدمة</span>
                 </div>
 
-                <span className="order-kicker">
-                  جاهز للبدء؟
-                </span>
-
-                <h2>اطلب خدمتك الآن</h2>
+                <h2>هل أنت جاهز لطلب الخدمة؟</h2>
 
                 <p>
-                  أرسل لنا تفاصيل طلبك عبر واتساب، وسنساعدك
-                  في معرفة التفاصيل والتكلفة والمدة المناسبة.
+                  أرسل طلبك الآن عبر واتساب وسنتواصل معك لمعرفة التفاصيل
+                  المطلوبة والبدء في تنفيذ الخدمة.
                 </p>
 
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="order-card-button"
+                  className="order-whatsapp-button"
                 >
-                  <MessageCircle size={19} />
-                  طلب الخدمة
-                  <ArrowLeft size={17} />
+                  <MessageCircle size={20} />
+                  طلب الخدمة عبر واتساب
                 </a>
 
                 <div className="order-note">
                   <CheckCircle2 size={16} />
-                  <span>رد مباشر عبر واتساب</span>
+                  <span>تواصل مباشر وسهل</span>
                 </div>
 
                 <div className="order-note">
                   <CheckCircle2 size={16} />
-                  <span>توضيح المتطلبات قبل البدء</span>
+                  <span>تحديد المتطلبات قبل البدء</span>
                 </div>
 
                 <div className="order-note">
                   <CheckCircle2 size={16} />
-                  <span>تحديد التفاصيل والتكلفة</span>
+                  <span>متابعة تفاصيل الطلب</span>
                 </div>
               </div>
-
-              <Link
-                href="/services"
-                className="all-services-link"
-              >
-                <span>
-                  <ArrowRight size={17} />
-                  تصفح جميع الخدمات
-                </span>
-
-                <ArrowLeft size={17} />
-              </Link>
             </aside>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================
-          Bottom CTA
-      ========================= */}
-      <section className="bottom-cta">
-        <div className="page-container">
-          <div className="bottom-cta-content">
-            <div>
-              <span>منصة هديل للخدمات الطلابية</span>
-
-              <h2>
-                هل لديك طلب أو استفسار آخر؟
-              </h2>
-
-              <p>
-                لا تتردد في التواصل معنا، وسنساعدك في معرفة
-                الخدمة المناسبة لاحتياجك.
-              </p>
-            </div>
-
-            <a
-              href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-                'السلام عليكم، لدي استفسار عن خدمات منصة هديل.',
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bottom-button"
-            >
-              تواصل معنا
-              <ArrowLeft size={18} />
-            </a>
           </div>
         </div>
       </section>
 
       <style jsx>{`
         .service-details-page {
-          --purple: #7656a9;
-          --purple-dark: #5f438c;
-          --purple-light: #f1ebf9;
-          --teal: #4d9295;
-          --teal-light: #eaf5f4;
-          --text: #28243a;
-          --muted: #777487;
-          --border: #e8e2ef;
-          --soft: #faf8fc;
-
           min-height: 100vh;
-          background: var(--soft);
-          color: var(--text);
-          direction: rtl;
-        }
-
-        .page-container {
-          width: min(1120px, calc(100% - 40px));
-          margin: 0 auto;
+          background: var(--background);
+          color: var(--foreground);
         }
 
         /* =========================
            Hero
         ========================= */
 
-        .details-hero {
+        .service-details-hero {
           position: relative;
           overflow: hidden;
-          padding: 30px 0 75px;
-          background:
-            radial-gradient(
-              circle at 10% 30%,
-              rgba(118, 86, 169, 0.13),
-              transparent 30%
-            ),
-            radial-gradient(
-              circle at 90% 80%,
-              rgba(77, 146, 149, 0.12),
-              transparent 30%
-            ),
-            linear-gradient(
-              135deg,
-              #fbf9fd,
-              #f3eef8 52%,
-              #eef7f6
-            );
-          border-bottom: 1px solid rgba(118, 86, 169, 0.08);
-        }
-
-        .back-link {
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-          margin-bottom: 45px;
-          color: var(--muted);
-          text-decoration: none;
-          font-size: 14px;
-          font-weight: 700;
-          transition: 0.25s ease;
-        }
-
-        .back-link:hover {
-          color: var(--purple);
-          transform: translateX(3px);
-        }
-
-        .hero-content {
-          max-width: 820px;
-        }
-
-        .large-service-icon {
-          width: 82px;
-          height: 82px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 20px;
-          border-radius: 25px;
-          color: white;
-          background: linear-gradient(
-            145deg,
-            var(--purple),
-            var(--teal)
-          );
-          box-shadow:
-            0 18px 40px rgba(118, 86, 169, 0.2),
-            0 5px 15px rgba(77, 146, 149, 0.12);
-        }
-
-        .category-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 12px;
-          color: var(--purple-dark);
-          font-size: 13px;
-          font-weight: 800;
-        }
-
-        .category-badge span {
-          width: 7px;
-          height: 7px;
-          border-radius: 50%;
-          background: var(--teal);
-          box-shadow: 0 0 0 5px rgba(77, 146, 149, 0.1);
-        }
-
-        .hero-content h1 {
-          margin: 0;
-          color: var(--text);
-          font-size: clamp(34px, 5vw, 57px);
-          line-height: 1.2;
-          font-weight: 900;
-          letter-spacing: -1px;
-        }
-
-        .subtitle {
-          margin-top: 10px;
-          color: var(--teal);
-          font-size: 14px;
-          font-weight: 800;
-        }
-
-        .hero-content > p {
-          max-width: 760px;
-          margin: 20px 0 0;
-          color: var(--muted);
-          font-size: 16px;
-          line-height: 1.95;
-        }
-
-        .hero-actions {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 11px;
-          margin-top: 30px;
-        }
-
-        .primary-action,
-        .secondary-action {
-          min-height: 49px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          padding: 0 20px;
-          border-radius: 14px;
-          text-decoration: none;
-          font-size: 13px;
-          font-weight: 900;
-          transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease;
-        }
-
-        .primary-action {
+          padding: 105px 0 65px;
           color: white;
           background: linear-gradient(
             135deg,
-            var(--purple),
-            var(--teal)
+            #2455c4 0%,
+            #234da9 58%,
+            #17233d 100%
           );
-          box-shadow: 0 10px 25px rgba(118, 86, 169, 0.18);
         }
 
-        .secondary-action {
-          color: var(--purple-dark);
-          background: white;
-          border: 1px solid var(--border);
-        }
-
-        .primary-action:hover,
-        .secondary-action:hover {
-          transform: translateY(-2px);
-        }
-
-        .primary-action:hover {
-          box-shadow: 0 15px 30px rgba(118, 86, 169, 0.25);
-        }
-
-        .hero-circle {
+        .service-details-hero::before {
+          content: '';
           position: absolute;
+          width: 300px;
+          height: 300px;
+          top: -170px;
+          inset-inline-end: -100px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 50%;
-          pointer-events: none;
         }
 
-        .hero-circle-one {
-          width: 310px;
-          height: 310px;
-          left: -130px;
-          top: -120px;
-          border: 1px solid rgba(118, 86, 169, 0.1);
+        .service-details-hero::after {
+          content: '';
+          position: absolute;
+          width: 220px;
+          height: 220px;
+          bottom: -145px;
+          inset-inline-start: -80px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
         }
 
-        .hero-circle-two {
-          width: 260px;
-          height: 260px;
-          right: -100px;
-          bottom: -150px;
-          border: 1px solid rgba(77, 146, 149, 0.12);
+        .service-back-link {
+          position: relative;
+          z-index: 2;
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          color: rgba(255, 255, 255, 0.82);
+          font-size: 13px;
+          font-weight: 750;
+          text-decoration: none;
+          transition: color 0.2s ease;
+        }
+
+        .service-back-link:hover {
+          color: #f7c25e;
+        }
+
+        .service-details-hero-content {
+          position: relative;
+          z-index: 2;
+          max-width: 850px;
+          margin: 35px auto 0;
+          text-align: center;
+        }
+
+        .service-details-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 86px;
+          height: 86px;
+          margin: 0 auto 20px;
+          color: var(--primary);
+          background: white;
+          border: 5px solid rgba(255, 255, 255, 0.14);
+          border-radius: 24px;
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .service-details-category {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 7px 13px;
+          color: #17233d;
+          background: #fff8e8;
+          border: 1px solid #f1d89e;
+          border-radius: 999px;
+          font-size: 12px;
+          font-weight: 850;
+        }
+
+        .service-details-hero h1 {
+          margin: 16px 0 8px;
+          font-size: clamp(31px, 5vw, 48px);
+          font-weight: 900;
+          line-height: 1.3;
+        }
+
+        .service-details-hero p {
+          margin: 0;
+          color: rgba(255, 255, 255, 0.82);
+          font-size: 16px;
+          line-height: 1.8;
         }
 
         /* =========================
-           Main
+           Content
         ========================= */
 
-        .details-section {
-          padding: 75px 0;
+        .service-details-content {
+          padding: 60px 0 90px;
         }
 
-        .details-layout {
+        .service-details-layout {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) 330px;
-          gap: 25px;
+          grid-template-columns: minmax(0, 1fr) 350px;
           align-items: start;
+          gap: 25px;
         }
 
-        .details-main {
-          display: flex;
-          flex-direction: column;
+        .service-details-main {
+          display: grid;
           gap: 22px;
           min-width: 0;
         }
 
-        .content-card {
+        .details-card {
           padding: 28px;
-          background: white;
+          background: var(--card);
           border: 1px solid var(--border);
-          border-radius: 24px;
-          box-shadow: 0 8px 30px rgba(54, 38, 76, 0.045);
+          border-radius: 17px;
+          box-shadow: 0 10px 25px rgba(25, 56, 100, 0.055);
         }
 
-        .section-title {
+        .details-card-heading {
           display: flex;
           align-items: center;
           gap: 13px;
-          margin-bottom: 25px;
+          margin-bottom: 20px;
         }
 
-        .section-icon {
-          width: 48px;
-          height: 48px;
-          flex-shrink: 0;
+        .details-heading-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 15px;
+          width: 46px;
+          height: 46px;
+          flex-shrink: 0;
+          color: var(--primary);
+          background: var(--secondary);
+          border-radius: 13px;
         }
 
-        .section-icon.purple {
-          color: var(--purple);
-          background: var(--purple-light);
-        }
-
-        .section-icon.teal {
-          color: var(--teal);
-          background: var(--teal-light);
-        }
-
-        .section-title span {
+        .details-card-heading span {
           display: block;
           margin-bottom: 2px;
-          color: var(--muted);
-          font-size: 11px;
-          font-weight: 700;
+          color: var(--accent);
+          font-size: 12px;
+          font-weight: 850;
         }
 
-        .section-title h2 {
+        .details-card-heading h2 {
           margin: 0;
-          color: var(--text);
+          color: var(--foreground);
           font-size: 22px;
-          font-weight: 900;
+          font-weight: 850;
         }
 
-        .offer-grid {
+        .details-description {
+          margin: 0;
+          color: var(--muted-foreground);
+          font-size: 15px;
+          line-height: 2;
+        }
+
+        /* =========================
+           What we offer
+        ========================= */
+
+        .details-list {
           display: grid;
-          grid-template-columns: 1fr 1fr;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 11px;
         }
 
-        .offer-card {
-          position: relative;
+        .details-list-item {
           display: flex;
           align-items: flex-start;
-          gap: 12px;
-          padding: 16px;
-          border: 1px solid #eeeaf3;
-          border-radius: 17px;
-          background: #fcfbfd;
-          transition:
-            transform 0.25s ease,
-            border-color 0.25s ease;
-        }
-
-        .offer-card:hover {
-          transform: translateY(-2px);
-          border-color: rgba(118, 86, 169, 0.2);
-        }
-
-        .offer-number {
-          width: 30px;
-          height: 30px;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 10px;
-          color: var(--purple);
-          background: var(--purple-light);
-          font-size: 10px;
-          font-weight: 900;
-        }
-
-        .offer-card strong {
-          display: block;
-          color: var(--text);
-          font-size: 13px;
-          line-height: 1.5;
-        }
-
-        .offer-card p {
-          margin: 4px 0 0;
-          color: var(--muted);
-          font-size: 10px;
-          line-height: 1.6;
-        }
-
-        .offer-check {
-          position: absolute;
-          top: 14px;
-          left: 14px;
-          color: var(--teal);
-        }
-
-        .section-description {
-          margin: -8px 0 20px;
-          color: var(--muted);
-          font-size: 13px;
-          line-height: 1.8;
-        }
-
-        .requirements-list {
-          display: flex;
-          flex-direction: column;
           gap: 9px;
+          padding: 13px 14px;
+          color: #53627a;
+          background: #f7faff;
+          border: 1px solid #e5edf8;
+          border-radius: 12px;
+          font-size: 13px;
+          line-height: 1.7;
+        }
+
+        .details-list-item svg {
+          flex-shrink: 0;
+          margin-top: 2px;
+          color: var(--primary);
+        }
+
+        /* =========================
+           Requirements
+        ========================= */
+
+        .requirements-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
         }
 
         .requirement-item {
-          min-height: 49px;
           display: flex;
           align-items: center;
-          gap: 11px;
-          padding: 8px 12px;
-          border-radius: 14px;
-          background: #faf9fc;
+          gap: 12px;
+          padding: 14px;
+          color: #59677d;
+          background: var(--muted);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          font-size: 13px;
+          line-height: 1.6;
         }
 
         .requirement-number {
-          width: 30px;
-          height: 30px;
-          flex-shrink: 0;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 9px;
-          color: var(--teal);
-          background: var(--teal-light);
+          width: 36px;
+          height: 36px;
+          flex-shrink: 0;
+          color: var(--primary);
+          background: var(--secondary);
+          border-radius: 10px;
           font-size: 11px;
           font-weight: 900;
-        }
-
-        .requirement-item span {
-          flex: 1;
-          color: #5f5a6d;
-          font-size: 12px;
-          font-weight: 700;
-        }
-
-        .requirement-item > svg {
-          color: var(--teal);
-          flex-shrink: 0;
         }
 
         /* =========================
@@ -841,379 +572,211 @@ export default function ServiceDetailsPage() {
         ========================= */
 
         .faq-list {
-          display: flex;
-          flex-direction: column;
-          gap: 9px;
+          display: grid;
+          gap: 10px;
         }
 
         .faq-item {
           overflow: hidden;
-          border: 1px solid #eeeaf3;
-          border-radius: 15px;
-          background: #fcfbfd;
+          background: #f8fbff;
+          border: 1px solid var(--border);
+          border-radius: 12px;
         }
 
         .faq-question {
-          width: 100%;
-          min-height: 55px;
           display: flex;
           align-items: center;
           justify-content: space-between;
           gap: 15px;
-          padding: 0 17px;
-          border: 0;
+          width: 100%;
+          min-height: 54px;
+          padding: 0 16px;
+          color: var(--foreground);
           background: transparent;
-          color: var(--text);
-          cursor: pointer;
+          border: 0;
           font: inherit;
-          text-align: right;
           font-size: 13px;
           font-weight: 800;
+          text-align: right;
+          cursor: pointer;
         }
 
-        .faq-plus {
-          width: 27px;
-          height: 27px;
+        .faq-chevron {
           flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 8px;
-          color: var(--purple);
-          background: var(--purple-light);
-          font-size: 18px;
-          line-height: 1;
+          color: var(--primary);
+          transition: transform 0.2s ease;
+        }
+
+        .faq-item.open .faq-chevron {
+          transform: rotate(180deg);
         }
 
         .faq-answer {
-          display: grid;
-          grid-template-rows: 0fr;
-          transition: grid-template-rows 0.25s ease;
-        }
-
-        .faq-answer.show {
-          grid-template-rows: 1fr;
-        }
-
-        .faq-answer p {
-          min-height: 0;
-          overflow: hidden;
-          margin: 0;
-          padding: 0 17px;
-          color: var(--muted);
-          font-size: 12px;
-          line-height: 1.8;
-        }
-
-        .faq-answer.show p {
-          padding-bottom: 17px;
+          padding: 0 16px 17px;
+          color: var(--muted-foreground);
+          font-size: 13px;
+          line-height: 1.9;
         }
 
         /* =========================
-           Sidebar
+           Order Card
         ========================= */
 
-        .details-sidebar {
+        .service-order-column {
           position: sticky;
-          top: 25px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
+          top: 100px;
         }
 
-        .order-card {
-          padding: 27px;
-          border-radius: 24px;
-          color: white;
-          background:
-            radial-gradient(
-              circle at 100% 0,
-              rgba(255, 255, 255, 0.14),
-              transparent 35%
-            ),
-            linear-gradient(
-              145deg,
-              var(--purple-dark),
-              var(--teal)
-            );
-          box-shadow: 0 20px 45px rgba(76, 62, 102, 0.15);
+        .service-order-card {
+          padding: 26px;
+          overflow: hidden;
+          background: var(--card);
+          border: 1px solid var(--border);
+          border-radius: 18px;
+          box-shadow: 0 14px 35px rgba(25, 56, 100, 0.08);
+        }
+
+        .order-card-top {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          margin-bottom: 18px;
         }
 
         .order-card-icon {
-          width: 50px;
-          height: 50px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin-bottom: 18px;
-          border-radius: 15px;
-          background: rgba(255, 255, 255, 0.13);
-        }
-
-        .order-kicker {
-          display: block;
-          margin-bottom: 4px;
-          color: rgba(255, 255, 255, 0.7);
-          font-size: 11px;
-          font-weight: 700;
-        }
-
-        .order-card h2 {
-          margin: 0;
-          font-size: 24px;
-          font-weight: 900;
-        }
-
-        .order-card > p {
-          margin: 11px 0 22px;
-          color: rgba(255, 255, 255, 0.76);
-          font-size: 12px;
-          line-height: 1.8;
-        }
-
-        .order-card-button {
-          min-height: 49px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
+          width: 48px;
+          height: 48px;
+          color: white;
+          background: var(--primary);
           border-radius: 13px;
-          color: var(--purple-dark);
-          background: white;
-          text-decoration: none;
-          font-size: 13px;
-          font-weight: 900;
-          transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease;
         }
 
-        .order-card-button:hover {
+        .order-card-top > span {
+          color: var(--accent);
+          font-size: 13px;
+          font-weight: 850;
+        }
+
+        .service-order-card h2 {
+          margin: 0;
+          color: var(--foreground);
+          font-size: 23px;
+          font-weight: 900;
+          line-height: 1.5;
+        }
+
+        .service-order-card > p {
+          margin: 10px 0 20px;
+          color: var(--muted-foreground);
+          font-size: 13px;
+          line-height: 1.9;
+        }
+
+        .order-whatsapp-button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
+          width: 100%;
+          min-height: 50px;
+          padding: 0 16px;
+          color: white;
+          background: #1fa463;
+          border-radius: 12px;
+          font-size: 13px;
+          font-weight: 850;
+          text-decoration: none;
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+        }
+
+        .order-whatsapp-button:hover {
+          background: #198e56;
           transform: translateY(-2px);
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+          box-shadow: 0 10px 22px rgba(31, 164, 99, 0.2);
         }
 
         .order-note {
           display: flex;
           align-items: center;
           gap: 8px;
-          margin-top: 13px;
-          color: rgba(255, 255, 255, 0.78);
-          font-size: 10px;
-          font-weight: 600;
+          margin-top: 14px;
+          color: #65738a;
+          font-size: 12px;
         }
 
         .order-note svg {
-          color: #c7efdf;
-        }
-
-        .all-services-link {
-          min-height: 55px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 17px;
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          color: var(--purple-dark);
-          background: white;
-          text-decoration: none;
-          font-size: 12px;
-          font-weight: 800;
-          transition: 0.25s ease;
-        }
-
-        .all-services-link span {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .all-services-link:hover {
-          transform: translateY(-2px);
-          border-color: rgba(118, 86, 169, 0.25);
-        }
-
-        /* =========================
-           Bottom CTA
-        ========================= */
-
-        .bottom-cta {
-          padding: 0 0 70px;
-        }
-
-        .bottom-cta-content {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 25px;
-          padding: 30px;
-          border-radius: 24px;
-          background: linear-gradient(
-            135deg,
-            #f1ebf9,
-            #eaf5f4
-          );
-          border: 1px solid var(--border);
-        }
-
-        .bottom-cta-content > div {
-          flex: 1;
-        }
-
-        .bottom-cta-content span {
-          display: block;
-          margin-bottom: 5px;
-          color: var(--teal);
-          font-size: 11px;
-          font-weight: 800;
-        }
-
-        .bottom-cta-content h2 {
-          margin: 0;
-          color: var(--text);
-          font-size: 22px;
-          font-weight: 900;
-        }
-
-        .bottom-cta-content p {
-          margin: 7px 0 0;
-          color: var(--muted);
-          font-size: 12px;
-          line-height: 1.7;
-        }
-
-        .bottom-button {
-          min-height: 48px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          padding: 0 20px;
-          border-radius: 13px;
-          color: white;
-          background: linear-gradient(
-            135deg,
-            var(--purple),
-            var(--teal)
-          );
-          text-decoration: none;
-          font-size: 12px;
-          font-weight: 900;
-          box-shadow: 0 8px 20px rgba(118, 86, 169, 0.15);
-          transition: 0.25s ease;
-        }
-
-        .bottom-button:hover {
-          transform: translateY(-2px);
+          color: var(--primary);
+          flex-shrink: 0;
         }
 
         /* =========================
            Responsive
         ========================= */
 
-        @media (max-width: 900px) {
-          .details-layout {
+        @media (max-width: 950px) {
+          .service-details-layout {
             grid-template-columns: 1fr;
           }
 
-          .details-sidebar {
+          .service-order-column {
             position: static;
           }
 
-          .order-card {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            column-gap: 15px;
-          }
-
-          .order-card-icon {
-            grid-row: span 3;
-          }
-
-          .order-card-button {
-            grid-column: 1 / -1;
-            margin-top: 10px;
-          }
-
-          .order-note {
-            grid-column: 1 / -1;
+          .service-order-card {
+            max-width: 650px;
+            margin-inline: auto;
           }
         }
 
         @media (max-width: 650px) {
-          .page-container {
-            width: min(100% - 24px, 1120px);
+          .service-details-hero {
+            padding: 90px 0 50px;
           }
 
-          .details-hero {
-            padding: 25px 0 55px;
+          .service-details-hero-content {
+            margin-top: 28px;
           }
 
-          .back-link {
-            margin-bottom: 32px;
-          }
-
-          .large-service-icon {
-            width: 68px;
-            height: 68px;
-            border-radius: 21px;
-          }
-
-          .hero-content h1 {
-            font-size: 34px;
-          }
-
-          .hero-content > p {
-            font-size: 14px;
-          }
-
-          .hero-actions {
-            flex-direction: column;
-          }
-
-          .primary-action,
-          .secondary-action {
-            width: 100%;
-          }
-
-          .details-section {
-            padding: 50px 0;
-          }
-
-          .content-card {
-            padding: 21px;
+          .service-details-icon {
+            width: 74px;
+            height: 74px;
             border-radius: 20px;
           }
 
-          .section-title h2 {
+          .service-details-hero h1 {
+            font-size: 29px;
+          }
+
+          .service-details-hero p {
+            font-size: 14px;
+          }
+
+          .service-details-content {
+            padding: 42px 0 65px;
+          }
+
+          .details-card {
+            padding: 22px 18px;
+            border-radius: 15px;
+          }
+
+          .details-card-heading h2 {
             font-size: 19px;
           }
 
-          .offer-grid {
+          .details-list,
+          .requirements-grid {
             grid-template-columns: 1fr;
           }
 
-          .offer-card {
-            padding: 14px;
-          }
-
-          .bottom-cta-content {
-            flex-direction: column;
-            align-items: stretch;
-            padding: 23px;
-          }
-
-          .bottom-button {
-            width: 100%;
-          }
-
-          .order-card {
-            display: block;
-          }
-
-          .order-card-button {
-            margin-top: 0;
+          .service-order-card {
+            padding: 22px 18px;
           }
         }
       `}</style>
