@@ -3671,3 +3671,33 @@ em {
     height: auto !important;
   }
 }
+
+/* ==========================================
+   تثبيت الهيدر الرسمي أثناء التمرير
+   ========================================== */
+
+.site-header {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* منع المحتوى من الاختفاء خلف الهيدر */
+main {
+  padding-top: 0;
+}
+
+/* في الجوال */
+@media (max-width: 800px) {
+  .site-header {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+}
