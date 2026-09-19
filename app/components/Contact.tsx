@@ -9,41 +9,31 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="contact-section container"
+      className="cta-section container"
     >
-      <div className="contact-card">
-        <div className="contact-icon">
-          <MessageCircle size={30} />
-        </div>
+      <div>
+        <span className="section-kicker">
+          جاهز تبدأ؟
+        </span>
 
-        <div className="contact-copy">
-          <span className="section-kicker">
-            جاهز تبدأ؟
-          </span>
+        <h2>
+          خلّنا ننجزها <em>معًا</em>
+        </h2>
 
-          <h2>
-            خلّنا ننجزها
-            <br />
-            <em>معًا</em>
-          </h2>
-
-          <p>
-            تواصل معنا الآن واحصل على استشارة
-            مجانية لمساعدتك في اختيار الخدمة
-            المناسبة لاحتياجك الأكاديمي.
-          </p>
-        </div>
-
-        <a
-          className="primary-button"
-          href={whatsapp}
-          target="_blank"
-          rel="noreferrer"
-        >
-          تواصل معنا الآن
-          <ArrowLeft size={18} />
-        </a>
+        <p>
+          تواصل معنا الآن واحصل على استشارة مجانية لخدمتك.
+        </p>
       </div>
+
+      <a
+        className="light-button"
+        href={whatsapp}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <MessageCircle size={18} />
+        تواصل عبر واتساب
+      </a>
     </section>
   )
 }
