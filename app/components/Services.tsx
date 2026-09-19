@@ -233,7 +233,7 @@ export const services: Service[] = [
     id: 'cv',
     category: 'design',
     icon: UserRound,
-    image: '/images/cv.jpeg',
+    image: '/images/%E2%80%AAcv.jpeg',
     title: 'السيرة الذاتية والخدمات المهنية',
     subtitle: 'CV',
     about:
@@ -263,7 +263,7 @@ export const services: Service[] = [
     id: 'case-study',
     category: 'research',
     icon: Search,
-    image: '/images/case-study.jpeg',
+    image: '/images/%E2%80%AAcase-study.jpeg',
     title: 'دراسة الحالة',
     subtitle: 'Case Studies',
     about:
@@ -293,7 +293,7 @@ export const services: Service[] = [
     id: 'feasibility',
     category: 'research',
     icon: BarChart3,
-    image: '/images/feasibility.jpeg',
+    image: '/images/%E2%80%AAfeasibility.jpeg',
     title: 'دراسات الجدوى',
     subtitle: 'Feasibility Studies',
     about:
@@ -323,7 +323,7 @@ export const services: Service[] = [
     id: 'graduation',
     category: 'research',
     icon: GraduationCap,
-    image: '/images/graduation.jpeg',
+    image: '/images/%E2%80%AAgraduation.jpeg',
     title: 'مشاريع التخرج',
     subtitle: 'Graduation Projects',
     about:
