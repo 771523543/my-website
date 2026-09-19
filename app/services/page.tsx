@@ -71,7 +71,9 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          {/* التصنيفات */}
+          {/* =========================
+              التصنيفات
+          ========================= */}
           <div
             className="services-categories"
             aria-label="تصنيفات الخدمات"
@@ -84,11 +86,13 @@ export default function ServicesPage() {
                   category.id === 'all' ? 'active' : ''
                 }`}
                 onClick={() => {
-                  const element = document.getElementById(
+                  const targetId =
                     category.id === 'all'
                       ? 'all-services'
-                      : `category-${category.id}`,
-                  )
+                      : `first-${category.id}`
+
+                  const element =
+                    document.getElementById(targetId)
 
                   element?.scrollIntoView({
                     behavior: 'smooth',
@@ -105,7 +109,7 @@ export default function ServicesPage() {
               بطاقات الخدمات
           ========================= */}
           <div id="all-services" className="services-grid">
-            {services.map((service) => {
+            {services.map((service, index) => {
               const Icon = service.icon
 
               const whatsappMessage = encodeURIComponent(
@@ -114,10 +118,25 @@ export default function ServicesPage() {
 
               const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
 
+              /*
+               * تحديد أول خدمة في كل تصنيف تلقائيًا.
+               * بهذه الطريقة إذا أضفت خدمات جديدة لاحقًا
+               * سيستمر التنقل بالعمل بشكل صحيح.
+               */
+              const isFirstInCategory =
+                services.findIndex(
+                  (item) =>
+                    item.category === service.category,
+                ) === index
+
               return (
                 <article
                   key={service.id}
-                  id={`category-${service.category}-${service.id}`}
+                  id={
+                    isFirstInCategory
+                      ? `first-${service.category}`
+                      : `category-${service.category}-${service.id}`
+                  }
                   className="service-page-card"
                 >
                   {/* =========================
@@ -132,7 +151,6 @@ export default function ServicesPage() {
                     />
 
                     <div className="service-page-image-overlay" />
-
                   </div>
 
                   {/* =========================
@@ -140,7 +158,10 @@ export default function ServicesPage() {
                   ========================= */}
                   <div className="service-page-card-top">
                     <div className="service-page-icon">
-                      <Icon size={30} strokeWidth={1.8} />
+                      <Icon
+                        size={30}
+                        strokeWidth={1.8}
+                      />
                     </div>
                   </div>
 
@@ -148,20 +169,16 @@ export default function ServicesPage() {
                       محتوى البطاقة
                   ========================= */}
                   <div className="service-page-card-body">
-                    {/* العنوان في الوسط */}
                     <h3>{service.title}</h3>
 
-                    {/* الوصف المختصر في الوسط */}
                     <p className="service-page-subtitle">
                       {service.subtitle}
                     </p>
 
-                    {/* الشرح باليمين */}
                     <p className="service-page-about">
                       {service.about}
                     </p>
 
-                    {/* التفاصيل باليمين */}
                     <div className="service-page-points">
                       {service.whatWeOffer
                         .slice(0, 3)
@@ -189,6 +206,7 @@ export default function ServicesPage() {
                       <ArrowLeft size={17} />
                     </Link>
 
+                    {/* زر طلب الخدمة - أزرق */}
                     <a
                       href={whatsappUrl}
                       target="_blank"
@@ -218,7 +236,8 @@ export default function ServicesPage() {
               <h2>لم تجد الخدمة المناسبة؟</h2>
 
               <p>
-                تواصل معنا وسنساعدك في معرفة الخدمة المناسبة لاحتياجك.
+                تواصل معنا وسنساعدك في معرفة الخدمة المناسبة
+                لاحتياجك.
               </p>
             </div>
 
@@ -423,7 +442,10 @@ export default function ServicesPage() {
 
         .services-grid {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(
+            3,
+            minmax(0, 1fr)
+          );
           gap: 22px;
         }
 
@@ -435,17 +457,20 @@ export default function ServicesPage() {
           background: var(--card);
           border: 1px solid var(--border);
           border-radius: 17px;
-          box-shadow: 0 10px 25px rgba(25, 56, 100, 0.055);
+          box-shadow:
+            0 10px 25px rgba(25, 56, 100, 0.055);
           transition:
             transform 0.25s ease,
             border-color 0.25s ease,
             box-shadow 0.25s ease;
+          scroll-margin-top: 120px;
         }
 
         .service-page-card:hover {
           transform: translateY(-7px);
           border-color: #8fb4ef;
-          box-shadow: 0 18px 35px rgba(25, 56, 100, 0.1);
+          box-shadow:
+            0 18px 35px rgba(25, 56, 100, 0.1);
         }
 
         /* =========================
@@ -465,7 +490,8 @@ export default function ServicesPage() {
           transition: transform 0.45s ease;
         }
 
-        .service-page-card:hover .service-page-image img {
+        .service-page-card:hover
+          .service-page-image img {
           transform: scale(1.045);
         }
 
@@ -478,22 +504,6 @@ export default function ServicesPage() {
             rgba(23, 35, 61, 0.28) 100%
           );
           pointer-events: none;
-        }
-
-        /* التصنيف فوق الصورة */
-        .service-page-category {
-          position: absolute;
-          top: 14px;
-          inset-inline-end: 14px;
-          z-index: 2;
-          padding: 6px 10px;
-          color: var(--primary);
-          background: rgba(255, 255, 255, 0.94);
-          border: 1px solid rgba(255, 255, 255, 0.8);
-          border-radius: 999px;
-          font-size: 11px;
-          font-weight: 800;
-          box-shadow: 0 5px 12px rgba(23, 35, 61, 0.08);
         }
 
         /* =========================
@@ -521,14 +531,16 @@ export default function ServicesPage() {
           background: white;
           border: 5px solid white;
           border-radius: 17px;
-          box-shadow: 0 8px 20px rgba(25, 56, 100, 0.13);
+          box-shadow:
+            0 8px 20px rgba(25, 56, 100, 0.13);
           transition:
             color 0.2s ease,
             background 0.2s ease,
             transform 0.2s ease;
         }
 
-        .service-page-card:hover .service-page-icon {
+        .service-page-card:hover
+          .service-page-icon {
           color: white;
           background: var(--primary);
           transform: translateY(-2px);
@@ -640,17 +652,23 @@ export default function ServicesPage() {
           transform: translateY(-1px);
         }
 
+        /* =========================
+           زر طلب الخدمة - أزرق
+        ========================= */
+
         .service-order-button {
           color: white;
-          background: #1fa463;
-          border: 1px solid #1fa463;
+          background: #2455c4;
+          border: 1px solid #2455c4;
         }
 
         .service-order-button:hover {
-          background: #198e56;
-          border-color: #198e56;
+          color: white;
+          background: #1d46a5;
+          border-color: #1d46a5;
           transform: translateY(-1px);
-          box-shadow: 0 8px 18px rgba(31, 164, 99, 0.18);
+          box-shadow:
+            0 8px 18px rgba(36, 85, 196, 0.22);
         }
 
         /* =========================
@@ -722,7 +740,10 @@ export default function ServicesPage() {
 
         @media (max-width: 950px) {
           .services-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            grid-template-columns: repeat(
+              2,
+              minmax(0, 1fr)
+            );
           }
 
           .services-intro {
