@@ -7,14 +7,14 @@ const whatsapp = 'https://wa.me/967776280186'
 
 export default function Footer() {
   return (
-    <footer className="site-footer">
+    <footer className="footer">
       <div className="container footer-grid">
-        <div className="footer-brand">
+        <div>
           <a
-            className="brand footer-logo"
+            className="brand footer-brand"
             href="#top"
           >
-            <span className="footer-logo-mark">
+            <span className="brand-mark">
               هـ
             </span>
 
@@ -27,91 +27,70 @@ export default function Footer() {
           </a>
 
           <p>
-            منصة متخصصة في تقديم الخدمات الطلابية
-            والأكاديمية باحترافية وجودة عالية.
+            منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز
+            أكاديمي أفضل.
           </p>
-
-          <a
-            href={whatsapp}
-            target="_blank"
-            rel="noreferrer"
-            className="footer-whatsapp"
-          >
-            <MessageCircle size={17} />
-            تواصل معنا عبر الواتساب
-          </a>
         </div>
 
-        <div className="footer-column">
-          <h3>روابط سريعة</h3>
-
-          <a href="#top">
-            الرئيسية
-            <ArrowLeft size={14} />
-          </a>
+        <div>
+          <h4>روابط سريعة</h4>
 
           <a href="#story">
             قصتنا
-            <ArrowLeft size={14} />
           </a>
 
           <a href="#services">
             خدماتنا
-            <ArrowLeft size={14} />
           </a>
 
           <a href="#gpa-calculator">
             حاسبة المعدل
-            <ArrowLeft size={14} />
+          </a>
+
+          <a href="#testimonials">
+            آراء العملاء
           </a>
         </div>
 
-        <div className="footer-column">
-          <h3>خدماتنا</h3>
+        <div>
+          <h4>تواصل معنا</h4>
 
-          <a href="#services">
-            الخدمات الأكاديمية
-            <ArrowLeft size={14} />
-          </a>
-
-          <a href="#services">
-            الخدمات البحثية
-            <ArrowLeft size={14} />
-          </a>
-
-          <a href="#services">
-            التصميم والخدمات المهنية
-            <ArrowLeft size={14} />
-          </a>
-        </div>
-
-        <div className="footer-column">
-          <h3>تواصل معنا</h3>
-
-          <a
-            href="mailto:Hadeelmubarak387@gmail.com"
-          >
+          <a href="mailto:Hadeelmubarak387@gmail.com">
             Hadeelmubarak387@gmail.com
           </a>
+        </div>
+
+        <div className="footer-note">
+          <MessageCircle size={30} />
+
+          <h4>
+            تحتاج مساعدة؟
+          </h4>
+
+          <p>
+            فريقنا جاهز للإجابة عن استفساراتك.
+          </p>
 
           <a
+            className="footer-whatsapp"
             href={whatsapp}
             target="_blank"
             rel="noreferrer"
           >
-            +967 776 280 186
+            راسلنا مباشرة
+            <ArrowLeft size={15} />
           </a>
         </div>
       </div>
 
       <div className="container footer-bottom">
-        <p>
-          © {new Date().getFullYear()} منصة هديل.
-          جميع الحقوق محفوظة.
-        </p>
+        <span>
+          © 2026 منصة هديل للخدمات الطلابية والأكاديمية. جميع
+          الحقوق محفوظة.
+        </span>
 
         <span>
-          خدمات طلابية وأكاديمية
+          صُنع بعناية للطلاب والباحثين
         </span>
       </div>
     </footer>
