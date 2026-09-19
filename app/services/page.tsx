@@ -133,13 +133,6 @@ export default function ServicesPage() {
 
                     <div className="service-page-image-overlay" />
 
-                    <span className="service-page-category">
-                      {service.category === 'research'
-                        ? 'بحثي'
-                        : service.category === 'academic'
-                          ? 'أكاديمي'
-                          : 'تصميم ومهني'}
-                    </span>
                   </div>
 
                   {/* =========================
