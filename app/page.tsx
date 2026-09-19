@@ -11,6 +11,10 @@ import PreviousWorks from './components/PreviousWorks'
 import Achievements from './components/Achievements'
 import Testimonials from './components/Testimonials'
 import AcademicAd from './components/AcademicAd'
+import GpaCalculator from './components/GpaCalculator'
+import FAQ from './components/FAQ'
+import Contact from './components/Contact'
+import Footer from './components/Footer'
 
 export default function Page() {
   return (
@@ -69,6 +73,37 @@ export default function Page() {
       {/* ==================== ACADEMIC AD ==================== */}
 
       <AcademicAd />
+
+      {/* ==================== GPA CALCULATOR ==================== */}
+
+      <GpaCalculator />
+
+      {/* ==================== FAQ ==================== */}
+
+      <FAQ />
+
+      {/* ==================== CONTACT ==================== */}
+
+      <Contact />
+
+      {/* ==================== FOOTER ==================== */}
+
+      <Footer />
+
+      {/* ==================== FLOATING WHATSAPP ==================== */}
+
+      <a
+        href="https://wa.me/967776280186"
+        target="_blank"
+        rel="noreferrer"
+        className="floating-whatsapp"
+        aria-label="تواصل معنا عبر واتساب"
+      >
+        <img
+          src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/whatsapp/default.svg"
+          alt="واتساب"
+        />
+      </a>
     </main>
   )
 }
