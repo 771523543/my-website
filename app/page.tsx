@@ -1,5 +1,6 @@
 import Header from './components/Header'
 import Hero from './components/Hero'
+import RevealObserver from './components/RevealObserver'
 import QuickSections from './components/QuickSections'
 import Stats from './components/Stats'
 import Story from './components/Story'
@@ -25,6 +26,10 @@ export default function Page() {
       {/* ==================== HEADER ==================== */}
 
       <Header />
+
+      {/* ==================== REVEAL ANIMATIONS ==================== */}
+
+      <RevealObserver />
 
       {/* ==================== HERO ==================== */}
 
