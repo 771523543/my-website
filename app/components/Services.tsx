@@ -203,7 +203,7 @@ export const services: Service[] = [
     id: 'presentation',
     category: 'design',
     icon: Presentation,
-    image: '/images/presentation.jpeg',
+    image: '/images/%E2%80%AApresentation.jpeg',
     title: 'العروض التقديمية والتصميم',
     subtitle: 'PowerPoint & Infographics',
     about:
