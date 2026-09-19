@@ -6,7 +6,11 @@ import Story from './components/Story'
 import Values from './components/Values'
 import ServicesPreview from './components/ServicesPreview'
 import Packages from './components/Packages'
+import WhyHadeel from './components/WhyHadeel'
 import PreviousWorks from './components/PreviousWorks'
+import Achievements from './components/Achievements'
+import Testimonials from './components/Testimonials'
+import AcademicAd from './components/AcademicAd'
 
 export default function Page() {
   return (
@@ -46,9 +50,25 @@ export default function Page() {
 
       <Packages />
 
+      {/* ==================== WHY HADEEL ==================== */}
+
+      <WhyHadeel />
+
       {/* ==================== PREVIOUS WORKS ==================== */}
 
       <PreviousWorks />
+
+      {/* ==================== ACHIEVEMENTS ==================== */}
+
+      <Achievements />
+
+      {/* ==================== TESTIMONIALS ==================== */}
+
+      <Testimonials />
+
+      {/* ==================== ACADEMIC AD ==================== */}
+
+      <AcademicAd />
     </main>
   )
 }
