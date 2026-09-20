@@ -3,13 +3,24 @@
 import Link from 'next/link'
 import {
   ArrowRight,
+  BarChart3,
+  BookOpen,
   CheckCircle2,
   ChevronDown,
   ClipboardCheck,
+  ClipboardList,
+  FileText,
+  GraduationCap,
+  Laptop,
   MessageCircle,
+  PencilLine,
+  Presentation,
+  Search,
   Send,
   ShieldCheck,
   Sparkles,
+  UserRound,
+  type LucideIcon,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -19,7 +30,23 @@ import {
 } from '../../components/Services'
 
 type Props = {
-  service: Service
+  service: Omit<Service, 'icon'>
+}
+
+const serviceIcons: Record<
+  string,
+  LucideIcon
+> = {
+  research: BookOpen,
+  reports: FileText,
+  assignments: ClipboardList,
+  homework: PencilLine,
+  lms: Laptop,
+  presentation: Presentation,
+  cv: UserRound,
+  'case-study': Search,
+  feasibility: BarChart3,
+  graduation: GraduationCap,
 }
 
 export default function ServiceDetailsClient({
@@ -28,7 +55,8 @@ export default function ServiceDetailsClient({
   const [openFaq, setOpenFaq] =
     useState<number | null>(0)
 
-  const Icon = service.icon
+  const Icon =
+    serviceIcons[service.id] ?? BookOpen
 
   const categoryLabel =
     service.category === 'research'
