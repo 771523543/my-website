@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useState } from 'react'
 import {
   ArrowLeft,
@@ -20,6 +20,7 @@ export default function Header() {
   const [searchValue, setSearchValue] = useState('')
 
   const pathname = usePathname()
+  const router = useRouter()
 
   const isServicesPage = pathname.startsWith('/services')
 
@@ -27,11 +28,12 @@ export default function Header() {
     setMenuOpen(false)
   }
 
-  const homeLink = isServicesPage ? '/' : '#top'
+  const closeSearch = () => {
+    setSearchOpen(false)
+    setSearchValue('')
+  }
 
-  const handleSearch = (
-    event: React.FormEvent<HTMLFormElement>,
-  ) => {
+  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const query = searchValue.trim()
@@ -40,41 +42,24 @@ export default function Header() {
       return
     }
 
-    window.location.href =
-      `/services?search=${encodeURIComponent(query)}`
+    closeMenu()
+    setSearchOpen(false)
+
+    router.push(`/search?q=${encodeURIComponent(query)}`)
   }
 
-  const toggleSearch = () => {
-    setSearchOpen((current) => {
-      const next = !current
-
-      if (!next) {
-        setSearchValue('')
-      }
-
-      return next
-    })
-  }
+  const homeLink = isServicesPage ? '/' : '#top'
 
   return (
     <>
-      {/* ==================== ANNOUNCEMENT ==================== */}
-
       <div className="announcement">
         <Sparkles size={15} />
-
         خصم خاص على خدمات منصة هديل لفترة محدودة
-
         <ArrowLeft size={15} />
       </div>
 
-      {/* ==================== HEADER ==================== */}
-
       <header className="site-header">
         <div className="container nav-wrap">
-
-          {/* ==================== BRAND ==================== */}
-
           <a
             className="brand"
             href={homeLink}
@@ -91,13 +76,9 @@ export default function Header() {
 
             <span>
               منصة هديل
-              <span className="brand-dot">
-                .
-              </span>
+              <span className="brand-dot">.</span>
             </span>
           </a>
-
-          {/* ==================== NAVIGATION ==================== */}
 
           <nav
             className={
@@ -114,22 +95,14 @@ export default function Header() {
             </a>
 
             <a
-              href={
-                isServicesPage
-                  ? '/#story'
-                  : '#story'
-              }
+              href={isServicesPage ? '/#story' : '#story'}
               onClick={closeMenu}
             >
               قصتنا
             </a>
 
             <a
-              href={
-                isServicesPage
-                  ? '/#services'
-                  : '#services'
-              }
+              href={isServicesPage ? '/#services' : '#services'}
               onClick={closeMenu}
             >
               خدماتنا
@@ -180,12 +153,7 @@ export default function Header() {
             </a>
           </nav>
 
-          {/* ==================== ACTIONS ==================== */}
-
           <div className="nav-actions">
-
-            {/* SEARCH */}
-
             <form
               className={
                 searchOpen
@@ -193,8 +161,28 @@ export default function Header() {
                   : 'header-search'
               }
               onSubmit={handleSearch}
-              role="search"
             >
+              <button
+                type="button"
+                className="header-search-toggle"
+                aria-label={
+                  searchOpen
+                    ? 'إغلاق البحث'
+                    : 'فتح البحث'
+                }
+                aria-expanded={searchOpen}
+                onClick={() => {
+                  setSearchOpen((current) => !current)
+                  setMenuOpen(false)
+                }}
+              >
+                {searchOpen ? (
+                  <X size={19} />
+                ) : (
+                  <Search size={19} />
+                )}
+              </button>
+
               {searchOpen && (
                 <input
                   type="search"
@@ -202,27 +190,22 @@ export default function Header() {
                   onChange={(event) =>
                     setSearchValue(event.target.value)
                   }
-                  placeholder="ابحث عن خدمة..."
-                  aria-label="ابحث عن خدمة"
+                  placeholder="ابحث في الموقع..."
+                  aria-label="البحث في الموقع"
+                  autoFocus
                 />
               )}
 
-              <button
-                type="button"
-                className="header-search-button"
-                aria-label={
-                  searchOpen
-                    ? 'إغلاق البحث'
-                    : 'فتح البحث'
-                }
-                aria-expanded={searchOpen}
-                onClick={toggleSearch}
-              >
-                <Search size={18} />
-              </button>
+              {searchOpen && (
+                <button
+                  type="submit"
+                  className="header-search-submit"
+                  aria-label="تنفيذ البحث"
+                >
+                  <ArrowLeft size={17} />
+                </button>
+              )}
             </form>
-
-            {/* ORDER */}
 
             <a
               className="primary-button header-order"
@@ -231,11 +214,8 @@ export default function Header() {
               rel="noreferrer"
             >
               <MessageCircle size={17} />
-
               اطلب خدمتك الآن
             </a>
-
-            {/* MOBILE MENU */}
 
             <button
               type="button"
@@ -246,13 +226,13 @@ export default function Header() {
                   : 'فتح القائمة'
               }
               aria-expanded={menuOpen}
-              onClick={() =>
+              onClick={() => {
                 setMenuOpen((current) => !current)
-              }
+                setSearchOpen(false)
+              }}
             >
               {menuOpen ? <X /> : <Menu />}
             </button>
-
           </div>
         </div>
       </header>
