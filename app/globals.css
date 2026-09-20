@@ -3841,6 +3841,611 @@ em {
     transform: none;
   }
 
+/* =========================================================
+   ABOUT GRID
+   قصتنا + قيمنا + لماذا هديل
+   ========================================================= */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* =========================================================
+   STORY CARD
+   ========================================================= */
+
+.about-story-card {
+  grid-column: 1 / -1;
+
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: center;
+  gap: 35px;
+
+  min-height: 300px;
+  padding: 30px;
+
+  background: #fff;
+  border: 1px solid #e4ebf4;
+  border-radius: 24px;
+
+  box-shadow: 0 10px 28px rgba(23, 35, 61, 0.06);
+}
+
+.about-story-visual {
+  position: relative;
+  min-height: 230px;
+
+  display: grid;
+  place-items: center;
+
+  background: #e8f1ff;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.about-story-visual::before {
+  content: '';
+  position: absolute;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: #2455c4;
+  opacity: 0.08;
+}
+
+.story-card {
+  position: relative;
+  z-index: 1;
+
+  width: 150px;
+  height: 150px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  background: #2455c4;
+  color: #fff;
+
+  border-radius: 24px 24px 24px 8px;
+
+  box-shadow: 0 18px 35px rgba(36, 85, 196, 0.22);
+
+  transform: rotate(-4deg);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.about-story-card:hover .story-card {
+  transform: rotate(-2deg) translateY(-5px);
+  box-shadow: 0 22px 40px rgba(36, 85, 196, 0.28);
+}
+
+.story-card span {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.story-badge {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+
+  padding: 9px 14px;
+
+  background: #f7c25e;
+  color: #17233d;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  box-shadow: 0 8px 18px rgba(23, 35, 61, 0.12);
+}
+
+.about-story-content {
+  min-width: 0;
+}
+
+.about-story-content h3 {
+  margin: 12px 0 15px;
+
+  color: #17233d;
+
+  font-size: clamp(25px, 3vw, 38px);
+  line-height: 1.4;
+  letter-spacing: -1px;
+}
+
+.about-story-content p {
+  max-width: 570px;
+
+  margin: 0 0 20px;
+
+  color: #697791;
+
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* =========================================================
+   BLOCK HEADINGS
+   ========================================================= */
+
+.about-block-heading {
+  margin-bottom: 18px;
+}
+
+.about-block-heading h3 {
+  margin: 8px 0 6px;
+
+  color: #17233d;
+
+  font-size: 23px;
+  line-height: 1.4;
+}
+
+.about-block-heading p {
+  margin: 0;
+
+  color: #697791;
+
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   VALUES
+   ========================================================= */
+
+.about-values,
+.about-why {
+  min-width: 0;
+
+  padding: 24px;
+
+  background: #fff;
+
+  border: 1px solid #e4ebf4;
+  border-radius: 22px;
+
+  box-shadow: 0 10px 28px rgba(23, 35, 61, 0.05);
+}
+
+.about-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.about-mini-card {
+  position: relative;
+
+  min-width: 0;
+  min-height: 185px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 18px;
+
+  background: #f8fbff;
+
+  border: 1px solid #e4ebf4;
+  border-radius: 17px;
+
+  box-shadow: 0 5px 15px rgba(23, 35, 61, 0.04);
+}
+
+.about-mini-card > svg {
+  margin: 9px 0 7px;
+  color: #2455c4;
+}
+
+.about-mini-card .value-number {
+  color: #e2a43d;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.about-mini-card h4 {
+  margin: 2px 0 7px;
+
+  color: #17233d;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.about-mini-card p {
+  margin: 0;
+
+  color: #697791;
+
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   WHY HADEEL
+   ========================================================= */
+
+.about-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.about-feature-card {
+  min-width: 0;
+
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+
+  padding: 15px;
+
+  background: #f8fbff;
+
+  border: 1px solid #e4ebf4;
+  border-radius: 15px;
+
+  box-shadow: 0 5px 15px rgba(23, 35, 61, 0.04);
+}
+
+.about-feature-card > svg {
+  flex: 0 0 auto;
+
+  padding: 4px;
+
+  width: 26px;
+  height: 26px;
+
+  color: #167b7b;
+
+  background: #e3f4f1;
+
+  border-radius: 8px;
+}
+
+.about-feature-card > div {
+  min-width: 0;
+}
+
+.about-feature-card strong {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #17233d;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.about-feature-card small {
+  display: block;
+
+  color: #697791;
+
+  font-size: 10px;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   MORE BUTTON
+   ========================================================= */
+
+.about-more-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-top: 8px;
+  padding: 5px 0;
+
+  border: 0;
+  background: transparent;
+
+  color: #2455c4;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    gap 0.2s ease;
+}
+
+.about-more-button:hover {
+  color: #17233d;
+  gap: 9px;
+}
+
+.about-more-button svg {
+  transition: transform 0.25s ease;
+}
+
+.about-more-button svg.is-open {
+  transform: rotate(180deg);
+}
+
+/* =========================================================
+   EXPANDED CARDS
+   ========================================================= */
+
+.about-mini-card.is-expanded,
+.about-feature-card.is-expanded {
+  border-color: rgba(36, 85, 196, 0.25);
+
+  background: #fff;
+
+  box-shadow: 0 12px 26px rgba(23, 35, 61, 0.09);
+}
+
+.about-mini-card.is-expanded {
+  transform: translateY(-3px);
+}
+
+.about-feature-card.is-expanded {
+  transform: translateY(-3px);
+}
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.about-grid > *,
+.about-mini-card,
+.about-feature-card {
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.about-grid > *:hover,
+.about-mini-card:hover,
+.about-feature-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 14px 30px rgba(23, 35, 61, 0.10);
+}
+
+/* =========================================================
+   STAGGER
+   ========================================================= */
+
+.about-grid > *:nth-child(1) {
+  transition-delay: 0.05s;
+}
+
+.about-grid > *:nth-child(2) {
+  transition-delay: 0.12s;
+}
+
+.about-grid > *:nth-child(3) {
+  transition-delay: 0.19s;
+}
+
+.about-mini-card:nth-child(1) {
+  transition-delay: 0.08s;
+}
+
+.about-mini-card:nth-child(2) {
+  transition-delay: 0.14s;
+}
+
+.about-mini-card:nth-child(3) {
+  transition-delay: 0.20s;
+}
+
+.about-mini-card:nth-child(4) {
+  transition-delay: 0.26s;
+}
+
+.about-feature-card:nth-child(1) {
+  transition-delay: 0.08s;
+}
+
+.about-feature-card:nth-child(2) {
+  transition-delay: 0.15s;
+}
+
+.about-feature-card:nth-child(3) {
+  transition-delay: 0.22s;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .about-story-card {
+    grid-column: auto;
+
+    grid-template-columns: 1fr;
+
+    gap: 22px;
+
+    padding: 20px;
+  }
+
+  .about-story-visual {
+    min-height: 210px;
+  }
+
+  .about-story-content h3 {
+    font-size: 27px;
+  }
+
+  .about-values,
+  .about-why {
+    padding: 20px;
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .about-grid {
+    gap: 14px;
+  }
+
+  .about-story-card {
+    padding: 15px;
+    border-radius: 20px;
+  }
+
+  .about-story-visual {
+    min-height: 190px;
+  }
+
+  .story-card {
+    width: 125px;
+    height: 125px;
+    border-radius: 20px 20px 20px 7px;
+  }
+
+  .story-card svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .story-card span {
+    font-size: 16px;
+  }
+
+  .story-badge {
+    right: 13px;
+    bottom: 13px;
+    padding: 7px 11px;
+    font-size: 10px;
+  }
+
+  .about-story-content h3 {
+    font-size: 24px;
+    line-height: 1.5;
+  }
+
+  .about-story-content p {
+    font-size: 12px;
+    line-height: 1.9;
+  }
+
+  .about-values,
+  .about-why {
+    padding: 17px;
+    border-radius: 19px;
+  }
+
+  .about-block-heading h3 {
+    font-size: 20px;
+  }
+
+  .about-mini-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .about-mini-card {
+    min-height: 170px;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .about-mini-card h4 {
+    font-size: 12px;
+  }
+
+  .about-mini-card p {
+    font-size: 9px;
+  }
+
+  .about-feature-card {
+    padding: 13px;
+  }
+
+  .about-feature-card strong {
+    font-size: 11px;
+  }
+
+  .about-feature-card small {
+    font-size: 9px;
+  }
+
+  .about-more-button {
+    min-height: 34px;
+    font-size: 10px;
+  }
+
+  .about-grid > *:hover,
+  .about-mini-card:hover,
+  .about-feature-card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 8px 20px rgba(23, 35, 61, 0.08);
+  }
+
+  .about-mini-card.is-expanded,
+  .about-feature-card.is-expanded {
+    transform: none;
+  }
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+  .about-mini-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-mini-card {
+    min-height: auto;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .about-grid > *,
+  .about-mini-card,
+  .about-feature-card,
+  .about-more-button,
+  .about-more-button svg,
+  .story-card {
+    transition: none !important;
+  }
+}
   .about-more-button {
     min-height: 36px;
   }
