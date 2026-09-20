@@ -66,21 +66,25 @@ export default function QuickSections() {
                 href={card.href}
                 className={`quick-card quick-card-${card.color}`}
               >
-                <div className="quick-card-icon">
-                  <Icon
-                    size={30}
-                    strokeWidth={2}
-                  />
-                </div>
+                <div className="quick-card-main">
 
-                <div className="quick-card-content">
-                  <h3>
-                    {card.title}
-                  </h3>
+                  <div className="quick-card-icon">
+                    <Icon
+                      size={30}
+                      strokeWidth={2}
+                    />
+                  </div>
 
-                  <p>
-                    {card.description}
-                  </p>
+                  <div className="quick-card-content">
+                    <h3>
+                      {card.title}
+                    </h3>
+
+                    <p>
+                      {card.description}
+                    </p>
+                  </div>
+
                 </div>
 
                 <span className="quick-card-button">
@@ -99,19 +103,18 @@ export default function QuickSections() {
         .quick-sections {
           position: relative;
           width: 100%;
-          padding: 34px 20px 30px;
+          padding: 38px 20px 36px;
           overflow: hidden;
-          scroll-behavior: smooth;
 
           background:
             radial-gradient(
               circle at 15% 20%,
-              rgba(30, 111, 255, 0.14),
+              rgba(30, 111, 255, 0.1),
               transparent 32%
             ),
             radial-gradient(
               circle at 85% 80%,
-              rgba(0, 190, 255, 0.09),
+              rgba(0, 190, 255, 0.06),
               transparent 30%
             ),
             linear-gradient(
@@ -127,7 +130,7 @@ export default function QuickSections() {
           position: absolute;
           inset: 0;
           pointer-events: none;
-          opacity: 0.18;
+          opacity: 0.1;
 
           background-image:
             linear-gradient(
@@ -140,20 +143,23 @@ export default function QuickSections() {
               transparent 1px
             );
 
-          background-size: 34px 34px;
+          background-size: 36px 36px;
         }
 
         .quick-sections-inner {
           position: relative;
           z-index: 1;
+
           width: min(1120px, 100%);
           margin: 0 auto;
         }
 
-        /* العنوان */
+        /* =========================
+           العنوان
+        ========================= */
 
         .quick-heading {
-          margin: 0 auto 22px;
+          margin: 0 auto 26px;
           text-align: center;
           direction: rtl;
         }
@@ -163,14 +169,14 @@ export default function QuickSections() {
           align-items: center;
           justify-content: center;
 
-          min-height: 27px;
-          padding: 4px 12px;
-          margin-bottom: 8px;
+          min-height: 28px;
+          padding: 5px 13px;
+          margin-bottom: 9px;
 
-          border: 1px solid rgba(245, 194, 67, 0.32);
+          border: 1px solid rgba(245, 194, 67, 0.3);
           border-radius: 999px;
 
-          background: rgba(245, 194, 67, 0.08);
+          background: rgba(245, 194, 67, 0.07);
           color: #f5c243;
 
           font-size: 11px;
@@ -182,43 +188,44 @@ export default function QuickSections() {
 
           color: #ffffff;
 
-          font-size: clamp(23px, 3vw, 31px);
-          line-height: 1.25;
+          font-size: clamp(24px, 3vw, 32px);
+          line-height: 1.3;
           font-weight: 900;
         }
 
         .quick-heading p {
-          margin: 7px 0 0;
+          margin: 8px 0 0;
 
-          color: rgba(255, 255, 255, 0.68);
+          color: rgba(255, 255, 255, 0.7);
 
           font-size: 13px;
-          line-height: 1.5;
+          line-height: 1.6;
         }
 
-        /* البطاقات */
+        /* =========================
+           البطاقات
+        ========================= */
 
         .quick-cards {
           display: grid;
-
           grid-template-columns:
             repeat(3, minmax(0, 1fr));
 
-          gap: 15px;
+          gap: 18px;
         }
 
         .quick-card {
           position: relative;
 
           min-width: 0;
-          height: 225px;
+          min-height: 250px;
 
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: flex-start;
+          justify-content: space-between;
 
-          padding: 24px 16px 18px;
+          padding: 27px 20px 20px;
 
           overflow: hidden;
           isolation: isolate;
@@ -231,8 +238,8 @@ export default function QuickSections() {
           text-align: center;
 
           box-shadow:
-            0 14px 32px rgba(0, 0, 0, 0.22),
-            inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            0 14px 32px rgba(0, 0, 0, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
           transition:
             transform 0.3s ease,
@@ -240,14 +247,12 @@ export default function QuickSections() {
             border-color 0.3s ease;
         }
 
-        /* خلفية البطاقات */
-
         .quick-card-blue {
           background:
             linear-gradient(
               145deg,
               #1265d8 0%,
-              #0b4fb8 50%,
+              #0b4fb8 55%,
               #083c92 100%
             );
         }
@@ -257,7 +262,7 @@ export default function QuickSections() {
             linear-gradient(
               145deg,
               #15966b 0%,
-              #087553 50%,
+              #087553 55%,
               #075c45 100%
             );
         }
@@ -267,16 +272,26 @@ export default function QuickSections() {
             linear-gradient(
               145deg,
               #7654d8 0%,
-              #5940ad 50%,
+              #5940ad 55%,
               #432e91 100%
             );
         }
 
-        /* الأيقونة */
+        /* =========================
+           محتوى البطاقة
+        ========================= */
+
+        .quick-card-main {
+          width: 100%;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
 
         .quick-card-icon {
-          width: 60px;
-          height: 60px;
+          width: 64px;
+          height: 64px;
 
           flex-shrink: 0;
 
@@ -284,12 +299,12 @@ export default function QuickSections() {
           align-items: center;
           justify-content: center;
 
-          margin-bottom: 12px;
+          margin-bottom: 15px;
 
-          border: 1px solid rgba(255, 255, 255, 0.22);
-          border-radius: 17px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 18px;
 
-          background: rgba(255, 255, 255, 0.13);
+          background: rgba(255, 255, 255, 0.12);
 
           color: #ffffff;
 
@@ -303,8 +318,6 @@ export default function QuickSections() {
             border-color 0.3s ease;
         }
 
-        /* النص */
-
         .quick-card-content {
           width: 100%;
 
@@ -317,56 +330,49 @@ export default function QuickSections() {
         }
 
         .quick-card-content h3 {
-          width: 100%;
-
-          margin: 0 0 5px;
+          margin: 0 0 7px;
 
           color: #ffffff;
 
           font-size: 20px;
-          line-height: 1.25;
-          font-weight: 800;
-
-          text-align: center;
+          line-height: 1.35;
+          font-weight: 900;
         }
 
         .quick-card-content p {
           width: 100%;
-          max-width: 270px;
+          max-width: 260px;
 
           margin: 0;
 
-          color: rgba(255, 255, 255, 0.8);
+          color: rgba(255, 255, 255, 0.82);
 
-          font-size: 12px;
-          line-height: 1.5;
+          font-size: 13px;
+          line-height: 1.7;
 
           text-align: center;
         }
 
-        /* الزر */
+        /* =========================
+           الزر
+        ========================= */
 
         .quick-card-button {
-          position: absolute;
-
-          left: 16px;
-          right: 16px;
-          bottom: 17px;
-
-          min-height: 39px;
+          width: 100%;
+          min-height: 42px;
 
           display: flex;
           align-items: center;
           justify-content: center;
 
-          padding: 8px 14px;
+          padding: 9px 14px;
 
           border-radius: 11px;
 
           color: #ffffff;
 
           font-size: 12px;
-          font-weight: 800;
+          font-weight: 900;
 
           text-align: center;
 
@@ -375,8 +381,8 @@ export default function QuickSections() {
 
           transition:
             transform 0.25s ease,
-            background 0.25s ease,
-            box-shadow 0.25s ease;
+            box-shadow 0.25s ease,
+            filter 0.25s ease;
         }
 
         .quick-card-blue .quick-card-button {
@@ -391,7 +397,9 @@ export default function QuickSections() {
           background: #7957e6;
         }
 
-        /* تأثير ضوء داخلي */
+        /* =========================
+           الضوء
+        ========================= */
 
         .quick-card-glow {
           position: absolute;
@@ -404,7 +412,7 @@ export default function QuickSections() {
 
           border-radius: 50%;
 
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.08);
 
           filter: blur(30px);
 
@@ -415,200 +423,200 @@ export default function QuickSections() {
             opacity 0.4s ease;
         }
 
-        /* Hover */
+        /* =========================
+           Hover
+        ========================= */
 
         @media (hover: hover) and (pointer: fine) {
           .quick-card:hover {
-            transform: translateY(-7px);
+            transform: translateY(-6px);
 
-            border-color: rgba(255, 255, 255, 0.3);
+            border-color:
+              rgba(255, 255, 255, 0.28);
 
             box-shadow:
-              0 22px 42px rgba(0, 0, 0, 0.3),
-              inset 0 1px 0 rgba(255, 255, 255, 0.18);
+              0 22px 42px rgba(0, 0, 0, 0.28),
+              inset 0 1px 0
+                rgba(255, 255, 255, 0.16);
           }
 
           .quick-card:hover .quick-card-icon {
-            transform: translateY(-3px) scale(1.05);
+            transform: translateY(-3px) scale(1.04);
 
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.19);
+
+            border-color:
+              rgba(255, 255, 255, 0.36);
           }
 
           .quick-card:hover .quick-card-button {
             transform: translateY(-2px);
 
+            filter: brightness(1.08);
+
             box-shadow:
-              0 10px 22px rgba(0, 0, 0, 0.24);
+              0 10px 22px rgba(0, 0, 0, 0.22);
           }
 
           .quick-card:hover .quick-card-glow {
-            transform: scale(1.35);
-            opacity: 0.9;
+            transform: scale(1.3);
+            opacity: 0.8;
           }
         }
 
-        /* الجوال */
+        /* =========================
+           الجوال
+        ========================= */
 
         @media (max-width: 700px) {
           .quick-sections {
-            padding: 27px 9px 22px;
+            padding: 28px 10px 25px;
           }
 
           .quick-heading {
-            margin-bottom: 16px;
+            margin-bottom: 19px;
           }
 
           .quick-eyebrow {
-            min-height: 24px;
-            padding: 3px 10px;
-            margin-bottom: 6px;
+            min-height: 25px;
+            padding: 4px 11px;
+            margin-bottom: 7px;
 
-            font-size: 9px;
+            font-size: 10px;
           }
 
           .quick-heading h2 {
-            font-size: 21px;
+            font-size: 22px;
+            line-height: 1.35;
           }
 
           .quick-heading p {
-            margin-top: 5px;
-            font-size: 10px;
+            margin-top: 6px;
+            font-size: 11px;
           }
 
           .quick-cards {
             grid-template-columns:
               repeat(3, minmax(0, 1fr));
 
-            gap: 7px;
+            gap: 8px;
           }
 
           .quick-card {
-            height: 181px;
+            min-height: 205px;
 
-            padding: 16px 5px 10px;
+            padding: 16px 7px 10px;
 
-            border-radius: 15px;
+            border-radius: 16px;
+          }
+
+          .quick-card-icon {
+            width: 46px;
+            height: 46px;
+
+            margin-bottom: 9px;
+
+            border-radius: 13px;
+          }
+
+          .quick-card-icon svg {
+            width: 23px;
+            height: 23px;
+          }
+
+          .quick-card-content h3 {
+            margin-bottom: 5px;
+
+            font-size: 12px;
+            line-height: 1.4;
+          }
+
+          .quick-card-content p {
+            max-width: 105px;
+
+            font-size: 9.5px;
+            line-height: 1.55;
+          }
+
+          .quick-card-button {
+            min-height: 34px;
+
+            padding: 6px 3px;
+
+            border-radius: 8px;
+
+            font-size: 8.5px;
+            line-height: 1.25;
+          }
+        }
+
+        /* =========================
+           الجوالات الصغيرة
+        ========================= */
+
+        @media (max-width: 380px) {
+          .quick-sections {
+            padding-left: 7px;
+            padding-right: 7px;
+          }
+
+          .quick-cards {
+            gap: 6px;
+          }
+
+          .quick-card {
+            min-height: 200px;
+
+            padding: 15px 5px 9px;
+
+            border-radius: 14px;
           }
 
           .quick-card-icon {
             width: 42px;
             height: 42px;
 
-            margin-bottom: 7px;
+            margin-bottom: 8px;
 
             border-radius: 12px;
           }
 
           .quick-card-icon svg {
-            width: 22px;
-            height: 22px;
+            width: 21px;
+            height: 21px;
           }
 
           .quick-card-content h3 {
-            margin-bottom: 3px;
-
-            font-size: 13px;
-            line-height: 1.25;
-          }
-
-          .quick-card-content p {
-            max-width: 105px;
-
-            font-size: 8.5px;
-            line-height: 1.4;
-          }
-
-          .quick-card-button {
-            left: 5px;
-            right: 5px;
-            bottom: 8px;
-
-            min-height: 30px;
-
-            padding: 5px 3px;
-
-            border-radius: 8px;
-
-            font-size: 8px;
-            line-height: 1.2;
-          }
-        }
-
-        /* الشاشات الصغيرة جدًا */
-
-        @media (max-width: 380px) {
-          .quick-sections {
-            padding-left: 6px;
-            padding-right: 6px;
-          }
-
-          .quick-cards {
-            gap: 5px;
-          }
-
-          .quick-card {
-            height: 176px;
-
-            padding: 14px 3px 9px;
-
-            border-radius: 13px;
-          }
-
-          .quick-card-icon {
-            width: 38px;
-            height: 38px;
-
-            margin-bottom: 6px;
-
-            border-radius: 10px;
-          }
-
-          .quick-card-icon svg {
-            width: 20px;
-            height: 20px;
-          }
-
-          .quick-card-content h3 {
-            font-size: 11px;
+            font-size: 10.5px;
           }
 
           .quick-card-content p {
             max-width: 88px;
 
-            font-size: 7.5px;
+            font-size: 8.5px;
+            line-height: 1.5;
           }
 
           .quick-card-button {
-            left: 3px;
-            right: 3px;
-            bottom: 7px;
+            min-height: 32px;
 
-            min-height: 28px;
-
-            font-size: 7px;
+            font-size: 7.8px;
           }
         }
 
-        /* دعم الانتقال السلس */
+        /* =========================
+           حركة أقل
+        ========================= */
 
-        :global(html) {
-          scroll-behavior: smooth;
+        @media (prefers-reduced-motion: reduce) {
+          .quick-card,
+          .quick-card-icon,
+          .quick-card-button,
+          .quick-card-glow {
+            transition: none !important;
+          }
         }
-
-        :global(#packages) {
-          scroll-margin-top: 90px;
-        }
-
-        :global(#services) {
-          scroll-margin-top: 90px;
-        }
-
-        :global(#previous-works) {
-          scroll-margin-top: 90px;
-        }
-      `}
-      </style>
+      `}</style>
     </section>
   )
 }
