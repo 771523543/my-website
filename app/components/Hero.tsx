@@ -1,6 +1,5 @@
 import {
   ArrowLeft,
-  Check,
   GraduationCap,
   MessageCircle,
   Sparkles,
@@ -12,7 +11,6 @@ export default function Hero() {
   return (
     <section id="top" className="hero container">
       <div className="hero-copy">
-
         <div className="hero-badge">
           <span className="hero-badge-icon">
             <GraduationCap size={17} />
@@ -20,7 +18,10 @@ export default function Hero() {
 
           <span>شريكك في النجاح الأكاديمي</span>
 
-          <Sparkles size={14} className="hero-badge-sparkle" />
+          <Sparkles
+            size={14}
+            className="hero-badge-sparkle"
+          />
         </div>
 
         <h1>
@@ -54,18 +55,6 @@ export default function Hero() {
             <ArrowLeft size={18} />
           </a>
         </div>
-
-        <div className="hero-trust">
-          <div className="hero-trust-icon">
-            <Check size={17} />
-          </div>
-
-          <div>
-            <strong>جودة واحترافية</strong>
-            <span>نهتم بالتفاصيل في كل خدمة</span>
-          </div>
-        </div>
-
       </div>
 
       <div className="hero-art hero-photo">
