@@ -7,6 +7,7 @@ import {
   ArrowLeft,
   Menu,
   MessageCircle,
+  Search,
   Sparkles,
   X,
 } from 'lucide-react'
@@ -15,6 +16,9 @@ const whatsapp = 'https://wa.me/967776280186'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
+
   const pathname = usePathname()
 
   const isServicesPage = pathname.startsWith('/services')
@@ -24,6 +28,33 @@ export default function Header() {
   }
 
   const homeLink = isServicesPage ? '/' : '#top'
+
+  const handleSearch = (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault()
+
+    const query = searchValue.trim()
+
+    if (!query) {
+      return
+    }
+
+    window.location.href =
+      `/services?search=${encodeURIComponent(query)}`
+  }
+
+  const toggleSearch = () => {
+    setSearchOpen((current) => {
+      const next = !current
+
+      if (!next) {
+        setSearchValue('')
+      }
+
+      return next
+    })
+  }
 
   return (
     <>
@@ -41,6 +72,9 @@ export default function Header() {
 
       <header className="site-header">
         <div className="container nav-wrap">
+
+          {/* ==================== BRAND ==================== */}
+
           <a
             className="brand"
             href={homeLink}
@@ -57,9 +91,13 @@ export default function Header() {
 
             <span>
               منصة هديل
-              <span className="brand-dot">.</span>
+              <span className="brand-dot">
+                .
+              </span>
             </span>
           </a>
+
+          {/* ==================== NAVIGATION ==================== */}
 
           <nav
             className={
@@ -76,14 +114,22 @@ export default function Header() {
             </a>
 
             <a
-              href={isServicesPage ? '/#story' : '#story'}
+              href={
+                isServicesPage
+                  ? '/#story'
+                  : '#story'
+              }
               onClick={closeMenu}
             >
               قصتنا
             </a>
 
             <a
-              href={isServicesPage ? '/#services' : '#services'}
+              href={
+                isServicesPage
+                  ? '/#services'
+                  : '#services'
+              }
               onClick={closeMenu}
             >
               خدماتنا
@@ -112,21 +158,72 @@ export default function Header() {
             </a>
 
             <a
-              href={isServicesPage ? '/#faq' : '#faq'}
+              href={
+                isServicesPage
+                  ? '/#faq'
+                  : '#faq'
+              }
               onClick={closeMenu}
             >
               الأسئلة الشائعة
             </a>
 
             <a
-              href={isServicesPage ? '/#contact' : '#contact'}
+              href={
+                isServicesPage
+                  ? '/#contact'
+                  : '#contact'
+              }
               onClick={closeMenu}
             >
               اتصل بنا
             </a>
           </nav>
 
+          {/* ==================== ACTIONS ==================== */}
+
           <div className="nav-actions">
+
+            {/* SEARCH */}
+
+            <form
+              className={
+                searchOpen
+                  ? 'header-search is-open'
+                  : 'header-search'
+              }
+              onSubmit={handleSearch}
+              role="search"
+            >
+              {searchOpen && (
+                <input
+                  type="search"
+                  value={searchValue}
+                  onChange={(event) =>
+                    setSearchValue(event.target.value)
+                  }
+                  placeholder="ابحث عن خدمة..."
+                  aria-label="ابحث عن خدمة"
+                />
+              )}
+
+              <button
+                type="button"
+                className="header-search-button"
+                aria-label={
+                  searchOpen
+                    ? 'إغلاق البحث'
+                    : 'فتح البحث'
+                }
+                aria-expanded={searchOpen}
+                onClick={toggleSearch}
+              >
+                <Search size={18} />
+              </button>
+            </form>
+
+            {/* ORDER */}
+
             <a
               className="primary-button header-order"
               href={whatsapp}
@@ -137,6 +234,8 @@ export default function Header() {
 
               اطلب خدمتك الآن
             </a>
+
+            {/* MOBILE MENU */}
 
             <button
               type="button"
@@ -153,6 +252,7 @@ export default function Header() {
             >
               {menuOpen ? <X /> : <Menu />}
             </button>
+
           </div>
         </div>
       </header>
