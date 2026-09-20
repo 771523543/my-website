@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import {
   ArrowLeft,
@@ -14,6 +15,15 @@ const whatsapp = 'https://wa.me/967776280186'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  const isServicesPage = pathname.startsWith('/services')
+
+  const closeMenu = () => {
+    setMenuOpen(false)
+  }
+
+  const homeLink = isServicesPage ? '/' : '#top'
 
   return (
     <>
@@ -21,7 +31,9 @@ export default function Header() {
 
       <div className="announcement">
         <Sparkles size={15} />
+
         خصم خاص على خدمات منصة هديل لفترة محدودة
+
         <ArrowLeft size={15} />
       </div>
 
@@ -29,7 +41,11 @@ export default function Header() {
 
       <header className="site-header">
         <div className="container nav-wrap">
-          <a className="brand" href="#top">
+          <a
+            className="brand"
+            href={homeLink}
+            onClick={closeMenu}
+          >
             <Image
               className="brand-logo"
               src="/hadeel-platform-logo.png"
@@ -53,50 +69,58 @@ export default function Header() {
             }
           >
             <a
-              href="#top"
-              onClick={() => setMenuOpen(false)}
+              href={homeLink}
+              onClick={closeMenu}
             >
               الرئيسية
             </a>
 
             <a
-              href="#story"
-              onClick={() => setMenuOpen(false)}
+              href={isServicesPage ? '/#story' : '#story'}
+              onClick={closeMenu}
             >
               قصتنا
             </a>
 
             <a
-              href="#services"
-              onClick={() => setMenuOpen(false)}
+              href={isServicesPage ? '/#services' : '#services'}
+              onClick={closeMenu}
             >
               خدماتنا
             </a>
 
             <a
-              href="#gpa-calculator"
-              onClick={() => setMenuOpen(false)}
+              href={
+                isServicesPage
+                  ? '/#gpa-calculator'
+                  : '#gpa-calculator'
+              }
+              onClick={closeMenu}
             >
               حاسبة المعدل
             </a>
 
             <a
-              href="#testimonials"
-              onClick={() => setMenuOpen(false)}
+              href={
+                isServicesPage
+                  ? '/#testimonials'
+                  : '#testimonials'
+              }
+              onClick={closeMenu}
             >
               آراء العملاء
             </a>
 
             <a
-              href="#faq"
-              onClick={() => setMenuOpen(false)}
+              href={isServicesPage ? '/#faq' : '#faq'}
+              onClick={closeMenu}
             >
               الأسئلة الشائعة
             </a>
 
             <a
-              href="#contact"
-              onClick={() => setMenuOpen(false)}
+              href={isServicesPage ? '/#contact' : '#contact'}
+              onClick={closeMenu}
             >
               اتصل بنا
             </a>
@@ -110,6 +134,7 @@ export default function Header() {
               rel="noreferrer"
             >
               <MessageCircle size={17} />
+
               اطلب خدمتك الآن
             </a>
 
@@ -121,8 +146,9 @@ export default function Header() {
                   ? 'إغلاق القائمة'
                   : 'فتح القائمة'
               }
+              aria-expanded={menuOpen}
               onClick={() =>
-                setMenuOpen(!menuOpen)
+                setMenuOpen((current) => !current)
               }
             >
               {menuOpen ? <X /> : <Menu />}
