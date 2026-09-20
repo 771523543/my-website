@@ -217,7 +217,7 @@ export default function Stats() {
 
 
       {/* =====================================================
-          التصميم داخل Stats.tsx فقط
+          تصميم القسم بالكامل داخل Stats.tsx
           لا يحتاج إلى تعديل globals.css
          ===================================================== */}
 
@@ -239,7 +239,7 @@ export default function Stats() {
 
 
         /* ================================================
-           اللوحة الرئيسية
+           اللوحة الرئيسية الزرقاء
            ================================================ */
 
         .stats-3d-panel {
@@ -265,31 +265,35 @@ export default function Stats() {
           background:
             linear-gradient(
               145deg,
-              #ffffff 0%,
-              #f7faff 50%,
-              #eef4fc 100%
+              #173f91 0%,
+              #2455c4 48%,
+              #163878 100%
             );
 
-          border: 2px solid #d6e2f2;
+          border: 2px solid #d5aa54;
 
           border-radius: 30px;
 
           box-shadow:
-            0 18px 45px
-              rgba(23, 35, 61, 0.10),
+
+            0 22px 55px
+              rgba(23, 35, 61, 0.28),
 
             0 0 0 6px
-              rgba(36, 85, 196, 0.035),
+              rgba(213, 170, 84, 0.07),
 
             inset 0 1px 0
-              rgba(255, 255, 255, 0.95);
+              rgba(255, 255, 255, 0.20),
+
+            inset 0 -2px 0
+              rgba(0, 0, 0, 0.18);
 
           overflow: hidden;
         }
 
 
         /* ================================================
-           اللمعة الزجاجية
+           لمعان زجاجي
            ================================================ */
 
         .stats-3d-panel::before {
@@ -304,16 +308,16 @@ export default function Stats() {
           background:
             linear-gradient(
               125deg,
-              rgba(255,255,255,0.75),
+              rgba(255,255,255,0.16),
               transparent 30%,
               transparent 70%,
-              rgba(36,85,196,0.035)
+              rgba(255,255,255,0.04)
             );
         }
 
 
         /* ================================================
-           الإضاءة الخفيفة
+           إضاءة ناعمة
            ================================================ */
 
         .stats-3d-panel::after {
@@ -334,7 +338,7 @@ export default function Stats() {
           background:
             radial-gradient(
               circle,
-              rgba(36,85,196,0.08),
+              rgba(255,255,255,0.12),
               transparent 70%
             );
 
@@ -370,11 +374,12 @@ export default function Stats() {
           background:
             linear-gradient(
               145deg,
-              rgba(255,255,255,0.98),
-              rgba(246,249,253,0.92)
+              rgba(255,255,255,0.11),
+              rgba(255,255,255,0.035)
             );
 
-          border: 1px solid #e2eaf4;
+          border: 1px solid
+            rgba(255,255,255,0.18);
 
           transition:
             transform 0.35s ease,
@@ -417,20 +422,27 @@ export default function Stats() {
 
 
         /* ================================================
-           حركة البطاقة
+           حركة البطاقات
            ================================================ */
 
         .stats-3d-card:hover {
           transform: translateY(-4px);
 
+          background:
+            linear-gradient(
+              145deg,
+              rgba(255,255,255,0.15),
+              rgba(255,255,255,0.05)
+            );
+
           box-shadow:
             0 15px 30px
-              rgba(36,85,196,0.09);
+              rgba(0,0,0,0.12);
         }
 
 
         /* ================================================
-           الشارة الدائرية
+           الشارة الدائرية الكبيرة
            ================================================ */
 
         .stats-3d-badge {
@@ -446,7 +458,7 @@ export default function Stats() {
 
           margin-bottom: 20px;
 
-          color: #2455c4;
+          color: #174fae;
 
           background:
             radial-gradient(
@@ -465,16 +477,16 @@ export default function Stats() {
           box-shadow:
 
             0 15px 28px
-              rgba(36,85,196,0.16),
+              rgba(0,0,0,0.25),
 
             inset 7px 7px 14px
               rgba(255,255,255,0.85),
 
             inset -9px -10px 17px
-              rgba(36,85,196,0.18),
+              rgba(36,85,196,0.22),
 
             0 0 0 7px
-              rgba(213,170,84,0.08);
+              rgba(213,170,84,0.10);
 
           transition:
             transform 0.35s ease,
@@ -483,7 +495,7 @@ export default function Stats() {
 
 
         /* ================================================
-           لمعان الشارة
+           لمعة الشارة
            ================================================ */
 
         .stats-3d-badge::before {
@@ -527,7 +539,7 @@ export default function Stats() {
           filter:
             drop-shadow(
               3px 5px 3px
-              rgba(36,85,196,0.28)
+              rgba(23,63,145,0.38)
             );
         }
 
@@ -545,21 +557,21 @@ export default function Stats() {
           box-shadow:
 
             0 22px 35px
-              rgba(36,85,196,0.20),
+              rgba(0,0,0,0.30),
 
             inset 7px 7px 14px
               rgba(255,255,255,0.9),
 
             inset -9px -10px 17px
-              rgba(36,85,196,0.20),
+              rgba(36,85,196,0.25),
 
             0 0 0 10px
-              rgba(213,170,84,0.10);
+              rgba(213,170,84,0.12);
         }
 
 
         /* ================================================
-           الأرقام
+           الأرقام البيضاء
            ================================================ */
 
         .stats-3d-card strong {
@@ -567,7 +579,7 @@ export default function Stats() {
 
           margin: 0 0 8px;
 
-          color: #17233d;
+          color: #ffffff;
 
           font-family:
             Georgia,
@@ -584,19 +596,19 @@ export default function Stats() {
           letter-spacing: -1px;
 
           text-shadow:
-            0 2px 5px
-              rgba(23,35,61,0.10);
+            0 3px 8px
+              rgba(0,0,0,0.28);
         }
 
 
         /* ================================================
-           النصوص العربية
+           النصوص البيضاء
            ================================================ */
 
         .stats-3d-card span {
           display: block;
 
-          color: #697791;
+          color: #ffffff;
 
           font-size: 15px;
 
@@ -605,6 +617,10 @@ export default function Stats() {
           line-height: 1.7;
 
           text-align: center;
+
+          text-shadow:
+            0 2px 5px
+              rgba(0,0,0,0.22);
         }
 
 
