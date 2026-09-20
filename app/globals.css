@@ -4675,3 +4675,51 @@ em {
     transition: none !important;
   }
 }
+
+/* =========================================================
+   CENTER ICON + TITLE — توحيد ترتيب البطاقات
+   ========================================================= */
+
+.about-mini-card,
+.about-feature-card,
+.service-card,
+.package-card,
+.achievement-card {
+  text-align: center;
+}
+
+/* الأيقونة في المنتصف */
+.about-icon-box,
+.feature-icon-box,
+.service-icon-box,
+.package-icon-box,
+.achievement-icon-box,
+.stat-icon-box,
+.contact-icon-box,
+.value-icon-box {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* العنوان في المنتصف */
+.about-mini-card h4,
+.about-feature-card strong,
+.service-card h3,
+.service-card h4,
+.package-card h3,
+.package-card h4,
+.achievement-card h3,
+.achievement-card h4 {
+  width: 100%;
+  text-align: center;
+}
+
+/* الوصف في المنتصف */
+.about-mini-card p,
+.about-feature-card small,
+.service-card p,
+.package-card p,
+.achievement-card p {
+  width: 100%;
+  text-align: center;
+}
