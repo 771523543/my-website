@@ -45,10 +45,8 @@ export default function QuickSections() {
   const startX = useRef(0)
   const startScrollLeft = useRef(0)
 
-  // سرعة الحركة الأفقية
   const speed = 0.85
 
-  // تكرار البطاقات حتى تستمر الحركة بشكل دائري
   const cards = [
     ...quickSections,
     ...quickSections,
@@ -70,8 +68,7 @@ export default function QuickSections() {
       if (!isDragging && !isInteracting) {
         slider.scrollLeft += speed * (delta / 16)
 
-        const resetPoint =
-          slider.scrollWidth / 3
+        const resetPoint = slider.scrollWidth / 3
 
         if (slider.scrollLeft >= resetPoint) {
           slider.scrollLeft -= resetPoint
@@ -137,7 +134,6 @@ export default function QuickSections() {
       className="quick-sections"
       dir="rtl"
     >
-      {/* الخلفية المتحركة */}
       <div className="quick-sections-background">
         <div className="quick-glow quick-glow-one" />
         <div className="quick-glow quick-glow-two" />
@@ -152,7 +148,6 @@ export default function QuickSections() {
         <div className="quick-particle quick-particle-five" />
       </div>
 
-      {/* الشريط */}
       <div
         ref={sliderRef}
         className={
@@ -175,11 +170,8 @@ export default function QuickSections() {
       >
         {cards.map((item, index) => {
           const Icon = item.icon
-
           const key = `${item.id}-${index}`
-
-          const isHovered =
-            hovered === key
+          const isHovered = hovered === key
 
           return (
             <Link
@@ -224,9 +216,7 @@ export default function QuickSections() {
                     />
                   </div>
 
-                  <p>
-                    {item.description}
-                  </p>
+                  <p>{item.description}</p>
 
                   <span className="quick-card-link">
                     اكتشف الآن
@@ -241,7 +231,6 @@ export default function QuickSections() {
         })}
       </div>
 
-      {/* المؤشر السفلي */}
       <div className="quick-sections-indicator">
         <span />
 
@@ -262,10 +251,6 @@ export default function QuickSections() {
           overflow: hidden;
         }
 
-        /* =========================
-           الخلفية
-           ========================= */
-
         .quick-sections-background {
           position: absolute;
           inset: 0;
@@ -284,38 +269,22 @@ export default function QuickSections() {
         .quick-glow-one {
           top: -220px;
           right: -90px;
-          background: rgba(
-            35,
-            91,
-            190,
-            0.3
-          );
+          background: rgba(35, 91, 190, 0.3);
 
           animation:
-            quickGlowOne 6s
-            ease-in-out infinite
+            quickGlowOne 6s ease-in-out infinite
             alternate;
         }
 
         .quick-glow-two {
           bottom: -230px;
           left: -90px;
-          background: rgba(
-            244,
-            190,
-            73,
-            0.18
-          );
+          background: rgba(244, 190, 73, 0.18);
 
           animation:
-            quickGlowTwo 7s
-            ease-in-out infinite
+            quickGlowTwo 7s ease-in-out infinite
             alternate;
         }
-
-        /* =========================
-           خطوط الضوء
-           ========================= */
 
         .quick-light {
           position: absolute;
@@ -325,12 +294,7 @@ export default function QuickSections() {
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(
-              246,
-              202,
-              104,
-              0.9
-            ),
+            rgba(246, 202, 104, 0.9),
             transparent
           );
 
@@ -344,8 +308,7 @@ export default function QuickSections() {
           transform: rotate(-5deg);
 
           animation:
-            quickLightOne 4.5s
-            ease-in-out infinite;
+            quickLightOne 4.5s ease-in-out infinite;
         }
 
         .quick-light-two {
@@ -354,13 +317,8 @@ export default function QuickSections() {
           transform: rotate(5deg);
 
           animation:
-            quickLightTwo 5s
-            ease-in-out infinite;
+            quickLightTwo 5s ease-in-out infinite;
         }
-
-        /* =========================
-           الجزيئات
-           ========================= */
 
         .quick-particle {
           position: absolute;
@@ -371,26 +329,11 @@ export default function QuickSections() {
           background: #f5cc70;
 
           box-shadow:
-            0 0 10px
-              rgba(
-                245,
-                204,
-                112,
-                1
-              ),
-            0 0 24px
-              rgba(
-                245,
-                204,
-                112,
-                0.6
-              );
+            0 0 10px rgba(245, 204, 112, 1),
+            0 0 24px rgba(245, 204, 112, 0.6);
 
           animation:
-            quickParticle
-            3.5s
-            ease-in-out
-            infinite;
+            quickParticle 3.5s ease-in-out infinite;
         }
 
         .quick-particle-one {
@@ -422,10 +365,6 @@ export default function QuickSections() {
           animation-delay: -0.7s;
         }
 
-        /* =========================
-           السلايدر
-           ========================= */
-
         .quick-sections-slider {
           position: relative;
           z-index: 2;
@@ -436,17 +375,12 @@ export default function QuickSections() {
           overflow-x: auto;
           overflow-y: visible;
 
-          padding:
-            18px
-            20px
-            32px;
+          padding: 18px 20px 32px;
 
           scrollbar-width: none;
-
           cursor: grab;
 
           touch-action: pan-y;
-
           user-select: none;
         }
 
@@ -458,49 +392,28 @@ export default function QuickSections() {
           cursor: grabbing;
         }
 
-        /* =========================
-           البطاقات
-           ========================= */
-
         .quick-card {
           position: relative;
 
-          flex: 0 0
-            clamp(
-              250px,
-              29vw,
-              335px
-            );
+          flex: 0 0 clamp(250px, 29vw, 335px);
 
           min-height: 176px;
 
           overflow: hidden;
-
           border-radius: 28px;
 
           color: #fff;
-
           text-decoration: none;
 
           background:
             radial-gradient(
               circle at 82% 18%,
-              rgba(
-                255,
-                209,
-                105,
-                0.22
-              ),
+              rgba(255, 209, 105, 0.22),
               transparent 30%
             ),
             radial-gradient(
               circle at 15% 85%,
-              rgba(
-                40,
-                105,
-                220,
-                0.28
-              ),
+              rgba(40, 105, 220, 0.28),
               transparent 35%
             ),
             linear-gradient(
@@ -511,51 +424,18 @@ export default function QuickSections() {
               #06183f 100%
             );
 
-          border:
-            1px solid
-            rgba(
-              246,
-              202,
-              104,
-              0.36
-            );
+          border: 1px solid rgba(246, 202, 104, 0.36);
 
           box-shadow:
-            0 16px 38px
-              rgba(
-                4,
-                22,
-                65,
-                0.2
-              ),
-            0 0 0 1px
-              rgba(
-                255,
-                255,
-                255,
-                0.04
-              )
-              inset;
+            0 16px 38px rgba(4, 22, 65, 0.2),
+            0 0 0 1px rgba(255, 255, 255, 0.04) inset;
 
           animation:
-            quickCardFloat
-            4s
-            ease-in-out
-            infinite,
-            quickCardPulse
-            5s
-            ease-in-out
-            infinite;
+            quickCardFloat 4s ease-in-out infinite,
+            quickCardPulse 5s ease-in-out infinite;
 
           transition:
-            transform
-              0.45s
-              cubic-bezier(
-                0.2,
-                0.8,
-                0.2,
-                1
-              ),
+            transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
             box-shadow 0.45s ease,
             border-color 0.45s ease;
 
@@ -563,33 +443,23 @@ export default function QuickSections() {
         }
 
         .quick-card:nth-child(2) {
-          animation-delay:
-            -1.2s,
-            -0.8s;
+          animation-delay: -1.2s, -0.8s;
         }
 
         .quick-card:nth-child(3) {
-          animation-delay:
-            -2.4s,
-            -1.6s;
+          animation-delay: -2.4s, -1.6s;
         }
 
         .quick-card:nth-child(4) {
-          animation-delay:
-            -3.6s,
-            -2.4s;
+          animation-delay: -3.6s, -2.4s;
         }
 
         .quick-card:nth-child(5) {
-          animation-delay:
-            -0.8s,
-            -3.2s;
+          animation-delay: -0.8s, -3.2s;
         }
 
         .quick-card:nth-child(6) {
-          animation-delay:
-            -2s,
-            -4s;
+          animation-delay: -2s, -4s;
         }
 
         .quick-card:hover,
@@ -598,34 +468,12 @@ export default function QuickSections() {
             translateY(-11px)
             scale(1.035);
 
-          border-color:
-            rgba(
-              246,
-              202,
-              104,
-              0.85
-            );
+          border-color: rgba(246, 202, 104, 0.85);
 
           box-shadow:
-            0 28px 60px
-              rgba(
-                4,
-                22,
-                65,
-                0.3
-              ),
-            0 0 42px
-              rgba(
-                246,
-                202,
-                104,
-                0.13
-              );
+            0 28px 60px rgba(4, 22, 65, 0.3),
+            0 0 42px rgba(246, 202, 104, 0.13);
         }
-
-        /* =========================
-           إضاءة البطاقة
-           ========================= */
 
         .quick-card-glow {
           position: absolute;
@@ -638,27 +486,14 @@ export default function QuickSections() {
 
           border-radius: 50%;
 
-          background:
-            rgba(
-              255,
-              208,
-              100,
-              0.2
-            );
+          background: rgba(255, 208, 100, 0.2);
 
           filter: blur(30px);
 
           animation:
-            quickCardGlow
-            4s
-            ease-in-out
-            infinite
+            quickCardGlow 4s ease-in-out infinite
             alternate;
         }
-
-        /* =========================
-           اللمعة
-           ========================= */
 
         .quick-card-shine {
           position: absolute;
@@ -669,61 +504,30 @@ export default function QuickSections() {
           width: 20%;
           height: 190%;
 
-          background:
-            linear-gradient(
-              90deg,
-              transparent,
-              rgba(
-                255,
-                255,
-                255,
-                0.14
-              ),
-              rgba(
-                255,
-                216,
-                125,
-                0.38
-              ),
-              rgba(
-                255,
-                255,
-                255,
-                0.14
-              ),
-              transparent
-            );
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.14),
+            rgba(255, 216, 125, 0.38),
+            rgba(255, 255, 255, 0.14),
+            transparent
+          );
 
           transform: skewX(-20deg);
 
           filter: blur(1px);
 
           animation:
-            quickCardShine
-            3.8s
-            ease-in-out
-            infinite;
+            quickCardShine 3.8s ease-in-out infinite;
 
           pointer-events: none;
         }
 
-        /* =========================
-           دوائر زخرفية
-           ========================= */
-
         .quick-card-decoration {
           position: absolute;
-
           border-radius: 50%;
 
-          border:
-            1px solid
-            rgba(
-              255,
-              213,
-              120,
-              0.18
-            );
+          border: 1px solid rgba(255, 213, 120, 0.18);
 
           pointer-events: none;
         }
@@ -736,10 +540,7 @@ export default function QuickSections() {
           bottom: -100px;
 
           animation:
-            quickDecorationOne
-            7s
-            ease-in-out
-            infinite;
+            quickDecorationOne 7s ease-in-out infinite;
         }
 
         .quick-card-decoration-two {
@@ -749,24 +550,11 @@ export default function QuickSections() {
           right: -48px;
           bottom: -44px;
 
-          border-color:
-            rgba(
-              255,
-              255,
-              255,
-              0.12
-            );
+          border-color: rgba(255, 255, 255, 0.12);
 
           animation:
-            quickDecorationTwo
-            5s
-            ease-in-out
-            infinite;
+            quickDecorationTwo 5s ease-in-out infinite;
         }
-
-        /* =========================
-           محتوى البطاقة
-           ========================= */
 
         .quick-card-content {
           position: relative;
@@ -796,89 +584,37 @@ export default function QuickSections() {
 
           color: #f8d477;
 
-          background:
-            linear-gradient(
-              145deg,
-              rgba(
-                255,
-                255,
-                255,
-                0.19
-              ),
-              rgba(
-                255,
-                255,
-                255,
-                0.055
-              )
-            );
+          background: linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.19),
+            rgba(255, 255, 255, 0.055)
+          );
 
-          border:
-            1px solid
-            rgba(
-              246,
-              202,
-              104,
-              0.42
-            );
+          border: 1px solid rgba(246, 202, 104, 0.42);
 
           box-shadow:
-            0 12px 30px
-              rgba(
-                0,
-                0,
-                0,
-                0.16
-              ),
-            0 0 25px
-              rgba(
-                246,
-                202,
-                104,
-                0.1
-              );
+            0 12px 30px rgba(0, 0, 0, 0.16),
+            0 0 25px rgba(246, 202, 104, 0.1);
 
-          backdrop-filter:
-            blur(12px);
+          backdrop-filter: blur(12px);
 
           animation:
-            quickIconFloat
-            2.8s
-            ease-in-out
-            infinite;
+            quickIconFloat 2.8s ease-in-out infinite;
 
           transition:
-            transform
-              0.45s
-              ease,
-            box-shadow
-              0.45s
-              ease;
+            transform 0.45s ease,
+            box-shadow 0.45s ease;
         }
 
-        .quick-card:hover
-          .quick-card-icon,
-        .quick-card.is-hovered
-          .quick-card-icon {
+        .quick-card:hover .quick-card-icon,
+        .quick-card.is-hovered .quick-card-icon {
           transform:
             rotate(-9deg)
             scale(1.13);
 
           box-shadow:
-            0 15px 35px
-              rgba(
-                0,
-                0,
-                0,
-                0.2
-              ),
-            0 0 35px
-              rgba(
-                246,
-                202,
-                104,
-                0.25
-              );
+            0 15px 35px rgba(0, 0, 0, 0.2),
+            0 0 35px rgba(246, 202, 104, 0.25);
         }
 
         .quick-card-text {
@@ -891,7 +627,6 @@ export default function QuickSections() {
           align-items: center;
 
           gap: 7px;
-
           margin-bottom: 5px;
         }
 
@@ -908,25 +643,15 @@ export default function QuickSections() {
           color: #f7d47b;
 
           animation:
-            quickSparkle
-            1.7s
-            ease-in-out
-            infinite;
+            quickSparkle 1.7s ease-in-out infinite;
         }
 
         .quick-card-text p {
           margin: 0;
 
-          color:
-            rgba(
-              255,
-              255,
-              255,
-              0.82
-            );
+          color: rgba(255, 255, 255, 0.82);
 
           font-size: 12px;
-
           line-height: 1.75;
         }
 
@@ -935,7 +660,6 @@ export default function QuickSections() {
           align-items: center;
 
           gap: 5px;
-
           margin-top: 10px;
 
           color: #f7d47b;
@@ -943,20 +667,13 @@ export default function QuickSections() {
           font-size: 12px;
           font-weight: 900;
 
-          transition:
-            gap 0.35s ease;
+          transition: gap 0.35s ease;
         }
 
-        .quick-card:hover
-          .quick-card-link,
-        .quick-card.is-hovered
-          .quick-card-link {
+        .quick-card:hover .quick-card-link,
+        .quick-card.is-hovered .quick-card-link {
           gap: 10px;
         }
-
-        /* =========================
-           الإطار المضيء
-           ========================= */
 
         .quick-card-border {
           position: absolute;
@@ -965,55 +682,32 @@ export default function QuickSections() {
           z-index: 4;
 
           border-radius: inherit;
-
           pointer-events: none;
 
-          border: 1px solid
-            transparent;
+          border: 1px solid transparent;
 
           background:
             linear-gradient(
               135deg,
-              rgba(
-                246,
-                202,
-                104,
-                0.6
-              ),
+              rgba(246, 202, 104, 0.6),
               transparent 35%,
               transparent 65%,
-              rgba(
-                255,
-                255,
-                255,
-                0.2
-              )
+              rgba(255, 255, 255, 0.2)
             )
             border-box;
 
           mask:
-            linear-gradient(
-                #000 0 0
-              )
+            linear-gradient(#000 0 0)
               padding-box,
-            linear-gradient(
-              #000 0 0
-            );
+            linear-gradient(#000 0 0);
 
           mask-composite: exclude;
 
           opacity: 0.55;
 
           animation:
-            quickBorderGlow
-            3.5s
-            ease-in-out
-            infinite;
+            quickBorderGlow 3.5s ease-in-out infinite;
         }
-
-        /* =========================
-           المؤشر
-           ========================= */
 
         .quick-sections-indicator {
           position: relative;
@@ -1024,7 +718,6 @@ export default function QuickSections() {
           justify-content: center;
 
           gap: 12px;
-
           margin-top: 0;
 
           opacity: 0.7;
@@ -1034,38 +727,25 @@ export default function QuickSections() {
           width: 55px;
           height: 1px;
 
-          background:
-            linear-gradient(
-              90deg,
-              transparent,
-              rgba(
-                246,
-                202,
-                104,
-                0.75
-              )
-            );
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(246, 202, 104, 0.75)
+          );
         }
 
         .quick-sections-indicator
           > span:last-child {
-          background:
-            linear-gradient(
-              90deg,
-              rgba(
-                246,
-                202,
-                104,
-                0.75
-              ),
-              transparent
-            );
+          background: linear-gradient(
+            90deg,
+            rgba(246, 202, 104, 0.75),
+            transparent
+          );
         }
 
         .quick-sections-dots {
           display: flex;
           align-items: center;
-
           gap: 6px;
         }
 
@@ -1079,18 +759,10 @@ export default function QuickSections() {
 
           box-shadow:
             0 0 10px
-              rgba(
-                243,
-                203,
-                112,
-                0.8
-              );
+              rgba(243, 203, 112, 0.8);
 
           animation:
-            quickDot
-            1.4s
-            ease-in-out
-            infinite;
+            quickDot 1.4s ease-in-out infinite;
         }
 
         .quick-sections-dots i:nth-child(2) {
@@ -1100,10 +772,6 @@ export default function QuickSections() {
         .quick-sections-dots i:nth-child(3) {
           animation-delay: 0.4s;
         }
-
-        /* =========================
-           الحركة
-           ========================= */
 
         @keyframes quickCardFloat {
           0%,
@@ -1121,37 +789,17 @@ export default function QuickSections() {
           100% {
             box-shadow:
               0 16px 38px
-                rgba(
-                  4,
-                  22,
-                  65,
-                  0.2
-                ),
+                rgba(4, 22, 65, 0.2),
               0 0 0
-                rgba(
-                  246,
-                  202,
-                  104,
-                  0
-                );
+                rgba(246, 202, 104, 0);
           }
 
           50% {
             box-shadow:
               0 24px 52px
-                rgba(
-                  4,
-                  22,
-                  65,
-                  0.28
-                ),
+                rgba(4, 22, 65, 0.28),
               0 0 32px
-                rgba(
-                  246,
-                  202,
-                  104,
-                  0.17
-                );
+                rgba(246, 202, 104, 0.17);
           }
         }
 
@@ -1164,19 +812,13 @@ export default function QuickSections() {
 
           50% {
             transform:
-              translate(
-                -180px,
-                40px
-              )
+              translate(-180px, 40px)
               scale(1.25);
           }
 
           100% {
             transform:
-              translate(
-                -320px,
-                0
-              )
+              translate(-320px, 0)
               scale(0.95);
           }
         }
@@ -1190,19 +832,13 @@ export default function QuickSections() {
 
           50% {
             transform:
-              translate(
-                170px,
-                -35px
-              )
+              translate(170px, -35px)
               scale(1.3);
           }
 
           100% {
             transform:
-              translate(
-                300px,
-                20px
-              )
+              translate(300px, 20px)
               scale(0.95);
           }
         }
@@ -1213,6 +849,7 @@ export default function QuickSections() {
             transform:
               translateX(0)
               rotate(-5deg);
+
             opacity: 0.12;
           }
 
@@ -1224,6 +861,7 @@ export default function QuickSections() {
             transform:
               translateX(-600px)
               rotate(-5deg);
+
             opacity: 0;
           }
         }
@@ -1234,6 +872,7 @@ export default function QuickSections() {
             transform:
               translateX(0)
               rotate(5deg);
+
             opacity: 0.12;
           }
 
@@ -1245,6 +884,7 @@ export default function QuickSections() {
             transform:
               translateX(600px)
               rotate(5deg);
+
             opacity: 0;
           }
         }
@@ -1255,16 +895,15 @@ export default function QuickSections() {
             transform:
               translate(0, 0)
               scale(0.5);
+
             opacity: 0.25;
           }
 
           50% {
             transform:
-              translate(
-                35px,
-                -25px
-              )
+              translate(35px, -25px)
               scale(1.5);
+
             opacity: 1;
           }
         }
@@ -1274,16 +913,15 @@ export default function QuickSections() {
             transform:
               translate(0, 0)
               scale(0.75);
+
             opacity: 0.35;
           }
 
           100% {
             transform:
-              translate(
-                -75px,
-                45px
-              )
+              translate(-75px, 45px)
               scale(1.35);
+
             opacity: 0.85;
           }
         }
@@ -1337,6 +975,7 @@ export default function QuickSections() {
             transform:
               scale(0.7)
               rotate(0);
+
             opacity: 0.4;
           }
 
@@ -1344,6 +983,7 @@ export default function QuickSections() {
             transform:
               scale(1.3)
               rotate(18deg);
+
             opacity: 1;
           }
         }
@@ -1366,14 +1006,12 @@ export default function QuickSections() {
         @keyframes quickDecorationTwo {
           0%,
           100% {
-            transform:
-              scale(0.8);
+            transform: scale(0.8);
             opacity: 0.3;
           }
 
           50% {
-            transform:
-              scale(1.3);
+            transform: scale(1.3);
             opacity: 0.8;
           }
         }
@@ -1402,10 +1040,6 @@ export default function QuickSections() {
           }
         }
 
-        /* =========================
-           الجوال
-           ========================= */
-
         @media (max-width: 768px) {
           .quick-sections {
             padding: 6px 0 40px;
@@ -1413,10 +1047,7 @@ export default function QuickSections() {
 
           .quick-sections-slider {
             gap: 13px;
-            padding:
-              12px
-              14px
-              25px;
+            padding: 12px 14px 25px;
           }
 
           .quick-card {
@@ -1452,26 +1083,15 @@ export default function QuickSections() {
           }
         }
 
-        /* =========================
-           تقليل الحركة عند طلب المستخدم
-           ========================= */
-
         @media (prefers-reduced-motion: reduce) {
           .quick-sections *,
-          .quick-sections
-            *::before,
-          .quick-sections
-            *::after {
-            animation-duration:
-              0.01ms !important;
-
-            animation-iteration-count:
-              1 !important;
+          .quick-sections *::before,
+          .quick-sections *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
           }
         }
       `}</style>
     </section>
   )
 }
-
-هذا الملف وحده يكفي؛ لا تحتاج إنشاء "PlatformStrip.tsx".
