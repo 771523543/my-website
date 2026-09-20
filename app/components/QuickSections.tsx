@@ -447,5 +447,3 @@ export default function QuickSections() {
     </section>
   )
 }
-
-هذا الملف يستبدل محتوى "app/components/QuickSections.tsx" بالكامل.
