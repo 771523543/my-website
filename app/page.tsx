@@ -1,13 +1,12 @@
 import Header from './components/Header'
 import Hero from './components/Hero'
-import RevealObserver from './components/RevealObserver'
 import QuickSections from './components/QuickSections'
 import Stats from './components/Stats'
-import Story from './components/Story'
-import Values from './components/Values'
+
+import AboutGrid from './components/AboutGrid'
+
 import ServicesPreview from './components/ServicesPreview'
 import Packages from './components/Packages'
-import WhyHadeel from './components/WhyHadeel'
 import PreviousWorks from './components/PreviousWorks'
 import Achievements from './components/Achievements'
 import Testimonials from './components/Testimonials'
@@ -16,40 +15,25 @@ import GpaCalculator from './components/GpaCalculator'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import RevealObserver from './components/RevealObserver'
 
-export default function Page() {
+export default function Home() {
   return (
-    <main
-      dir="rtl"
-      className="min-h-screen overflow-hidden bg-background text-foreground"
-    >
-      {/* ==================== HEADER ==================== */}
+    <main id="top">
 
       <Header />
 
-      {/* ==================== REVEAL ANIMATIONS ==================== */}
-
       <RevealObserver />
-
-      {/* ==================== HERO ==================== */}
 
       <Hero />
 
-      {/* ==================== QUICK SECTIONS ==================== */}
-
       <QuickSections />
-
-      {/* ==================== STATS ==================== */}
 
       <Stats />
 
-      {/* ==================== STORY ==================== */}
+      {/* ==================== ABOUT ==================== */}
 
-      <Story />
-
-      {/* ==================== VALUES ==================== */}
-
-      <Values />
+      <AboutGrid />
 
       {/* ==================== SERVICES ==================== */}
 
@@ -58,10 +42,6 @@ export default function Page() {
       {/* ==================== PACKAGES ==================== */}
 
       <Packages />
-
-      {/* ==================== WHY HADEEL ==================== */}
-
-      <WhyHadeel />
 
       {/* ==================== PREVIOUS WORKS ==================== */}
 
@@ -98,17 +78,22 @@ export default function Page() {
       {/* ==================== FLOATING WHATSAPP ==================== */}
 
       <a
+        className="floating-whatsapp"
         href="https://wa.me/967776280186"
         target="_blank"
         rel="noreferrer"
-        className="floating-whatsapp"
         aria-label="تواصل معنا عبر واتساب"
       >
         <img
           src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/whatsapp/default.svg"
           alt="واتساب"
         />
+
+        <span>
+          تواصل معنا
+        </span>
       </a>
+
     </main>
   )
 }
