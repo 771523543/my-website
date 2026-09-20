@@ -1,9 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import {
-  services,
-  type Service,
-} from '../../components/Services'
+import { services } from '../../components/Services'
 import ServiceDetailsClient from './ServiceDetailsClient'
 
 type Props = {
@@ -183,15 +180,12 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   const { id } = await params
 
-  const service = services.find(
-    (item) => item.id === id,
-  )
+  const service = services.find((item) => item.id === id)
 
   if (!service) {
     return {
       title: 'الخدمة غير موجودة',
-      description:
-        'الخدمة المطلوبة غير موجودة في منصة هديل.',
+      description: 'الخدمة المطلوبة غير موجودة في منصة هديل.',
       robots: {
         index: false,
         follow: false,
@@ -201,40 +195,41 @@ export async function generateMetadata({
 
   const seo = serviceSeo[service.id]
 
-  return {
-    title:
-      seo?.title ??
-      `${service.title} | منصة هديل`,
+  const title =
+    seo?.title ?? `${service.title} | منصة هديل`
 
-    description:
-      seo?.description ??
+  const description =
+    seo?.description ?? service.subtitle
+
+  const keywords =
+    seo?.keywords ?? [
+      service.title,
       service.subtitle,
+      'منصة هديل',
+      'خدمات طلابية',
+      'خدمات أكاديمية',
+    ]
 
-    keywords:
-      seo?.keywords ?? [
-        service.title,
-        service.subtitle,
-        'منصة هديل',
-        'خدمات طلابية',
-        'خدمات أكاديمية',
-      ],
+  const canonicalUrl =
+    `https://hadeel-alpha.vercel.app/services/${service.id}`
+
+  return {
+    title,
+
+    description,
+
+    keywords,
 
     alternates: {
-      canonical:
-        `https://hadeel-alpha.vercel.app/services/${service.id}`,
+      canonical: canonicalUrl,
     },
 
     openGraph: {
-      title:
-        seo?.title ??
-        `${service.title} | منصة هديل`,
+      title,
 
-      description:
-        seo?.description ??
-        service.subtitle,
+      description,
 
-      url:
-        `https://hadeel-alpha.vercel.app/services/${service.id}`,
+      url: canonicalUrl,
 
       siteName: 'منصة هديل',
 
@@ -253,13 +248,9 @@ export async function generateMetadata({
     twitter: {
       card: 'summary_large_image',
 
-      title:
-        seo?.title ??
-        `${service.title} | منصة هديل`,
+      title,
 
-      description:
-        seo?.description ??
-        service.subtitle,
+      description,
 
       images: [service.image],
     },
@@ -281,7 +272,7 @@ export default async function ServiceDetailsPage({
 
   return (
     <ServiceDetailsClient
-      service={service as Service}
+      service={service}
     />
   )
 }
