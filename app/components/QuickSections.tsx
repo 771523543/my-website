@@ -11,21 +11,21 @@ import {
 const cards = [
   {
     title: 'خدماتنا',
-    description: 'اكتشف خدماتنا الطلابية والأكاديمية',
+    description: 'خدمات طلابية وأكاديمية',
     href: '/services',
     icon: GraduationCap,
     number: '01',
   },
   {
     title: 'باقاتنا',
-    description: 'اختر الباقة المناسبة لرحلتك التعليمية',
+    description: 'اختر الباقة المناسبة لك',
     href: '#packages',
     icon: Gem,
     number: '02',
   },
   {
-    title: 'أعمالنا السابقة',
-    description: 'تعرّف على أعمالنا ومشاريعنا السابقة',
+    title: 'أعمالنا',
+    description: 'مشاريع وأعمالنا السابقة',
     href: '/previous-works',
     icon: Trophy,
     number: '03',
@@ -34,23 +34,30 @@ const cards = [
 
 export default function QuickSections() {
   return (
-    <section className="quick-sections" aria-label="استكشف منصة هديل">
-      {/* الخلفية */}
-      <div className="quick-background" aria-hidden="true">
+    <section
+      className="quick-sections"
+      aria-label="استكشف منصة هديل"
+    >
+      <div
+        className="quick-background"
+        aria-hidden="true"
+      >
         <div className="quick-glow quick-glow-one" />
         <div className="quick-glow quick-glow-two" />
         <div className="quick-grid" />
-        <div className="quick-orb quick-orb-one" />
-        <div className="quick-orb quick-orb-two" />
       </div>
 
       <div className="quick-container">
+
+        {/* العنوان */}
         <div className="quick-heading">
-          <span className="quick-eyebrow">منصة هديل</span>
+          <span className="quick-eyebrow">
+            منصة هديل
+          </span>
 
           <h2>
-            كل ما تحتاجه
-            <span> في مكان واحد</span>
+            كل ما تحتاجه{' '}
+            <span>في مكان واحد</span>
           </h2>
 
           <p>
@@ -58,6 +65,7 @@ export default function QuickSections() {
           </p>
         </div>
 
+        {/* البطاقات */}
         <div className="quick-cards">
           {cards.map((card) => {
             const Icon = card.icon
@@ -68,24 +76,31 @@ export default function QuickSections() {
                 href={card.href}
                 className="quick-card"
               >
-                <div className="quick-card-number">
+                <span className="quick-card-number">
                   {card.number}
-                </div>
+                </span>
 
                 <div className="quick-card-icon">
-                  <Icon size={34} strokeWidth={1.8} />
+                  <Icon
+                    size={30}
+                    strokeWidth={1.9}
+                  />
                 </div>
 
                 <div className="quick-card-content">
                   <h3>{card.title}</h3>
+
                   <p>{card.description}</p>
                 </div>
 
-                <div className="quick-card-arrow">
-                  <ArrowLeft size={19} />
-                </div>
+                <span className="quick-card-arrow">
+                  <ArrowLeft size={16} />
+                </span>
 
-                <div className="quick-card-shine" />
+                <span
+                  className="quick-card-shine"
+                  aria-hidden="true"
+                />
               </Link>
             )
           })}
@@ -93,21 +108,27 @@ export default function QuickSections() {
       </div>
 
       <style jsx>{`
+        /* =========================================
+           القسم
+        ========================================= */
+
         .quick-sections {
           position: relative;
           isolation: isolate;
           overflow: hidden;
-          padding: 76px 20px 82px;
+
+          padding: 45px 20px 42px;
+
           background:
             radial-gradient(
-              circle at 15% 25%,
-              rgba(43, 109, 224, 0.28),
-              transparent 32%
+              circle at 12% 25%,
+              rgba(37, 99, 235, 0.27),
+              transparent 34%
             ),
             radial-gradient(
-              circle at 85% 70%,
-              rgba(30, 64, 175, 0.3),
-              transparent 35%
+              circle at 88% 75%,
+              rgba(14, 165, 233, 0.18),
+              transparent 34%
             ),
             linear-gradient(
               135deg,
@@ -117,9 +138,14 @@ export default function QuickSections() {
             );
         }
 
+        /* =========================================
+           الخلفية
+        ========================================= */
+
         .quick-background {
           position: absolute;
           inset: 0;
+
           pointer-events: none;
           z-index: -1;
         }
@@ -127,7 +153,9 @@ export default function QuickSections() {
         .quick-grid {
           position: absolute;
           inset: 0;
-          opacity: 0.12;
+
+          opacity: 0.08;
+
           background-image:
             linear-gradient(
               rgba(255, 255, 255, 0.12) 1px,
@@ -138,93 +166,92 @@ export default function QuickSections() {
               rgba(255, 255, 255, 0.12) 1px,
               transparent 1px
             );
-          background-size: 46px 46px;
-          mask-image: linear-gradient(
-            to bottom,
-            transparent,
-            black 20%,
-            black 80%,
-            transparent
-          );
+
+          background-size: 44px 44px;
         }
 
         .quick-glow {
           position: absolute;
-          width: 420px;
-          height: 420px;
+
+          width: 340px;
+          height: 340px;
+
           border-radius: 50%;
-          filter: blur(70px);
-          opacity: 0.22;
+
+          filter: blur(75px);
+
+          opacity: 0.18;
         }
 
         .quick-glow-one {
           top: -180px;
-          right: -100px;
+          right: -80px;
+
           background: #2563eb;
-          animation: glowMoveOne 9s ease-in-out infinite alternate;
         }
 
         .quick-glow-two {
-          bottom: -220px;
-          left: -100px;
+          bottom: -190px;
+          left: -80px;
+
           background: #0ea5e9;
-          animation: glowMoveTwo 11s ease-in-out infinite alternate;
         }
 
-        .quick-orb {
-          position: absolute;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 50%;
-        }
-
-        .quick-orb-one {
-          width: 280px;
-          height: 280px;
-          top: 50%;
-          right: -180px;
-        }
-
-        .quick-orb-two {
-          width: 180px;
-          height: 180px;
-          bottom: -90px;
-          left: 8%;
-        }
+        /* =========================================
+           الحاوية
+        ========================================= */
 
         .quick-container {
-          position: relative;
-          width: min(1120px, 100%);
+          width: min(1080px, 100%);
           margin: 0 auto;
         }
 
+        /* =========================================
+           العنوان
+        ========================================= */
+
         .quick-heading {
-          position: relative;
-          z-index: 2;
           text-align: center;
-          margin-bottom: 42px;
+
+          margin-bottom: 26px;
         }
 
         .quick-eyebrow {
           display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 7px 16px;
-          margin-bottom: 15px;
-          border: 1px solid rgba(255, 215, 112, 0.3);
+
+          padding: 5px 13px;
+
+          margin-bottom: 9px;
+
+          border:
+            1px solid
+            rgba(246, 215, 122, 0.32);
+
           border-radius: 999px;
-          background: rgba(255, 215, 112, 0.08);
+
+          background:
+            rgba(246, 215, 122, 0.07);
+
           color: #f6d77a;
-          font-size: 13px;
+
+          font-size: 12px;
           font-weight: 700;
         }
 
         .quick-heading h2 {
           margin: 0;
+
           color: #ffffff;
-          font-size: clamp(28px, 4vw, 43px);
+
+          font-size: clamp(
+            25px,
+            3.5vw,
+            37px
+          );
+
           line-height: 1.2;
+
           font-weight: 800;
-          letter-spacing: -0.5px;
         }
 
         .quick-heading h2 span {
@@ -232,255 +259,475 @@ export default function QuickSections() {
         }
 
         .quick-heading p {
-          margin: 12px 0 0;
-          color: rgba(255, 255, 255, 0.72);
-          font-size: 16px;
+          margin: 7px 0 0;
+
+          color:
+            rgba(255, 255, 255, 0.67);
+
+          font-size: 14px;
         }
 
+        /* =========================================
+           البطاقات
+        ========================================= */
+
         .quick-cards {
-          position: relative;
-          z-index: 3;
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 22px;
+
+          grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+
+          gap: 16px;
         }
+
+        /* =========================================
+           البطاقة
+        ========================================= */
 
         .quick-card {
           position: relative;
-          min-height: 265px;
+
+          min-width: 0;
+
+          height: 185px;
+
           display: flex;
+
           flex-direction: column;
-          align-items: flex-start;
-          padding: 30px;
+
+          align-items: center;
+
+          justify-content: center;
+
+          padding: 20px 15px;
+
           overflow: hidden;
+
           isolation: isolate;
+
           text-decoration: none;
-          border: 1px solid rgba(255, 255, 255, 0.16);
-          border-radius: 24px;
+
+          text-align: center;
+
+          border:
+            1px solid
+            rgba(255, 255, 255, 0.15);
+
+          border-radius: 20px;
+
           background:
             linear-gradient(
               145deg,
-              rgba(37, 99, 235, 0.96),
-              rgba(13, 54, 130, 0.97)
+              rgba(37, 99, 235, 0.97),
+              rgba(13, 54, 130, 0.98)
             );
+
           box-shadow:
-            0 20px 45px rgba(0, 0, 0, 0.24),
-            inset 0 1px 0 rgba(255, 255, 255, 0.13);
+            0 13px 30px
+              rgba(0, 0, 0, 0.22),
+            inset 0 1px 0
+              rgba(255, 255, 255, 0.13);
+
           transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease,
-            border-color 0.3s ease;
+            transform 0.28s ease,
+            box-shadow 0.28s ease,
+            border-color 0.28s ease;
         }
 
         .quick-card::before {
           content: '';
+
           position: absolute;
-          width: 180px;
-          height: 180px;
-          top: -95px;
+
+          width: 150px;
+          height: 150px;
+
+          top: -90px;
           right: -70px;
+
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.08);
+
+          background:
+            rgba(255, 255, 255, 0.07);
+
           z-index: -1;
         }
 
         .quick-card::after {
           content: '';
+
           position: absolute;
           inset: 0;
+
           border-radius: inherit;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.1),
-            transparent 35%,
-            transparent 70%,
-            rgba(255, 215, 112, 0.06)
-          );
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(255, 255, 255, 0.08),
+              transparent 40%,
+              transparent 70%,
+              rgba(246, 215, 122, 0.06)
+            );
+
           pointer-events: none;
+
           z-index: -1;
         }
 
         .quick-card:hover {
-          transform: translateY(-8px);
-          border-color: rgba(246, 215, 122, 0.55);
+          transform: translateY(-5px);
+
+          border-color:
+            rgba(246, 215, 122, 0.55);
+
           box-shadow:
-            0 28px 55px rgba(0, 0, 0, 0.3),
-            0 0 28px rgba(37, 99, 235, 0.25),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            0 20px 38px
+              rgba(0, 0, 0, 0.28),
+            0 0 20px
+              rgba(37, 99, 235, 0.22);
         }
+
+        /* =========================================
+           الرقم
+        ========================================= */
 
         .quick-card-number {
           position: absolute;
-          top: 20px;
-          right: 23px;
-          color: rgba(255, 255, 255, 0.35);
-          font-size: 12px;
+
+          top: 13px;
+          right: 15px;
+
+          color:
+            rgba(255, 255, 255, 0.3);
+
+          font-size: 10px;
+
           font-weight: 800;
+
           letter-spacing: 1px;
         }
 
+        /* =========================================
+           الأيقونة
+        ========================================= */
+
         .quick-card-icon {
-          width: 70px;
-          height: 70px;
+          width: 57px;
+          height: 57px;
+
+          flex-shrink: 0;
+
           display: flex;
+
           align-items: center;
           justify-content: center;
-          margin-bottom: 24px;
-          border: 1px solid rgba(255, 255, 255, 0.24);
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.13);
+
+          margin-bottom: 13px;
+
+          border:
+            1px solid
+            rgba(255, 255, 255, 0.22);
+
+          border-radius: 16px;
+
+          background:
+            rgba(255, 255, 255, 0.13);
+
           color: #ffffff;
+
           box-shadow:
-            0 12px 25px rgba(0, 0, 0, 0.18),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            0 8px 18px
+              rgba(0, 0, 0, 0.15),
+            inset 0 1px 0
+              rgba(255, 255, 255, 0.18);
+
           transition:
-            transform 0.3s ease,
-            background 0.3s ease;
+            transform 0.28s ease,
+            background 0.28s ease;
         }
 
-        .quick-card:hover .quick-card-icon {
-          transform: scale(1.08) rotate(-3deg);
-          background: rgba(255, 255, 255, 0.19);
+        .quick-card:hover
+          .quick-card-icon {
+          transform:
+            scale(1.06);
+
+          background:
+            rgba(255, 255, 255, 0.18);
         }
+
+        /* =========================================
+           النص
+        ========================================= */
 
         .quick-card-content {
-          position: relative;
-          z-index: 2;
+          width: 100%;
+
           direction: rtl;
-          text-align: right;
+
+          text-align: center;
         }
 
         .quick-card-content h3 {
-          margin: 0 0 9px;
+          margin: 0 0 5px;
+
           color: #ffffff;
-          font-size: 24px;
-          line-height: 1.2;
+
+          font-size: 19px;
+
+          line-height: 1.25;
+
           font-weight: 800;
+
+          white-space: nowrap;
         }
 
         .quick-card-content p {
           margin: 0;
-          color: rgba(255, 255, 255, 0.8);
-          font-size: 15px;
-          line-height: 1.8;
+
+          color:
+            rgba(255, 255, 255, 0.76);
+
+          font-size: 12px;
+
+          line-height: 1.5;
         }
+
+        /* =========================================
+           السهم
+        ========================================= */
 
         .quick-card-arrow {
           position: absolute;
-          left: 25px;
-          bottom: 25px;
-          width: 42px;
-          height: 42px;
+
+          left: 13px;
+          bottom: 13px;
+
+          width: 30px;
+          height: 30px;
+
           display: flex;
+
           align-items: center;
           justify-content: center;
+
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.1);
+
+          background:
+            rgba(255, 255, 255, 0.09);
+
           color: #ffffff;
+
           transition:
-            transform 0.3s ease,
-            background 0.3s ease;
+            transform 0.28s ease,
+            color 0.28s ease,
+            background 0.28s ease;
         }
 
-        .quick-card:hover .quick-card-arrow {
-          transform: translateX(-5px);
-          background: rgba(246, 215, 122, 0.2);
+        .quick-card:hover
+          .quick-card-arrow {
+          transform:
+            translateX(-4px);
+
           color: #f6d77a;
+
+          background:
+            rgba(246, 215, 122, 0.16);
         }
+
+        /* =========================================
+           اللمعة
+        ========================================= */
 
         .quick-card-shine {
           position: absolute;
+
           top: 0;
           left: -120%;
-          width: 60%;
+
+          width: 55%;
           height: 100%;
-          transform: skewX(-18deg);
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(255, 255, 255, 0.08),
-            transparent
-          );
-          transition: left 0.7s ease;
+
+          transform:
+            skewX(-18deg);
+
+          background:
+            linear-gradient(
+              90deg,
+              transparent,
+              rgba(255, 255, 255, 0.08),
+              transparent
+            );
+
+          transition:
+            left 0.65s ease;
+
           pointer-events: none;
         }
 
-        .quick-card:hover .quick-card-shine {
+        .quick-card:hover
+          .quick-card-shine {
           left: 150%;
         }
 
-        @keyframes glowMoveOne {
-          from {
-            transform: translate3d(0, 0, 0);
-          }
+        /* =========================================
+           الجوال
+           الثلاثة تظل جنب بعض
+        ========================================= */
 
-          to {
-            transform: translate3d(-60px, 40px, 0);
-          }
-        }
-
-        @keyframes glowMoveTwo {
-          from {
-            transform: translate3d(0, 0, 0);
-          }
-
-          to {
-            transform: translate3d(70px, -35px, 0);
-          }
-        }
-
-        @media (max-width: 850px) {
-          .quick-cards {
-            grid-template-columns: 1fr;
-            max-width: 560px;
-            margin: 0 auto;
-          }
-
-          .quick-card {
-            min-height: 220px;
-          }
-        }
-
-        @media (max-width: 520px) {
+        @media (max-width: 700px) {
           .quick-sections {
-            padding: 58px 16px 65px;
+            padding: 34px 10px 34px;
           }
 
           .quick-heading {
-            margin-bottom: 30px;
+            margin-bottom: 19px;
+          }
+
+          .quick-eyebrow {
+            padding: 4px 11px;
+
+            margin-bottom: 7px;
+
+            font-size: 10px;
+          }
+
+          .quick-heading h2 {
+            font-size: 23px;
           }
 
           .quick-heading p {
-            font-size: 14px;
+            margin-top: 5px;
+
+            font-size: 11px;
+          }
+
+          .quick-cards {
+            grid-template-columns:
+              repeat(3, minmax(0, 1fr));
+
+            gap: 7px;
           }
 
           .quick-card {
-            min-height: 210px;
-            padding: 25px;
-            border-radius: 21px;
+            height: 150px;
+
+            padding: 15px 6px;
+
+            border-radius: 15px;
+          }
+
+          .quick-card-number {
+            top: 8px;
+            right: 9px;
+
+            font-size: 8px;
           }
 
           .quick-card-icon {
-            width: 62px;
-            height: 62px;
-            margin-bottom: 20px;
+            width: 43px;
+            height: 43px;
+
+            margin-bottom: 9px;
+
+            border-radius: 12px;
+          }
+
+          .quick-card-icon svg {
+            width: 23px;
+            height: 23px;
           }
 
           .quick-card-content h3 {
-            font-size: 21px;
+            margin-bottom: 3px;
+
+            font-size: 14px;
+
+            white-space: nowrap;
           }
 
           .quick-card-content p {
-            font-size: 14px;
+            font-size: 9px;
+
+            line-height: 1.45;
+          }
+
+          .quick-card-arrow {
+            width: 24px;
+            height: 24px;
+
+            left: 7px;
+            bottom: 7px;
+          }
+
+          .quick-card-arrow svg {
+            width: 13px;
+            height: 13px;
           }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-          .quick-glow-one,
-          .quick-glow-two {
-            animation: none;
+        /* =========================================
+           الشاشات الصغيرة جدًا
+        ========================================= */
+
+        @media (max-width: 380px) {
+          .quick-sections {
+            padding-left: 7px;
+            padding-right: 7px;
           }
 
+          .quick-cards {
+            gap: 5px;
+          }
+
+          .quick-card {
+            height: 140px;
+
+            padding-left: 4px;
+            padding-right: 4px;
+
+            border-radius: 13px;
+          }
+
+          .quick-card-icon {
+            width: 39px;
+            height: 39px;
+
+            margin-bottom: 7px;
+          }
+
+          .quick-card-icon svg {
+            width: 21px;
+            height: 21px;
+          }
+
+          .quick-card-content h3 {
+            font-size: 12px;
+          }
+
+          .quick-card-content p {
+            font-size: 8px;
+          }
+
+          .quick-card-arrow {
+            width: 21px;
+            height: 21px;
+
+            left: 5px;
+            bottom: 5px;
+          }
+
+          .quick-card-arrow svg {
+            width: 11px;
+            height: 11px;
+          }
+        }
+
+        /* =========================================
+           تقليل الحركة
+        ========================================= */
+
+        @media (prefers-reduced-motion: reduce) {
           .quick-card,
           .quick-card-icon,
           .quick-card-arrow,
