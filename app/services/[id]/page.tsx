@@ -10,17 +10,31 @@ import {
   MessageCircle,
   Send,
   ShieldCheck,
+  Sparkles,
 } from 'lucide-react'
 import { useState } from 'react'
-import { services, whatsappNumber } from '../../components/Services'
+import {
+  services,
+  whatsappNumber,
+} from '../../components/Services'
 
 export default function ServiceDetailsPage() {
   const params = useParams()
-  const id = Array.isArray(params.id) ? params.id[0] : params.id
 
-  const service = services.find((item) => item.id === id)
+  const id = Array.isArray(params.id)
+    ? params.id[0]
+    : params.id
 
-  const [openFaq, setOpenFaq] = useState<number | null>(0)
+  const service = services.find(
+    (item) => item.id === id,
+  )
+
+  const [openFaq, setOpenFaq] =
+    useState<number | null>(0)
+
+  /* =========================
+     الخدمة غير موجودة
+  ========================= */
 
   if (!service) {
     return (
@@ -28,18 +42,33 @@ export default function ServiceDetailsPage() {
         <div className="container">
           <div className="service-not-found-card">
             <div className="not-found-icon">
-              <ClipboardCheck size={34} />
+              <ClipboardCheck
+                size={34}
+                strokeWidth={1.7}
+              />
             </div>
 
-            <h1>الخدمة غير موجودة</h1>
+            <span className="not-found-label">
+              منصة هديل
+            </span>
+
+            <h1>
+              الخدمة غير موجودة
+            </h1>
 
             <p>
-              عذرًا، لم نتمكن من العثور على الخدمة المطلوبة.
+              عذرًا، لم نتمكن من العثور على الخدمة
+              المطلوبة.
             </p>
 
-            <Link href="/services" className="back-services-button">
+            <Link
+              href="/services"
+              className="back-services-button"
+            >
               <ArrowRight size={18} />
-              العودة إلى الخدمات
+              <span>
+                العودة إلى الخدمات
+              </span>
             </Link>
           </div>
         </div>
@@ -47,59 +76,178 @@ export default function ServiceDetailsPage() {
         <style jsx>{`
           .service-not-found {
             min-height: 100vh;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 100px 20px;
-            background: var(--background);
+
+            padding:
+              100px 20px;
+
+            background:
+              var(--background);
           }
 
           .service-not-found-card {
+            position: relative;
+            overflow: hidden;
+
             width: min(100%, 560px);
-            padding: 45px 30px;
+
+            padding:
+              45px 30px;
+
             text-align: center;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(25, 56, 100, 0.08);
+
+            background:
+              linear-gradient(
+                145deg,
+                #173f91,
+                #2455c4,
+                #163878
+              );
+
+            border:
+              2px solid
+              rgba(213, 170, 84, 0.7);
+
+            border-radius: 25px;
+
+            color: white;
+
+            box-shadow:
+              0 25px 55px
+              rgba(23, 63, 145, 0.2);
+          }
+
+          .service-not-found-card::before {
+            content: '';
+
+            position: absolute;
+
+            width: 300px;
+            height: 300px;
+
+            top: -220px;
+            left: -100px;
+
+            border-radius: 50%;
+
+            background:
+              radial-gradient(
+                circle,
+                rgba(255,255,255,0.12),
+                transparent 70%
+              );
           }
 
           .not-found-icon {
+            position: relative;
+            z-index: 1;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 20px;
-            color: var(--primary);
-            background: var(--secondary);
-            border-radius: 18px;
+
+            width: 76px;
+            height: 76px;
+
+            margin:
+              0 auto 15px;
+
+            color: #174fae;
+
+            background:
+              radial-gradient(
+                circle at 30% 25%,
+                #ffffff,
+                #dceaff
+              );
+
+            border:
+              4px solid #d5aa54;
+
+            border-radius: 21px;
+
+            box-shadow:
+              0 14px 30px
+              rgba(0,0,0,0.2);
+          }
+
+          .not-found-label {
+            position: relative;
+            z-index: 1;
+
+            color: #f0c56d;
+
+            font-size: 13px;
+            font-weight: 850;
           }
 
           .service-not-found h1 {
-            margin: 0;
-            color: var(--foreground);
+            position: relative;
+            z-index: 1;
+
+            margin:
+              7px 0 8px;
+
+            color: white;
+
             font-size: 30px;
             font-weight: 900;
           }
 
           .service-not-found p {
-            margin: 10px 0 25px;
-            color: var(--muted-foreground);
+            position: relative;
+            z-index: 1;
+
+            margin:
+              0 0 25px;
+
+            color:
+              rgba(255,255,255,0.78);
+
+            line-height: 1.8;
           }
 
           .back-services-button {
+            position: relative;
+            z-index: 1;
+
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             gap: 8px;
-            min-height: 46px;
-            padding: 0 20px;
-            color: white;
-            background: var(--primary);
-            border-radius: 11px;
-            font-weight: 800;
+
+            min-height: 48px;
+
+            padding:
+              0 21px;
+
+            color: #173f91;
+
+            background: white;
+
+            border:
+              2px solid #d5aa54;
+
+            border-radius: 12px;
+
+            font-weight: 900;
+
             text-decoration: none;
+
+            transition:
+              transform 0.2s ease,
+              background 0.2s ease;
+          }
+
+          .back-services-button:hover {
+            background: #fff8e8;
+
+            transform:
+              translateY(-2px);
           }
         `}</style>
       </main>
@@ -108,45 +256,79 @@ export default function ServiceDetailsPage() {
 
   const Icon = service.icon
 
-  const whatsappMessage = encodeURIComponent(
-    `السلام عليكم، أرغب في طلب خدمة: ${service.title}`,
-  )
+  const categoryLabel =
+    service.category === 'research'
+      ? 'الخدمات البحثية'
+      : service.category === 'academic'
+        ? 'الخدمات الأكاديمية'
+        : 'التصميم والخدمات المهنية'
 
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
+  const whatsappMessage =
+    encodeURIComponent(
+      `السلام عليكم، أرغب في طلب خدمة: ${service.title}`,
+    )
+
+  const whatsappUrl =
+    `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
 
   return (
     <main className="service-details-page">
+
       {/* =========================
           Hero
       ========================= */}
+
       <section className="service-details-hero">
         <div className="container">
-          <Link href="/services" className="service-back-link">
+
+          <Link
+            href="/services"
+            className="service-back-link"
+          >
             <ArrowRight size={17} />
-            العودة إلى جميع الخدمات
+
+            <span>
+              العودة إلى جميع الخدمات
+            </span>
           </Link>
 
           <div className="service-details-hero-content">
-            {/* الأيقونة في الوسط */}
-            <div className="service-details-icon">
-              <Icon size={40} strokeWidth={1.7} />
+
+            {/* الأيقونة */}
+
+            <div className="service-details-icon-wrap">
+              <div className="service-details-icon">
+                <Icon
+                  size={42}
+                  strokeWidth={1.7}
+                />
+              </div>
             </div>
+
+            {/* التصنيف */}
 
             <div className="service-details-category">
-              {service.category === 'research'
-                ? 'الخدمات البحثية'
-                : service.category === 'academic'
-                  ? 'الخدمات الأكاديمية'
-                  : 'التصميم والخدمات المهنية'}
+              <Sparkles size={14} />
+
+              <span>
+                {categoryLabel}
+              </span>
             </div>
 
-            {/* العنوان في الوسط */}
-            <h1>{service.title}</h1>
+            {/* العنوان */}
 
-            {/* الوصف المختصر في الوسط */}
-            <p>{service.subtitle}</p>
+            <h1>
+              {service.title}
+            </h1>
 
-            {/* زر الطلب */}
+            {/* الوصف */}
+
+            <p>
+              {service.subtitle}
+            </p>
+
+            {/* الطلب */}
+
             <a
               href={whatsappUrl}
               target="_blank"
@@ -154,7 +336,15 @@ export default function ServiceDetailsPage() {
               className="hero-order-button"
             >
               <Send size={18} />
-              اطلب خدمتك الآن
+
+              <span>
+                اطلب خدمتك الآن
+              </span>
+
+              <ArrowRight
+                size={17}
+                className="hero-order-arrow"
+              />
             </a>
           </div>
         </div>
@@ -163,162 +353,291 @@ export default function ServiceDetailsPage() {
       {/* =========================
           Main Content
       ========================= */}
+
       <section className="service-details-content">
         <div className="container">
+
           <div className="service-details-layout">
 
-            {/* المحتوى الرئيسي */}
+            {/* =========================
+                المحتوى الرئيسي
+            ========================= */}
+
             <div className="service-details-main">
 
-              {/* عن الخدمة */}
+              {/* =========================
+                  عن الخدمة
+              ========================= */}
+
               <section className="details-card">
+
                 <div className="details-card-heading">
+
                   <div className="details-heading-icon">
-                    <ClipboardCheck size={21} />
+                    <ClipboardCheck
+                      size={22}
+                      strokeWidth={1.8}
+                    />
                   </div>
 
                   <div>
-                    <span>عن الخدمة</span>
-                    <h2>نبذة عن الخدمة</h2>
+                    <span>
+                      عن الخدمة
+                    </span>
+
+                    <h2>
+                      نبذة عن الخدمة
+                    </h2>
                   </div>
+
                 </div>
 
-                {/* الشرح باليمين */}
                 <p className="details-description">
                   {service.about}
                 </p>
+
               </section>
 
-              {/* ما تتضمنه الخدمة */}
+              {/* =========================
+                  ماذا نقدم؟
+              ========================= */}
+
               <section className="details-card">
+
                 <div className="details-card-heading">
+
                   <div className="details-heading-icon">
-                    <CheckCircle2 size={21} />
+                    <CheckCircle2
+                      size={22}
+                      strokeWidth={1.8}
+                    />
                   </div>
 
                   <div>
-                    <span>ماذا نقدم؟</span>
-                    <h2>ما تتضمنه الخدمة</h2>
+                    <span>
+                      ماذا نقدم؟
+                    </span>
+
+                    <h2>
+                      ما تتضمنه الخدمة
+                    </h2>
                   </div>
+
                 </div>
 
                 <div className="details-list">
-                  {service.whatWeOffer.map((item) => (
-                    <div
-                      key={item}
-                      className="details-list-item"
-                    >
-                      <CheckCircle2 size={18} />
-                      <span>{item}</span>
-                    </div>
-                  ))}
+
+                  {service.whatWeOffer.map(
+                    (item, index) => (
+                      <div
+                        key={item}
+                        className="details-list-item"
+                      >
+                        <span className="list-number">
+                          {String(index + 1).padStart(
+                            2,
+                            '0',
+                          )}
+                        </span>
+
+                        <CheckCircle2
+                          size={18}
+                        />
+
+                        <span>
+                          {item}
+                        </span>
+                      </div>
+                    ),
+                  )}
+
                 </div>
+
               </section>
 
-              {/* متطلبات الخدمة */}
+              {/* =========================
+                  المتطلبات
+              ========================= */}
+
               <section className="details-card">
+
                 <div className="details-card-heading">
+
                   <div className="details-heading-icon">
-                    <ShieldCheck size={21} />
+                    <ShieldCheck
+                      size={22}
+                      strokeWidth={1.8}
+                    />
                   </div>
 
                   <div>
-                    <span>قبل الطلب</span>
-                    <h2>متطلبات الخدمة</h2>
+                    <span>
+                      قبل الطلب
+                    </span>
+
+                    <h2>
+                      متطلبات الخدمة
+                    </h2>
                   </div>
+
                 </div>
 
                 <div className="requirements-grid">
-                  {service.requirements.map((item, index) => (
-                    <div
-                      key={item}
-                      className="requirement-item"
-                    >
-                      <span className="requirement-number">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
 
-                      <span>{item}</span>
-                    </div>
-                  ))}
+                  {service.requirements.map(
+                    (item, index) => (
+                      <div
+                        key={item}
+                        className="requirement-item"
+                      >
+                        <span className="requirement-number">
+                          {String(
+                            index + 1,
+                          ).padStart(2, '0')}
+                        </span>
+
+                        <span>
+                          {item}
+                        </span>
+                      </div>
+                    ),
+                  )}
+
                 </div>
+
               </section>
 
-              {/* الأسئلة الشائعة */}
+              {/* =========================
+                  FAQ
+              ========================= */}
+
               {service.faqs.length > 0 && (
                 <section className="details-card faq-card">
+
                   <div className="details-card-heading">
+
                     <div className="details-heading-icon">
-                      <MessageCircle size={21} />
+                      <MessageCircle
+                        size={22}
+                        strokeWidth={1.8}
+                      />
                     </div>
 
                     <div>
-                      <span>الأسئلة الشائعة</span>
-                      <h2>هل لديك استفسار؟</h2>
+                      <span>
+                        الأسئلة الشائعة
+                      </span>
+
+                      <h2>
+                        هل لديك استفسار؟
+                      </h2>
                     </div>
+
                   </div>
 
                   <div className="faq-list">
-                    {service.faqs.map((faq, index) => {
-                      const isOpen = openFaq === index
 
-                      return (
-                        <div
-                          key={faq.q}
-                          className={`faq-item ${
-                            isOpen ? 'open' : ''
-                          }`}
-                        >
-                          <button
-                            type="button"
-                            className="faq-question"
-                            onClick={() =>
-                              setOpenFaq(
-                                isOpen ? null : index,
-                              )
-                            }
-                            aria-expanded={isOpen}
+                    {service.faqs.map(
+                      (faq, index) => {
+                        const isOpen =
+                          openFaq === index
+
+                        return (
+                          <div
+                            key={faq.q}
+                            className={`faq-item ${
+                              isOpen
+                                ? 'open'
+                                : ''
+                            }`}
                           >
-                            <span>{faq.q}</span>
 
-                            <ChevronDown
-                              size={19}
-                              className="faq-chevron"
-                            />
-                          </button>
+                            <button
+                              type="button"
+                              className="faq-question"
+                              onClick={() =>
+                                setOpenFaq(
+                                  isOpen
+                                    ? null
+                                    : index,
+                                )
+                              }
+                              aria-expanded={
+                                isOpen
+                              }
+                            >
 
-                          {isOpen && (
-                            <div className="faq-answer">
-                              {faq.a}
-                            </div>
-                          )}
-                        </div>
-                      )
-                    })}
+                              <span>
+                                {faq.q}
+                              </span>
+
+                              <span className="faq-arrow">
+                                <ChevronDown
+                                  size={18}
+                                />
+                              </span>
+
+                            </button>
+
+                            {isOpen && (
+                              <div className="faq-answer">
+                                {faq.a}
+                              </div>
+                            )}
+
+                          </div>
+                        )
+                      },
+                    )}
+
                   </div>
+
                 </section>
               )}
+
             </div>
 
             {/* =========================
                 بطاقة الطلب
             ========================= */}
+
             <aside className="service-order-column">
+
               <div className="service-order-card">
 
+                <div className="order-card-decoration" />
+
                 <div className="order-card-top">
+
                   <div className="order-card-icon">
-                    <Send size={25} />
+                    <Send
+                      size={25}
+                      strokeWidth={1.8}
+                    />
                   </div>
 
-                  <span>طلب الخدمة</span>
+                  <div>
+                    <span>
+                      طلب الخدمة
+                    </span>
+
+                    <strong>
+                      منصة هديل
+                    </strong>
+                  </div>
+
                 </div>
 
-                <h2>هل أنت جاهز لطلب الخدمة؟</h2>
+                <h2>
+                  هل أنت جاهز
+                  <br />
+                  لطلب الخدمة؟
+                </h2>
 
                 <p>
-                  أرسل طلبك الآن عبر واتساب وسنتواصل معك لمعرفة
-                  التفاصيل المطلوبة والبدء في تنفيذ الخدمة.
+                  أرسل طلبك الآن عبر واتساب وسنتواصل
+                  معك لمعرفة التفاصيل المطلوبة والبدء
+                  في تنفيذ الخدمة.
                 </p>
 
                 <a
@@ -327,167 +646,373 @@ export default function ServiceDetailsPage() {
                   rel="noopener noreferrer"
                   className="order-whatsapp-button"
                 >
-                  <MessageCircle size={20} />
-                  اطلب خدمتك الآن
+                  <MessageCircle
+                    size={20}
+                  />
+
+                  <span>
+                    اطلب خدمتك الآن
+                  </span>
                 </a>
 
-                <div className="order-note">
-                  <CheckCircle2 size={16} />
-                  <span>تواصل مباشر وسهل</span>
+                <div className="order-notes">
+
+                  <div className="order-note">
+                    <CheckCircle2 size={16} />
+
+                    <span>
+                      تواصل مباشر وسهل
+                    </span>
+                  </div>
+
+                  <div className="order-note">
+                    <CheckCircle2 size={16} />
+
+                    <span>
+                      تحديد المتطلبات قبل البدء
+                    </span>
+                  </div>
+
+                  <div className="order-note">
+                    <CheckCircle2 size={16} />
+
+                    <span>
+                      متابعة تفاصيل الطلب
+                    </span>
+                  </div>
+
                 </div>
 
-                <div className="order-note">
-                  <CheckCircle2 size={16} />
-                  <span>تحديد المتطلبات قبل البدء</span>
+                <div className="order-card-footer">
+                  <ShieldCheck size={17} />
+
+                  <span>
+                    خصوصية وسرية في التعامل
+                  </span>
                 </div>
 
-                <div className="order-note">
-                  <CheckCircle2 size={16} />
-                  <span>متابعة تفاصيل الطلب</span>
-                </div>
               </div>
+
             </aside>
+
           </div>
         </div>
       </section>
 
       <style jsx>{`
+
+        /* ========================================
+           الصفحة
+        ======================================== */
+
         .service-details-page {
           min-height: 100vh;
-          background: var(--background);
-          color: var(--foreground);
+
+          background:
+            var(--background);
+
+          color:
+            var(--foreground);
         }
 
-        /* =========================
+        /* ========================================
            Hero
-        ========================= */
+        ======================================== */
 
         .service-details-hero {
           position: relative;
+
           overflow: hidden;
-          padding: 105px 0 65px;
+
+          padding:
+            105px 0 72px;
+
           color: white;
-          background: linear-gradient(
-            135deg,
-            #2455c4 0%,
-            #234da9 58%,
-            #17233d 100%
-          );
+
+          background:
+            linear-gradient(
+              145deg,
+              #173f91 0%,
+              #2455c4 50%,
+              #163878 100%
+            );
         }
 
         .service-details-hero::before {
           content: '';
+
           position: absolute;
-          width: 300px;
-          height: 300px;
-          top: -170px;
-          inset-inline-end: -100px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+
+          width: 460px;
+          height: 460px;
+
+          top: -330px;
+          left: -150px;
+
           border-radius: 50%;
+
+          background:
+            radial-gradient(
+              circle,
+              rgba(255,255,255,0.14),
+              transparent 70%
+            );
+
+          pointer-events: none;
         }
 
         .service-details-hero::after {
           content: '';
+
           position: absolute;
-          width: 220px;
-          height: 220px;
-          bottom: -145px;
-          inset-inline-start: -80px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+
+          width: 340px;
+          height: 340px;
+
+          right: -190px;
+          bottom: -240px;
+
+          border:
+            1px solid
+            rgba(213,170,84,0.28);
+
           border-radius: 50%;
+
+          pointer-events: none;
         }
+
+        /* ========================================
+           العودة
+        ======================================== */
 
         .service-back-link {
           position: relative;
           z-index: 2;
+
           display: inline-flex;
+
           align-items: center;
+
           gap: 7px;
-          color: rgba(255, 255, 255, 0.82);
+
+          color:
+            rgba(255,255,255,0.82);
+
           font-size: 13px;
-          font-weight: 750;
+          font-weight: 800;
+
           text-decoration: none;
-          transition: color 0.2s ease;
+
+          transition:
+            color 0.2s ease;
         }
 
         .service-back-link:hover {
-          color: #f7c25e;
+          color:
+            #f0c56d;
         }
+
+        /* ========================================
+           Hero Content
+        ======================================== */
 
         .service-details-hero-content {
           position: relative;
           z-index: 2;
+
           max-width: 850px;
-          margin: 35px auto 0;
+
+          margin:
+            32px auto 0;
+
           text-align: center;
         }
 
-        /* الأيقونة في الوسط */
+        /* ========================================
+           Icon
+        ======================================== */
+
+        .service-details-icon-wrap {
+          position: relative;
+
+          width: fit-content;
+
+          margin:
+            0 auto 20px;
+        }
+
+        .service-details-icon-wrap::before {
+          content: '';
+
+          position: absolute;
+
+          inset: -9px;
+
+          border:
+            1px solid
+            rgba(213,170,84,0.30);
+
+          border-radius: 30px;
+
+          transform:
+            rotate(6deg);
+        }
+
         .service-details-icon {
+          position: relative;
+
           display: flex;
+
           align-items: center;
           justify-content: center;
-          width: 86px;
-          height: 86px;
-          margin: 0 auto 20px;
-          color: var(--primary);
-          background: white;
-          border: 5px solid rgba(255, 255, 255, 0.14);
-          border-radius: 24px;
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+
+          width: 92px;
+          height: 92px;
+
+          color:
+            #174fae;
+
+          background:
+            radial-gradient(
+              circle at 30% 24%,
+              #ffffff 0%,
+              #edf4ff 28%,
+              #d8e8ff 58%,
+              #b8d0f3 82%,
+              #8eaddd 100%
+            );
+
+          border:
+            5px solid
+            #d5aa54;
+
+          border-radius: 27px;
+
+          box-shadow:
+            0 18px 35px
+              rgba(0,0,0,0.24),
+            inset 7px 7px 14px
+              rgba(255,255,255,0.88),
+            inset -8px -9px 16px
+              rgba(36,85,196,0.18);
         }
 
         .service-details-category {
           display: inline-flex;
+
           align-items: center;
           justify-content: center;
-          padding: 7px 13px;
-          color: #17233d;
-          background: #fff8e8;
-          border: 1px solid #f1d89e;
+
+          gap: 7px;
+
+          padding:
+            8px 14px;
+
+          color:
+            #173f91;
+
+          background:
+            #fff8e8;
+
+          border:
+            1px solid
+            #f1d89e;
+
           border-radius: 999px;
+
           font-size: 12px;
-          font-weight: 850;
-        }
-
-        /* العنوان في الوسط */
-        .service-details-hero h1 {
-          margin: 16px 0 8px;
-          font-size: clamp(31px, 5vw, 48px);
           font-weight: 900;
+
+          box-shadow:
+            0 7px 18px
+              rgba(0,0,0,0.12);
+        }
+
+        .service-details-category svg {
+          color:
+            #c98b25;
+        }
+
+        /* ========================================
+           العنوان
+        ======================================== */
+
+        .service-details-hero h1 {
+          margin:
+            17px 0 8px;
+
+          color: white;
+
+          font-size:
+            clamp(32px, 5vw, 50px);
+
+          font-weight: 900;
+
           line-height: 1.3;
+
           text-align: center;
+
+          text-shadow:
+            0 3px 9px
+              rgba(0,0,0,0.18);
         }
 
-        /* الوصف المختصر في الوسط */
         .service-details-hero p {
-          margin: 0;
-          color: rgba(255, 255, 255, 0.82);
+          max-width: 700px;
+
+          margin:
+            0 auto;
+
+          color:
+            rgba(255,255,255,0.84);
+
           font-size: 16px;
-          line-height: 1.8;
+
+          line-height: 1.9;
+
           text-align: center;
         }
 
-        /* =========================
-           زر اطلب خدمتك الآن
-        ========================= */
+        /* ========================================
+           Hero Order
+        ======================================== */
 
         .hero-order-button {
           display: inline-flex;
+
           align-items: center;
           justify-content: center;
-          gap: 9px;
-          min-height: 50px;
-          margin-top: 24px;
-          padding: 0 25px;
-          color: #17233d;
-          background: #f7c25e;
-          border: 1px solid rgba(255, 255, 255, 0.25);
-          border-radius: 12px;
-          font-size: 14px;
+
+          gap: 8px;
+
+          min-height: 51px;
+
+          margin-top: 25px;
+
+          padding:
+            0 23px;
+
+          color:
+            #173f91;
+
+          background:
+            white;
+
+          border:
+            2px solid
+            #d5aa54;
+
+          border-radius: 13px;
+
+          font-size: 13px;
           font-weight: 900;
+
           text-decoration: none;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+
+          box-shadow:
+            0 12px 25px
+              rgba(0,0,0,0.16);
+
           transition:
             transform 0.2s ease,
             background 0.2s ease,
@@ -495,61 +1020,158 @@ export default function ServiceDetailsPage() {
         }
 
         .hero-order-button:hover {
-          background: white;
-          transform: translateY(-2px);
-          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.16);
+          background:
+            #fff8e8;
+
+          transform:
+            translateY(-3px);
+
+          box-shadow:
+            0 16px 30px
+              rgba(0,0,0,0.2);
         }
 
-        /* =========================
-           Content
-        ========================= */
+        .hero-order-arrow {
+          transition:
+            transform 0.2s ease;
+        }
+
+        .hero-order-button:hover
+          .hero-order-arrow {
+          transform:
+            translateX(4px);
+        }
+
+        /* ========================================
+           Main Content
+        ======================================== */
 
         .service-details-content {
-          padding: 60px 0 90px;
+          padding:
+            65px 0 90px;
         }
 
         .service-details-layout {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) 350px;
+
+          grid-template-columns:
+            minmax(0, 1fr)
+            350px;
+
           align-items: start;
+
           gap: 25px;
         }
 
         .service-details-main {
           display: grid;
+
           gap: 22px;
+
           min-width: 0;
         }
 
+        /* ========================================
+           Details Cards
+        ======================================== */
+
         .details-card {
-          padding: 28px;
-          background: var(--card);
-          border: 1px solid var(--border);
-          border-radius: 17px;
-          box-shadow: 0 10px 25px rgba(25, 56, 100, 0.055);
+          position: relative;
+
+          overflow: hidden;
+
+          padding:
+            29px;
+
+          background:
+            linear-gradient(
+              145deg,
+              #ffffff 0%,
+              #f7faff 100%
+            );
+
+          border:
+            1px solid
+            #dbe6f5;
+
+          border-radius: 20px;
+
+          box-shadow:
+            0 15px 35px
+              rgba(23,63,145,0.07),
+            inset 0 1px 0
+              rgba(255,255,255,0.95);
         }
 
-        /* الأيقونة + العنوان في الوسط */
+        .details-card::before {
+          content: '';
+
+          position: absolute;
+
+          top: 0;
+          left: 0;
+          right: 0;
+
+          height: 3px;
+
+          background:
+            linear-gradient(
+              90deg,
+              #173f91,
+              #d5aa54,
+              #2455c4
+            );
+
+          opacity: 0.7;
+        }
+
+        /* ========================================
+           Heading
+        ======================================== */
+
         .details-card-heading {
           display: flex;
+
           flex-direction: column;
+
           align-items: center;
           justify-content: center;
+
           gap: 10px;
-          margin-bottom: 22px;
+
+          margin-bottom: 23px;
+
           text-align: center;
         }
 
         .details-heading-icon {
           display: flex;
+
           align-items: center;
           justify-content: center;
-          width: 52px;
-          height: 52px;
-          flex-shrink: 0;
-          color: var(--primary);
-          background: var(--secondary);
-          border-radius: 15px;
+
+          width: 56px;
+          height: 56px;
+
+          color:
+            #174fae;
+
+          background:
+            radial-gradient(
+              circle at 30% 25%,
+              #ffffff,
+              #dceaff
+            );
+
+          border:
+            3px solid
+            #d5aa54;
+
+          border-radius: 16px;
+
+          box-shadow:
+            0 8px 18px
+              rgba(23,63,145,0.12);
         }
 
         .details-card-heading > div:last-child {
@@ -558,262 +1180,666 @@ export default function ServiceDetailsPage() {
 
         .details-card-heading span {
           display: block;
+
           margin-bottom: 3px;
-          color: var(--accent);
+
+          color:
+            #c98b25;
+
           font-size: 12px;
+
           font-weight: 850;
         }
 
         .details-card-heading h2 {
           margin: 0;
-          color: var(--foreground);
-          font-size: 22px;
-          font-weight: 850;
+
+          color:
+            var(--foreground);
+
+          font-size: 23px;
+
+          font-weight: 900;
         }
 
-        /* =========================
-           الشرح باليمين
-        ========================= */
+        /* ========================================
+           Description
+        ======================================== */
 
         .details-description {
           margin: 0;
-          color: var(--muted-foreground);
+
+          color:
+            var(--muted-foreground);
+
           font-size: 15px;
-          line-height: 2;
+
+          line-height: 2.05;
+
           text-align: right;
+
           direction: rtl;
         }
 
-        /* =========================
-           What We Offer
-        ========================= */
+        /* ========================================
+           List
+        ======================================== */
 
         .details-list {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
           gap: 11px;
         }
 
         .details-list-item {
+          position: relative;
+
           display: flex;
+
           align-items: flex-start;
-          gap: 9px;
-          padding: 13px 14px;
-          color: #53627a;
-          background: #f7faff;
-          border: 1px solid #e5edf8;
-          border-radius: 12px;
+
+          gap: 8px;
+
+          min-width: 0;
+
+          padding:
+            14px;
+
+          color:
+            #53627a;
+
+          background:
+            #f7faff;
+
+          border:
+            1px solid
+            #e3ecf8;
+
+          border-radius: 13px;
+
           font-size: 13px;
-          line-height: 1.7;
+
+          line-height: 1.8;
+
           text-align: right;
+
           direction: rtl;
+
+          transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
         }
 
-        .details-list-item svg {
+        .details-list-item:hover {
+          transform:
+            translateY(-2px);
+
+          border-color:
+            #c8d9ef;
+
+          box-shadow:
+            0 8px 18px
+              rgba(23,63,145,0.06);
+        }
+
+        .details-list-item > svg {
           flex-shrink: 0;
+
           margin-top: 2px;
-          color: var(--primary);
+
+          color:
+            #2455c4;
         }
 
-        /* =========================
+        .list-number {
+          display: flex;
+
+          align-items: center;
+          justify-content: center;
+
+          width: 28px;
+          height: 28px;
+
+          flex-shrink: 0;
+
+          color:
+            #173f91;
+
+          background:
+            #e8f1ff;
+
+          border-radius: 8px;
+
+          font-size: 9px;
+
+          font-weight: 900;
+        }
+
+        /* ========================================
            Requirements
-        ========================= */
+        ======================================== */
 
         .requirements-grid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
           gap: 12px;
         }
 
         .requirement-item {
           display: flex;
+
           align-items: center;
+
           gap: 12px;
-          padding: 14px;
-          color: #59677d;
-          background: var(--muted);
-          border: 1px solid var(--border);
-          border-radius: 12px;
+
+          padding:
+            14px;
+
+          color:
+            #59677d;
+
+          background:
+            #f8fbff;
+
+          border:
+            1px solid
+            #e1eaf6;
+
+          border-radius: 13px;
+
           font-size: 13px;
-          line-height: 1.6;
+
+          line-height: 1.7;
+
           text-align: right;
+
           direction: rtl;
         }
 
         .requirement-number {
           display: flex;
+
           align-items: center;
           justify-content: center;
-          width: 36px;
-          height: 36px;
+
+          width: 38px;
+          height: 38px;
+
           flex-shrink: 0;
-          color: var(--primary);
-          background: var(--secondary);
-          border-radius: 10px;
-          font-size: 11px;
+
+          color:
+            #173f91;
+
+          background:
+            radial-gradient(
+              circle at 30% 25%,
+              #ffffff,
+              #dceaff
+            );
+
+          border:
+            2px solid
+            #d5aa54;
+
+          border-radius: 11px;
+
+          font-size: 10px;
+
           font-weight: 900;
         }
 
-        /* =========================
+        /* ========================================
            FAQ
-        ========================= */
+        ======================================== */
 
         .faq-list {
           display: grid;
+
           gap: 10px;
         }
 
         .faq-item {
           overflow: hidden;
-          background: #f8fbff;
-          border: 1px solid var(--border);
-          border-radius: 12px;
+
+          background:
+            #f8fbff;
+
+          border:
+            1px solid
+            #dfe8f4;
+
+          border-radius: 13px;
+
+          transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+        }
+
+        .faq-item.open {
+          border-color:
+            #d5aa54;
+
+          box-shadow:
+            0 8px 20px
+              rgba(23,63,145,0.06);
         }
 
         .faq-question {
           display: flex;
+
           align-items: center;
           justify-content: space-between;
+
           gap: 15px;
+
           width: 100%;
-          min-height: 54px;
-          padding: 0 16px;
-          color: var(--foreground);
-          background: transparent;
+
+          min-height: 57px;
+
+          padding:
+            0 16px;
+
+          color:
+            var(--foreground);
+
+          background:
+            transparent;
+
           border: 0;
+
           font: inherit;
+
           font-size: 13px;
-          font-weight: 800;
+
+          font-weight: 850;
+
           text-align: right;
+
           direction: rtl;
+
           cursor: pointer;
         }
 
-        .faq-chevron {
+        .faq-arrow {
+          display: flex;
+
+          align-items: center;
+          justify-content: center;
+
+          width: 31px;
+          height: 31px;
+
           flex-shrink: 0;
-          color: var(--primary);
-          transition: transform 0.2s ease;
+
+          color:
+            #173f91;
+
+          background:
+            #e8f1ff;
+
+          border-radius: 50%;
+
+          transition:
+            transform 0.25s ease,
+            background 0.25s ease,
+            color 0.25s ease;
         }
 
-        .faq-item.open .faq-chevron {
-          transform: rotate(180deg);
+        .faq-item.open .faq-arrow {
+          color: white;
+
+          background:
+            #173f91;
+
+          transform:
+            rotate(180deg);
         }
 
         .faq-answer {
-          padding: 0 16px 17px;
-          color: var(--muted-foreground);
+          position: relative;
+
+          padding:
+            0 16px 18px;
+
+          color:
+            var(--muted-foreground);
+
           font-size: 13px;
-          line-height: 1.9;
+
+          line-height: 1.95;
+
           text-align: right;
+
           direction: rtl;
         }
 
-        /* =========================
+        .faq-answer::before {
+          content: '';
+
+          display: block;
+
+          width: 45px;
+          height: 2px;
+
+          margin:
+            0 0 10px auto;
+
+          background:
+            #d5aa54;
+
+          border-radius: 99px;
+        }
+
+        /* ========================================
            Order Card
-        ========================= */
+        ======================================== */
 
         .service-order-column {
           position: sticky;
+
           top: 100px;
         }
 
         .service-order-card {
-          padding: 26px;
+          position: relative;
+
           overflow: hidden;
-          background: var(--card);
-          border: 1px solid var(--border);
-          border-radius: 18px;
-          box-shadow: 0 14px 35px rgba(25, 56, 100, 0.08);
+
+          padding:
+            27px;
+
+          color: white;
+
+          background:
+            linear-gradient(
+              145deg,
+              #173f91 0%,
+              #2455c4 52%,
+              #163878 100%
+            );
+
+          border:
+            2px solid
+            rgba(213,170,84,0.65);
+
+          border-radius: 22px;
+
+          box-shadow:
+            0 22px 45px
+              rgba(23,63,145,0.18),
+            inset 0 1px 0
+              rgba(255,255,255,0.18);
+
           text-align: right;
+
           direction: rtl;
         }
 
+        .order-card-decoration {
+          position: absolute;
+
+          width: 250px;
+          height: 250px;
+
+          top: -180px;
+          left: -120px;
+
+          border-radius: 50%;
+
+          background:
+            radial-gradient(
+              circle,
+              rgba(255,255,255,0.13),
+              transparent 70%
+            );
+
+          pointer-events: none;
+        }
+
         .order-card-top {
+          position: relative;
+          z-index: 1;
+
           display: flex;
+
           align-items: center;
-          justify-content: flex-start;
-          gap: 10px;
-          margin-bottom: 18px;
+
+          gap: 11px;
+
+          margin-bottom: 20px;
         }
 
         .order-card-icon {
           display: flex;
+
           align-items: center;
           justify-content: center;
-          width: 48px;
-          height: 48px;
-          color: white;
-          background: var(--primary);
-          border-radius: 13px;
+
+          width: 53px;
+          height: 53px;
+
+          flex-shrink: 0;
+
+          color:
+            #174fae;
+
+          background:
+            radial-gradient(
+              circle at 30% 25%,
+              #ffffff,
+              #dceaff
+            );
+
+          border:
+            3px solid
+            #d5aa54;
+
+          border-radius: 15px;
+
+          box-shadow:
+            0 9px 18px
+              rgba(0,0,0,0.16);
         }
 
-        .order-card-top > span {
-          color: var(--accent);
-          font-size: 13px;
-          font-weight: 850;
+        .order-card-top span {
+          display: block;
+
+          margin-bottom: 2px;
+
+          color:
+            #f0c56d;
+
+          font-size: 12px;
+
+          font-weight: 800;
+        }
+
+        .order-card-top strong {
+          display: block;
+
+          color: white;
+
+          font-size: 14px;
+
+          font-weight: 900;
         }
 
         .service-order-card h2 {
+          position: relative;
+          z-index: 1;
+
           margin: 0;
-          color: var(--foreground);
-          font-size: 23px;
+
+          color: white;
+
+          font-size: 24px;
+
           font-weight: 900;
-          line-height: 1.5;
+
+          line-height: 1.55;
+
           text-align: right;
         }
 
         .service-order-card > p {
-          margin: 10px 0 20px;
-          color: var(--muted-foreground);
+          position: relative;
+          z-index: 1;
+
+          margin:
+            11px 0 21px;
+
+          color:
+            rgba(255,255,255,0.76);
+
           font-size: 13px;
-          line-height: 1.9;
+
+          line-height: 1.95;
+
           text-align: right;
         }
 
+        /* ========================================
+           WhatsApp
+        ======================================== */
+
         .order-whatsapp-button {
+          position: relative;
+          z-index: 1;
+
           display: flex;
+
           align-items: center;
           justify-content: center;
+
           gap: 9px;
+
           width: 100%;
-          min-height: 52px;
-          padding: 0 16px;
+
+          min-height: 53px;
+
           color: white;
-          background: #1fa463;
-          border-radius: 12px;
+
+          background:
+            #1fa463;
+
+          border:
+            1px solid
+            rgba(255,255,255,0.22);
+
+          border-radius: 13px;
+
           font-size: 14px;
+
           font-weight: 900;
+
           text-decoration: none;
+
           transition:
             transform 0.2s ease,
-            box-shadow 0.2s ease,
-            background 0.2s ease;
+            background 0.2s ease,
+            box-shadow 0.2s ease;
         }
 
         .order-whatsapp-button:hover {
-          background: #198e56;
-          transform: translateY(-2px);
-          box-shadow: 0 10px 22px rgba(31, 164, 99, 0.2);
+          background:
+            #198e56;
+
+          transform:
+            translateY(-2px);
+
+          box-shadow:
+            0 11px 22px
+              rgba(31,164,99,0.22);
+        }
+
+        /* ========================================
+           Notes
+        ======================================== */
+
+        .order-notes {
+          position: relative;
+          z-index: 1;
+
+          display: grid;
+
+          gap: 10px;
+
+          margin-top: 20px;
+
+          padding-top: 18px;
+
+          border-top:
+            1px solid
+            rgba(255,255,255,0.16);
         }
 
         .order-note {
           display: flex;
+
           align-items: center;
+
           gap: 8px;
-          margin-top: 14px;
-          color: #65738a;
+
+          color:
+            rgba(255,255,255,0.78);
+
           font-size: 12px;
+
           text-align: right;
         }
 
         .order-note svg {
-          color: var(--primary);
           flex-shrink: 0;
+
+          color:
+            #f0c56d;
         }
 
-        /* =========================
+        .order-card-footer {
+          position: relative;
+          z-index: 1;
+
+          display: flex;
+
+          align-items: center;
+
+          justify-content: center;
+
+          gap: 7px;
+
+          margin-top: 21px;
+
+          padding:
+            11px;
+
+          color:
+            #173f91;
+
+          background:
+            rgba(255,255,255,0.92);
+
+          border-radius: 10px;
+
+          font-size: 11px;
+
+          font-weight: 850;
+        }
+
+        .order-card-footer svg {
+          color:
+            #c98b25;
+        }
+
+        /* ========================================
            Responsive
-        ========================= */
+        ======================================== */
 
         @media (max-width: 950px) {
           .service-details-layout {
@@ -826,13 +1852,15 @@ export default function ServiceDetailsPage() {
 
           .service-order-card {
             max-width: 650px;
+
             margin-inline: auto;
           }
         }
 
         @media (max-width: 650px) {
           .service-details-hero {
-            padding: 90px 0 50px;
+            padding:
+              90px 0 55px;
           }
 
           .service-details-hero-content {
@@ -840,13 +1868,21 @@ export default function ServiceDetailsPage() {
           }
 
           .service-details-icon {
-            width: 74px;
-            height: 74px;
-            border-radius: 20px;
+            width: 78px;
+            height: 78px;
+
+            border-width: 4px;
+
+            border-radius: 22px;
+          }
+
+          .service-details-icon svg {
+            width: 34px;
+            height: 34px;
           }
 
           .service-details-hero h1 {
-            font-size: 29px;
+            font-size: 30px;
           }
 
           .service-details-hero p {
@@ -855,20 +1891,24 @@ export default function ServiceDetailsPage() {
 
           .hero-order-button {
             width: 100%;
-            max-width: 320px;
+
+            max-width: 330px;
           }
 
           .service-details-content {
-            padding: 42px 0 65px;
+            padding:
+              43px 0 65px;
           }
 
           .details-card {
-            padding: 22px 18px;
-            border-radius: 15px;
+            padding:
+              23px 18px;
+
+            border-radius: 17px;
           }
 
           .details-card-heading h2 {
-            font-size: 19px;
+            font-size: 20px;
           }
 
           .details-list,
@@ -876,10 +1916,42 @@ export default function ServiceDetailsPage() {
             grid-template-columns: 1fr;
           }
 
+          .details-description {
+            font-size: 14px;
+          }
+
           .service-order-card {
-            padding: 22px 18px;
+            padding:
+              23px 18px;
+
+            border-radius: 19px;
           }
         }
+
+        @media (max-width: 400px) {
+          .service-details-hero h1 {
+            font-size: 27px;
+          }
+
+          .service-details-category {
+            font-size: 11px;
+          }
+
+          .details-card {
+            padding:
+              21px 15px;
+          }
+
+          .details-list-item,
+          .requirement-item {
+            font-size: 12px;
+          }
+
+          .service-order-card h2 {
+            font-size: 21px;
+          }
+        }
+
       `}</style>
     </main>
   )
