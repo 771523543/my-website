@@ -180,12 +180,15 @@ export async function generateMetadata({
 }: Props): Promise<Metadata> {
   const { id } = await params
 
-  const service = services.find((item) => item.id === id)
+  const service = services.find(
+    (item) => item.id === id,
+  )
 
   if (!service) {
     return {
       title: 'الخدمة غير موجودة',
-      description: 'الخدمة المطلوبة غير موجودة في منصة هديل.',
+      description:
+        'الخدمة المطلوبة غير موجودة في منصة هديل.',
       robots: {
         index: false,
         follow: false,
@@ -215,9 +218,7 @@ export async function generateMetadata({
 
   return {
     title,
-
     description,
-
     keywords,
 
     alternates: {
@@ -226,15 +227,10 @@ export async function generateMetadata({
 
     openGraph: {
       title,
-
       description,
-
       url: canonicalUrl,
-
       siteName: 'منصة هديل',
-
       locale: 'ar_SA',
-
       type: 'website',
 
       images: [
@@ -247,11 +243,8 @@ export async function generateMetadata({
 
     twitter: {
       card: 'summary_large_image',
-
       title,
-
       description,
-
       images: [service.image],
     },
   }
@@ -270,9 +263,17 @@ export default async function ServiceDetailsPage({
     notFound()
   }
 
+  /*
+   * لا نمرر icon إلى Client Component
+   * لأن icon عبارة عن React Component / Function.
+   *
+   * نرسل فقط بيانات الخدمة القابلة للتسلسل.
+   */
+  const { icon: _icon, ...serviceData } = service
+
   return (
     <ServiceDetailsClient
-      service={service}
+      service={serviceData}
     />
   )
 }
