@@ -1,13 +1,12 @@
 'use client'
 
+import Link from 'next/link'
 import {
   ArrowLeft,
   Gem,
   GraduationCap,
-  Sparkles,
   Trophy,
 } from 'lucide-react'
-import Link from 'next/link'
 
 const cards = [
   {
@@ -15,18 +14,21 @@ const cards = [
     description: 'اكتشف خدماتنا الطلابية والأكاديمية',
     href: '/services',
     icon: GraduationCap,
+    number: '01',
   },
   {
     title: 'باقاتنا',
     description: 'اختر الباقة المناسبة لرحلتك التعليمية',
     href: '#packages',
     icon: Gem,
+    number: '02',
   },
   {
     title: 'أعمالنا السابقة',
     description: 'تعرّف على أعمالنا ومشاريعنا السابقة',
     href: '/previous-works',
     icon: Trophy,
+    number: '03',
   },
 ]
 
@@ -37,622 +39,453 @@ export default function QuickSections() {
       <div className="quick-background" aria-hidden="true">
         <div className="quick-glow quick-glow-one" />
         <div className="quick-glow quick-glow-two" />
-        <div className="quick-glow quick-glow-three" />
-
-        <div className="quick-light quick-light-one" />
-        <div className="quick-light quick-light-two" />
-
-        <div className="quick-particles">
-          {Array.from({ length: 18 }).map((_, index) => (
-            <span
-              key={index}
-              className="quick-particle"
-              style={{
-                left: `${(index * 17) % 100}%`,
-                top: `${(index * 29) % 100}%`,
-                animationDelay: `${index * 0.35}s`,
-              }}
-            />
-          ))}
-        </div>
+        <div className="quick-grid" />
+        <div className="quick-orb quick-orb-one" />
+        <div className="quick-orb quick-orb-two" />
       </div>
 
-      {/* البطاقات الثلاث */}
-      <div className="quick-cards">
-        {cards.map(({ title, description, href, icon: Icon }) => (
-          <Link
-            key={title}
-            href={href}
-            className="quick-card"
-          >
-            <div className="card-glow" aria-hidden="true" />
+      <div className="quick-container">
+        <div className="quick-heading">
+          <span className="quick-eyebrow">منصة هديل</span>
 
-            <div className="quick-icon-wrap">
-              <div className="quick-icon">
-                <Icon size={40} strokeWidth={2.2} />
-              </div>
+          <h2>
+            كل ما تحتاجه
+            <span> في مكان واحد</span>
+          </h2>
 
-              <Sparkles
-                className="quick-icon-sparkle"
-                size={15}
-              />
-            </div>
+          <p>
+            خدمات أكاديمية، باقات مميزة، وأعمال نفتخر بها
+          </p>
+        </div>
 
-            <div className="quick-card-content">
-              <h3>{title}</h3>
+        <div className="quick-cards">
+          {cards.map((card) => {
+            const Icon = card.icon
 
-              <p>{description}</p>
-            </div>
+            return (
+              <Link
+                key={card.title}
+                href={card.href}
+                className="quick-card"
+              >
+                <div className="quick-card-number">
+                  {card.number}
+                </div>
 
-            <div className="quick-arrow" aria-hidden="true">
-              <ArrowLeft size={18} />
-            </div>
+                <div className="quick-card-icon">
+                  <Icon size={34} strokeWidth={1.8} />
+                </div>
 
-            <div className="quick-card-line" aria-hidden="true" />
-          </Link>
-        ))}
+                <div className="quick-card-content">
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+
+                <div className="quick-card-arrow">
+                  <ArrowLeft size={19} />
+                </div>
+
+                <div className="quick-card-shine" />
+              </Link>
+            )
+          })}
+        </div>
       </div>
 
       <style jsx>{`
         .quick-sections {
           position: relative;
-          width: 100%;
+          isolation: isolate;
           overflow: hidden;
-          padding: 55px 24px 65px;
-
+          padding: 76px 20px 82px;
           background:
             radial-gradient(
-              circle at 15% 50%,
-              rgba(37, 99, 235, 0.22),
+              circle at 15% 25%,
+              rgba(43, 109, 224, 0.28),
               transparent 32%
             ),
             radial-gradient(
-              circle at 85% 30%,
-              rgba(212, 175, 55, 0.12),
-              transparent 28%
+              circle at 85% 70%,
+              rgba(30, 64, 175, 0.3),
+              transparent 35%
             ),
             linear-gradient(
               135deg,
-              #020617 0%,
-              #06133a 45%,
-              #071d52 100%
+              #06142f 0%,
+              #0a2454 48%,
+              #071a3b 100%
             );
         }
-
-        /* =========================
-           BACKGROUND
-        ========================= */
 
         .quick-background {
           position: absolute;
           inset: 0;
-          overflow: hidden;
           pointer-events: none;
+          z-index: -1;
+        }
+
+        .quick-grid {
+          position: absolute;
+          inset: 0;
+          opacity: 0.12;
+          background-image:
+            linear-gradient(
+              rgba(255, 255, 255, 0.12) 1px,
+              transparent 1px
+            ),
+            linear-gradient(
+              90deg,
+              rgba(255, 255, 255, 0.12) 1px,
+              transparent 1px
+            );
+          background-size: 46px 46px;
+          mask-image: linear-gradient(
+            to bottom,
+            transparent,
+            black 20%,
+            black 80%,
+            transparent
+          );
         }
 
         .quick-glow {
           position: absolute;
-          border-radius: 999px;
-          filter: blur(55px);
-          opacity: 0.65;
-
-          animation: glowMove 7s ease-in-out infinite;
+          width: 420px;
+          height: 420px;
+          border-radius: 50%;
+          filter: blur(70px);
+          opacity: 0.22;
         }
 
         .quick-glow-one {
-          width: 260px;
-          height: 260px;
-          top: -90px;
-          left: 8%;
-          background: rgba(37, 99, 235, 0.25);
+          top: -180px;
+          right: -100px;
+          background: #2563eb;
+          animation: glowMoveOne 9s ease-in-out infinite alternate;
         }
 
         .quick-glow-two {
-          width: 300px;
-          height: 300px;
-          right: 8%;
-          bottom: -140px;
-
-          background: rgba(212, 175, 55, 0.13);
-
-          animation-delay: -2s;
+          bottom: -220px;
+          left: -100px;
+          background: #0ea5e9;
+          animation: glowMoveTwo 11s ease-in-out infinite alternate;
         }
 
-        .quick-glow-three {
-          width: 190px;
-          height: 190px;
-          left: 47%;
-          top: 45%;
-
-          background: rgba(59, 130, 246, 0.16);
-
-          animation-delay: -4s;
-        }
-
-        .quick-light {
+        .quick-orb {
           position: absolute;
-
-          width: 2px;
-          height: 180px;
-
-          opacity: 0.35;
-
-          background: linear-gradient(
-            to bottom,
-            transparent,
-            rgba(212, 175, 55, 0.75),
-            transparent
-          );
-
-          transform: rotate(24deg);
-
-          animation: lightMove 8s linear infinite;
-        }
-
-        .quick-light-one {
-          left: 20%;
-          top: -70px;
-        }
-
-        .quick-light-two {
-          right: 24%;
-          top: -80px;
-          animation-delay: -4s;
-        }
-
-        .quick-particles {
-          position: absolute;
-          inset: 0;
-        }
-
-        .quick-particle {
-          position: absolute;
-
-          width: 3px;
-          height: 3px;
-
+          border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 50%;
-
-          background: rgba(255, 255, 255, 0.7);
-
-          box-shadow:
-            0 0 12px rgba(147, 197, 253, 0.8);
-
-          animation: particleFloat 5s ease-in-out infinite;
         }
 
-        /* =========================
-           CARDS CONTAINER
-        ========================= */
+        .quick-orb-one {
+          width: 280px;
+          height: 280px;
+          top: 50%;
+          right: -180px;
+        }
+
+        .quick-orb-two {
+          width: 180px;
+          height: 180px;
+          bottom: -90px;
+          left: 8%;
+        }
+
+        .quick-container {
+          position: relative;
+          width: min(1120px, 100%);
+          margin: 0 auto;
+        }
+
+        .quick-heading {
+          position: relative;
+          z-index: 2;
+          text-align: center;
+          margin-bottom: 42px;
+        }
+
+        .quick-eyebrow {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 7px 16px;
+          margin-bottom: 15px;
+          border: 1px solid rgba(255, 215, 112, 0.3);
+          border-radius: 999px;
+          background: rgba(255, 215, 112, 0.08);
+          color: #f6d77a;
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        .quick-heading h2 {
+          margin: 0;
+          color: #ffffff;
+          font-size: clamp(28px, 4vw, 43px);
+          line-height: 1.2;
+          font-weight: 800;
+          letter-spacing: -0.5px;
+        }
+
+        .quick-heading h2 span {
+          color: #f4d477;
+        }
+
+        .quick-heading p {
+          margin: 12px 0 0;
+          color: rgba(255, 255, 255, 0.72);
+          font-size: 16px;
+        }
 
         .quick-cards {
           position: relative;
-          z-index: 10;
-
-          width: 100%;
-          max-width: 1150px;
-
-          margin: 0 auto;
-
-          display: flex;
-          align-items: stretch;
-          justify-content: center;
-
-          gap: 28px;
-
-          direction: rtl;
+          z-index: 3;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 22px;
         }
-
-        /* =========================
-           CARD
-        ========================= */
 
         .quick-card {
           position: relative;
-
-          /*
-            مهم:
-            عرض ثابت وكبير حتى لا تنضغط البطاقات.
-          */
-          flex: 1 1 0;
-
-          min-width: 0;
-          max-width: 360px;
-
-          min-height: 270px;
-
+          min-height: 265px;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          justify-content: center;
-
-          padding: 35px 28px;
-
+          align-items: flex-start;
+          padding: 30px;
           overflow: hidden;
-
-          text-align: center;
+          isolation: isolate;
           text-decoration: none;
-
-          border-radius: 28px;
-
+          border: 1px solid rgba(255, 255, 255, 0.16);
+          border-radius: 24px;
           background:
             linear-gradient(
               145deg,
-              #1267df 0%,
-              #0d56c5 50%,
-              #08439c 100%
+              rgba(37, 99, 235, 0.96),
+              rgba(13, 54, 130, 0.97)
             );
-
-          border:
-            1px solid
-            rgba(255, 255, 255, 0.38);
-
           box-shadow:
-            0 20px 45px rgba(0, 0, 0, 0.42),
-            inset 0 1px 0
-              rgba(255, 255, 255, 0.25),
-            inset 0 -25px 45px
-              rgba(0, 20, 80, 0.18);
-
-          /*
-            لا توجد حركة للبطاقات.
-          */
-          transform: none;
-
+            0 20px 45px rgba(0, 0, 0, 0.24),
+            inset 0 1px 0 rgba(255, 255, 255, 0.13);
           transition:
             transform 0.3s ease,
             box-shadow 0.3s ease,
             border-color 0.3s ease;
         }
 
-        .quick-card:hover {
-          transform: translateY(-6px);
-
-          border-color:
-            rgba(255, 255, 255, 0.75);
-
-          box-shadow:
-            0 28px 60px rgba(0, 0, 0, 0.5),
-            0 0 30px
-              rgba(37, 99, 235, 0.3),
-            inset 0 1px 0
-              rgba(255, 255, 255, 0.32);
+        .quick-card::before {
+          content: '';
+          position: absolute;
+          width: 180px;
+          height: 180px;
+          top: -95px;
+          right: -70px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.08);
+          z-index: -1;
         }
 
-        /* =========================
-           CARD GLOW
-        ========================= */
-
-        .card-glow {
+        .quick-card::after {
+          content: '';
           position: absolute;
-
-          width: 220px;
-          height: 150px;
-
-          top: -80px;
-          left: 50%;
-
-          transform: translateX(-50%);
-
-          border-radius: 50%;
-
-          background:
-            rgba(255, 255, 255, 0.12);
-
-          filter: blur(45px);
-
+          inset: 0;
+          border-radius: inherit;
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.1),
+            transparent 35%,
+            transparent 70%,
+            rgba(255, 215, 112, 0.06)
+          );
           pointer-events: none;
+          z-index: -1;
         }
 
-        /* =========================
-           ICON
-        ========================= */
-
-        .quick-icon-wrap {
-          position: relative;
-          z-index: 3;
-
-          width: 88px;
-          height: 88px;
-
-          display: grid;
-          place-items: center;
-
-          margin-bottom: 20px;
-
-          border-radius: 24px;
-
-          background:
-            rgba(255, 255, 255, 0.15);
-
-          border:
-            1px solid
-            rgba(255, 255, 255, 0.5);
-
+        .quick-card:hover {
+          transform: translateY(-8px);
+          border-color: rgba(246, 215, 122, 0.55);
           box-shadow:
-            0 12px 28px
-              rgba(0, 0, 0, 0.28),
-            inset 0 1px 0
-              rgba(255, 255, 255, 0.22);
+            0 28px 55px rgba(0, 0, 0, 0.3),
+            0 0 28px rgba(37, 99, 235, 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
 
-        .quick-icon {
-          display: grid;
-          place-items: center;
-
-          color: #ffffff;
-
-          filter:
-            drop-shadow(
-              0 3px 7px
-              rgba(0, 0, 0, 0.4)
-            );
-
-          transition:
-            transform 0.3s ease;
-        }
-
-        .quick-card:hover .quick-icon {
-          transform: scale(1.06);
-        }
-
-        .quick-icon-sparkle {
+        .quick-card-number {
           position: absolute;
-
-          top: -7px;
-          right: -7px;
-
-          color: #ffffff;
-
-          filter:
-            drop-shadow(
-              0 0 7px
-              rgba(255, 255, 255, 0.75)
-            );
+          top: 20px;
+          right: 23px;
+          color: rgba(255, 255, 255, 0.35);
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 1px;
         }
 
-        /* =========================
-           TEXT
-        ========================= */
-
-        .quick-card-content {
-          position: relative;
-          z-index: 3;
-
-          width: 100%;
-        }
-
-        .quick-card h3 {
-          margin: 0;
-
+        .quick-card-icon {
+          width: 70px;
+          height: 70px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 24px;
+          border: 1px solid rgba(255, 255, 255, 0.24);
+          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.13);
           color: #ffffff;
-
-          font-size: 27px;
-          font-weight: 900;
-
-          line-height: 1.35;
-
-          text-shadow:
-            0 2px 10px
-            rgba(0, 0, 0, 0.35);
-        }
-
-        .quick-card p {
-          margin: 11px auto 0;
-
-          max-width: 280px;
-
-          color: #ffffff;
-
-          font-size: 15px;
-          font-weight: 500;
-
-          line-height: 1.8;
-
-          opacity: 0.95;
-
-          text-shadow:
-            0 1px 7px
-            rgba(0, 0, 0, 0.3);
-        }
-
-        /* =========================
-           ARROW
-        ========================= */
-
-        .quick-arrow {
-          position: absolute;
-
-          left: 18px;
-          bottom: 18px;
-
-          width: 36px;
-          height: 36px;
-
-          display: grid;
-          place-items: center;
-
-          border-radius: 50%;
-
-          color: #ffffff;
-
-          background:
-            rgba(255, 255, 255, 0.13);
-
-          border:
-            1px solid
-            rgba(255, 255, 255, 0.3);
-
+          box-shadow:
+            0 12px 25px rgba(0, 0, 0, 0.18),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
           transition:
             transform 0.3s ease,
             background 0.3s ease;
         }
 
-        .quick-card:hover .quick-arrow {
-          transform: translateX(-4px);
-
-          background:
-            rgba(255, 255, 255, 0.23);
+        .quick-card:hover .quick-card-icon {
+          transform: scale(1.08) rotate(-3deg);
+          background: rgba(255, 255, 255, 0.19);
         }
 
-        /* =========================
-           BOTTOM LINE
-        ========================= */
+        .quick-card-content {
+          position: relative;
+          z-index: 2;
+          direction: rtl;
+          text-align: right;
+        }
 
-        .quick-card-line {
+        .quick-card-content h3 {
+          margin: 0 0 9px;
+          color: #ffffff;
+          font-size: 24px;
+          line-height: 1.2;
+          font-weight: 800;
+        }
+
+        .quick-card-content p {
+          margin: 0;
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 15px;
+          line-height: 1.8;
+        }
+
+        .quick-card-arrow {
           position: absolute;
-
-          left: 22%;
-          right: 22%;
-          bottom: 9px;
-
-          height: 2px;
-
-          border-radius: 999px;
-
-          background:
-            rgba(255, 255, 255, 0.7);
-
-          opacity: 0.75;
+          left: 25px;
+          bottom: 25px;
+          width: 42px;
+          height: 42px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+          transition:
+            transform 0.3s ease,
+            background 0.3s ease;
         }
 
-        /* =========================
-           BACKGROUND ANIMATIONS
-        ========================= */
-
-        @keyframes glowMove {
-          0%,
-          100% {
-            transform:
-              translate3d(0, 0, 0)
-              scale(1);
-          }
-
-          50% {
-            transform:
-              translate3d(20px, -15px, 0)
-              scale(1.08);
-          }
+        .quick-card:hover .quick-card-arrow {
+          transform: translateX(-5px);
+          background: rgba(246, 215, 122, 0.2);
+          color: #f6d77a;
         }
 
-        @keyframes lightMove {
-          0% {
-            transform:
-              translateY(-30px)
-              rotate(24deg);
+        .quick-card-shine {
+          position: absolute;
+          top: 0;
+          left: -120%;
+          width: 60%;
+          height: 100%;
+          transform: skewX(-18deg);
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.08),
+            transparent
+          );
+          transition: left 0.7s ease;
+          pointer-events: none;
+        }
 
-            opacity: 0;
+        .quick-card:hover .quick-card-shine {
+          left: 150%;
+        }
+
+        @keyframes glowMoveOne {
+          from {
+            transform: translate3d(0, 0, 0);
           }
 
-          20% {
-            opacity: 0.4;
-          }
-
-          80% {
-            opacity: 0.25;
-          }
-
-          100% {
-            transform:
-              translateY(280px)
-              rotate(24deg);
-
-            opacity: 0;
+          to {
+            transform: translate3d(-60px, 40px, 0);
           }
         }
 
-        @keyframes particleFloat {
-          0%,
-          100% {
-            opacity: 0.2;
-
-            transform:
-              translateY(0)
-              scale(0.8);
+        @keyframes glowMoveTwo {
+          from {
+            transform: translate3d(0, 0, 0);
           }
 
-          50% {
-            opacity: 0.8;
-
-            transform:
-              translateY(-18px)
-              scale(1.2);
+          to {
+            transform: translate3d(70px, -35px, 0);
           }
         }
 
-        /* =========================
-           TABLET
-        ========================= */
-
-        @media (max-width: 900px) {
+        @media (max-width: 850px) {
           .quick-cards {
-            gap: 18px;
+            grid-template-columns: 1fr;
+            max-width: 560px;
+            margin: 0 auto;
           }
 
           .quick-card {
-            min-height: 250px;
-            padding: 30px 20px;
+            min-height: 220px;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .quick-sections {
+            padding: 58px 16px 65px;
           }
 
-          .quick-card h3 {
-            font-size: 23px;
+          .quick-heading {
+            margin-bottom: 30px;
           }
 
-          .quick-card p {
+          .quick-heading p {
             font-size: 14px;
           }
 
-          .quick-icon-wrap {
-            width: 76px;
-            height: 76px;
-          }
-
-          .quick-icon svg {
-            width: 34px;
-            height: 34px;
-          }
-        }
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 680px) {
-          .quick-sections {
-            padding: 40px 18px 50px;
-          }
-
-          .quick-cards {
-            flex-direction: column;
-
-            align-items: center;
-
-            gap: 18px;
-          }
-
           .quick-card {
-            width: 100%;
-            max-width: 390px;
-
-            flex: none;
-
-            min-height: 225px;
+            min-height: 210px;
+            padding: 25px;
+            border-radius: 21px;
           }
 
-          .quick-card h3 {
-            font-size: 24px;
+          .quick-card-icon {
+            width: 62px;
+            height: 62px;
+            margin-bottom: 20px;
           }
 
-          .quick-card p {
+          .quick-card-content h3 {
+            font-size: 21px;
+          }
+
+          .quick-card-content p {
             font-size: 14px;
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .quick-glow,
-          .quick-light,
-          .quick-particle {
-            animation: none !important;
+          .quick-glow-one,
+          .quick-glow-two {
+            animation: none;
+          }
+
+          .quick-card,
+          .quick-card-icon,
+          .quick-card-arrow,
+          .quick-card-shine {
+            transition: none;
           }
         }
       `}</style>
