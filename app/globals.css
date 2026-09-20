@@ -4723,3 +4723,174 @@ em {
   width: 100%;
   text-align: center;
 }
+
+/* =========================================================
+   GLOBAL HEADER FIX
+   الهيدر والإعلان يظهران في جميع الصفحات
+   ========================================================= */
+
+.announcement {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  width: 100% !important;
+  z-index: 1100 !important;
+}
+
+.site-header {
+  position: sticky !important;
+  top: 0 !important;
+  left: auto !important;
+  right: auto !important;
+  width: 100% !important;
+  z-index: 1000 !important;
+}
+
+/*
+   يمنع العناوين من الاختفاء تحت الهيدر
+   عند استخدام روابط الأقسام.
+*/
+
+html {
+  scroll-padding-top: 90px;
+}
+
+/* =========================================================
+   HEADER SEARCH
+   ========================================================= */
+
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  width: 42px;
+  min-width: 42px;
+  height: 42px;
+
+  padding: 3px;
+
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  background: transparent;
+
+  transition:
+    width 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.header-search.is-open {
+  width: 220px;
+
+  background: #f7faff;
+
+  border-color: #dce7f7;
+
+  box-shadow:
+    0 7px 18px rgba(23, 35, 61, 0.06);
+}
+
+.header-search input {
+  width: 100%;
+  min-width: 0;
+  height: 34px;
+
+  padding: 0 10px;
+
+  border: 0;
+  outline: none;
+
+  background: transparent;
+
+  color: #17233d;
+
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.header-search input::placeholder {
+  color: #8a96aa;
+}
+
+.header-search-button {
+  flex: 0 0 36px;
+
+  width: 36px;
+  height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #2455c4;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.header-search-button:hover {
+  background: #eaf1ff;
+  color: #173f91;
+}
+
+/* =========================================================
+   MOBILE SEARCH
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .header-search.is-open {
+    position: absolute;
+
+    top: 8px;
+    right: 58px;
+    left: 58px;
+
+    width: auto;
+
+    z-index: 5;
+
+    background: #fff;
+
+    border-color: #dce7f7;
+
+    box-shadow:
+      0 10px 25px rgba(23, 35, 61, 0.12);
+  }
+
+  .header-search.is-open input {
+    font-size: 13px;
+  }
+
+}
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .header-search.is-open {
+    right: 50px;
+    left: 50px;
+  }
+
+  .header-search-button {
+    width: 34px;
+    height: 34px;
+  }
+
+}
