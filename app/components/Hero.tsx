@@ -63,16 +63,25 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="hero-art hero-photo">
+      <div
+        className="hero-art hero-photo"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+        }}
+      >
         <img
           src="/images/hadeel-main-hero.jpeg"
           alt="منصة هديل للخدمات الطلابية والأكاديمية"
           style={{
-            width: '100%',
-            height: 'auto',
-            borderRadius: '20px',
-            objectFit: 'cover',
             display: 'block',
+            width: '100%',
+            maxWidth: '100%',
+            height: 'auto',
+            margin: '0 auto',
+            borderRadius: '20px',
           }}
         />
       </div>
