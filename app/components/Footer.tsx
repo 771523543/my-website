@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import {
   ArrowLeft,
   MessageCircle,
@@ -10,9 +11,9 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer-grid">
         <div>
-          <a
+          <Link
             className="brand footer-brand"
-            href="#top"
+            href="/"
           >
             <span className="brand-mark">
               هـ
@@ -24,7 +25,7 @@ export default function Footer() {
                 .
               </span>
             </span>
-          </a>
+          </Link>
 
           <p>
             منصة هديل للخدمات الطلابية والأكاديمية، شريكك نحو إنجاز
@@ -35,21 +36,21 @@ export default function Footer() {
         <div>
           <h4>روابط سريعة</h4>
 
-          <a href="#story">
+          <Link href="/#story">
             قصتنا
-          </a>
+          </Link>
 
-          <a href="#services">
+          <Link href="/#services">
             خدماتنا
-          </a>
+          </Link>
 
-          <a href="#gpa-calculator">
+          <Link href="/#gpa-calculator">
             حاسبة المعدل
-          </a>
+          </Link>
 
-          <a href="#testimonials">
+          <Link href="/#testimonials">
             آراء العملاء
-          </a>
+          </Link>
         </div>
 
         <div>
@@ -78,6 +79,7 @@ export default function Footer() {
             rel="noreferrer"
           >
             راسلنا مباشرة
+
             <ArrowLeft size={15} />
           </a>
         </div>
