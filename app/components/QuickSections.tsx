@@ -11,21 +11,21 @@ import {
 const cards = [
   {
     title: 'خدماتنا',
-    description: 'خدمات طلابية وأكاديمية',
+    description: 'اكتشف خدماتنا الطلابية والأكاديمية',
     href: '/services',
     icon: GraduationCap,
     number: '01',
   },
   {
     title: 'باقاتنا',
-    description: 'اختر الباقة المناسبة لك',
+    description: 'اختر الباقة المناسبة لرحلتك التعليمية',
     href: '#packages',
     icon: Gem,
     number: '02',
   },
   {
-    title: 'أعمالنا',
-    description: 'مشاريع وأعمالنا السابقة',
+    title: 'أعمالنا السابقة',
+    description: 'تعرّف على أعمالنا ومشاريعنا السابقة',
     href: '/previous-works',
     icon: Trophy,
     number: '03',
@@ -38,6 +38,7 @@ export default function QuickSections() {
       className="quick-sections"
       aria-label="استكشف منصة هديل"
     >
+      {/* الخلفية */}
       <div
         className="quick-background"
         aria-hidden="true"
@@ -76,10 +77,12 @@ export default function QuickSections() {
                 href={card.href}
                 className="quick-card"
               >
+                {/* رقم البطاقة */}
                 <span className="quick-card-number">
                   {card.number}
                 </span>
 
+                {/* الأيقونة */}
                 <div className="quick-card-icon">
                   <Icon
                     size={30}
@@ -87,16 +90,19 @@ export default function QuickSections() {
                   />
                 </div>
 
+                {/* النص */}
                 <div className="quick-card-content">
                   <h3>{card.title}</h3>
 
                   <p>{card.description}</p>
                 </div>
 
+                {/* السهم */}
                 <span className="quick-card-arrow">
                   <ArrowLeft size={16} />
                 </span>
 
+                {/* اللمعة */}
                 <span
                   className="quick-card-shine"
                   aria-hidden="true"
@@ -109,7 +115,7 @@ export default function QuickSections() {
 
       <style jsx>{`
         /* =========================================
-           القسم
+           القسم الرئيسي
         ========================================= */
 
         .quick-sections {
@@ -117,7 +123,7 @@ export default function QuickSections() {
           isolation: isolate;
           overflow: hidden;
 
-          padding: 45px 20px 42px;
+          padding: 42px 20px 40px;
 
           background:
             radial-gradient(
@@ -207,21 +213,24 @@ export default function QuickSections() {
         }
 
         /* =========================================
-           العنوان
+           عنوان القسم
         ========================================= */
 
         .quick-heading {
           text-align: center;
 
-          margin-bottom: 26px;
+          margin-bottom: 25px;
         }
 
         .quick-eyebrow {
           display: inline-flex;
 
+          align-items: center;
+          justify-content: center;
+
           padding: 5px 13px;
 
-          margin-bottom: 9px;
+          margin-bottom: 8px;
 
           border:
             1px solid
@@ -277,7 +286,7 @@ export default function QuickSections() {
           grid-template-columns:
             repeat(3, minmax(0, 1fr));
 
-          gap: 16px;
+          gap: 15px;
         }
 
         /* =========================================
@@ -296,13 +305,11 @@ export default function QuickSections() {
           flex-direction: column;
 
           align-items: center;
-
           justify-content: center;
 
-          padding: 20px 15px;
+          padding: 20px 14px;
 
           overflow: hidden;
-
           isolation: isolate;
 
           text-decoration: none;
@@ -375,28 +382,31 @@ export default function QuickSections() {
           z-index: -1;
         }
 
-        .quick-card:hover {
-          transform: translateY(-5px);
+        /* حركة بسيطة للكمبيوتر فقط */
+        @media (hover: hover) and (pointer: fine) {
+          .quick-card:hover {
+            transform: translateY(-5px);
 
-          border-color:
-            rgba(246, 215, 122, 0.55);
+            border-color:
+              rgba(246, 215, 122, 0.55);
 
-          box-shadow:
-            0 20px 38px
-              rgba(0, 0, 0, 0.28),
-            0 0 20px
-              rgba(37, 99, 235, 0.22);
+            box-shadow:
+              0 20px 38px
+                rgba(0, 0, 0, 0.28),
+              0 0 20px
+                rgba(37, 99, 235, 0.22);
+          }
         }
 
         /* =========================================
-           الرقم
+           رقم البطاقة
         ========================================= */
 
         .quick-card-number {
           position: absolute;
 
-          top: 13px;
-          right: 15px;
+          top: 12px;
+          right: 14px;
 
           color:
             rgba(255, 255, 255, 0.3);
@@ -423,7 +433,7 @@ export default function QuickSections() {
           align-items: center;
           justify-content: center;
 
-          margin-bottom: 13px;
+          margin-bottom: 10px;
 
           border:
             1px solid
@@ -447,21 +457,28 @@ export default function QuickSections() {
             background 0.28s ease;
         }
 
-        .quick-card:hover
-          .quick-card-icon {
-          transform:
-            scale(1.06);
+        @media (hover: hover) and (pointer: fine) {
+          .quick-card:hover .quick-card-icon {
+            transform: scale(1.06);
 
-          background:
-            rgba(255, 255, 255, 0.18);
+            background:
+              rgba(255, 255, 255, 0.18);
+          }
         }
 
         /* =========================================
-           النص
+           النص — كله في المنتصف
         ========================================= */
 
         .quick-card-content {
           width: 100%;
+
+          display: flex;
+
+          flex-direction: column;
+
+          align-items: center;
+          justify-content: center;
 
           direction: rtl;
 
@@ -469,6 +486,8 @@ export default function QuickSections() {
         }
 
         .quick-card-content h3 {
+          width: 100%;
+
           margin: 0 0 5px;
 
           color: #ffffff;
@@ -479,18 +498,24 @@ export default function QuickSections() {
 
           font-weight: 800;
 
-          white-space: nowrap;
+          text-align: center;
         }
 
         .quick-card-content p {
-          margin: 0;
+          width: 100%;
+
+          max-width: 260px;
+
+          margin: 0 auto;
 
           color:
-            rgba(255, 255, 255, 0.76);
+            rgba(255, 255, 255, 0.78);
 
           font-size: 12px;
 
           line-height: 1.5;
+
+          text-align: center;
         }
 
         /* =========================================
@@ -524,15 +549,15 @@ export default function QuickSections() {
             background 0.28s ease;
         }
 
-        .quick-card:hover
-          .quick-card-arrow {
-          transform:
-            translateX(-4px);
+        @media (hover: hover) and (pointer: fine) {
+          .quick-card:hover .quick-card-arrow {
+            transform: translateX(-4px);
 
-          color: #f6d77a;
+            color: #f6d77a;
 
-          background:
-            rgba(246, 215, 122, 0.16);
+            background:
+              rgba(246, 215, 122, 0.16);
+          }
         }
 
         /* =========================================
@@ -548,8 +573,7 @@ export default function QuickSections() {
           width: 55%;
           height: 100%;
 
-          transform:
-            skewX(-18deg);
+          transform: skewX(-18deg);
 
           background:
             linear-gradient(
@@ -565,19 +589,20 @@ export default function QuickSections() {
           pointer-events: none;
         }
 
-        .quick-card:hover
-          .quick-card-shine {
-          left: 150%;
+        @media (hover: hover) and (pointer: fine) {
+          .quick-card:hover .quick-card-shine {
+            left: 150%;
+          }
         }
 
         /* =========================================
            الجوال
-           الثلاثة تظل جنب بعض
+           الثلاث بطاقات تبقى بجانب بعضها
         ========================================= */
 
         @media (max-width: 700px) {
           .quick-sections {
-            padding: 34px 10px 34px;
+            padding: 32px 9px 32px;
           }
 
           .quick-heading {
@@ -610,7 +635,7 @@ export default function QuickSections() {
           }
 
           .quick-card {
-            height: 150px;
+            height: 154px;
 
             padding: 15px 6px;
 
@@ -628,7 +653,7 @@ export default function QuickSections() {
             width: 43px;
             height: 43px;
 
-            margin-bottom: 9px;
+            margin-bottom: 8px;
 
             border-radius: 12px;
           }
@@ -639,17 +664,23 @@ export default function QuickSections() {
           }
 
           .quick-card-content h3 {
-            margin-bottom: 3px;
+            margin-bottom: 4px;
 
             font-size: 14px;
 
-            white-space: nowrap;
+            line-height: 1.25;
+
+            text-align: center;
           }
 
           .quick-card-content p {
+            max-width: 105px;
+
             font-size: 9px;
 
             line-height: 1.45;
+
+            text-align: center;
           }
 
           .quick-card-arrow {
@@ -672,8 +703,8 @@ export default function QuickSections() {
 
         @media (max-width: 380px) {
           .quick-sections {
-            padding-left: 7px;
-            padding-right: 7px;
+            padding-left: 6px;
+            padding-right: 6px;
           }
 
           .quick-cards {
@@ -681,7 +712,7 @@ export default function QuickSections() {
           }
 
           .quick-card {
-            height: 140px;
+            height: 145px;
 
             padding-left: 4px;
             padding-right: 4px;
@@ -690,8 +721,8 @@ export default function QuickSections() {
           }
 
           .quick-card-icon {
-            width: 39px;
-            height: 39px;
+            width: 40px;
+            height: 40px;
 
             margin-bottom: 7px;
           }
@@ -706,7 +737,11 @@ export default function QuickSections() {
           }
 
           .quick-card-content p {
+            max-width: 90px;
+
             font-size: 8px;
+
+            line-height: 1.4;
           }
 
           .quick-card-arrow {
@@ -735,7 +770,8 @@ export default function QuickSections() {
             transition: none;
           }
         }
-      `}</style>
+      `}
+      </style>
     </section>
   )
 }
