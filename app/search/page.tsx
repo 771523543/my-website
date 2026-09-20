@@ -17,7 +17,7 @@ import {
   Users,
 } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
-import { useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
 
 type SearchItem = {
   title: string
@@ -130,7 +130,7 @@ const searchItems: SearchItem[] = [
   },
 ]
 
-export default function SearchPage() {
+function SearchPageContent() {
   const searchParams = useSearchParams()
 
   const query = searchParams.get('q')?.trim() ?? ''
@@ -758,5 +758,13 @@ export default function SearchPage() {
         }
       `}</style>
     </main>
+  )
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={null}>
+      <SearchPageContent />
+    </Suspense>
   )
 }
