@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import {
   ArrowLeft,
   Menu,
@@ -28,12 +28,7 @@ export default function Header() {
     setMenuOpen(false)
   }
 
-  const closeSearch = () => {
-    setSearchOpen(false)
-    setSearchValue('')
-  }
-
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     const query = searchValue.trim()
