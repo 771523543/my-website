@@ -3840,10 +3840,40 @@ em {
   .about-feature-card.is-expanded {
     transform: none;
   }
-
 /* =========================================================
    ABOUT GRID
-   قصتنا + قيمنا + لماذا هديل
+   منصة هديل - قصتنا + قيمنا + لماذا هديل
+   ========================================================= */
+
+.about-main-heading {
+  max-width: 700px;
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.about-main-heading h2 {
+  margin: 10px 0 12px;
+  color: #17233d;
+  font-size: clamp(30px, 4vw, 46px);
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: -1.4px;
+}
+
+.about-main-heading h2 em {
+  color: #2455c4;
+  font-style: normal;
+}
+
+.about-main-heading p {
+  margin: 0;
+  color: #697791;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* =========================================================
+   MAIN GRID
    ========================================================= */
 
 .about-grid {
@@ -3854,104 +3884,149 @@ em {
 }
 
 /* =========================================================
-   STORY CARD
+   STORY
    ========================================================= */
 
 .about-story-card {
   grid-column: 1 / -1;
 
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
+  grid-template-columns: 0.82fr 1.18fr;
   align-items: center;
-  gap: 35px;
+  gap: 38px;
 
-  min-height: 300px;
-  padding: 30px;
+  min-height: 330px;
+  padding: 28px;
 
   background: #fff;
   border: 1px solid #e4ebf4;
-  border-radius: 24px;
+  border-radius: 26px;
 
-  box-shadow: 0 10px 28px rgba(23, 35, 61, 0.06);
+  box-shadow:
+    0 14px 35px rgba(23, 35, 61, 0.065);
+
+  overflow: hidden;
 }
 
 .about-story-visual {
   position: relative;
-  min-height: 230px;
+
+  min-height: 260px;
 
   display: grid;
   place-items: center;
 
-  background: #e8f1ff;
-  border-radius: 20px;
+  background:
+    linear-gradient(
+      145deg,
+      #e8f1ff 0%,
+      #f5f9ff 100%
+    );
+
+  border-radius: 22px;
   overflow: hidden;
 }
 
-.about-story-visual::before {
-  content: '';
+.about-story-glow {
   position: absolute;
-  width: 190px;
-  height: 190px;
+
+  width: 220px;
+  height: 220px;
+
   border-radius: 50%;
+
   background: #2455c4;
   opacity: 0.08;
+
+  filter: blur(2px);
+}
+
+.about-story-visual::after {
+  content: '';
+
+  position: absolute;
+  inset: auto 0 0;
+
+  height: 35%;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(36, 85, 196, 0.07),
+      transparent
+    );
 }
 
 .story-card {
   position: relative;
-  z-index: 1;
+  z-index: 2;
 
-  width: 150px;
-  height: 150px;
+  width: 165px;
+  height: 165px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   gap: 12px;
 
-  background: #2455c4;
   color: #fff;
 
-  border-radius: 24px 24px 24px 8px;
+  background:
+    linear-gradient(
+      145deg,
+      #2d66df,
+      #2455c4
+    );
 
-  box-shadow: 0 18px 35px rgba(36, 85, 196, 0.22);
+  border-radius: 28px 28px 28px 9px;
+
+  box-shadow:
+    0 20px 42px rgba(36, 85, 196, 0.25);
 
   transform: rotate(-4deg);
 
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 .about-story-card:hover .story-card {
-  transform: rotate(-2deg) translateY(-5px);
-  box-shadow: 0 22px 40px rgba(36, 85, 196, 0.28);
+  transform:
+    rotate(-1deg)
+    translateY(-6px);
+
+  box-shadow:
+    0 25px 48px rgba(36, 85, 196, 0.3);
 }
 
 .story-card span {
-  font-size: 19px;
-  font-weight: 800;
+  font-size: 21px;
+  font-weight: 900;
   line-height: 1.35;
   text-align: center;
 }
 
 .story-badge {
   position: absolute;
+  z-index: 3;
+
   right: 20px;
   bottom: 18px;
 
-  padding: 9px 14px;
+  padding: 9px 15px;
 
-  background: #f7c25e;
   color: #17233d;
+  background: #f7c25e;
 
   border-radius: 999px;
 
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 900;
 
-  box-shadow: 0 8px 18px rgba(23, 35, 61, 0.12);
+  box-shadow:
+    0 9px 20px rgba(23, 35, 61, 0.12);
 }
 
 .about-story-content {
@@ -3959,24 +4034,31 @@ em {
 }
 
 .about-story-content h3 {
-  margin: 12px 0 15px;
+  margin: 12px 0 16px;
 
   color: #17233d;
 
-  font-size: clamp(25px, 3vw, 38px);
-  line-height: 1.4;
+  font-size: clamp(27px, 3vw, 40px);
+  font-weight: 900;
+  line-height: 1.42;
+
   letter-spacing: -1px;
 }
 
-.about-story-content p {
-  max-width: 570px;
+.about-story-content h3 em {
+  color: #2455c4;
+  font-style: normal;
+}
 
-  margin: 0 0 20px;
+.about-story-content p {
+  max-width: 590px;
+
+  margin: 0 0 22px;
 
   color: #697791;
 
   font-size: 13px;
-  line-height: 1.9;
+  line-height: 2;
 }
 
 /* =========================================================
@@ -3984,16 +4066,26 @@ em {
    ========================================================= */
 
 .about-block-heading {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+}
+
+.about-block-heading.centered {
+  text-align: center;
 }
 
 .about-block-heading h3 {
-  margin: 8px 0 6px;
+  margin: 9px 0 6px;
 
   color: #17233d;
 
-  font-size: 23px;
+  font-size: 25px;
+  font-weight: 900;
   line-height: 1.4;
+}
+
+.about-block-heading h3 em {
+  color: #2455c4;
+  font-style: normal;
 }
 
 .about-block-heading p {
@@ -4013,127 +4105,277 @@ em {
 .about-why {
   min-width: 0;
 
-  padding: 24px;
+  padding: 25px;
 
   background: #fff;
 
   border: 1px solid #e4ebf4;
-  border-radius: 22px;
+  border-radius: 24px;
 
-  box-shadow: 0 10px 28px rgba(23, 35, 61, 0.05);
+  box-shadow:
+    0 12px 30px rgba(23, 35, 61, 0.055);
 }
+
+/* =========================================================
+   VALUE CARDS
+   ========================================================= */
 
 .about-mini-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 13px;
 }
 
 .about-mini-card {
   position: relative;
 
   min-width: 0;
-  min-height: 185px;
+  min-height: 205px;
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 
   padding: 18px;
 
-  background: #f8fbff;
+  text-align: center;
 
-  border: 1px solid #e4ebf4;
-  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #f4f8fd
+    );
 
-  box-shadow: 0 5px 15px rgba(23, 35, 61, 0.04);
+  border: 1px solid #e3ebf5;
+  border-radius: 19px;
+
+  box-shadow:
+    0 6px 18px rgba(23, 35, 61, 0.04);
+
+  overflow: hidden;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
 }
 
-.about-mini-card > svg {
-  margin: 9px 0 7px;
-  color: #2455c4;
+.about-mini-card::before {
+  content: '';
+
+  position: absolute;
+
+  top: -45px;
+  right: -45px;
+
+  width: 110px;
+  height: 110px;
+
+  border-radius: 50%;
+
+  background: #2455c4;
+  opacity: 0.045;
 }
 
-.about-mini-card .value-number {
-  color: #e2a43d;
+.about-mini-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(36, 85, 196, 0.18);
+
+  box-shadow:
+    0 15px 28px rgba(23, 35, 61, 0.09);
+}
+
+.about-card-top {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.value-number {
+  color: #dba33e;
 
   font-size: 11px;
   font-weight: 900;
 }
 
+.about-icon-box {
+  width: 56px;
+  height: 56px;
+
+  display: grid;
+  place-items: center;
+
+  color: #2455c4;
+
+  background:
+    linear-gradient(
+      145deg,
+      #e8f1ff,
+      #dceaff
+    );
+
+  border: 1px solid rgba(36, 85, 196, 0.1);
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 9px 20px rgba(36, 85, 196, 0.1);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.about-mini-card:hover .about-icon-box {
+  transform: translateY(-3px) scale(1.04);
+
+  box-shadow:
+    0 13px 25px rgba(36, 85, 196, 0.15);
+}
+
 .about-mini-card h4 {
-  margin: 2px 0 7px;
+  position: relative;
+  z-index: 1;
+
+  margin: 15px 0 7px;
 
   color: #17233d;
 
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 15px;
+  font-weight: 900;
+
+  line-height: 1.55;
 }
 
 .about-mini-card p {
+  position: relative;
+  z-index: 1;
+
   margin: 0;
 
   color: #697791;
 
-  font-size: 10px;
-  line-height: 1.8;
+  font-size: 11px;
+  line-height: 1.85;
 }
 
 /* =========================================================
    WHY HADEEL
+   3 بطاقات بجانب بعض
    ========================================================= */
 
 .about-feature-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 13px;
 }
 
 .about-feature-card {
+  position: relative;
+
   min-width: 0;
 
   display: flex;
-  align-items: flex-start;
-  gap: 11px;
+  flex-direction: column;
+  align-items: center;
 
-  padding: 15px;
+  padding: 21px 16px;
 
-  background: #f8fbff;
+  text-align: center;
 
-  border: 1px solid #e4ebf4;
-  border-radius: 15px;
+  background:
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #f3f8fd
+    );
 
-  box-shadow: 0 5px 15px rgba(23, 35, 61, 0.04);
+  border: 1px solid #e3ebf5;
+  border-radius: 19px;
+
+  box-shadow:
+    0 6px 18px rgba(23, 35, 61, 0.04);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
-.about-feature-card > svg {
-  flex: 0 0 auto;
+.about-feature-card:hover {
+  transform: translateY(-5px);
 
-  padding: 4px;
+  border-color:
+    rgba(46, 141, 140, 0.2);
 
-  width: 26px;
-  height: 26px;
+  box-shadow:
+    0 15px 28px rgba(23, 35, 61, 0.09);
+}
+
+.feature-icon-box {
+  width: 62px;
+  height: 62px;
+
+  display: grid;
+  place-items: center;
 
   color: #167b7b;
 
-  background: #e3f4f1;
+  background:
+    linear-gradient(
+      145deg,
+      #e5f5f3,
+      #d9efec
+    );
 
-  border-radius: 8px;
+  border: 1px solid rgba(22, 123, 123, 0.1);
+
+  border-radius: 19px;
+
+  box-shadow:
+    0 10px 22px rgba(22, 123, 123, 0.1);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-.about-feature-card > div {
+.about-feature-card:hover .feature-icon-box {
+  transform: translateY(-3px) scale(1.05);
+
+  box-shadow:
+    0 14px 27px rgba(22, 123, 123, 0.15);
+}
+
+.about-feature-content {
   min-width: 0;
 }
 
 .about-feature-card strong {
   display: block;
 
-  margin-bottom: 4px;
+  margin: 14px 0 6px;
 
   color: #17233d;
 
-  font-size: 12px;
-  line-height: 1.5;
+  font-size: 14px;
+  font-weight: 900;
+
+  line-height: 1.55;
 }
 
 .about-feature-card small {
@@ -4141,8 +4383,27 @@ em {
 
   color: #697791;
 
-  font-size: 10px;
-  line-height: 1.8;
+  font-size: 10.5px;
+  line-height: 1.85;
+}
+
+.feature-check {
+  position: absolute;
+
+  top: 10px;
+  left: 10px;
+
+  width: 25px;
+  height: 25px;
+
+  display: grid;
+  place-items: center;
+
+  color: #167b7b;
+
+  background: #e3f4f1;
+
+  border-radius: 50%;
 }
 
 /* =========================================================
@@ -4150,31 +4411,42 @@ em {
    ========================================================= */
 
 .about-more-button {
+  position: relative;
+  z-index: 2;
+
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+
   gap: 6px;
 
-  margin-top: 8px;
-  padding: 5px 0;
+  min-height: 38px;
 
-  border: 0;
-  background: transparent;
+  margin-top: 8px;
+  padding: 5px 9px;
 
   color: #2455c4;
 
+  border: 0;
+  border-radius: 8px;
+
+  background: transparent;
+
   font-family: inherit;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 900;
 
   cursor: pointer;
 
   transition:
     color 0.2s ease,
+    background 0.2s ease,
     gap 0.2s ease;
 }
 
 .about-more-button:hover {
   color: #17233d;
+  background: #edf3fa;
   gap: 9px;
 }
 
@@ -4187,98 +4459,45 @@ em {
 }
 
 /* =========================================================
-   EXPANDED CARDS
+   EXPANDED
    ========================================================= */
 
 .about-mini-card.is-expanded,
 .about-feature-card.is-expanded {
-  border-color: rgba(36, 85, 196, 0.25);
+  border-color:
+    rgba(36, 85, 196, 0.24);
 
   background: #fff;
 
-  box-shadow: 0 12px 26px rgba(23, 35, 61, 0.09);
+  box-shadow:
+    0 15px 30px rgba(23, 35, 61, 0.09);
 }
 
 .about-mini-card.is-expanded {
   transform: translateY(-3px);
 }
 
-.about-feature-card.is-expanded {
-  transform: translateY(-3px);
-}
-
 /* =========================================================
-   HOVER
+   REVEAL STAGGER
    ========================================================= */
 
-.about-grid > *,
-.about-mini-card,
-.about-feature-card {
-  transition:
-    opacity 0.55s ease,
-    transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
-    box-shadow 0.28s ease,
-    border-color 0.28s ease;
-}
-
-.about-grid > *:hover,
-.about-mini-card:hover,
-.about-feature-card:hover {
-  transform: translateY(-5px);
-
-  box-shadow:
-    0 14px 30px rgba(23, 35, 61, 0.10);
-}
-
-/* =========================================================
-   STAGGER
-   ========================================================= */
-
-.about-grid > *:nth-child(1) {
+.about-story-card {
   transition-delay: 0.05s;
 }
 
-.about-grid > *:nth-child(2) {
+.about-values {
   transition-delay: 0.12s;
 }
 
-.about-grid > *:nth-child(3) {
+.about-why {
   transition-delay: 0.19s;
-}
-
-.about-mini-card:nth-child(1) {
-  transition-delay: 0.08s;
-}
-
-.about-mini-card:nth-child(2) {
-  transition-delay: 0.14s;
-}
-
-.about-mini-card:nth-child(3) {
-  transition-delay: 0.20s;
-}
-
-.about-mini-card:nth-child(4) {
-  transition-delay: 0.26s;
-}
-
-.about-feature-card:nth-child(1) {
-  transition-delay: 0.08s;
-}
-
-.about-feature-card:nth-child(2) {
-  transition-delay: 0.15s;
-}
-
-.about-feature-card:nth-child(3) {
-  transition-delay: 0.22s;
 }
 
 /* =========================================================
    TABLET
    ========================================================= */
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .about-grid {
     grid-template-columns: 1fr;
     gap: 16px;
@@ -4287,24 +4506,37 @@ em {
   .about-story-card {
     grid-column: auto;
 
+    grid-template-columns:
+      0.8fr 1.2fr;
+
+    gap: 25px;
+  }
+
+  .about-feature-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   SMALL TABLETS
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .about-story-card {
     grid-template-columns: 1fr;
 
     gap: 22px;
-
     padding: 20px;
   }
 
   .about-story-visual {
-    min-height: 210px;
+    min-height: 220px;
   }
 
-  .about-story-content h3 {
-    font-size: 27px;
-  }
-
-  .about-values,
-  .about-why {
-    padding: 20px;
+  .about-feature-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -4313,108 +4545,206 @@ em {
    ========================================================= */
 
 @media (max-width: 600px) {
+  .about-main-heading {
+    margin-bottom: 24px;
+  }
+
+  .about-main-heading h2 {
+    font-size: 29px;
+    line-height: 1.4;
+    letter-spacing: -0.8px;
+  }
+
+  .about-main-heading p {
+    font-size: 12px;
+  }
+
   .about-grid {
-    gap: 14px;
+    gap: 13px;
   }
 
   .about-story-card {
-    padding: 15px;
-    border-radius: 20px;
+    padding: 14px;
+
+    border-radius: 21px;
+
+    gap: 18px;
   }
 
   .about-story-visual {
     min-height: 190px;
+
+    border-radius: 18px;
+  }
+
+  .about-story-glow {
+    width: 170px;
+    height: 170px;
   }
 
   .story-card {
-    width: 125px;
-    height: 125px;
-    border-radius: 20px 20px 20px 7px;
+    width: 130px;
+    height: 130px;
+
+    border-radius:
+      21px 21px 21px 7px;
   }
 
   .story-card svg {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
   }
 
   .story-card span {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .story-badge {
-    right: 13px;
-    bottom: 13px;
+    right: 12px;
+    bottom: 12px;
+
     padding: 7px 11px;
+
     font-size: 10px;
   }
 
+  .about-story-content {
+    text-align: center;
+  }
+
   .about-story-content h3 {
+    margin-top: 10px;
+
     font-size: 24px;
-    line-height: 1.5;
+    line-height: 1.55;
   }
 
   .about-story-content p {
+    margin-bottom: 17px;
+
     font-size: 12px;
     line-height: 1.9;
+  }
+
+  .about-story-content .text-button {
+    justify-content: center;
   }
 
   .about-values,
   .about-why {
     padding: 17px;
+
     border-radius: 19px;
   }
 
-  .about-block-heading h3 {
-    font-size: 20px;
+  .about-block-heading {
+    margin-bottom: 16px;
   }
 
+  .about-block-heading h3 {
+    font-size: 21px;
+  }
+
+  .about-block-heading p {
+    font-size: 11px;
+  }
+
+  /* القيم: بطاقتان في الصف */
   .about-mini-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
     gap: 9px;
   }
 
   .about-mini-card {
-    min-height: 170px;
-    padding: 14px;
+    min-height: 190px;
+
+    padding: 13px;
+
+    border-radius: 15px;
+  }
+
+  .about-icon-box {
+    width: 48px;
+    height: 48px;
+
     border-radius: 14px;
   }
 
+  .about-icon-box svg {
+    width: 23px;
+    height: 23px;
+  }
+
   .about-mini-card h4 {
+    margin-top: 12px;
+
     font-size: 12px;
   }
 
   .about-mini-card p {
-    font-size: 9px;
+    font-size: 9.5px;
+    line-height: 1.8;
+  }
+
+  /* لماذا هديل: بطاقات جنب بعض */
+  .about-feature-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap: 8px;
   }
 
   .about-feature-card {
-    padding: 13px;
+    padding: 14px 9px;
+
+    border-radius: 15px;
+  }
+
+  .feature-icon-box {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 14px;
+  }
+
+  .feature-icon-box svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .feature-check {
+    top: 7px;
+    left: 7px;
+
+    width: 20px;
+    height: 20px;
+  }
+
+  .feature-check svg {
+    width: 11px;
+    height: 11px;
   }
 
   .about-feature-card strong {
-    font-size: 11px;
+    margin-top: 11px;
+
+    font-size: 10.5px;
+    line-height: 1.6;
   }
 
   .about-feature-card small {
-    font-size: 9px;
+    font-size: 8.5px;
+    line-height: 1.75;
   }
 
   .about-more-button {
     min-height: 34px;
-    font-size: 10px;
-  }
 
-  .about-grid > *:hover,
-  .about-mini-card:hover,
-  .about-feature-card:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      0 8px 20px rgba(23, 35, 61, 0.08);
-  }
+    margin-top: 7px;
 
-  .about-mini-card.is-expanded,
-  .about-feature-card.is-expanded {
-    transform: none;
+    font-size: 9.5px;
   }
 }
 
@@ -4423,12 +4753,48 @@ em {
    ========================================================= */
 
 @media (max-width: 380px) {
+  .about-main-heading h2 {
+    font-size: 26px;
+  }
+
   .about-mini-grid {
     grid-template-columns: 1fr;
   }
 
   .about-mini-card {
     min-height: auto;
+  }
+
+  /*
+     على الشاشات شديدة الصغر نخلي
+     لماذا هديل بطاقات مرتبة عموديًا
+     حتى لا تصبح ضيقة جدًا.
+  */
+  .about-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-feature-card {
+    flex-direction: row;
+
+    align-items: center;
+
+    text-align: right;
+
+    padding: 13px;
+  }
+
+  .feature-icon-box {
+    flex: 0 0 auto;
+  }
+
+  .about-feature-card strong {
+    margin-top: 0;
+  }
+
+  .feature-check {
+    top: 7px;
+    left: 7px;
   }
 }
 
@@ -4437,29 +4803,14 @@ em {
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-  .about-grid > *,
+  .about-story-card,
   .about-mini-card,
   .about-feature-card,
-  .about-more-button,
-  .about-more-button svg,
-  .story-card {
-    transition: none !important;
-  }
-}
-  .about-more-button {
-    min-height: 36px;
-  }
-}
-
-/* ==================== REDUCED MOTION ==================== */
-
-@media (prefers-reduced-motion: reduce) {
-
-  .about-grid > *,
-  .about-mini-card,
-  .about-feature-card,
+  .about-icon-box,
+  .feature-icon-box,
+  .story-card,
   .about-more-button,
   .about-more-button svg {
-    transition: none;
+    transition: none !important;
   }
 }
