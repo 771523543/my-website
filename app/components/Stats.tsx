@@ -86,6 +86,7 @@ export default function Stats() {
         }
 
         requestAnimationFrame(animate)
+
         observer.unobserve(section)
       },
       {
@@ -116,14 +117,16 @@ export default function Stats() {
       >
         <div className="stats-3d-panel">
 
-          {/* =========================
+          {/* ==============================
               الخدمات الأكاديمية
-             ========================= */}
+             ============================== */}
+
           <article className="stats-3d-card stats-services">
+
             <div className="stats-3d-badge">
               <LibraryBig
                 size={48}
-                strokeWidth={1.8}
+                strokeWidth={1.9}
               />
             </div>
 
@@ -134,17 +137,20 @@ export default function Stats() {
             <span>
               خدمة أكاديمية
             </span>
+
           </article>
 
 
-          {/* =========================
+          {/* ==============================
               الطلاب المستفيدون
-             ========================= */}
+             ============================== */}
+
           <article className="stats-3d-card stats-students">
+
             <div className="stats-3d-badge">
               <UsersRound
                 size={48}
-                strokeWidth={1.8}
+                strokeWidth={1.9}
               />
             </div>
 
@@ -155,17 +161,20 @@ export default function Stats() {
             <span>
               طالب مستفيد
             </span>
+
           </article>
 
 
-          {/* =========================
+          {/* ==============================
               رضا العملاء
-             ========================= */}
+             ============================== */}
+
           <article className="stats-3d-card stats-satisfaction">
+
             <div className="stats-3d-badge">
               <Heart
                 size={48}
-                strokeWidth={1.8}
+                strokeWidth={1.9}
               />
             </div>
 
@@ -176,17 +185,20 @@ export default function Stats() {
             <span>
               نسبة رضا العملاء
             </span>
+
           </article>
 
 
-          {/* =========================
+          {/* ==============================
               سنوات الخبرة
-             ========================= */}
+             ============================== */}
+
           <article className="stats-3d-card stats-experience">
+
             <div className="stats-3d-badge">
               <Clock3
                 size={48}
-                strokeWidth={1.8}
+                strokeWidth={1.9}
               />
             </div>
 
@@ -197,6 +209,7 @@ export default function Stats() {
             <span>
               سنوات خبرة
             </span>
+
           </article>
 
         </div>
@@ -204,25 +217,40 @@ export default function Stats() {
 
 
       {/* =====================================================
-          التصميم كامل داخل Stats.tsx
+          التصميم داخل Stats.tsx فقط
           لا يحتاج إلى تعديل globals.css
          ===================================================== */}
 
       <style jsx>{`
+
+        /* ================================================
+           القسم الرئيسي
+           ================================================ */
+
         .stats-3d-section {
           width: 100%;
+
           padding: 28px 16px;
+
           margin: 18px 0;
+
           direction: rtl;
         }
+
+
+        /* ================================================
+           اللوحة الرئيسية
+           ================================================ */
 
         .stats-3d-panel {
           position: relative;
 
           max-width: 1100px;
+
           margin: 0 auto;
 
           display: grid;
+
           grid-template-columns:
             repeat(2, minmax(0, 1fr));
 
@@ -232,36 +260,43 @@ export default function Stats() {
 
           gap: 1px;
 
-          padding: 28px;
-
-          border-radius: 32px;
+          padding: 26px;
 
           background:
             linear-gradient(
               145deg,
-              #1d2b42 0%,
-              #101b2c 45%,
-              #1b2a40 100%
+              #ffffff 0%,
+              #f7faff 50%,
+              #eef4fc 100%
             );
 
-          border: 2px solid #b9944b;
+          border: 2px solid #d6e2f2;
+
+          border-radius: 30px;
 
           box-shadow:
-            0 25px 60px
-              rgba(10, 20, 35, 0.25),
+            0 18px 45px
+              rgba(23, 35, 61, 0.10),
+
+            0 0 0 6px
+              rgba(36, 85, 196, 0.035),
+
             inset 0 1px 0
-              rgba(255, 255, 255, 0.18),
-            inset 0 -1px 0
-              rgba(0, 0, 0, 0.5);
+              rgba(255, 255, 255, 0.95);
 
           overflow: hidden;
         }
 
-        /* لمعان زجاجي خفيف */
+
+        /* ================================================
+           اللمعة الزجاجية
+           ================================================ */
+
         .stats-3d-panel::before {
           content: '';
 
           position: absolute;
+
           inset: 0;
 
           pointer-events: none;
@@ -269,23 +304,29 @@ export default function Stats() {
           background:
             linear-gradient(
               125deg,
-              rgba(255,255,255,0.14),
-              transparent 28%,
-              transparent 72%,
-              rgba(255,255,255,0.04)
+              rgba(255,255,255,0.75),
+              transparent 30%,
+              transparent 70%,
+              rgba(36,85,196,0.035)
             );
         }
 
-        /* إضاءة داخلية */
+
+        /* ================================================
+           الإضاءة الخفيفة
+           ================================================ */
+
         .stats-3d-panel::after {
           content: '';
 
           position: absolute;
 
-          width: 360px;
-          height: 360px;
+          width: 380px;
 
-          top: -220px;
+          height: 380px;
+
+          top: -250px;
+
           left: -150px;
 
           border-radius: 50%;
@@ -293,15 +334,21 @@ export default function Stats() {
           background:
             radial-gradient(
               circle,
-              rgba(93, 143, 230, 0.18),
+              rgba(36,85,196,0.08),
               transparent 70%
             );
 
           pointer-events: none;
         }
 
+
+        /* ================================================
+           البطاقات
+           ================================================ */
+
         .stats-3d-card {
           position: relative;
+
           z-index: 1;
 
           min-width: 0;
@@ -309,8 +356,11 @@ export default function Stats() {
           min-height: 280px;
 
           display: flex;
+
           flex-direction: column;
+
           align-items: center;
+
           justify-content: center;
 
           padding: 28px 20px;
@@ -320,179 +370,212 @@ export default function Stats() {
           background:
             linear-gradient(
               145deg,
-              rgba(255,255,255,0.075),
-              rgba(255,255,255,0.025)
+              rgba(255,255,255,0.98),
+              rgba(246,249,253,0.92)
             );
 
-          border: 1px solid
-            rgba(255,255,255,0.10);
+          border: 1px solid #e2eaf4;
 
           transition:
             transform 0.35s ease,
+            box-shadow 0.35s ease,
             background 0.35s ease;
         }
+
+
+        /* ================================================
+           أماكن البطاقات
+           ================================================ */
 
         .stats-services {
           grid-area: services;
 
-          border-radius: 24px 8px 8px 8px;
+          border-radius:
+            24px 8px 8px 8px;
         }
 
         .stats-students {
           grid-area: students;
 
-          border-radius: 8px 24px 8px 8px;
+          border-radius:
+            8px 24px 8px 8px;
         }
 
         .stats-satisfaction {
           grid-area: satisfaction;
 
-          border-radius: 8px 8px 8px 24px;
+          border-radius:
+            8px 8px 8px 24px;
         }
 
         .stats-experience {
           grid-area: experience;
 
-          border-radius: 8px 8px 24px 8px;
+          border-radius:
+            8px 8px 24px 8px;
         }
+
+
+        /* ================================================
+           حركة البطاقة
+           ================================================ */
 
         .stats-3d-card:hover {
           transform: translateY(-4px);
 
-          background:
-            linear-gradient(
-              145deg,
-              rgba(255,255,255,0.12),
-              rgba(255,255,255,0.04)
-            );
+          box-shadow:
+            0 15px 30px
+              rgba(36,85,196,0.09);
         }
 
-        /* ==========================================
-           الشارة الدائرية البارزة
-           ========================================== */
+
+        /* ================================================
+           الشارة الدائرية
+           ================================================ */
 
         .stats-3d-badge {
           position: relative;
 
           width: 118px;
+
           height: 118px;
 
           display: grid;
+
           place-items: center;
 
           margin-bottom: 20px;
 
-          color: #174fae;
+          color: #2455c4;
 
           background:
             radial-gradient(
-              circle at 35% 28%,
+              circle at 32% 25%,
               #ffffff 0%,
-              #dcecff 18%,
-              #a9c9f5 48%,
-              #5e91d8 78%,
-              #3565a9 100%
+              #edf4ff 25%,
+              #d8e8ff 55%,
+              #b8d0f3 78%,
+              #8eaddd 100%
             );
 
-          border: 5px solid #d4ad5e;
+          border: 5px solid #d5aa54;
 
           border-radius: 50%;
 
           box-shadow:
-            0 15px 25px
-              rgba(0,0,0,0.32),
-            inset 8px 8px 15px
-              rgba(255,255,255,0.5),
-            inset -9px -10px 18px
-              rgba(19,56,105,0.45),
-            0 0 0 7px
-              rgba(212,173,94,0.10);
 
-          transform:
-            perspective(500px)
-            translateZ(0);
+            0 15px 28px
+              rgba(36,85,196,0.16),
+
+            inset 7px 7px 14px
+              rgba(255,255,255,0.85),
+
+            inset -9px -10px 17px
+              rgba(36,85,196,0.18),
+
+            0 0 0 7px
+              rgba(213,170,84,0.08);
 
           transition:
             transform 0.35s ease,
             box-shadow 0.35s ease;
         }
 
-        /* طبقة لامعة فوق الشارة */
+
+        /* ================================================
+           لمعان الشارة
+           ================================================ */
+
         .stats-3d-badge::before {
           content: '';
 
           position: absolute;
 
-          top: 12px;
-          left: 18px;
+          top: 13px;
 
-          width: 38px;
-          height: 20px;
+          left: 20px;
+
+          width: 40px;
+
+          height: 21px;
 
           border-radius: 50%;
 
           background:
-            rgba(255,255,255,0.48);
+            rgba(255,255,255,0.72);
 
           filter: blur(4px);
 
-          transform: rotate(-25deg);
+          transform:
+            rotate(-25deg);
         }
+
+
+        /* ================================================
+           الأيقونة
+           ================================================ */
 
         .stats-3d-badge svg {
           position: relative;
+
           z-index: 1;
 
-          width: 52px;
-          height: 52px;
+          width: 54px;
+
+          height: 54px;
 
           filter:
             drop-shadow(
-              3px 5px 2px
-              rgba(11, 43, 91, 0.35)
+              3px 5px 3px
+              rgba(36,85,196,0.28)
             );
         }
+
+
+        /* ================================================
+           حركة الأيقونة
+           ================================================ */
 
         .stats-3d-card:hover
         .stats-3d-badge {
           transform:
-            perspective(500px)
             translateY(-7px)
-            rotateX(4deg)
-            scale(1.05);
+            scale(1.06);
 
           box-shadow:
+
             0 22px 35px
-              rgba(0,0,0,0.38),
-            inset 8px 8px 15px
-              rgba(255,255,255,0.55),
-            inset -9px -10px 18px
-              rgba(19,56,105,0.45),
+              rgba(36,85,196,0.20),
+
+            inset 7px 7px 14px
+              rgba(255,255,255,0.9),
+
+            inset -9px -10px 17px
+              rgba(36,85,196,0.20),
+
             0 0 0 10px
-              rgba(212,173,94,0.12);
+              rgba(213,170,84,0.10);
         }
 
-        /* ==========================================
+
+        /* ================================================
            الأرقام
-           ========================================== */
+           ================================================ */
 
         .stats-3d-card strong {
           display: block;
 
           margin: 0 0 8px;
 
-          color: #ffffff;
+          color: #17233d;
 
           font-family:
             Georgia,
             'Times New Roman',
             serif;
 
-          font-size: clamp(
-            36px,
-            4vw,
-            48px
-          );
+          font-size:
+            clamp(36px, 4vw, 48px);
 
           font-weight: 900;
 
@@ -501,18 +584,19 @@ export default function Stats() {
           letter-spacing: -1px;
 
           text-shadow:
-            0 3px 8px
-              rgba(0,0,0,0.35);
+            0 2px 5px
+              rgba(23,35,61,0.10);
         }
 
-        /* ==========================================
-           العناوين العربية
-           ========================================== */
+
+        /* ================================================
+           النصوص العربية
+           ================================================ */
 
         .stats-3d-card span {
           display: block;
 
-          color: #ffffff;
+          color: #697791;
 
           font-size: 15px;
 
@@ -521,31 +605,25 @@ export default function Stats() {
           line-height: 1.7;
 
           text-align: center;
-
-          text-shadow:
-            0 2px 5px
-              rgba(0,0,0,0.3);
         }
 
-        /* ==========================================
+
+        /* ================================================
            الجوال
-           ========================================== */
+           ================================================ */
 
         @media (max-width: 650px) {
+
           .stats-3d-section {
             padding: 20px 10px;
           }
 
           .stats-3d-panel {
-            padding: 12px;
+            padding: 10px;
 
-            gap: 8px;
+            gap: 7px;
 
-            border-radius: 24px;
-
-            grid-template-areas:
-              "students services"
-              "experience satisfaction";
+            border-radius: 23px;
           }
 
           .stats-3d-card {
@@ -556,6 +634,7 @@ export default function Stats() {
 
           .stats-3d-badge {
             width: 82px;
+
             height: 82px;
 
             margin-bottom: 14px;
@@ -565,13 +644,12 @@ export default function Stats() {
 
           .stats-3d-badge svg {
             width: 38px;
+
             height: 38px;
           }
 
           .stats-3d-card strong {
             font-size: 29px;
-
-            margin-bottom: 6px;
           }
 
           .stats-3d-card span {
@@ -586,23 +664,32 @@ export default function Stats() {
           }
         }
 
+
+        /* ================================================
+           الشاشات الصغيرة جدًا
+           ================================================ */
+
         @media (max-width: 380px) {
+
           .stats-3d-panel {
-            padding: 8px;
+            padding: 7px;
           }
 
           .stats-3d-card {
             min-height: 190px;
+
             padding: 16px 6px;
           }
 
           .stats-3d-badge {
             width: 70px;
+
             height: 70px;
           }
 
           .stats-3d-badge svg {
             width: 32px;
+
             height: 32px;
           }
 
@@ -614,6 +701,7 @@ export default function Stats() {
             font-size: 10px;
           }
         }
+
       `}</style>
     </>
   )
