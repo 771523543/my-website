@@ -14,49 +14,36 @@ import Contact from './components/Contact'
 import RevealObserver from './components/RevealObserver'
 
 export default function Home() {
-  return (
-    <main id="top">
-      <Hero />
+return (
+<main id="top">
+<Hero />
 
-      <QuickSections />
+  <QuickSections />
 
-      <Stats />
+  <Stats />
 
-      <AboutGrid />
+  <AboutGrid />
 
-      <ServicesPreview />
+  <ServicesPreview />
 
-      <Packages />
+  <Packages />
 
-      <PreviousWorks />
+  <PreviousWorks />
 
-      <Achievements />
+  <Achievements />
 
-      <Testimonials />
+  <Testimonials />
 
-      <AcademicAd />
+  <AcademicAd />
 
-      <GpaCalculator />
+  <GpaCalculator />
 
-      <FAQ />
+  <FAQ />
 
-      <Contact />
+  <Contact />
 
-      <a
-        className="floating-whatsapp"
-        href="https://wa.me/967776280186"
-        target="_blank"
-        rel="noreferrer"
-        aria-label="التواصل عبر واتساب"
-      >
-        <span className="floating-whatsapp-icon">◉</span>
-        <span className="floating-whatsapp-text">
-          <strong>واتساب</strong>
-          <small>تواصل معنا مباشرة</small>
-        </span>
-      </a>
+  <RevealObserver />
+</main>
 
-      <RevealObserver />
-    </main>
-  )
+)
 }
