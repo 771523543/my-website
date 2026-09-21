@@ -14,7 +14,6 @@ description: 'اكتشف خدماتنا الطلابية والأكاديمية'
 href: '/services',
 icon: GraduationCap,
 button: 'استكشف الخدمات',
-color: 'blue',
 },
 {
 title: 'باقاتنا',
@@ -22,7 +21,6 @@ description: 'اختر الباقة المناسبة لرحلتك التعليم
 href: '#packages',
 icon: Gem,
 button: 'عرض الباقات',
-color: 'green',
 },
 {
 title: 'أعمالنا السابقة',
@@ -30,36 +28,40 @@ description: 'تعرّف على أعمالنا ومشاريعنا السابقة
 href: '/previous-works',
 icon: Trophy,
 button: 'شاهد الأعمال',
-color: 'purple',
 },
 ]
 
 export default function QuickSections() {
 return (
 <section
-className="quick-sections-3d"
+className="quick-sections"
 aria-label="الأقسام الرئيسية"
 >
-<div className="quick-sections-panel">
+<div className="quick-sections-container">
 
-    <div className="quick-heading-3d">
-      <span className="quick-kicker">
+    {/* العنوان */}
+
+    <div className="quick-sections-heading">
+      <span className="quick-sections-kicker">
         منصة هديل
       </span>
 
       <h2>
         كل ما تحتاجه
         <br />
-        <em>في مكان واحد</em>
+        <span>في مكان واحد</span>
       </h2>
 
       <p>
-        خدمات أكاديمية، باقات مميزة،
-        وأعمال نفتخر بها
+        خدمات أكاديمية، باقات مميزة، وأعمال نفتخر بها
       </p>
     </div>
 
-    <div className="quick-cards-3d">
+
+    {/* البطاقات */}
+
+    <div className="quick-sections-grid">
+
       {cards.map((card) => {
         const Icon = card.icon
 
@@ -67,21 +69,23 @@ aria-label="الأقسام الرئيسية"
           <Link
             key={card.title}
             href={card.href}
-            className={`quick-card-3d quick-card-${card.color}`}
+            className="quick-card"
           >
-            <span
-              className="quick-card-shine"
-              aria-hidden="true"
-            />
 
-            <div className="quick-icon-3d">
+            {/* الأيقونة */}
+
+            <div className="quick-card-icon">
               <Icon
-                size={38}
+                size={30}
                 strokeWidth={1.8}
               />
             </div>
 
-            <div className="quick-card-content-3d">
+
+            {/* المحتوى */}
+
+            <div className="quick-card-content">
+
               <h3>
                 {card.title}
               </h3>
@@ -89,281 +93,89 @@ aria-label="الأقسام الرئيسية"
               <p>
                 {card.description}
               </p>
+
             </div>
 
-            <span className="quick-card-button-3d">
+
+            {/* الزر */}
+
+            <span className="quick-card-button">
               {card.button}
+              <span aria-hidden="true">←</span>
             </span>
 
-            <span
-              className="quick-card-glow-3d"
-              aria-hidden="true"
-            />
           </Link>
         )
       })}
+
     </div>
+
   </div>
+
 
   <style jsx>{`
 
     /* =========================================
-       القسم الرئيسي
+       القسم
        ========================================= */
 
-    .quick-sections-3d {
+    .quick-sections {
       width: 100%;
-      padding: 22px 14px;
-      margin: 14px 0;
+      padding: 20px 16px;
+      margin: 10px 0;
       direction: rtl;
     }
 
 
     /* =========================================
-       اللوحة الرئيسية
+       الحاوية الرئيسية
        ========================================= */
 
-    .quick-sections-panel {
+    .quick-sections-container {
       position: relative;
-      max-width: 1050px;
+
+      width: 100%;
+      max-width: 1080px;
+
       margin: 0 auto;
-      padding: 25px 24px 24px;
+
+      padding: 25px 22px 22px;
 
       background:
         linear-gradient(
-          145deg,
+          135deg,
           #173f91 0%,
-          #2455c4 48%,
-          #163878 100%
+          #2455c4 50%,
+          #173878 100%
         );
 
-      border: 2px solid #d5aa54;
-      border-radius: 26px;
+      border: 1.5px solid #d5aa54;
+
+      border-radius: 24px;
+
       overflow: hidden;
 
       box-shadow:
-        0 18px 42px
-          rgba(23,35,61,0.24),
-
-        0 0 0 5px
-          rgba(213,170,84,0.06),
+        0 15px 35px
+          rgba(23,35,61,0.20),
 
         inset 0 1px 0
-          rgba(255,255,255,0.20),
-
-        inset 0 -3px 0
-          rgba(0,0,0,0.16);
+          rgba(255,255,255,0.16);
     }
 
 
-    /* =========================================
-       اللمعة الرئيسية
-       ========================================= */
+    /* إضاءة خلفية */
 
-    .quick-sections-panel::before {
+    .quick-sections-container::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
 
-      background:
-        linear-gradient(
-          125deg,
-          rgba(255,255,255,0.13),
-          transparent 28%,
-          transparent 72%,
-          rgba(255,255,255,0.03)
-        );
-    }
-
-
-    .quick-sections-panel::after {
-      content: '';
       position: absolute;
 
-      width: 300px;
-      height: 300px;
+      width: 260px;
+      height: 260px;
 
-      top: -210px;
-      left: -100px;
-
-      border-radius: 50%;
-
-      background:
-        radial-gradient(
-          circle,
-          rgba(255,255,255,0.11),
-          transparent 70%
-        );
-
-      pointer-events: none;
-    }
-
-
-    /* =========================================
-       العنوان
-       ========================================= */
-
-    .quick-heading-3d {
-      position: relative;
-      z-index: 2;
-
-      max-width: 600px;
-      margin: 0 auto 20px;
-
-      text-align: center;
-    }
-
-
-    .quick-kicker {
-      display: inline-block;
-
-      margin-bottom: 5px;
-
-      color: #e2bc68;
-
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-
-    .quick-heading-3d h2 {
-      margin: 0;
-
-      color: #ffffff;
-
-      font-size:
-        clamp(25px, 3.5vw, 38px);
-
-      font-weight: 900;
-      line-height: 1.15;
-
-      text-shadow:
-        0 3px 9px
-          rgba(0,0,0,0.23);
-    }
-
-
-    .quick-heading-3d h2 em {
-      color: #ffffff;
-      font-style: normal;
-    }
-
-
-    .quick-heading-3d p {
-      max-width: 520px;
-
-      margin: 8px auto 0;
-
-      color:
-        rgba(255,255,255,0.84);
-
-      font-size: 12px;
-      font-weight: 500;
-      line-height: 1.6;
-    }
-
-
-    /* =========================================
-       البطاقات
-       ========================================= */
-
-    .quick-cards-3d {
-      position: relative;
-      z-index: 2;
-
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-      gap: 9px;
-
-      margin-top: 17px;
-    }
-
-
-    .quick-card-3d {
-      position: relative;
-
-      min-width: 0;
-      min-height: 245px;
-
-      display: flex;
-      flex-direction: column;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 18px 13px 15px;
-
-      text-align: center;
-
-      color: #ffffff;
-      text-decoration: none;
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,0.11),
-          rgba(255,255,255,0.035)
-        );
-
-      border:
-        1px solid
-        rgba(255,255,255,0.18);
-
-      border-radius: 18px;
-      overflow: hidden;
-
-      transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-    }
-
-
-    .quick-card-3d:hover {
-      transform: translateY(-5px);
-
-      background:
-        linear-gradient(
-          145deg,
-          rgba(255,255,255,0.17),
-          rgba(255,255,255,0.055)
-        );
-
-      border-color:
-        rgba(213,170,84,0.42);
-
-      box-shadow:
-        0 14px 28px
-          rgba(0,0,0,0.18);
-    }
-
-
-    .quick-card-3d:focus-visible {
-      outline:
-        3px solid
-        rgba(213,170,84,0.75);
-
-      outline-offset: 3px;
-    }
-
-
-    /* =========================================
-       لمعة البطاقة
-       ========================================= */
-
-    .quick-card-shine {
-      position: absolute;
-
-      top: -65px;
-      left: -65px;
-
-      width: 145px;
-      height: 145px;
+      top: -170px;
+      left: -80px;
 
       border-radius: 50%;
 
@@ -375,128 +187,299 @@ aria-label="الأقسام الرئيسية"
         );
 
       pointer-events: none;
-
-      transition:
-        transform 0.45s ease;
     }
 
 
-    .quick-card-3d:hover
-    .quick-card-shine {
-      transform:
-        translate(20px, 20px);
-    }
-
-
-    /* =========================================
-       الأيقونة - أصغر
-       ========================================= */
-
-    .quick-icon-3d {
-      position: relative;
-
-      width: 78px;
-      height: 78px;
-
-      display: grid;
-      place-items: center;
-
-      flex-shrink: 0;
-
-      margin-bottom: 12px;
-
-      color: #174fae;
-
-      background:
-        radial-gradient(
-          circle at 32% 25%,
-          #ffffff 0%,
-          #edf4ff 25%,
-          #d8e8ff 55%,
-          #b8d0f3 78%,
-          #8eaddd 100%
-        );
-
-      border:
-        4px solid #d5aa54;
-
-      border-radius: 50%;
-
-      box-shadow:
-        0 10px 21px
-          rgba(0,0,0,0.22),
-
-        inset 5px 5px 10px
-          rgba(255,255,255,0.85),
-
-        inset -7px -8px 13px
-          rgba(36,85,196,0.20),
-
-        0 0 0 5px
-          rgba(213,170,84,0.08);
-
-      transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-    }
-
-
-    .quick-icon-3d::before {
+    .quick-sections-container::after {
       content: '';
 
       position: absolute;
 
-      top: 9px;
-      left: 13px;
+      width: 220px;
+      height: 220px;
 
-      width: 28px;
-      height: 14px;
+      right: -120px;
+      bottom: -140px;
 
       border-radius: 50%;
 
       background:
-        rgba(255,255,255,0.72);
+        radial-gradient(
+          circle,
+          rgba(213,170,84,0.12),
+          transparent 70%
+        );
 
-      filter: blur(3px);
+      pointer-events: none;
+    }
+
+
+    /* =========================================
+       العنوان
+       ========================================= */
+
+    .quick-sections-heading {
+      position: relative;
+
+      z-index: 2;
+
+      text-align: center;
+
+      margin-bottom: 18px;
+    }
+
+
+    .quick-sections-kicker {
+      display: inline-block;
+
+      margin-bottom: 4px;
+
+      color: #e2bc68;
+
+      font-size: 11px;
+
+      font-weight: 800;
+    }
+
+
+    .quick-sections-heading h2 {
+      margin: 0;
+
+      color: #ffffff;
+
+      font-size:
+        clamp(25px, 3.5vw, 36px);
+
+      font-weight: 900;
+
+      line-height: 1.15;
+
+      text-shadow:
+        0 3px 9px
+          rgba(0,0,0,0.20);
+    }
+
+
+    .quick-sections-heading h2 span {
+      color: #ffffff;
+    }
+
+
+    .quick-sections-heading p {
+      margin: 7px auto 0;
+
+      color:
+        rgba(255,255,255,0.82);
+
+      font-size: 12px;
+
+      line-height: 1.6;
+    }
+
+
+    /* =========================================
+       شبكة البطاقات
+       ========================================= */
+
+    .quick-sections-grid {
+      position: relative;
+
+      z-index: 2;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 9px;
+    }
+
+
+    /* =========================================
+       البطاقة
+       ========================================= */
+
+    .quick-card {
+      position: relative;
+
+      min-width: 0;
+
+      min-height: 190px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 17px 13px 14px;
+
+      text-align: center;
+
+      color: #ffffff;
+
+      text-decoration: none;
+
+      background:
+        rgba(255,255,255,0.09);
+
+      border:
+        1px solid
+        rgba(255,255,255,0.20);
+
+      border-radius: 17px;
+
+      overflow: hidden;
+
+      transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+
+    .quick-card::before {
+      content: '';
+
+      position: absolute;
+
+      inset: 0;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.08),
+          transparent 45%
+        );
+
+      pointer-events: none;
+    }
+
+
+    .quick-card:hover {
+      transform:
+        translateY(-4px);
+
+      background:
+        rgba(255,255,255,0.14);
+
+      border-color:
+        rgba(213,170,84,0.65);
+
+      box-shadow:
+        0 12px 24px
+          rgba(0,0,0,0.16);
+    }
+
+
+    .quick-card:focus-visible {
+      outline:
+        3px solid
+        rgba(213,170,84,0.8);
+
+      outline-offset: 3px;
+    }
+
+
+    /* =========================================
+       الأيقونة
+       ========================================= */
+
+    .quick-card-icon {
+      position: relative;
+
+      z-index: 2;
+
+      width: 58px;
+      height: 58px;
+
+      display: grid;
+
+      place-items: center;
+
+      margin-bottom: 10px;
+
+      color: #174fae;
+
+      background:
+        linear-gradient(
+          145deg,
+          #ffffff,
+          #e4efff
+        );
+
+      border:
+        2.5px solid #d5aa54;
+
+      border-radius: 50%;
+
+      box-shadow:
+        0 7px 15px
+          rgba(0,0,0,0.20),
+
+        inset 0 1px 2px
+          rgba(255,255,255,0.9);
+
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+
+    .quick-card-icon::before {
+      content: '';
+
+      position: absolute;
+
+      width: 22px;
+      height: 9px;
+
+      top: 7px;
+      left: 12px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,0.85);
+
+      filter: blur(2px);
 
       transform:
         rotate(-25deg);
     }
 
 
-    .quick-icon-3d svg {
+    .quick-card-icon svg {
       position: relative;
+
       z-index: 1;
 
-      width: 38px;
-      height: 38px;
+      width: 30px;
+      height: 30px;
 
       filter:
         drop-shadow(
-          2px 4px 3px
-          rgba(23,63,145,0.34)
+          2px 3px 2px
+          rgba(23,63,145,0.28)
         );
     }
 
 
-    .quick-card-3d:hover
-    .quick-icon-3d {
+    .quick-card:hover
+    .quick-card-icon {
       transform:
-        translateY(-4px)
+        translateY(-3px)
         scale(1.04);
 
       box-shadow:
-        0 16px 26px
-          rgba(0,0,0,0.26),
+        0 11px 20px
+          rgba(0,0,0,0.25),
 
-        inset 5px 5px 10px
-          rgba(255,255,255,0.9),
-
-        inset -7px -8px 13px
-          rgba(36,85,196,0.23),
-
-        0 0 0 7px
-          rgba(213,170,84,0.10);
+        inset 0 1px 2px
+          rgba(255,255,255,0.9);
     }
 
 
@@ -504,43 +487,45 @@ aria-label="الأقسام الرئيسية"
        محتوى البطاقة
        ========================================= */
 
-    .quick-card-content-3d {
+    .quick-card-content {
       position: relative;
+
       z-index: 2;
 
       width: 100%;
-      text-align: center;
     }
 
 
-    .quick-card-content-3d h3 {
+    .quick-card-content h3 {
       margin: 0;
 
       color: #ffffff;
 
-      font-size: 17px;
+      font-size: 16px;
+
       font-weight: 900;
 
       line-height: 1.3;
 
       text-shadow:
-        0 2px 7px
-          rgba(0,0,0,0.23);
+        0 2px 6px
+          rgba(0,0,0,0.20);
     }
 
 
-    .quick-card-content-3d p {
-      max-width: 240px;
+    .quick-card-content p {
+      max-width: 230px;
 
-      margin: 6px auto 0;
+      margin: 5px auto 0;
 
       color:
-        rgba(255,255,255,0.80);
+        rgba(255,255,255,0.78);
 
-      font-size: 11px;
+      font-size: 10.5px;
+
       font-weight: 500;
 
-      line-height: 1.6;
+      line-height: 1.55;
     }
 
 
@@ -548,186 +533,180 @@ aria-label="الأقسام الرئيسية"
        الزر
        ========================================= */
 
-    .quick-card-button-3d {
+    .quick-card-button {
       position: relative;
-      z-index: 3;
+
+      z-index: 2;
 
       display: inline-flex;
 
       align-items: center;
+
       justify-content: center;
+
+      gap: 5px;
 
       width: 100%;
 
-      min-height: 37px;
+      min-height: 34px;
 
-      margin-top: 13px;
+      margin-top: 11px;
 
-      padding: 7px 11px;
+      padding: 6px 9px;
 
       color: #173f91;
 
       background:
         linear-gradient(
-          145deg,
+          135deg,
           #ffffff,
-          #e9f1ff
+          #edf4ff
         );
 
       border:
-        1.5px solid #d5aa54;
+        1px solid #d5aa54;
 
-      border-radius: 10px;
+      border-radius: 9px;
 
-      font-size: 11px;
+      font-size: 10px;
+
       font-weight: 900;
 
       line-height: 1.2;
 
       box-shadow:
-        0 6px 13px
-          rgba(0,0,0,0.16),
-
-        inset 0 1px 0
-          rgba(255,255,255,0.9);
+        0 5px 11px
+          rgba(0,0,0,0.15);
 
       transition:
         transform 0.2s ease,
-        filter 0.2s ease,
-        box-shadow 0.2s ease;
+        filter 0.2s ease;
     }
 
 
-    .quick-card-3d:hover
-    .quick-card-button-3d {
+    .quick-card-button span {
+      font-size: 12px;
+
+      transition:
+        transform 0.2s ease;
+    }
+
+
+    .quick-card:hover
+    .quick-card-button {
       transform:
-        translateY(-2px);
+        translateY(-1px);
 
       filter:
         brightness(1.04);
+    }
 
-      box-shadow:
-        0 9px 17px
-          rgba(0,0,0,0.20);
+
+    .quick-card:hover
+    .quick-card-button span {
+      transform:
+        translateX(-2px);
     }
 
 
     /* =========================================
-       الإضاءة السفلية
-       ========================================= */
-
-    .quick-card-glow-3d {
-      position: absolute;
-
-      width: 120px;
-      height: 120px;
-
-      right: -60px;
-      bottom: -60px;
-
-      z-index: 0;
-
-      border-radius: 50%;
-
-      background:
-        rgba(213,170,84,0.09);
-
-      filter: blur(4px);
-
-      pointer-events: none;
-    }
-
-
-    /* =========================================
-       التابلت والجوال
+       الجوال
        ========================================= */
 
     @media (max-width: 800px) {
 
-      .quick-sections-3d {
-        padding: 17px 9px;
-        margin: 10px 0;
+      .quick-sections {
+        padding: 15px 9px;
+        margin: 8px 0;
       }
 
 
-      .quick-sections-panel {
-        padding: 20px 9px;
-        border-radius: 21px;
+      .quick-sections-container {
+        padding: 19px 8px 17px;
+
+        border-radius: 20px;
       }
 
 
-      .quick-heading-3d {
-        margin-bottom: 15px;
+      .quick-sections-heading {
+        margin-bottom: 13px;
       }
 
 
-      .quick-kicker {
-        font-size: 10px;
+      .quick-sections-kicker {
+        font-size: 9px;
       }
 
 
-      .quick-heading-3d h2 {
-        font-size: 25px;
+      .quick-sections-heading h2 {
+        font-size: 24px;
       }
 
 
-      .quick-heading-3d p {
-        margin-top: 6px;
-        font-size: 10.5px;
+      .quick-sections-heading p {
+        margin-top: 5px;
+
+        font-size: 9.5px;
       }
 
 
-      .quick-cards-3d {
+      .quick-sections-grid {
         grid-template-columns:
           repeat(2, minmax(0, 1fr));
 
         gap: 6px;
-        margin-top: 13px;
       }
 
 
-      .quick-card-3d {
-        min-height: 215px;
-        padding: 15px 7px 12px;
-        border-radius: 15px;
+      .quick-card {
+        min-height: 175px;
+
+        padding: 13px 7px 11px;
+
+        border-radius: 14px;
       }
 
 
-      .quick-icon-3d {
-        width: 65px;
-        height: 65px;
+      .quick-card-icon {
+        width: 52px;
+        height: 52px;
 
-        border-width: 3px;
-        margin-bottom: 9px;
+        margin-bottom: 8px;
+
+        border-width: 2px;
       }
 
 
-      .quick-icon-3d svg {
-        width: 31px;
-        height: 31px;
+      .quick-card-icon svg {
+        width: 27px;
+        height: 27px;
       }
 
 
-      .quick-card-content-3d h3 {
+      .quick-card-content h3 {
         font-size: 14px;
       }
 
 
-      .quick-card-content-3d p {
-        margin-top: 5px;
-        font-size: 9.5px;
-        line-height: 1.55;
+      .quick-card-content p {
+        margin-top: 4px;
+
+        font-size: 9px;
+
+        line-height: 1.5;
       }
 
 
-      .quick-card-button-3d {
-        min-height: 34px;
-        margin-top: 10px;
+      .quick-card-button {
+        min-height: 31px;
 
-        padding: 6px 5px;
+        margin-top: 8px;
 
-        border-radius: 9px;
-        font-size: 9px;
+        padding: 5px;
+
+        border-radius: 8px;
+
+        font-size: 8.5px;
       }
 
     }
@@ -739,67 +718,72 @@ aria-label="الأقسام الرئيسية"
 
     @media (max-width: 380px) {
 
-      .quick-sections-panel {
-        padding: 17px 6px;
+      .quick-sections-container {
+        padding: 16px 6px 14px;
+
+        border-radius: 18px;
       }
 
 
-      .quick-heading-3d h2 {
-        font-size: 22px;
+      .quick-sections-heading h2 {
+        font-size: 21px;
       }
 
 
-      .quick-heading-3d p {
-        font-size: 9.5px;
+      .quick-sections-heading p {
+        font-size: 9px;
       }
 
 
-      .quick-cards-3d {
+      .quick-sections-grid {
         gap: 5px;
       }
 
 
-      .quick-card-3d {
-        min-height: 195px;
-        padding: 13px 5px 10px;
-        border-radius: 13px;
+      .quick-card {
+        min-height: 160px;
+
+        padding: 11px 5px 9px;
       }
 
 
-      .quick-icon-3d {
-        width: 57px;
-        height: 57px;
+      .quick-card-icon {
+        width: 46px;
+        height: 46px;
 
-        margin-bottom: 8px;
+        margin-bottom: 7px;
       }
 
 
-      .quick-icon-3d svg {
-        width: 27px;
-        height: 27px;
+      .quick-card-icon svg {
+        width: 24px;
+        height: 24px;
       }
 
 
-      .quick-card-content-3d h3 {
+      .quick-card-content h3 {
         font-size: 12px;
       }
 
 
-      .quick-card-content-3d p {
-        font-size: 8.5px;
-        line-height: 1.5;
+      .quick-card-content p {
+        font-size: 8px;
       }
 
 
-      .quick-card-button-3d {
-        min-height: 31px;
+      .quick-card-button {
+        min-height: 28px;
 
-        margin-top: 8px;
+        margin-top: 7px;
 
-        padding: 5px 3px;
+        padding: 4px 3px;
 
-        font-size: 8px;
-        border-radius: 8px;
+        font-size: 7.5px;
+      }
+
+
+      .quick-card-button span {
+        font-size: 10px;
       }
 
     }
@@ -811,25 +795,19 @@ aria-label="الأقسام الرئيسية"
 
     @media (prefers-reduced-motion: reduce) {
 
-      .quick-card-3d,
-      .quick-icon-3d,
-      .quick-card-button-3d,
-      .quick-card-shine {
+      .quick-card,
+      .quick-card-icon,
+      .quick-card-button,
+      .quick-card-button span {
         transition: none;
       }
 
 
-      .quick-card-3d:hover {
-        transform: none;
-      }
-
-
-      .quick-card-3d:hover
-      .quick-icon-3d,
-      .quick-card-3d:hover
-      .quick-card-button-3d,
-      .quick-card-3d:hover
-      .quick-card-shine {
+      .quick-card:hover,
+      .quick-card:hover
+      .quick-card-icon,
+      .quick-card:hover
+      .quick-card-button {
         transform: none;
       }
 
