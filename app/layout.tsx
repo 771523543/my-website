@@ -76,7 +76,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: '/images/hadeel-achievements.png',
+        url: '/images/hadeel-og-image.webp',
         width: 1200,
         height: 630,
         alt: 'منصة هديل للخدمات الطلابية والأكاديمية',
@@ -92,7 +92,7 @@ export const metadata: Metadata = {
     description:
       'خدمات طلابية وأكاديمية وبحثية ومهنية في منصة واحدة.',
 
-    images: ['/images/hadeel-achievements.png'],
+    images: ['/images/hadeel-og-image.webp'],
   },
 }
 
@@ -103,15 +103,19 @@ export default function RootLayout({
 }>) {
   const structuredData = {
     '@context': 'https://schema.org',
+
     '@graph': [
       {
         '@type': 'Organization',
         name: 'منصة هديل للخدمات الطلابية والأكاديمية',
         url: 'https://hadeel-alpha.vercel.app',
-        logo: 'https://hadeel-alpha.vercel.app/images/hadeel-achievements.png',
+
+        logo: 'https://hadeel-alpha.vercel.app/images/hadeel-platform-logo.png',
+
         description:
           'منصة للخدمات الطلابية والأكاديمية والبحثية والمهنية.',
       },
+
       {
         '@type': 'WebSite',
         name: 'منصة هديل للخدمات الطلابية والأكاديمية',
