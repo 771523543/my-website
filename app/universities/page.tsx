@@ -43,7 +43,7 @@ export default function UniversitiesPage() {
         </div>
       </section>
 
-      <style jsx>{`
+      <style>{`
         .universities-page {
           min-height: 70vh;
         }
