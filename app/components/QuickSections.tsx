@@ -2,673 +2,680 @@
 
 import Link from 'next/link'
 import {
-Gem,
-GraduationCap,
-Trophy,
-Check,
+  Gem,
+  GraduationCap,
+  Trophy,
+  Check,
+  University,
 } from 'lucide-react'
 
 const cards = [
-{
-title: 'خدماتنا',
-description: 'اكتشف خدماتنا الطلابية والأكاديمية.',
-href: '/services',
-icon: GraduationCap,
-button: 'استكشف الخدمات',
-},
-{
-title: 'باقاتنا',
-description: 'اختر الباقة المناسبة لاحتياجك الأكاديمي.',
-href: '#packages',
-icon: Gem,
-button: 'عرض الباقات',
-},
-{
-title: 'أعمالنا السابقة',
-description: 'تعرّف على أعمالنا ومشاريعنا السابقة.',
-href: '/previous-works',
-icon: Trophy,
-button: 'شاهد الأعمال',
-},
+  {
+    title: 'الجامعات',
+    description: 'اختر جامعتك للوصول إلى الخدمات والشروحات الجامعية.',
+    href: '/universities',
+    icon: University,
+    button: 'استكشف الجامعات',
+  },
+  {
+    title: 'خدماتنا',
+    description: 'اكتشف خدماتنا الطلابية والأكاديمية.',
+    href: '/services',
+    icon: GraduationCap,
+    button: 'استكشف الخدمات',
+  },
+  {
+    title: 'باقاتنا',
+    description: 'اختر الباقة المناسبة لاحتياجك الأكاديمي.',
+    href: '#packages',
+    icon: Gem,
+    button: 'عرض الباقات',
+  },
+  {
+    title: 'أعمالنا السابقة',
+    description: 'تعرّف على أعمالنا ومشاريعنا السابقة.',
+    href: '/previous-works',
+    icon: Trophy,
+    button: 'شاهد الأعمال',
+  },
 ]
 
 export default function QuickSections() {
-return (
-<section
-data-reveal
-className="quick-sections section soft-section reveal-section"
-aria-label="الأقسام الرئيسية"
->
-<div className="container">
+  return (
+    <section
+      data-reveal
+      className="quick-sections section soft-section reveal-section"
+      aria-label="الأقسام الرئيسية"
+    >
+      <div className="container">
 
-    {/* ==================== العنوان ==================== */}
+        {/* ==================== العنوان ==================== */}
 
-    <div className="quick-main-heading">
-      <span className="section-kicker">
-        منصة هديل
-      </span>
+        <div className="quick-main-heading">
+          <span className="section-kicker">
+            منصة هديل
+          </span>
 
-      <h2>
-        كل ما تحتاجه
-        <br />
-        <em>في مكان واحد</em>
-      </h2>
+          <h2>
+            كل ما تحتاجه
+            <br />
+            <em>في مكان واحد</em>
+          </h2>
 
-      <p>
-        خدمات أكاديمية، باقات مميزة، وأعمال نفتخر بها.
-      </p>
-    </div>
+          <p>
+            جامعات، خدمات أكاديمية، باقات مميزة، وأعمال نفتخر بها.
+          </p>
+        </div>
 
-    {/* ==================== البطاقات ==================== */}
+        {/* ==================== البطاقات ==================== */}
 
-    <div className="quick-grid">
+        <div className="quick-grid">
 
-      {cards.map((card) => {
-        const Icon = card.icon
+          {cards.map((card) => {
+            const Icon = card.icon
 
-        return (
-          <article
-            key={card.title}
-            className="quick-card"
-          >
-
-            {/* الأيقونة */}
-
-            <div className="quick-card-icon">
-              <Icon
-                size={28}
-                strokeWidth={1.8}
-              />
-            </div>
-
-            {/* المحتوى */}
-
-            <div className="quick-card-content">
-
-              <h3>
-                {card.title}
-              </h3>
-
-              <p>
-                {card.description}
-              </p>
-
-              <Link
-                href={card.href}
-                className="quick-more-button"
+            return (
+              <article
+                key={card.title}
+                className="quick-card"
               >
-                <span>
-                  {card.button}
-                </span>
+
+                {/* الأيقونة */}
+
+                <div className="quick-card-icon">
+                  <Icon
+                    size={28}
+                    strokeWidth={1.8}
+                  />
+                </div>
+
+                {/* المحتوى */}
+
+                <div className="quick-card-content">
+
+                  <h3>
+                    {card.title}
+                  </h3>
+
+                  <p>
+                    {card.description}
+                  </p>
+
+                  <Link
+                    href={card.href}
+                    className="quick-more-button"
+                  >
+                    <span>
+                      {card.button}
+                    </span>
+
+                    <span
+                      className="quick-arrow"
+                      aria-hidden="true"
+                    >
+                      ←
+                    </span>
+                  </Link>
+
+                </div>
+
+                {/* علامة التحقق */}
 
                 <span
-                  className="quick-arrow"
+                  className="quick-check"
                   aria-hidden="true"
                 >
-                  ←
+                  <Check
+                    size={14}
+                    strokeWidth={3}
+                  />
                 </span>
-              </Link>
 
-            </div>
+              </article>
+            )
+          })}
 
-            {/* علامة التحقق */}
+        </div>
+      </div>
 
-            <span
-              className="quick-check"
-              aria-hidden="true"
-            >
-              <Check
-                size={14}
-                strokeWidth={3}
-              />
-            </span>
+      <style jsx>{`
 
-          </article>
-        )
-      })}
+        /* =========================================
+           القسم
+           ========================================= */
 
-    </div>
-  </div>
+        .quick-sections {
+          direction: rtl;
+        }
 
-  <style jsx>{`
 
-    /* =========================================
-       القسم
-       ========================================= */
+        /* =========================================
+           العنوان
+           ========================================= */
 
-    .quick-sections {
-      direction: rtl;
-    }
+        .quick-main-heading {
+          text-align: center;
+          margin-bottom: 28px;
+        }
 
 
-    /* =========================================
-       العنوان
-       ========================================= */
+        .quick-main-heading h2 {
+          margin: 5px 0 0;
 
-    .quick-main-heading {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+          color: #17233d;
 
+          font-size:
+            clamp(27px, 4vw, 40px);
 
-    .quick-main-heading h2 {
-      margin: 5px 0 0;
+          font-weight: 900;
 
-      color: #17233d;
+          line-height: 1.2;
 
-      font-size:
-        clamp(27px, 4vw, 40px);
+          letter-spacing: -0.5px;
+        }
 
-      font-weight: 900;
 
-      line-height: 1.2;
+        .quick-main-heading h2 em {
+          color: #2455c4;
 
-      letter-spacing: -0.5px;
-    }
+          font-style: normal;
+        }
 
 
-    .quick-main-heading h2 em {
-      color: #2455c4;
+        .quick-main-heading p {
+          margin: 8px auto 0;
 
-      font-style: normal;
-    }
+          max-width: 520px;
 
+          color: #697791;
 
-    .quick-main-heading p {
-      margin: 8px auto 0;
+          font-size: 13px;
 
-      max-width: 520px;
+          line-height: 1.7;
+        }
 
-      color: #697791;
 
-      font-size: 13px;
+        /* =========================================
+           الشبكة
+           ========================================= */
 
-      line-height: 1.7;
-    }
+        .quick-grid {
+          display: grid;
 
+          grid-template-columns:
+            repeat(4, minmax(0, 1fr));
 
-    /* =========================================
-       الشبكة
-       ========================================= */
+          gap: 14px;
 
-    .quick-grid {
-      display: grid;
+          max-width: 1200px;
 
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
+          margin: 0 auto;
+        }
 
-      gap: 14px;
 
-      max-width: 1050px;
+        /* =========================================
+           البطاقة
+           ========================================= */
 
-      margin: 0 auto;
-    }
+        .quick-card {
+          position: relative;
 
+          min-width: 0;
 
-    /* =========================================
-       البطاقة
-       ========================================= */
+          display: flex;
 
-    .quick-card {
-      position: relative;
+          align-items: flex-start;
 
-      min-width: 0;
+          gap: 14px;
 
-      display: flex;
+          padding: 20px 18px;
 
-      align-items: flex-start;
+          background:
+            rgba(255,255,255,0.96);
 
-      gap: 14px;
+          border:
+            1px solid #e4ebf4;
 
-      padding: 20px 18px;
+          border-radius: 18px;
 
-      background:
-        rgba(255,255,255,0.96);
+          box-shadow:
+            0 8px 24px
+              rgba(23,35,61,0.06);
 
-      border:
-        1px solid #e4ebf4;
+          transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            border-color 0.25s ease;
 
-      border-radius: 18px;
+          overflow: hidden;
+        }
 
-      box-shadow:
-        0 8px 24px
-          rgba(23,35,61,0.06);
 
-      transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
+        .quick-card::before {
+          content: '';
 
-      overflow: hidden;
-    }
+          position: absolute;
 
+          top: 0;
+          right: 0;
 
-    .quick-card::before {
-      content: '';
+          width: 100%;
+          height: 3px;
 
-      position: absolute;
+          background:
+            linear-gradient(
+              90deg,
+              #2455c4,
+              #e9b24c
+            );
 
-      top: 0;
-      right: 0;
+          opacity: 0.8;
+        }
 
-      width: 100%;
-      height: 3px;
 
-      background:
-        linear-gradient(
-          90deg,
-          #2455c4,
-          #e9b24c
-        );
+        .quick-card:hover {
+          transform:
+            translateY(-4px);
 
-      opacity: 0.8;
-    }
+          border-color:
+            #d4deed;
 
+          box-shadow:
+            0 14px 30px
+              rgba(23,35,61,0.11);
+        }
 
-    .quick-card:hover {
-      transform:
-        translateY(-4px);
 
-      border-color:
-        #d4deed;
+        /* =========================================
+           الأيقونة
+           ========================================= */
 
-      box-shadow:
-        0 14px 30px
-          rgba(23,35,61,0.11);
-    }
+        .quick-card-icon {
+          flex:
+            0 0 56px;
 
+          width: 56px;
+          height: 56px;
 
-    /* =========================================
-       الأيقونة
-       ========================================= */
+          display: grid;
 
-    .quick-card-icon {
-      flex:
-        0 0 56px;
+          place-items: center;
 
-      width: 56px;
-      height: 56px;
+          color: #2455c4;
 
-      display: grid;
+          background:
+            linear-gradient(
+              145deg,
+              #eef5ff,
+              #ffffff
+            );
 
-      place-items: center;
+          border:
+            1px solid #dbe6f5;
 
-      color: #2455c4;
+          border-radius: 15px;
 
-      background:
-        linear-gradient(
-          145deg,
-          #eef5ff,
-          #ffffff
-        );
+          box-shadow:
+            inset 0 1px 0
+              rgba(255,255,255,0.9);
 
-      border:
-        1px solid #dbe6f5;
+          transition:
+            transform 0.25s ease,
+            background 0.25s ease;
+        }
 
-      border-radius: 15px;
 
-      box-shadow:
-        inset 0 1px 0
-          rgba(255,255,255,0.9);
+        .quick-card:hover
+        .quick-card-icon {
+          transform:
+            translateY(-2px);
 
-      transition:
-        transform 0.25s ease,
-        background 0.25s ease;
-    }
+          background:
+            linear-gradient(
+              145deg,
+              #e5efff,
+              #ffffff
+            );
+        }
 
 
-    .quick-card:hover
-    .quick-card-icon {
-      transform:
-        translateY(-2px);
+        .quick-card-icon svg {
+          filter:
+            drop-shadow(
+              1px 2px 2px
+              rgba(36,85,196,0.12)
+            );
+        }
 
-      background:
-        linear-gradient(
-          145deg,
-          #e5efff,
-          #ffffff
-        );
-    }
 
+        /* =========================================
+           محتوى البطاقة
+           ========================================= */
 
-    .quick-card-icon svg {
-      filter:
-        drop-shadow(
-          1px 2px 2px
-          rgba(36,85,196,0.12)
-        );
-    }
+        .quick-card-content {
+          min-width: 0;
 
+          flex: 1;
+        }
 
-    /* =========================================
-       محتوى البطاقة
-       ========================================= */
 
-    .quick-card-content {
-      min-width: 0;
+        .quick-card-content h3 {
+          margin: 1px 0 0;
 
-      flex: 1;
-    }
+          color: #17233d;
 
+          font-size: 17px;
 
-    .quick-card-content h3 {
-      margin: 1px 0 0;
+          font-weight: 900;
 
-      color: #17233d;
+          line-height: 1.35;
+        }
 
-      font-size: 17px;
 
-      font-weight: 900;
+        .quick-card-content p {
+          margin: 5px 0 0;
 
-      line-height: 1.35;
-    }
+          color: #697791;
 
+          font-size: 11px;
 
-    .quick-card-content p {
-      margin: 5px 0 0;
+          line-height: 1.65;
+        }
 
-      color: #697791;
 
-      font-size: 11px;
+        /* =========================================
+           زر اعرف أكثر
+           ========================================= */
 
-      line-height: 1.65;
-    }
+        .quick-more-button {
+          display: inline-flex;
 
+          align-items: center;
 
-    /* =========================================
-       زر اعرف أكثر
-       ========================================= */
+          gap: 5px;
 
-    .quick-more-button {
-      display: inline-flex;
+          margin-top: 11px;
 
-      align-items: center;
+          color: #2455c4;
 
-      gap: 5px;
+          text-decoration: none;
 
-      margin-top: 11px;
+          font-size: 10px;
 
-      color: #2455c4;
+          font-weight: 900;
 
-      text-decoration: none;
+          transition:
+            color 0.2s ease;
+        }
 
-      font-size: 10px;
 
-      font-weight: 900;
+        .quick-more-button:hover {
+          color: #173f91;
+        }
 
-      transition:
-        color 0.2s ease;
-    }
 
+        .quick-arrow {
+          display: inline-flex;
 
-    .quick-more-button:hover {
-      color: #173f91;
-    }
+          align-items: center;
 
+          justify-content: center;
 
-    .quick-arrow {
-      display: inline-flex;
+          transition:
+            transform 0.2s ease;
+        }
 
-      align-items: center;
 
-      justify-content: center;
+        .quick-more-button:hover
+        .quick-arrow {
+          transform:
+            translateX(-3px);
+        }
 
-      transition:
-        transform 0.2s ease;
-    }
 
+        .quick-more-button:focus-visible {
+          outline:
+            2px solid #2455c4;
 
-    .quick-more-button:hover
-    .quick-arrow {
-      transform:
-        translateX(-3px);
-    }
+          outline-offset: 4px;
 
+          border-radius: 4px;
+        }
 
-    .quick-more-button:focus-visible {
-      outline:
-        2px solid #2455c4;
 
-      outline-offset: 4px;
+        /* =========================================
+           علامة التحقق
+           ========================================= */
 
-      border-radius: 4px;
-    }
+        .quick-check {
+          position: absolute;
 
+          top: 14px;
+          left: 14px;
 
-    /* =========================================
-       علامة التحقق
-       ========================================= */
+          width: 24px;
+          height: 24px;
 
-    .quick-check {
-      position: absolute;
+          display: grid;
 
-      top: 14px;
-      left: 14px;
+          place-items: center;
 
-      width: 24px;
-      height: 24px;
+          color: #ffffff;
 
-      display: grid;
+          background:
+            #2455c4;
 
-      place-items: center;
+          border:
+            2px solid #ffffff;
 
-      color: #ffffff;
+          border-radius: 50%;
 
-      background:
-        #2455c4;
+          box-shadow:
+            0 3px 8px
+              rgba(36,85,196,0.18);
+        }
 
-      border:
-        2px solid #ffffff;
 
-      border-radius: 50%;
+        /* =========================================
+           الأجهزة المتوسطة
+           ========================================= */
 
-      box-shadow:
-        0 3px 8px
-          rgba(36,85,196,0.18);
-    }
+        @media (max-width: 1050px) {
 
+          .quick-grid {
+            grid-template-columns:
+              repeat(2, minmax(0, 1fr));
 
-    /* =========================================
-       الأجهزة المتوسطة
-       ========================================= */
+            gap: 10px;
+          }
 
-    @media (max-width: 900px) {
 
-      .quick-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+          .quick-card {
+            padding: 17px 15px;
+          }
 
-        gap: 10px;
-      }
+        }
 
 
-      .quick-card {
-        padding: 17px 15px;
-      }
+        /* =========================================
+           الجوال
+           ========================================= */
 
-    }
+        @media (max-width: 620px) {
 
+          .quick-main-heading {
+            margin-bottom: 20px;
+          }
 
-    /* =========================================
-       الجوال
-       ========================================= */
 
-    @media (max-width: 620px) {
+          .quick-main-heading h2 {
+            font-size: 25px;
 
-      .quick-main-heading {
-        margin-bottom: 20px;
-      }
+            line-height: 1.25;
+          }
 
 
-      .quick-main-heading h2 {
-        font-size: 25px;
+          .quick-main-heading p {
+            max-width: 320px;
 
-        line-height: 1.25;
-      }
+            font-size: 11px;
+          }
 
 
-      .quick-main-heading p {
-        max-width: 320px;
+          .quick-grid {
+            grid-template-columns: 1fr;
 
-        font-size: 11px;
-      }
+            gap: 9px;
+          }
 
 
-      .quick-grid {
-        grid-template-columns: 1fr;
+          .quick-card {
+            min-height: 0;
 
-        gap: 9px;
-      }
+            padding: 15px 14px;
 
+            gap: 12px;
 
-      .quick-card {
-        min-height: 0;
+            border-radius: 16px;
+          }
 
-        padding: 15px 14px;
 
-        gap: 12px;
+          .quick-card-icon {
+            flex-basis: 50px;
 
-        border-radius: 16px;
-      }
+            width: 50px;
+            height: 50px;
 
+            border-radius: 13px;
+          }
 
-      .quick-card-icon {
-        flex-basis: 50px;
 
-        width: 50px;
-        height: 50px;
+          .quick-card-icon svg {
+            width: 25px;
+            height: 25px;
+          }
 
-        border-radius: 13px;
-      }
 
+          .quick-card-content h3 {
+            font-size: 15px;
+          }
 
-      .quick-card-icon svg {
-        width: 25px;
-        height: 25px;
-      }
 
+          .quick-card-content p {
+            margin-top: 4px;
 
-      .quick-card-content h3 {
-        font-size: 15px;
-      }
+            font-size: 10px;
+          }
 
 
-      .quick-card-content p {
-        margin-top: 4px;
+          .quick-more-button {
+            margin-top: 8px;
 
-        font-size: 10px;
-      }
+            font-size: 9.5px;
+          }
 
 
-      .quick-more-button {
-        margin-top: 8px;
+          .quick-check {
+            top: 11px;
+            left: 11px;
 
-        font-size: 9.5px;
-      }
+            width: 22px;
+            height: 22px;
+          }
 
+        }
 
-      .quick-check {
-        top: 11px;
-        left: 11px;
 
-        width: 22px;
-        height: 22px;
-      }
+        /* =========================================
+           الجوال الصغير
+           ========================================= */
 
-    }
+        @media (max-width: 380px) {
 
+          .quick-card {
+            padding: 13px 12px;
 
-    /* =========================================
-       الجوال الصغير
-       ========================================= */
+            gap: 10px;
+          }
 
-    @media (max-width: 380px) {
 
-      .quick-card {
-        padding: 13px 12px;
+          .quick-card-icon {
+            flex-basis: 46px;
 
-        gap: 10px;
-      }
+            width: 46px;
+            height: 46px;
 
+            border-radius: 12px;
+          }
 
-      .quick-card-icon {
-        flex-basis: 46px;
 
-        width: 46px;
-        height: 46px;
+          .quick-card-icon svg {
+            width: 23px;
+            height: 23px;
+          }
 
-        border-radius: 12px;
-      }
 
+          .quick-card-content h3 {
+            font-size: 14px;
+          }
 
-      .quick-card-icon svg {
-        width: 23px;
-        height: 23px;
-      }
 
+          .quick-card-content p {
+            font-size: 9px;
+          }
 
-      .quick-card-content h3 {
-        font-size: 14px;
-      }
 
+          .quick-more-button {
+            font-size: 9px;
+          }
 
-      .quick-card-content p {
-        font-size: 9px;
-      }
 
+          .quick-check {
+            width: 20px;
+            height: 20px;
 
-      .quick-more-button {
-        font-size: 9px;
-      }
+            top: 9px;
+            left: 9px;
+          }
 
 
-      .quick-check {
-        width: 20px;
-        height: 20px;
+          .quick-check svg {
+            width: 12px;
+            height: 12px;
+          }
 
-        top: 9px;
-        left: 9px;
-      }
+        }
 
 
-      .quick-check svg {
-        width: 12px;
-        height: 12px;
-      }
+        /* =========================================
+           تقليل الحركة
+           ========================================= */
 
-    }
+        @media (prefers-reduced-motion: reduce) {
 
+          .quick-card,
+          .quick-card-icon,
+          .quick-more-button,
+          .quick-arrow {
+            transition: none;
+          }
 
-    /* =========================================
-       تقليل الحركة
-       ========================================= */
 
-    @media (prefers-reduced-motion: reduce) {
+          .quick-card:hover {
+            transform: none;
+          }
 
-      .quick-card,
-      .quick-card-icon,
-      .quick-more-button,
-      .quick-arrow {
-        transition: none;
-      }
 
+          .quick-card:hover
+          .quick-card-icon,
+          .quick-more-button:hover
+          .quick-arrow {
+            transform: none;
+          }
 
-      .quick-card:hover {
-        transform: none;
-      }
+        }
 
-
-      .quick-card:hover
-      .quick-card-icon,
-      .quick-more-button:hover
-      .quick-arrow {
-        transform: none;
-      }
-
-    }
-
-  `}</style>
-</section>
-
-)
+      `}</style>
+    </section>
+  )
 }
