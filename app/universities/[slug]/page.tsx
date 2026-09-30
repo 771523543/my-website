@@ -81,7 +81,7 @@ export default async function UniversityPage({ params }: Props) {
         </div>
       </section>
 
-      <style jsx>{`
+      <style>{`
         .university-details-page {
           min-height: 70vh;
         }
