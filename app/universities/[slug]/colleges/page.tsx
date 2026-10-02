@@ -7,6 +7,7 @@ import {
   BookOpen,
   GraduationCap,
   MapPin,
+  Sparkles,
 } from "lucide-react"
 
 import { universities } from "@/app/components/universities/data"
@@ -17,13 +18,13 @@ type PageProps = {
   }>
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   return universities.map((university) => ({
     slug: university.slug,
   }))
 }
 
-export default async function UniversityCollegesPage({
+export default async function CollegesPage({
   params,
 }: PageProps) {
   const { slug } = await params
@@ -36,19 +37,19 @@ export default async function UniversityCollegesPage({
     notFound()
   }
 
+  const totalColleges = university.colleges.length
+
+  const totalMajors = university.colleges.reduce(
+    (total, college) => total + college.majors.length,
+    0
+  )
+
   return (
-    <main
-      className="university-colleges-page"
-      dir="rtl"
-    >
+    <main className="colleges-page">
+      <div className="colleges-container">
 
-      {/* =========================
-          Hero
-      ========================== */}
-
-      <section className="university-colleges-hero">
-        <div className="container">
-
+        {/* العودة */}
+        <div className="back-area">
           <Link
             href="/universities"
             className="back-link"
@@ -56,521 +57,435 @@ export default async function UniversityCollegesPage({
             <ArrowRight size={18} />
             <span>العودة إلى الجامعات</span>
           </Link>
+        </div>
 
+        {/* رأس الصفحة */}
+        <header className="page-header">
 
-          <div className="colleges-hero-content">
+          <div className="university-logo">
+            <Image
+              src={university.logo}
+              alt={university.name}
+              width={90}
+              height={90}
+              priority
+            />
+          </div>
 
-            <div className="university-logo">
-              <Image
-                src={university.logo}
-                alt={`شعار ${university.name}`}
-                width={110}
-                height={110}
-              />
-            </div>
+          <div className="header-content">
 
+            <span className="eyebrow">
+              <GraduationCap size={16} />
+              الكليات والتخصصات
+            </span>
 
-            <div className="hero-text">
+            <h1>{university.name}</h1>
 
-              <span className="hero-kicker">
-                الدليل الأكاديمي
-              </span>
+            <p>
+              استعرض الكليات والتخصصات والبرامج الأكاديمية
+              المتاحة في الجامعة.
+            </p>
 
-              <h1>
-                الكليات والتخصصات
-              </h1>
+            <div className="university-meta">
 
-              <p>
-                {university.name}
-              </p>
+              <div className="meta-item">
+                <MapPin size={17} />
+                <span>{university.city}</span>
+              </div>
 
-
-              <div className="hero-meta">
-
+              <div className="meta-item">
+                <BookOpen size={17} />
                 <span>
-                  <MapPin size={16} />
-                  {university.city}
+                  {totalColleges} كلية
                 </span>
+              </div>
 
+              <div className="meta-item">
+                <Sparkles size={17} />
                 <span>
-                  <GraduationCap size={16} />
-                  {university.colleges.length} كلية
+                  {totalMajors} تخصص
                 </span>
-
               </div>
 
             </div>
 
           </div>
 
-        </div>
-      </section>
+        </header>
 
-
-      {/* =========================
-          Colleges Section
-      ========================== */}
-
-      <section className="university-colleges-section">
-
-        <div className="container">
+        {/* عنوان الكليات */}
+        <section className="colleges-section">
 
           <div className="section-heading">
 
-            <span className="section-kicker">
-              الدليل الأكاديمي
+            <span className="section-icon">
+              <GraduationCap size={24} />
             </span>
 
-            <h2>
-              كليات وتخصصات {university.name}
-            </h2>
+            <div>
+              <h2>كليات الجامعة</h2>
 
-            <p>
-              تعرّف على الكليات والتخصصات والبرامج
-              الأكاديمية المتاحة في الجامعة.
-            </p>
+              <p>
+                اختر الكلية للاطلاع على التخصصات والبرامج
+                الأكاديمية المتاحة.
+              </p>
+            </div>
 
           </div>
 
-
-          {/* =========================
-              Colleges Grid
-          ========================== */}
-
+          {/* بطاقات الكليات */}
           <div className="colleges-grid">
 
-            {university.colleges.map(
-              (college, index) => (
+            {university.colleges.map((college, index) => (
 
-                <article
-                  key={`${college.name}-${index}`}
-                  className="college-card"
-                >
+              <article
+                key={`${university.slug}-${college.name}`}
+                className="college-card"
+              >
 
-                  {/* College Header */}
+                {/* أيقونة الكلية */}
+                <div className="college-icon">
+                  <GraduationCap size={30} />
+                </div>
 
-                  <div className="college-card-header">
+                {/* رقم الكلية */}
+                <span className="college-number">
+                  الكلية {index + 1}
+                </span>
 
-                    <div className="college-icon">
-                      <GraduationCap size={25} />
-                    </div>
+                {/* اسم الكلية */}
+                <h3>{college.name}</h3>
 
+                <div className="card-divider" />
 
-                    <div className="college-title">
+                {/* عنوان التخصصات */}
+                <div className="majors-title">
+                  <BookOpen size={17} />
+                  <span>التخصصات والبرامج</span>
+                </div>
 
-                      <span>
-                        الكلية {index + 1}
-                      </span>
+                {/* عدد التخصصات */}
+                <div className="majors-count">
+                  {college.majors.length > 0
+                    ? `${college.majors.length} تخصص`
+                    : "لا توجد تخصصات مضافة"}
+                </div>
 
-                      <h3>
-                        {college.name}
-                      </h3>
+                {/* التخصصات */}
+                {college.majors.length > 0 ? (
+                  <div className="majors-list">
 
-                    </div>
-
-                  </div>
-
-
-                  <div className="college-divider" />
-
-
-                  {/* Specialties */}
-
-                  <div className="college-specialties">
-
-                    <div className="specialties-heading">
-
-                      <div>
-                        <BookOpen size={18} />
-
-                        <span>
-                          التخصصات والبرامج
-                        </span>
+                    {college.majors.map((major) => (
+                      <div
+                        key={major}
+                        className="major-item"
+                      >
+                        <span className="major-dot" />
+                        <span>{major}</span>
                       </div>
-
-
-                      <span className="specialties-count">
-                        {college.majors.length} تخصص
-                      </span>
-
-                    </div>
-
-
-                    {college.majors.length > 0 ? (
-
-                      <ul className="majors-list">
-
-                        {college.majors.map(
-                          (
-                            major,
-                            majorIndex
-                          ) => (
-
-                            <li
-                              key={`${major}-${majorIndex}`}
-                            >
-
-                              <span className="major-dot" />
-
-                              <span>
-                                {major}
-                              </span>
-
-                            </li>
-
-                          )
-                        )}
-
-                      </ul>
-
-                    ) : (
-
-                      <p className="no-majors">
-                        لا توجد تخصصات مضافة حاليًا.
-                      </p>
-
-                    )}
+                    ))}
 
                   </div>
+                ) : (
+                  <div className="empty-majors">
+                    سيتم إضافة التخصصات قريبًا
+                  </div>
+                )}
 
-                </article>
+              </article>
 
-              )
-            )}
+            ))}
 
           </div>
 
-        </div>
+        </section>
 
-      </section>
+      </div>
 
+      <style jsx>{`
 
-      {/* =========================
-          Local CSS
-      ========================== */}
-
-      <style>{`
-
-        .university-colleges-page {
+        .colleges-page {
           min-height: 100vh;
-          background: #f8fbff;
-        }
-
-
-        /* =========================
-           Hero
-        ========================== */
-
-        .university-colleges-hero {
-          padding: 35px 0 65px;
-
+          padding: 30px 20px 80px;
           background:
-            radial-gradient(
-              circle at 15% 15%,
-              rgba(
-                233,
-                178,
-                76,
-                0.16
-              ),
-              transparent 25%
-            ),
             linear-gradient(
-              135deg,
-              #2455c4,
-              #1f4caf,
-              #183d91
+              180deg,
+              #f8fbff 0%,
+              #ffffff 45%,
+              #f8fbff 100%
             );
-
-          color: #fff;
+          direction: rtl;
         }
 
+        .colleges-container {
+          width: 100%;
+          max-width: 1180px;
+          margin: 0 auto;
+        }
 
         /* =========================
-           Back Link
-        ========================== */
+           Back
+        ========================= */
+
+        .back-area {
+          margin-bottom: 28px;
+        }
 
         .back-link {
           display: inline-flex;
-
           align-items: center;
-
           gap: 8px;
 
-          margin-bottom: 35px;
+          padding: 10px 16px;
 
-          color:
-            rgba(
-              255,
-              255,
-              255,
-              0.92
-            );
+          border: 1px solid #e4ebf4;
+          border-radius: 12px;
+
+          background: #ffffff;
+          color: #2455c4;
+
+          font-size: 14px;
+          font-weight: 700;
 
           text-decoration: none;
 
-          font-size: 14px;
-
-          font-weight: 700;
+          box-shadow:
+            0 4px 16px rgba(23, 35, 61, 0.05);
 
           transition:
-            opacity 0.2s ease;
+            transform 0.2s ease,
+            background 0.2s ease,
+            color 0.2s ease,
+            box-shadow 0.2s ease;
         }
-
 
         .back-link:hover {
-          opacity: 0.75;
-        }
+          background: #2455c4;
+          color: #ffffff;
 
-
-        /* =========================
-           Hero Content
-        ========================== */
-
-        .colleges-hero-content {
-          display: flex;
-
-          align-items: center;
-
-          justify-content: center;
-
-          gap: 25px;
-
-          text-align: right;
-        }
-
-
-        .university-logo {
-          width: 125px;
-          height: 125px;
-
-          flex: 0 0 125px;
-
-          display: flex;
-
-          align-items: center;
-
-          justify-content: center;
-
-          border-radius: 28px;
-
-          background: #fff;
+          transform: translateX(3px);
 
           box-shadow:
-            0 18px 40px
-            rgba(
-              0,
-              0,
-              0,
-              0.16
-            );
+            0 8px 22px rgba(36, 85, 196, 0.15);
         }
 
+        /* =========================
+           Header
+        ========================= */
+
+        .page-header {
+          display: flex;
+          align-items: center;
+          gap: 28px;
+
+          padding: 34px;
+
+          margin-bottom: 45px;
+
+          border: 1px solid #e4ebf4;
+          border-radius: 24px;
+
+          background: #ffffff;
+
+          box-shadow:
+            0 12px 35px rgba(23, 35, 61, 0.06);
+        }
+
+        .university-logo {
+          width: 120px;
+          height: 120px;
+
+          flex-shrink: 0;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          border-radius: 22px;
+
+          background:
+            linear-gradient(
+              145deg,
+              #f4f8ff,
+              #ffffff
+            );
+
+          border: 1px solid #e4ebf4;
+
+          box-shadow:
+            0 8px 22px rgba(36, 85, 196, 0.08);
+        }
 
         .university-logo img {
-          width: 100px;
-          height: 100px;
-
           object-fit: contain;
         }
 
-
-        .hero-text {
-          display: flex;
-
-          flex-direction: column;
-
-          align-items: flex-start;
+        .header-content {
+          flex: 1;
         }
 
+        .eyebrow {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
 
-        .hero-kicker {
-          margin-bottom: 8px;
+          gap: 7px;
 
-          color: #f6d78d;
+          margin-bottom: 10px;
+
+          color: #2455c4;
 
           font-size: 14px;
-
           font-weight: 800;
         }
 
+        .header-content h1 {
+          margin: 0 0 10px;
 
-        .hero-text h1 {
-          margin: 0;
+          color: #17233d;
 
-          color: #fff;
-
-          font-size:
-            clamp(
-              30px,
-              5vw,
-              48px
-            );
+          font-size: clamp(25px, 4vw, 36px);
+          line-height: 1.35;
 
           font-weight: 900;
-
-          line-height: 1.3;
         }
 
+        .header-content p {
+          margin: 0;
 
-        .hero-text p {
-          margin: 8px 0 0;
+          max-width: 720px;
 
-          color:
-            rgba(
-              255,
-              255,
-              255,
-              0.88
-            );
+          color: #697791;
 
-          font-size: 17px;
-
-          font-weight: 700;
+          font-size: 15px;
+          line-height: 1.9;
         }
 
-
-        .hero-meta {
+        .university-meta {
           display: flex;
-
           align-items: center;
-
           flex-wrap: wrap;
 
           gap: 10px;
 
-          margin-top: 18px;
+          margin-top: 20px;
         }
 
-
-        .hero-meta span {
+        .meta-item {
           display: inline-flex;
-
           align-items: center;
+          justify-content: center;
 
           gap: 7px;
 
-          padding:
-            8px 12px;
+          padding: 8px 12px;
 
-          border-radius: 12px;
+          border-radius: 10px;
 
-          background:
-            rgba(
-              255,
-              255,
-              255,
-              0.11
-            );
+          background: #f4f7fb;
 
-          color: #fff;
+          color: #596982;
 
           font-size: 13px;
-
           font-weight: 700;
         }
 
+        .meta-item svg {
+          color: #2455c4;
+        }
 
         /* =========================
-           Section
-        ========================== */
+           Section heading
+        ========================= */
 
-        .university-colleges-section {
-          padding: 75px 0;
+        .colleges-section {
+          margin-top: 10px;
         }
-
 
         .section-heading {
-          margin-bottom: 40px;
+          display: flex;
+          align-items: center;
+          gap: 14px;
 
-          text-align: center;
+          margin-bottom: 25px;
         }
 
+        .section-icon {
+          width: 52px;
+          height: 52px;
 
-        .section-kicker {
-          color: #2455c4;
+          flex-shrink: 0;
 
-          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-          font-weight: 800;
+          border-radius: 15px;
+
+          background: #2455c4;
+          color: #ffffff;
+
+          box-shadow:
+            0 8px 18px rgba(36, 85, 196, 0.18);
         }
-
 
         .section-heading h2 {
-          margin:
-            8px 0 10px;
+          margin: 0 0 4px;
 
           color: #17233d;
 
-          font-size:
-            clamp(
-              27px,
-              4vw,
-              40px
-            );
-
+          font-size: 24px;
           font-weight: 900;
-
-          line-height: 1.5;
         }
 
-
         .section-heading p {
-          max-width: 650px;
-
-          margin: 0 auto;
+          margin: 0;
 
           color: #697791;
 
-          line-height: 1.9;
+          font-size: 14px;
+          line-height: 1.7;
         }
-
 
         /* =========================
            Colleges Grid
-        ========================== */
+        ========================= */
 
         .colleges-grid {
           display: grid;
 
           grid-template-columns:
-            repeat(
-              2,
-              minmax(0, 1fr)
-            );
+            repeat(2, minmax(0, 1fr));
 
-          gap: 24px;
-
-          max-width: 1050px;
-
-          margin: 0 auto;
+          gap: 22px;
         }
-
 
         /* =========================
            College Card
-        ========================== */
+        ========================= */
 
         .college-card {
           position: relative;
 
-          padding: 26px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
 
-          border:
-            1px solid #e4ebf4;
+          padding: 30px 24px 26px;
 
-          border-radius: 24px;
+          min-height: 390px;
 
-          background: #fff;
+          text-align: center;
+
+          border: 1px solid #e4ebf4;
+          border-radius: 22px;
+
+          background: #ffffff;
 
           box-shadow:
-            0 8px 28px
-            rgba(
-              23,
-              35,
-              61,
-              0.05
-            );
+            0 8px 28px rgba(23, 35, 61, 0.05);
+
+          overflow: hidden;
 
           transition:
             transform 0.25s ease,
@@ -578,377 +493,334 @@ export default async function UniversityCollegesPage({
             border-color 0.25s ease;
         }
 
+        .college-card::before {
+          content: "";
 
-        .college-card:hover {
-          transform:
-            translateY(-5px);
+          position: absolute;
 
-          border-color:
-            rgba(
-              36,
-              85,
-              196,
-              0.22
-            );
+          top: 0;
+          right: 0;
+          left: 0;
 
-          box-shadow:
-            0 18px 45px
-            rgba(
-              36,
-              85,
-              196,
-              0.10
-            );
-        }
-
-
-        /* =========================
-           College Header
-        ========================== */
-
-        .college-card-header {
-          display: flex;
-
-          align-items: center;
-
-          gap: 16px;
-        }
-
-
-        .college-icon {
-          width: 58px;
-          height: 58px;
-
-          flex: 0 0 58px;
-
-          display: flex;
-
-          align-items: center;
-
-          justify-content: center;
-
-          border-radius: 17px;
+          height: 4px;
 
           background:
             linear-gradient(
-              135deg,
-              #e8f1ff,
-              #f3f7ff
+              90deg,
+              #2455c4,
+              #4d78d8,
+              #e9b24c
+            );
+
+          opacity: 0.9;
+        }
+
+        .college-card:hover {
+          transform: translateY(-5px);
+
+          border-color: rgba(36, 85, 196, 0.18);
+
+          box-shadow:
+            0 16px 38px rgba(23, 35, 61, 0.09);
+        }
+
+        /* =========================
+           College Icon
+        ========================= */
+
+        .college-icon {
+          width: 72px;
+          height: 72px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          margin-bottom: 14px;
+
+          border-radius: 20px;
+
+          background:
+            linear-gradient(
+              145deg,
+              #edf4ff,
+              #f8fbff
             );
 
           color: #2455c4;
+
+          border: 1px solid #dce8f8;
+
+          box-shadow:
+            0 8px 20px rgba(36, 85, 196, 0.08);
         }
 
+        .college-number {
+          margin-bottom: 8px;
 
-        .college-title {
-          min-width: 0;
-        }
-
-
-        .college-title > span {
-          display: block;
-
-          margin-bottom: 4px;
-
-          color: #697791;
+          color: #8a96aa;
 
           font-size: 12px;
-
-          font-weight: 700;
+          font-weight: 800;
         }
 
-
-        .college-title h3 {
+        .college-card h3 {
           margin: 0;
 
           color: #17233d;
 
-          font-size: 19px;
+          font-size: 20px;
+          line-height: 1.6;
 
           font-weight: 900;
-
-          line-height: 1.6;
         }
 
+        .card-divider {
+          width: 55px;
+          height: 2px;
+
+          margin: 18px auto;
+
+          border-radius: 20px;
+
+          background: #e9b24c;
+        }
 
         /* =========================
-           Divider
-        ========================== */
+           Majors Header
+        ========================= */
 
-        .college-divider {
-          height: 1px;
-
-          margin:
-            22px 0;
-
-          background: #edf1f6;
-        }
-
-
-        /* =========================
-           Specialties
-        ========================== */
-
-        .college-specialties {
-          width: 100%;
-        }
-
-
-        .specialties-heading {
+        .majors-title {
           display: flex;
-
           align-items: center;
-
-          justify-content: space-between;
-
-          gap: 12px;
-
-          margin-bottom: 14px;
-        }
-
-
-        .specialties-heading > div {
-          display: flex;
-
-          align-items: center;
+          justify-content: center;
 
           gap: 7px;
 
           color: #2455c4;
 
           font-size: 14px;
-
-          font-weight: 900;
+          font-weight: 800;
         }
 
-
-        .specialties-count {
-          padding:
-            5px 9px;
-
-          border-radius: 8px;
-
-          background: #f4f7fb;
+        .majors-count {
+          margin-top: 7px;
 
           color: #697791;
 
-          font-size: 11px;
-
-          font-weight: 800;
-
-          white-space: nowrap;
+          font-size: 12px;
+          font-weight: 700;
         }
-
 
         /* =========================
            Majors
-        ========================== */
+        ========================= */
 
         .majors-list {
-          display: grid;
+          width: 100%;
 
-          grid-template-columns:
-            repeat(
-              2,
-              minmax(0, 1fr)
-            );
+          display: flex;
+          flex-wrap: wrap;
+
+          align-items: center;
+          justify-content: center;
 
           gap: 8px;
 
-          margin: 0;
-
-          padding: 0;
-
-          list-style: none;
+          margin-top: 18px;
         }
 
+        .major-item {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
 
-        .majors-list li {
-          display: flex;
+          gap: 7px;
 
-          align-items: flex-start;
+          min-height: 38px;
 
-          gap: 8px;
+          padding: 7px 12px;
 
-          min-height: 42px;
-
-          padding:
-            9px 10px;
-
-          border:
-            1px solid #edf1f6;
-
+          border: 1px solid #e5ebf3;
           border-radius: 10px;
 
-          background: #fafcff;
+          background: #f9fbfe;
 
-          color: #4f5f78;
+          color: #46566f;
 
           font-size: 12px;
+          line-height: 1.5;
 
-          font-weight: 600;
-
-          line-height: 1.7;
+          font-weight: 700;
 
           transition:
             background 0.2s ease,
-            border-color 0.2s ease;
+            border-color 0.2s ease,
+            color 0.2s ease;
         }
 
+        .major-item:hover {
+          background: #edf4ff;
 
-        .majors-list li:hover {
-          background: #f3f7ff;
+          border-color: #cbdcf5;
 
-          border-color:
-            rgba(
-              36,
-              85,
-              196,
-              0.15
-            );
+          color: #2455c4;
         }
-
 
         .major-dot {
           width: 6px;
           height: 6px;
 
-          flex: 0 0 6px;
-
-          margin-top: 8px;
+          flex-shrink: 0;
 
           border-radius: 50%;
 
-          background: #2455c4;
+          background: #e9b24c;
         }
 
+        .empty-majors {
+          margin-top: 18px;
 
-        .no-majors {
-          margin: 0;
+          padding: 12px 16px;
 
-          padding: 15px;
+          border-radius: 10px;
 
-          border-radius: 12px;
+          background: #f7f9fc;
 
-          background: #f8fafc;
+          color: #7a879a;
 
-          color: #697791;
-
-          font-size: 13px;
-
-          text-align: center;
+          font-size: 12px;
+          font-weight: 700;
         }
-
 
         /* =========================
-           Responsive
-        ========================== */
+           Tablet
+        ========================= */
 
         @media (max-width: 800px) {
 
           .colleges-grid {
             grid-template-columns: 1fr;
+          }
 
-            max-width: 700px;
+          .page-header {
+            padding: 26px;
+
+            gap: 20px;
+          }
+
+          .university-logo {
+            width: 100px;
+            height: 100px;
           }
 
         }
 
+        /* =========================
+           Mobile
+        ========================= */
 
         @media (max-width: 600px) {
 
-          .university-colleges-hero {
+          .colleges-page {
             padding:
-              30px 0 55px;
+              20px
+              12px
+              60px;
           }
 
+          .back-area {
+            margin-bottom: 20px;
+          }
 
-          .colleges-hero-content {
+          .back-link {
+            padding: 9px 13px;
+
+            font-size: 13px;
+          }
+
+          .page-header {
+            flex-direction: column;
+
+            text-align: center;
+
+            padding: 25px 18px;
+
+            border-radius: 20px;
+          }
+
+          .university-logo {
+            width: 90px;
+            height: 90px;
+
+            border-radius: 18px;
+          }
+
+          .header-content {
+            width: 100%;
+          }
+
+          .header-content h1 {
+            font-size: 24px;
+          }
+
+          .header-content p {
+            font-size: 13px;
+          }
+
+          .university-meta {
+            justify-content: center;
+          }
+
+          .meta-item {
+            font-size: 12px;
+          }
+
+          .section-heading {
             flex-direction: column;
 
             text-align: center;
           }
 
-
-          .hero-text {
-            align-items: center;
+          .section-heading h2 {
+            font-size: 21px;
           }
 
-
-          .university-logo {
-            width: 115px;
-            height: 115px;
-
-            flex-basis: 115px;
+          .section-heading p {
+            font-size: 13px;
           }
-
-
-          .university-logo img {
-            width: 90px;
-            height: 90px;
-          }
-
-
-          .hero-text h1 {
-            font-size: 30px;
-          }
-
-
-          .hero-text p {
-            font-size: 15px;
-          }
-
-
-          .hero-meta {
-            justify-content: center;
-          }
-
-
-          .university-colleges-section {
-            padding: 60px 0;
-          }
-
 
           .college-card {
-            padding: 20px;
+            min-height: auto;
 
-            border-radius: 20px;
+            padding:
+              28px
+              16px
+              24px;
+
+            border-radius: 19px;
           }
 
-
-          .college-card-header {
-            gap: 12px;
+          .college-card h3 {
+            font-size: 18px;
           }
-
 
           .college-icon {
-            width: 50px;
-            height: 50px;
-
-            flex-basis: 50px;
-
-            border-radius: 14px;
+            width: 66px;
+            height: 66px;
           }
 
+          .major-item {
+            font-size: 11px;
 
-          .college-title h3 {
-            font-size: 17px;
-          }
-
-
-          .majors-list {
-            grid-template-columns: 1fr;
-          }
-
-
-          .specialties-heading {
-            align-items: flex-start;
+            padding:
+              7px
+              10px;
           }
 
         }
 
       `}</style>
-
     </main>
   )
 }
