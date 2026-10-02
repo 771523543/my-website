@@ -1,11 +1,23 @@
+import type { ReactNode } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+
 import {
   ArrowRight,
   GraduationCap,
+  MapPin,
+  CalendarDays,
+  BookOpen,
+  Search,
+  Globe,
+  FileText,
+  ClipboardList,
+  BarChart3,
+  Mail,
+  HelpCircle,
 } from "lucide-react"
 
-import UniversityServiceCard from "@/app/components/universities/UniversityServiceCard"
 import { universities } from "@/app/components/universities/data"
 
 type Props = {
@@ -33,233 +45,848 @@ export default async function UniversityPage({ params }: Props) {
 
   return (
     <main className="university-details-page">
+
+      {/* =========================
+          University Hero
+      ========================== */}
+
       <section className="university-details-hero">
         <div className="container">
+
           <Link
             href="/universities"
             className="back-link"
           >
             <ArrowRight size={18} />
+
             العودة إلى الجامعات
           </Link>
 
-          <div className="university-title">
-            <div className="university-title-icon">
-              <GraduationCap size={34} />
+          <div className="university-profile">
+
+            <div className="university-profile-logo">
+              <Image
+                src={university.logo}
+                alt={`شعار ${university.name}`}
+                width={130}
+                height={130}
+              />
             </div>
 
-            <div>
-              <span>الخدمات الجامعية</span>
+            <div className="university-profile-content">
+
+              <span className="profile-kicker">
+                دليل الجامعة
+              </span>
+
               <h1>{university.name}</h1>
+
+              <p>
+                {university.description}
+              </p>
+
+              <div className="profile-meta">
+
+                <span>
+                  <CalendarDays size={17} />
+
+                  تأسست {university.founded}
+                </span>
+
+                <span>
+                  <MapPin size={17} />
+
+                  {university.city}
+                </span>
+
+                <span>
+                  <GraduationCap size={17} />
+
+                  {university.colleges.length} كلية
+                </span>
+
+              </div>
             </div>
           </div>
-
-          <p>{university.description}</p>
         </div>
       </section>
 
-      <section className="university-services-section">
+
+      {/* =========================
+          Colleges & Majors
+      ========================== */}
+
+      <section className="colleges-section">
         <div className="container">
+
           <div className="section-heading">
+
             <span className="section-kicker">
-              خدمات الجامعة
+              التخصصات الأكاديمية
             </span>
 
-            <h2>ماذا تريد أن تعرف؟</h2>
+            <h2>
+              كليات الجامعة
+            </h2>
+
+            <p>
+              اختر الكلية للتعرف على التخصصات والبرامج
+              المرتبطة بها.
+            </p>
+
           </div>
 
-          <div className="services-grid">
-            {university.services.map((service) => (
-              <UniversityServiceCard
-                key={service.title}
-                title={service.title}
-                description={service.description}
-                icon={service.icon}
-              />
-            ))}
+
+          <div className="colleges-grid">
+
+            {university.colleges.map(
+              (college, index) => (
+
+                <details
+                  className="college-card"
+                  key={college.name}
+                >
+
+                  <summary>
+
+                    <span className="college-number">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    <span className="college-icon">
+                      <GraduationCap size={22} />
+                    </span>
+
+                    <span className="college-name">
+                      {college.name}
+                    </span>
+
+                    <span className="college-count">
+                      {college.majors.length}
+                    </span>
+
+                  </summary>
+
+
+                  <div className="majors-list">
+
+                    <div className="majors-title">
+
+                      <BookOpen size={17} />
+
+                      التخصصات
+
+                    </div>
+
+
+                    <div className="majors-items">
+
+                      {college.majors.map(
+                        (major) => (
+
+                          <span key={major}>
+                            {major}
+                          </span>
+
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+                </details>
+
+              )
+            )}
+
           </div>
+
         </div>
       </section>
 
+
+      {/* =========================
+          Student Section
+      ========================== */}
+
+      <section className="student-section">
+
+        <div className="container">
+
+          <div className="section-heading">
+
+            <span className="section-kicker">
+              للطلاب
+            </span>
+
+            <h2>
+              ماذا تريد أن تعرف؟
+            </h2>
+
+            <p>
+              أهم المعلومات التي يحتاجها الطالب أثناء
+              دراسته الجامعية.
+            </p>
+
+          </div>
+
+
+          <div className="student-grid">
+
+            <StudentCard
+              icon={<Search size={23} />}
+              title="القبول والتسجيل"
+              description="معلومات القبول والتسجيل والبرامج المتاحة."
+            />
+
+            <StudentCard
+              icon={<Globe size={23} />}
+              title="البوابة الأكاديمية"
+              description="الوصول إلى الأنظمة والبوابات الإلكترونية."
+            />
+
+            <StudentCard
+              icon={<ClipboardList size={23} />}
+              title="التسجيل في المقررات"
+              description="معلومات التسجيل والحذف والإضافة."
+            />
+
+            <StudentCard
+              icon={<CalendarDays size={23} />}
+              title="التقويم الأكاديمي"
+              description="مواعيد الدراسة والاختبارات والإجازات."
+            />
+
+            <StudentCard
+              icon={<BarChart3 size={23} />}
+              title="النتائج والسجل الأكاديمي"
+              description="معلومات النتائج والمعدل والسجل الأكاديمي."
+            />
+
+            <StudentCard
+              icon={<Mail size={23} />}
+              title="البريد الجامعي"
+              description="معلومات البريد والخدمات المرتبطة به."
+            />
+
+            <StudentCard
+              icon={<FileText size={23} />}
+              title="الأدلة والشروحات"
+              description="شروحات مبسطة للأنظمة والخدمات الجامعية."
+            />
+
+            <StudentCard
+              icon={<HelpCircle size={23} />}
+              title="الأسئلة الشائعة"
+              description="إجابات عن أكثر الاستفسارات التي يبحث عنها الطلاب."
+            />
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      {/* =========================
+          Local CSS
+      ========================== */}
+
       <style>{`
+
         .university-details-page {
-          min-height: 70vh;
+          min-height: 100vh;
+          background: #f8fbff;
         }
 
+
+        /* Hero */
+
         .university-details-hero {
-          padding: 55px 0 65px;
-          background: linear-gradient(
-            180deg,
-            #f8fbff 0%,
-            #ffffff 100%
-          );
+          padding: 45px 0 70px;
+
+          background:
+            radial-gradient(
+              circle at 15% 15%,
+              rgba(233, 178, 76, 0.16),
+              transparent 25%
+            ),
+            linear-gradient(
+              135deg,
+              #2455c4,
+              #1f4caf,
+              #183d91
+            );
+
+          color: #fff;
         }
+
 
         .back-link {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          margin-bottom: 38px;
-          color: #2455c4;
+
+          color: rgba(255, 255, 255, 0.9);
+
           text-decoration: none;
+
           font-size: 14px;
           font-weight: 700;
+
+          margin-bottom: 45px;
         }
 
-        .university-title {
+
+        .university-profile {
           display: flex;
           align-items: center;
-          gap: 20px;
+
+          gap: 35px;
+
+          direction: rtl;
         }
 
-        .university-title-icon {
-          width: 72px;
-          height: 72px;
-          flex-shrink: 0;
+
+        .university-profile-logo {
+          flex: 0 0 150px;
+
+          width: 150px;
+          height: 150px;
+
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 20px;
-          background: #e8f1ff;
-          color: #2455c4;
+
+          border-radius: 32px;
+
+          background: #fff;
+
+          box-shadow:
+            0 18px 40px rgba(0, 0, 0, 0.16);
         }
 
-        .university-title span {
-          color: #2455c4;
+
+        .university-profile-logo img {
+          width: 120px;
+          height: 120px;
+
+          object-fit: contain;
+        }
+
+
+        .university-profile-content {
+          flex: 1;
+        }
+
+
+        .profile-kicker {
+          display: inline-block;
+
+          margin-bottom: 10px;
+
+          color: #f6d78d;
+
           font-size: 14px;
-          font-weight: 700;
-        }
-
-        .university-title h1 {
-          margin: 6px 0 0;
-          color: #17233d;
-          font-size: clamp(30px, 5vw, 46px);
           font-weight: 800;
         }
 
-        .university-details-hero > .container > p {
-          max-width: 700px;
-          margin: 24px 0 0;
-          color: #697791;
-          line-height: 1.9;
-          font-size: 17px;
+
+        .university-profile h1 {
+          margin: 0;
+
+          color: #fff;
+
+          font-size: clamp(
+            32px,
+            5vw,
+            50px
+          );
+
+          font-weight: 900;
+
+          line-height: 1.25;
         }
 
-        .university-services-section {
-          padding: 20px 0 90px;
+
+        .university-profile p {
+          max-width: 800px;
+
+          margin: 15px 0 0;
+
+          color: rgba(
+            255,
+            255,
+            255,
+            0.88
+          );
+
+          font-size: 16px;
+
+          line-height: 2;
         }
+
+
+        .profile-meta {
+          display: flex;
+          align-items: center;
+
+          flex-wrap: wrap;
+
+          gap: 10px;
+
+          margin-top: 22px;
+        }
+
+
+        .profile-meta span {
+          display: inline-flex;
+          align-items: center;
+
+          gap: 7px;
+
+          padding: 9px 13px;
+
+          border-radius: 12px;
+
+          background: rgba(
+            255,
+            255,
+            255,
+            0.11
+          );
+
+          color: #fff;
+
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+
+        /* Sections */
+
+        .colleges-section,
+        .student-section {
+          padding: 80px 0;
+        }
+
+
+        .student-section {
+          background: #fff;
+        }
+
 
         .section-heading {
-          margin-bottom: 35px;
+          text-align: center;
+
+          margin-bottom: 38px;
         }
+
 
         .section-kicker {
           color: #2455c4;
-          font-size: 14px;
-          font-weight: 700;
-        }
 
-        .section-heading h2 {
-          margin: 10px 0 0;
-          color: #17233d;
-          font-size: clamp(25px, 4vw, 36px);
+          font-size: 14px;
+
           font-weight: 800;
         }
 
-        .services-grid {
+
+        .section-heading h2 {
+          margin: 8px 0 10px;
+
+          color: #17233d;
+
+          font-size: clamp(
+            28px,
+            4vw,
+            40px
+          );
+
+          font-weight: 900;
+        }
+
+
+        .section-heading p {
+          max-width: 650px;
+
+          margin: auto;
+
+          color: #697791;
+
+          line-height: 1.9;
+        }
+
+
+        /* Colleges */
+
+        .colleges-grid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 20px;
+
+          grid-template-columns:
+            repeat(
+              3,
+              minmax(0, 1fr)
+            );
+
+          gap: 16px;
         }
 
-        .university-service-card {
-          position: relative;
-          display: flex;
-          align-items: flex-start;
-          gap: 18px;
-          padding: 24px;
-          background: #ffffff;
+
+        .college-card {
+          background: #fff;
+
           border: 1px solid #e4ebf4;
-          border-radius: 20px;
-          box-shadow: 0 8px 25px rgba(23, 35, 61, 0.05);
+
+          border-radius: 18px;
+
+          overflow: hidden;
+
           transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease;
+            border-color 0.25s ease,
+            box-shadow 0.25s ease,
+            transform 0.25s ease;
         }
 
-        .university-service-card:hover {
+
+        .college-card:hover {
           transform: translateY(-3px);
-          box-shadow: 0 14px 32px rgba(36, 85, 196, 0.1);
+
+          border-color:
+            rgba(
+              36,
+              85,
+              196,
+              0.25
+            );
+
+          box-shadow:
+            0 12px 30px
+            rgba(
+              36,
+              85,
+              196,
+              0.08
+            );
         }
 
-        .university-service-icon {
-          width: 52px;
-          height: 52px;
-          flex-shrink: 0;
+
+        .college-card summary {
+          list-style: none;
+
+          cursor: pointer;
+
+          display: grid;
+
+          grid-template-columns:
+            34px 45px 1fr 28px;
+
+          align-items: center;
+
+          gap: 10px;
+
+          padding: 17px;
+
+          direction: rtl;
+        }
+
+
+        .college-card
+        summary::-webkit-details-marker {
+          display: none;
+        }
+
+
+        .college-number {
+          color: #a4aec0;
+
+          font-size: 11px;
+
+          font-weight: 800;
+
+          direction: ltr;
+
+          text-align: center;
+        }
+
+
+        .college-icon {
+          width: 45px;
+          height: 45px;
+
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 15px;
+
+          border-radius: 13px;
+
           background: #e8f1ff;
-          font-size: 24px;
+
+          color: #2455c4;
         }
 
-        .university-service-card h3 {
-          margin: 0 0 8px;
+
+        .college-name {
           color: #17233d;
-          font-size: 18px;
+
+          font-size: 14px;
+
+          font-weight: 800;
+
+          line-height: 1.6;
+        }
+
+
+        .college-count {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          width: 28px;
+          height: 28px;
+
+          border-radius: 50%;
+
+          background: #f4f7fb;
+
+          color: #2455c4;
+
+          font-size: 11px;
+
           font-weight: 800;
         }
 
-        .university-service-card p {
+
+        .majors-list {
+          padding:
+            0 20px 20px;
+
+          direction: rtl;
+        }
+
+
+        .majors-title {
+          display: flex;
+          align-items: center;
+
+          gap: 7px;
+
+          margin-bottom: 12px;
+
+          color: #2455c4;
+
+          font-size: 13px;
+
+          font-weight: 800;
+        }
+
+
+        .majors-items {
+          display: flex;
+
+          flex-wrap: wrap;
+
+          gap: 8px;
+        }
+
+
+        .majors-items span {
+          padding:
+            8px 11px;
+
+          border-radius: 10px;
+
+          background: #f4f7fb;
+
+          color: #53617a;
+
+          font-size: 12px;
+
+          font-weight: 600;
+
+          line-height: 1.5;
+        }
+
+
+        /* Student Cards */
+
+        .student-grid {
+          display: grid;
+
+          grid-template-columns:
+            repeat(
+              4,
+              minmax(0, 1fr)
+            );
+
+          gap: 16px;
+        }
+
+
+        .student-card {
+          display: flex;
+
+          align-items: flex-start;
+
+          gap: 14px;
+
+          padding: 20px;
+
+          background: #fff;
+
+          border: 1px solid #e4ebf4;
+
+          border-radius: 18px;
+
+          box-shadow:
+            0 8px 25px
+            rgba(
+              23,
+              35,
+              61,
+              0.04
+            );
+        }
+
+
+        .student-icon {
+          width: 48px;
+          height: 48px;
+
+          flex: 0 0 48px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          border-radius: 14px;
+
+          background: #e8f1ff;
+
+          color: #2455c4;
+        }
+
+
+        .student-card h3 {
+          margin: 0 0 7px;
+
+          color: #17233d;
+
+          font-size: 15px;
+
+          font-weight: 800;
+
+          line-height: 1.6;
+        }
+
+
+        .student-card p {
           margin: 0;
+
           color: #697791;
-          font-size: 14px;
+
+          font-size: 12px;
+
           line-height: 1.8;
         }
 
-        .university-service-arrow {
-          position: absolute;
-          left: 20px;
-          bottom: 18px;
-          color: #2455c4;
-          font-size: 18px;
+
+        /* Responsive */
+
+        @media (max-width: 1050px) {
+
+          .colleges-grid,
+          .student-grid {
+            grid-template-columns:
+              repeat(
+                2,
+                minmax(0, 1fr)
+              );
+          }
+
         }
+
 
         @media (max-width: 700px) {
-          .university-title {
+
+          .university-profile {
             align-items: flex-start;
+
+            flex-direction: column;
           }
 
-          .services-grid {
+
+          .colleges-grid,
+          .student-grid {
             grid-template-columns: 1fr;
           }
+
         }
+
 
         @media (max-width: 480px) {
+
           .university-details-hero {
-            padding: 40px 0 50px;
+            padding:
+              40px 0 50px;
           }
 
-          .university-title {
-            gap: 14px;
+
+          .university-profile-logo {
+            width: 125px;
+            height: 125px;
+
+            flex-basis: 125px;
           }
 
-          .university-title-icon {
-            width: 58px;
-            height: 58px;
-            border-radius: 16px;
+
+          .university-profile-logo img {
+            width: 100px;
+            height: 100px;
           }
 
-          .university-title h1 {
-            font-size: 28px;
-          }
-
-          .university-service-card {
-            padding: 20px;
-          }
         }
+
       `}</style>
+
     </main>
+  )
+}
+
+
+/* =========================
+   Student Card
+========================= */
+
+function StudentCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: ReactNode
+  title: string
+  description: string
+}) {
+  return (
+    <article className="student-card">
+
+      <div className="student-icon">
+        {icon}
+      </div>
+
+      <div>
+
+        <h3>
+          {title}
+        </h3>
+
+        <p>
+          {description}
+        </p>
+
+      </div>
+
+    </article>
   )
 }
