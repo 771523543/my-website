@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import {
   ArrowLeft,
   Menu,
@@ -16,8 +16,6 @@ const whatsapp = 'https://wa.me/967776280186'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
 
   const pathname = usePathname()
   const router = useRouter()
@@ -28,19 +26,9 @@ export default function Header() {
     setMenuOpen(false)
   }
 
-  const handleSearch = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    const query = searchValue.trim()
-
-    if (!query) {
-      return
-    }
-
+  const handleSearch = () => {
     closeMenu()
-    setSearchOpen(false)
-
-    router.push(`/search?q=${encodeURIComponent(query)}`)
+    router.push('/search')
   }
 
   const homeLink = isServicesPage ? '/' : '#top'
@@ -149,58 +137,14 @@ export default function Header() {
           </nav>
 
           <div className="nav-actions">
-            <form
-              className={
-                searchOpen
-                  ? 'header-search is-open'
-                  : 'header-search'
-              }
-              onSubmit={handleSearch}
+            <button
+              type="button"
+              className="header-search-toggle"
+              aria-label="فتح صفحة البحث"
+              onClick={handleSearch}
             >
-              <button
-                type="button"
-                className="header-search-toggle"
-                aria-label={
-                  searchOpen
-                    ? 'إغلاق البحث'
-                    : 'فتح البحث'
-                }
-                aria-expanded={searchOpen}
-                onClick={() => {
-                  setSearchOpen((current) => !current)
-                  setMenuOpen(false)
-                }}
-              >
-                {searchOpen ? (
-                  <X size={19} />
-                ) : (
-                  <Search size={19} />
-                )}
-              </button>
-
-              {searchOpen && (
-                <input
-                  type="search"
-                  value={searchValue}
-                  onChange={(event) =>
-                    setSearchValue(event.target.value)
-                  }
-                  placeholder="ابحث في الموقع..."
-                  aria-label="البحث في الموقع"
-                  autoFocus
-                />
-              )}
-
-              {searchOpen && (
-                <button
-                  type="submit"
-                  className="header-search-submit"
-                  aria-label="تنفيذ البحث"
-                >
-                  <ArrowLeft size={17} />
-                </button>
-              )}
-            </form>
+              <Search size={19} />
+            </button>
 
             <a
               className="primary-button header-order"
@@ -223,7 +167,6 @@ export default function Header() {
               aria-expanded={menuOpen}
               onClick={() => {
                 setMenuOpen((current) => !current)
-                setSearchOpen(false)
               }}
             >
               {menuOpen ? <X /> : <Menu />}
