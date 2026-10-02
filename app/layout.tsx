@@ -4,6 +4,7 @@ import './globals.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import FloatingWhatsApp from './components/FloatingWhatsApp'
+import GlobalBackButton from './components/GlobalBackButton'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://hadeel-alpha.vercel.app'),
@@ -136,6 +137,9 @@ export default function RootLayout({
         />
 
         <Header />
+
+        {/* زر الرجوع العام للصفحات الداخلية */}
+        <GlobalBackButton />
 
         {children}
 
