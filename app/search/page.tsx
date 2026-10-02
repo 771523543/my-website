@@ -8,8 +8,10 @@ import {
   Calculator,
   CheckCircle2,
   FileText,
+  GraduationCap,
   HelpCircle,
   LayoutGrid,
+  MapPin,
   MessageCircle,
   Search,
   Sparkles,
@@ -19,7 +21,11 @@ import {
 import { useSearchParams } from 'next/navigation'
 import { Suspense, useMemo } from 'react'
 
+import { services } from '@/app/components/Services'
+import { universities } from '@/app/components/universities/data'
+
 type SearchItem = {
+  id: string
   title: string
   description: string
   keywords: string
@@ -28,8 +34,252 @@ type SearchItem = {
   category: string
 }
 
-const searchItems: SearchItem[] = [
+/* =========================================================
+   تنظيف وتوحيد النص العربي
+   ========================================================= */
+
+function normalizeArabic(value: string) {
+  return value
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g, '')
+    .replace(/[أإآٱ]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/ـ/g, '')
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+/* =========================================================
+   حساب المسافة بين كلمتين
+   يستخدم لاكتشاف الأخطاء الإملائية البسيطة
+   ========================================================= */
+
+function levenshteinDistance(a: string, b: string) {
+  const matrix: number[][] = []
+
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i]
+  }
+
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j
+  }
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1]
+      } else {
+        matrix[i][j] =
+          Math.min(
+            matrix[i - 1][j] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j - 1] + 1
+          )
+      }
+    }
+  }
+
+  return matrix[b.length][a.length]
+}
+
+/* =========================================================
+   درجة التشابه بين كلمتين
+   ========================================================= */
+
+function wordSimilarity(queryWord: string, targetWord: string) {
+  if (!queryWord || !targetWord) {
+    return 0
+  }
+
+  if (queryWord === targetWord) {
+    return 1
+  }
+
+  if (
+    targetWord.includes(queryWord) ||
+    queryWord.includes(targetWord)
+  ) {
+    const shorter = Math.min(
+      queryWord.length,
+      targetWord.length
+    )
+
+    if (shorter >= 2) {
+      return 0.92
+    }
+  }
+
+  if (queryWord.length <= 2 || targetWord.length <= 2) {
+    return 0
+  }
+
+  const distance = levenshteinDistance(
+    queryWord,
+    targetWord
+  )
+
+  const maxLength = Math.max(
+    queryWord.length,
+    targetWord.length
+  )
+
+  const similarity = 1 - distance / maxLength
+
+  /*
+   * لا نعتبر الكلمات شديدة الاختلاف متشابهة.
+   */
+  if (queryWord.length <= 3) {
+    return distance <= 1 ? similarity : 0
+  }
+
+  if (queryWord.length <= 5) {
+    return distance <= 1 ? similarity : 0
+  }
+
+  return distance <= 2 ? similarity : 0
+}
+
+/* =========================================================
+   حساب نتيجة البحث
+   ========================================================= */
+
+function calculateSearchScore(
+  query: string,
+  item: SearchItem
+) {
+  const normalizedQuery = normalizeArabic(query)
+
+  if (!normalizedQuery) {
+    return 0
+  }
+
+  const title = normalizeArabic(item.title)
+  const description = normalizeArabic(item.description)
+  const keywords = normalizeArabic(item.keywords)
+  const category = normalizeArabic(item.category)
+
+  const searchableText = [
+    title,
+    description,
+    keywords,
+    category,
+  ].join(' ')
+
+  let score = 0
+
+  /*
+   * تطابق العبارة كاملة
+   */
+  if (title === normalizedQuery) {
+    score += 100
+  }
+
+  if (title.includes(normalizedQuery)) {
+    score += 70
+  }
+
+  if (description.includes(normalizedQuery)) {
+    score += 45
+  }
+
+  if (keywords.includes(normalizedQuery)) {
+    score += 40
+  }
+
+  if (category.includes(normalizedQuery)) {
+    score += 25
+  }
+
+  /*
+   * تقسيم البحث إلى كلمات
+   */
+  const queryWords = normalizedQuery
+    .split(' ')
+    .filter(Boolean)
+
+  const searchableWords = searchableText
+    .split(' ')
+    .filter(Boolean)
+
+  let matchedWords = 0
+  let bestWordScore = 0
+
+  for (const queryWord of queryWords) {
+    let bestMatch = 0
+
+    for (const targetWord of searchableWords) {
+      const similarity = wordSimilarity(
+        queryWord,
+        targetWord
+      )
+
+      if (similarity > bestMatch) {
+        bestMatch = similarity
+      }
+    }
+
+    if (bestMatch >= 0.55) {
+      matchedWords += 1
+      bestWordScore += bestMatch
+    }
+  }
+
+  if (queryWords.length > 0) {
+    score +=
+      (matchedWords / queryWords.length) * 55
+  }
+
+  if (matchedWords > 0) {
+    score += bestWordScore * 12
+  }
+
+  /*
+   * تطابق بدايات الكلمات
+   */
+  for (const queryWord of queryWords) {
+    for (const targetWord of searchableWords) {
+      if (
+        queryWord.length >= 2 &&
+        targetWord.startsWith(queryWord)
+      ) {
+        score += 18
+        break
+      }
+    }
+  }
+
+  /*
+   * وجود كل كلمات البحث داخل النص
+   */
+  if (
+    queryWords.length > 1 &&
+    queryWords.every((word) =>
+      searchableWords.some(
+        (target) =>
+          target.includes(word) ||
+          word.includes(target)
+      )
+    )
+  ) {
+    score += 40
+  }
+
+  return score
+}
+
+/* =========================================================
+   النتائج الأساسية الموجودة في الموقع
+   ========================================================= */
+
+const baseSearchItems: SearchItem[] = [
   {
+    id: 'story',
     title: 'قصتنا',
     description:
       'تعرف على منصة هديل ورؤيتنا في تقديم الخدمات الطلابية والأكاديمية.',
@@ -40,6 +290,7 @@ const searchItems: SearchItem[] = [
     category: 'عن المنصة',
   },
   {
+    id: 'services',
     title: 'خدماتنا',
     description:
       'اكتشف الخدمات البحثية والأكاديمية والطلابية التي تقدمها منصة هديل.',
@@ -50,6 +301,7 @@ const searchItems: SearchItem[] = [
     category: 'الخدمات',
   },
   {
+    id: 'research-services',
     title: 'الخدمات البحثية',
     description:
       'خدمات البحوث والمشاريع والدراسات الأكاديمية بمختلف أنواعها.',
@@ -60,15 +312,18 @@ const searchItems: SearchItem[] = [
     category: 'الخدمات',
   },
   {
+    id: 'packages',
     title: 'الباقات',
     description:
       'تعرف على باقات الخدمات المتاحة واختر ما يناسب احتياجك الأكاديمي.',
-    keywords: 'باقات أسعار عروض باقة خدمات طلب خدمة',
+    keywords:
+      'باقات أسعار عروض باقة خدمات طلب خدمة سعر تكلفة',
     href: '/#packages',
     icon: BriefcaseBusiness,
     category: 'الخدمات',
   },
   {
+    id: 'previous-works',
     title: 'أعمالنا السابقة',
     description:
       'اطلع على نماذج من الأعمال والمشاريع التي تم إنجازها.',
@@ -79,6 +334,7 @@ const searchItems: SearchItem[] = [
     category: 'أعمالنا',
   },
   {
+    id: 'achievements',
     title: 'إنجازاتنا',
     description:
       'تعرف على أرقام وإنجازات منصة هديل وتجربة العملاء معنا.',
@@ -89,6 +345,7 @@ const searchItems: SearchItem[] = [
     category: 'إنجازاتنا',
   },
   {
+    id: 'testimonials',
     title: 'آراء العملاء',
     description:
       'اقرأ تجارب وآراء العملاء حول الخدمات المقدمة من منصة هديل.',
@@ -99,6 +356,7 @@ const searchItems: SearchItem[] = [
     category: 'آراء العملاء',
   },
   {
+    id: 'gpa',
     title: 'حاسبة المعدل',
     description:
       'استخدم حاسبة المعدل لحساب المعدل الدراسي بسهولة.',
@@ -109,6 +367,7 @@ const searchItems: SearchItem[] = [
     category: 'أدوات طلابية',
   },
   {
+    id: 'faq',
     title: 'الأسئلة الشائعة',
     description:
       'إجابات عن الأسئلة والاستفسارات الأكثر شيوعًا حول خدمات منصة هديل.',
@@ -119,6 +378,7 @@ const searchItems: SearchItem[] = [
     category: 'المساعدة',
   },
   {
+    id: 'contact',
     title: 'تواصل معنا',
     description:
       'تواصل مع فريق منصة هديل للاستفسار أو طلب إحدى الخدمات.',
@@ -130,6 +390,117 @@ const searchItems: SearchItem[] = [
   },
 ]
 
+/* =========================================================
+   بناء فهرس البحث الكامل
+   ========================================================= */
+
+const searchItems: SearchItem[] = [
+  ...baseSearchItems,
+
+  /*
+   * الخدمات بكل تفاصيلها
+   */
+  ...services.map((service) => ({
+    id: `service-${service.id}`,
+    title: service.title,
+    description: [
+      service.subtitle,
+      service.about,
+      service.whatWeOffer.join(' '),
+      service.requirements.join(' '),
+      service.faqs
+        .map((faq) => `${faq.q} ${faq.a}`)
+        .join(' '),
+      service.orderText,
+    ].join(' '),
+    keywords: [
+      service.title,
+      service.subtitle,
+      service.category,
+      service.about,
+      service.whatWeOffer.join(' '),
+      service.requirements.join(' '),
+      service.faqs
+        .map((faq) => `${faq.q} ${faq.a}`)
+        .join(' '),
+      service.orderText,
+    ].join(' '),
+    href: `/services/${service.id}`,
+    icon: service.icon,
+    category: 'خدمات منصة هديل',
+  })),
+
+  /*
+   * الجامعات والكليات والتخصصات
+   */
+  ...universities.flatMap((university) => {
+    const universityResult: SearchItem = {
+      id: `university-${university.slug}`,
+      title: university.name,
+      description: university.description,
+      keywords: [
+        university.name,
+        university.city,
+        university.founded,
+        university.description,
+        'جامعة جامعات كلية كليات تخصص تخصصات بوابة الطالب',
+      ].join(' '),
+      href: `/universities/${university.slug}`,
+      icon: GraduationCap,
+      category: 'الجامعات',
+    }
+
+    const collegeResults: SearchItem[] =
+      university.colleges.map((college, index) => ({
+        id: `college-${university.slug}-${index}`,
+        title: college.name,
+        description: `كلية ${college.name} في ${university.name}. تضم تخصصات وبرامج أكاديمية متعددة.`,
+        keywords: [
+          university.name,
+          university.city,
+          college.name,
+          college.majors.join(' '),
+          'جامعة جامعة كلية كليات تخصص تخصصات برنامج برامج',
+        ].join(' '),
+        href: `/universities/${university.slug}/colleges`,
+        icon: GraduationCap,
+        category: `كليات ${university.name}`,
+      }))
+
+    const majorResults: SearchItem[] =
+      university.colleges.flatMap(
+        (college, collegeIndex) =>
+          college.majors.map(
+            (major, majorIndex) => ({
+              id: `major-${university.slug}-${collegeIndex}-${majorIndex}`,
+              title: major,
+              description: `تخصص ${major} ضمن ${college.name} في ${university.name}.`,
+              keywords: [
+                major,
+                college.name,
+                university.name,
+                university.city,
+                'تخصص تخصصات كلية جامعة دراسة بكالوريوس برنامج',
+              ].join(' '),
+              href: `/universities/${university.slug}/colleges`,
+              icon: GraduationCap,
+              category: `تخصصات ${university.name}`,
+            })
+          )
+      )
+
+    return [
+      universityResult,
+      ...collegeResults,
+      ...majorResults,
+    ]
+  }),
+]
+
+/* =========================================================
+   صفحة البحث
+   ========================================================= */
+
 function SearchPageContent() {
   const searchParams = useSearchParams()
 
@@ -137,21 +508,37 @@ function SearchPageContent() {
 
   const results = useMemo(() => {
     if (!query) {
-      return searchItems
+      return baseSearchItems
     }
 
-    const normalizedQuery = query.toLowerCase()
+    const scoredResults = searchItems
+      .map((item) => ({
+        item,
+        score: calculateSearchScore(
+          query,
+          item
+        ),
+      }))
+      .filter((result) => {
+        /*
+         * الحد الأدنى حتى لا تظهر نتائج بعيدة جدًا.
+         */
+        return result.score >= 18
+      })
+      .sort((a, b) => {
+        if (b.score !== a.score) {
+          return b.score - a.score
+        }
 
-    return searchItems.filter((item) => {
-      const searchableText = `
-        ${item.title}
-        ${item.description}
-        ${item.keywords}
-        ${item.category}
-      `.toLowerCase()
+        return a.item.title.localeCompare(
+          b.item.title,
+          'ar'
+        )
+      })
 
-      return searchableText.includes(normalizedQuery)
-    })
+    return scoredResults.map(
+      (result) => result.item
+    )
   }, [query])
 
   return (
@@ -174,7 +561,8 @@ function SearchPageContent() {
           </h1>
 
           <p>
-            ابحث عن الخدمات، الأقسام، الأدوات والمعلومات الموجودة
+            ابحث عن الخدمات، الجامعات، الكليات،
+            التخصصات، الأقسام والمعلومات الموجودة
             في منصة هديل.
           </p>
 
@@ -219,7 +607,10 @@ function SearchPageContent() {
             </div>
 
             {query && (
-              <Link href="/search" className="clear-search">
+              <Link
+                href="/search"
+                className="clear-search"
+              >
                 مسح البحث
                 <ArrowLeft size={16} />
               </Link>
@@ -235,7 +626,7 @@ function SearchPageContent() {
                   <Link
                     href={item.href}
                     className="search-card"
-                    key={item.title}
+                    key={item.id}
                   >
                     <div className="search-card-icon">
                       <Icon size={24} />
@@ -266,12 +657,16 @@ function SearchPageContent() {
               <h3>لم نجد ما تبحث عنه</h3>
 
               <p>
-                جرّب استخدام كلمة مختلفة مثل:
+                جرّب استخدام كلمة مختلفة أو اكتب جزءًا
+                من الكلمة فقط.
                 <br />
-                خدمات، بحث، معدل، باقات، تواصل، أو أسئلة.
+                مثال: جامعة، طب، حاسب، بحث، معدل، خدمات.
               </p>
 
-              <Link href="/" className="primary-button">
+              <Link
+                href="/"
+                className="primary-button"
+              >
                 العودة للرئيسية
                 <ArrowLeft size={17} />
               </Link>
@@ -284,9 +679,13 @@ function SearchPageContent() {
             </div>
 
             <div>
-              <strong>لم تجد ما تبحث عنه؟</strong>
+              <strong>
+                لم تجد ما تبحث عنه؟
+              </strong>
+
               <p>
-                يمكنك التواصل معنا مباشرة وسيساعدك فريق منصة هديل.
+                يمكنك التواصل معنا مباشرة وسيساعدك فريق
+                منصة هديل.
               </p>
             </div>
 
