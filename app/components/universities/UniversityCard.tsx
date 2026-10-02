@@ -2,7 +2,12 @@
 
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowLeft, MapPin, CalendarDays } from "lucide-react"
+import {
+  GraduationCap,
+  BookOpen,
+  MapPin,
+  CalendarDays,
+} from "lucide-react"
 
 import type { University } from "./data"
 
@@ -10,250 +15,353 @@ type Props = {
   university: University
 }
 
-export default function UniversityCard({ university }: Props) {
+export default function UniversityCard({
+  university,
+}: Props) {
   return (
-    <Link
-      href={`/universities/${university.slug}`}
-      className="university-card"
-    >
-      <div className="university-logo-wrap">
+    <article className="university-card">
+
+      {/* شعار الجامعة */}
+      <div className="university-card-logo">
         <Image
           src={university.logo}
           alt={`شعار ${university.name}`}
-          width={90}
-          height={90}
-          className="university-logo"
+          width={110}
+          height={110}
         />
       </div>
 
-      <div className="university-content">
-        <h3>{university.name}</h3>
+      {/* محتوى البطاقة */}
+      <div className="university-card-content">
 
-        <p>{university.description}</p>
+        <h3>
+          {university.name}
+        </h3>
 
-        <div className="university-meta">
+        <p className="university-card-description">
+          {university.description}
+        </p>
+
+        {/* معلومات الجامعة */}
+        <div className="university-card-meta">
+
           <span>
-            <CalendarDays size={15} />
+            <CalendarDays size={16} />
             تأسست {university.founded}
           </span>
 
           <span>
-            <MapPin size={15} />
+            <MapPin size={16} />
             {university.city}
           </span>
+
+          <span>
+            <GraduationCap size={16} />
+            {university.colleges.length} كلية
+          </span>
+
         </div>
+
+        {/* أزرار البطاقة */}
+        <div className="university-card-actions">
+
+          {/* الكليات والتخصصات */}
+          <Link
+            href={`/universities/${university.slug}/colleges`}
+            className="university-action university-action-primary"
+          >
+            <GraduationCap size={21} />
+
+            <span>
+              الكليات والتخصصات
+            </span>
+          </Link>
+
+          {/* بوابة الطالب */}
+          <Link
+            href={`/universities/${university.slug}/student`}
+            className="university-action university-action-secondary"
+          >
+            <BookOpen size={21} />
+
+            <span>
+              بوابة الطالب
+            </span>
+          </Link>
+
+        </div>
+
       </div>
 
-      <div className="university-explore">
-        <span>استكشف الجامعة</span>
+      <style>{`
 
-        <span className="university-arrow">
-          <ArrowLeft size={17} />
-        </span>
-      </div>
+        /* =========================
+           بطاقة الجامعة
+        ========================= */
 
-      <style jsx>{`
         .university-card {
-          position: relative;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          width: 100%;
-          min-height: 390px;
-          padding: 30px 24px 24px;
+          height: 100%;
+          padding: 24px;
+
           background: #ffffff;
+
           border: 1px solid #e4ebf4;
           border-radius: 24px;
-          text-decoration: none;
-          text-align: center;
-          color: #17233d;
-          box-shadow:
-            0 8px 25px rgba(36, 85, 196, 0.06),
-            0 2px 8px rgba(23, 35, 61, 0.03);
-          overflow: hidden;
-          transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease,
-            border-color 0.3s ease;
-        }
 
-        .university-card::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 50%;
-          width: 120px;
-          height: 3px;
-          transform: translateX(-50%);
-          background: #2455c4;
-          border-radius: 0 0 10px 10px;
+          box-shadow:
+            0 10px 30px
+            rgba(23, 35, 61, 0.06);
+
+          direction: rtl;
+
           transition:
-            width 0.3s ease,
-            background 0.3s ease;
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            border-color 0.25s ease;
         }
 
         .university-card:hover {
-          transform: translateY(-7px);
-          border-color: rgba(36, 85, 196, 0.3);
+          transform: translateY(-5px);
+
+          border-color:
+            rgba(36, 85, 196, 0.22);
+
           box-shadow:
-            0 18px 40px rgba(36, 85, 196, 0.12),
-            0 5px 15px rgba(23, 35, 61, 0.05);
+            0 18px 42px
+            rgba(36, 85, 196, 0.10);
         }
 
-        .university-card:hover::before {
-          width: 180px;
-          background: #e9b24c;
-        }
 
-        .university-logo-wrap {
+        /* =========================
+           شعار الجامعة
+        ========================= */
+
+        .university-card-logo {
+          width: 110px;
+          height: 110px;
+
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 112px;
-          height: 112px;
-          margin: 4px auto 20px;
-          border-radius: 28px;
-          background: #f8fbff;
-          border: 1px solid #e4ebf4;
+
+          margin: 0 auto 20px;
+
+          background: #ffffff;
+
+          border: 1px solid #edf1f7;
+          border-radius: 22px;
+
           box-shadow:
-            0 10px 25px rgba(36, 85, 196, 0.08);
-          transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+            0 8px 20px
+            rgba(23, 35, 61, 0.06);
         }
 
-        .university-logo {
+        .university-card-logo img {
           width: 88px;
           height: 88px;
+
           object-fit: contain;
-          display: block;
         }
 
-        .university-card:hover .university-logo-wrap {
-          transform: translateY(-4px);
-          box-shadow:
-            0 15px 32px rgba(36, 85, 196, 0.14);
-        }
 
-        .university-content {
-          width: 100%;
-          max-width: 360px;
+        /* =========================
+           محتوى البطاقة
+        ========================= */
+
+        .university-card-content {
           display: flex;
           flex-direction: column;
-          align-items: center;
+
           flex: 1;
-          direction: rtl;
         }
 
-        .university-content h3 {
-          width: 100%;
-          margin: 0 0 10px;
-          color: #17233d;
-          font-size: 20px;
-          font-weight: 800;
-          line-height: 1.5;
-          text-align: center;
-        }
-
-        .university-content p {
-          width: 100%;
+        .university-card-content h3 {
           margin: 0;
-          color: #697791;
-          font-size: 14px;
-          font-weight: 500;
-          line-height: 1.9;
+
+          color: #17233d;
+
+          font-size: 19px;
+          font-weight: 900;
+
+          line-height: 1.6;
+
           text-align: center;
         }
 
-        .university-meta {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-          gap: 8px;
-          margin-top: 16px;
-          direction: rtl;
+
+        /* =========================
+           الوصف
+        ========================= */
+
+        .university-card-description {
+          min-height: 52px;
+
+          margin: 10px 0 18px;
+
+          color: #697791;
+
+          font-size: 13px;
+
+          line-height: 1.9;
+
+          text-align: center;
         }
 
-        .university-meta span {
+
+        /* =========================
+           معلومات الجامعة
+        ========================= */
+
+        .university-card-meta {
+          display: flex;
+
+          flex-wrap: wrap;
+
+          justify-content: center;
+
+          gap: 8px;
+
+          margin-bottom: 22px;
+        }
+
+        .university-card-meta span {
           display: inline-flex;
+
           align-items: center;
+
           gap: 5px;
-          padding: 7px 10px;
+
+          padding: 7px 9px;
+
           border-radius: 10px;
+
           background: #f4f7fb;
-          color: #697791;
-          font-size: 12px;
+
+          color: #52617a;
+
+          font-size: 11px;
+
           font-weight: 700;
         }
 
-        .university-meta svg {
+        .university-card-meta svg {
           color: #2455c4;
         }
 
-        .university-explore {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin: 22px auto 0;
-          padding: 11px 20px;
-          border-radius: 12px;
-          background: #2455c4;
-          color: #ffffff;
-          font-size: 14px;
-          font-weight: 800;
-          direction: rtl;
-          box-shadow:
-            0 7px 16px rgba(36, 85, 196, 0.18);
-          transition:
-            background 0.25s ease,
-            transform 0.25s ease,
-            box-shadow 0.25s ease;
+
+        /* =========================
+           الأزرار
+        ========================= */
+
+        .university-card-actions {
+          display: grid;
+
+          grid-template-columns:
+            1fr 1fr;
+
+          gap: 10px;
+
+          margin-top: auto;
         }
 
-        .university-arrow {
+        .university-action {
+          min-height: 58px;
+
           display: flex;
-          color: #ffffff;
-          transition: transform 0.25s ease;
+
+          align-items: center;
+
+          justify-content: center;
+
+          gap: 8px;
+
+          padding: 10px 12px;
+
+          border-radius: 15px;
+
+          text-decoration: none;
+
+          font-size: 12px;
+
+          font-weight: 800;
+
+          line-height: 1.5;
+
+          text-align: center;
+
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
         }
 
-        .university-card:hover .university-explore {
-          background: #1f4caf;
+        .university-action:hover {
           transform: translateY(-2px);
+        }
+
+
+        /* =========================
+           زر الكليات والتخصصات
+        ========================= */
+
+        .university-action-primary {
+          background: #2455c4;
+
+          color: #ffffff;
+
           box-shadow:
-            0 10px 22px rgba(36, 85, 196, 0.25);
+            0 8px 18px
+            rgba(36, 85, 196, 0.18);
         }
 
-        .university-card:hover .university-arrow {
-          transform: translateX(-3px);
+        .university-action-primary:hover {
+          background: #1f4caf;
+
+          box-shadow:
+            0 12px 24px
+            rgba(36, 85, 196, 0.25);
         }
 
-        @media (max-width: 600px) {
+
+        /* =========================
+           زر بوابة الطالب
+        ========================= */
+
+        .university-action-secondary {
+          background: #e8f1ff;
+
+          color: #2455c4;
+        }
+
+        .university-action-secondary:hover {
+          background: #dceaff;
+        }
+
+
+        /* =========================
+           الجوال
+        ========================= */
+
+        @media (max-width: 500px) {
+
           .university-card {
-            min-height: 370px;
-            padding: 27px 20px 22px;
+            padding: 20px;
           }
 
-          .university-logo-wrap {
-            width: 96px;
-            height: 96px;
+          .university-card-actions {
+            grid-template-columns: 1fr;
           }
 
-          .university-logo {
-            width: 76px;
-            height: 76px;
+          .university-action {
+            min-height: 52px;
           }
 
-          .university-content h3 {
-            font-size: 19px;
-          }
-
-          .university-content p {
-            font-size: 13px;
-          }
         }
+
       `}</style>
-    </Link>
+
+    </article>
   )
 }
