@@ -57,6 +57,8 @@ export default async function UniversityPage({
 
           <div className="university-profile">
 
+            {/* University Logo */}
+
             <div className="university-profile-logo">
               <Image
                 src={university.logo}
@@ -65,6 +67,8 @@ export default async function UniversityPage({
                 height={130}
               />
             </div>
+
+            {/* University Information */}
 
             <div className="university-profile-content">
 
@@ -218,7 +222,7 @@ export default async function UniversityPage({
         ========================== */
 
         .university-details-hero {
-          padding: 45px 0 70px;
+          padding: 35px 0 70px;
 
           background:
             radial-gradient(
@@ -242,7 +246,7 @@ export default async function UniversityPage({
           align-items: center;
           gap: 8px;
 
-          margin-bottom: 45px;
+          margin-bottom: 35px;
 
           color: rgba(255, 255, 255, 0.9);
 
@@ -261,21 +265,28 @@ export default async function UniversityPage({
         }
 
 
+        /* =========================
+           Centered University Profile
+        ========================== */
+
         .university-profile {
           display: flex;
+          flex-direction: column;
           align-items: center;
 
-          gap: 35px;
+          gap: 22px;
 
           direction: rtl;
+
+          text-align: center;
         }
 
 
         .university-profile-logo {
-          flex: 0 0 150px;
-
           width: 150px;
           height: 150px;
+
+          flex: 0 0 150px;
 
           display: flex;
           align-items: center;
@@ -300,7 +311,11 @@ export default async function UniversityPage({
 
 
         .university-profile-content {
-          flex: 1;
+          width: 100%;
+
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
 
@@ -334,9 +349,10 @@ export default async function UniversityPage({
 
 
         .university-profile p {
+          width: 100%;
           max-width: 800px;
 
-          margin: 15px 0 0;
+          margin: 15px auto 0;
 
           color: rgba(
             255,
@@ -354,6 +370,7 @@ export default async function UniversityPage({
         .profile-meta {
           display: flex;
           align-items: center;
+          justify-content: center;
 
           flex-wrap: wrap;
 
@@ -704,22 +721,16 @@ export default async function UniversityPage({
         }
 
 
-        @media (max-width: 700px) {
-
-          .university-profile {
-            align-items: flex-start;
-
-            flex-direction: column;
-          }
-
-        }
-
-
         @media (max-width: 480px) {
 
           .university-details-hero {
             padding:
-              40px 0 50px;
+              30px 0 55px;
+          }
+
+
+          .university-profile {
+            gap: 18px;
           }
 
 
@@ -734,6 +745,16 @@ export default async function UniversityPage({
           .university-profile-logo img {
             width: 100px;
             height: 100px;
+          }
+
+
+          .university-profile h1 {
+            font-size: 30px;
+          }
+
+
+          .university-profile p {
+            font-size: 14px;
           }
 
 
