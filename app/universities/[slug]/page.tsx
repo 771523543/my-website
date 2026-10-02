@@ -1,4 +1,3 @@
-import type { ReactNode } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -9,13 +8,6 @@ import {
   MapPin,
   CalendarDays,
   BookOpen,
-  Search,
-  Globe,
-  FileText,
-  ClipboardList,
-  BarChart3,
-  Mail,
-  HelpCircle,
 } from "lucide-react"
 
 import { universities } from "@/app/components/universities/data"
@@ -26,13 +18,15 @@ type Props = {
   }>
 }
 
-export async function generateStaticParams() {
+export function generateStaticParams() {
   return universities.map((university) => ({
     slug: university.slug,
   }))
 }
 
-export default async function UniversityPage({ params }: Props) {
+export default async function UniversityPage({
+  params,
+}: Props) {
   const { slug } = await params
 
   const university = universities.find(
@@ -44,7 +38,7 @@ export default async function UniversityPage({ params }: Props) {
   }
 
   return (
-    <main className="university-details-page">
+    <main className="university-details-page" dir="rtl">
 
       {/* =========================
           University Hero
@@ -58,8 +52,7 @@ export default async function UniversityPage({ params }: Props) {
             className="back-link"
           >
             <ArrowRight size={18} />
-
-            العودة إلى الجامعات
+            <span>العودة إلى الجامعات</span>
           </Link>
 
           <div className="university-profile">
@@ -79,7 +72,9 @@ export default async function UniversityPage({ params }: Props) {
                 دليل الجامعة
               </span>
 
-              <h1>{university.name}</h1>
+              <h1>
+                {university.name}
+              </h1>
 
               <p>
                 {university.description}
@@ -89,116 +84,22 @@ export default async function UniversityPage({ params }: Props) {
 
                 <span>
                   <CalendarDays size={17} />
-
                   تأسست {university.founded}
                 </span>
 
                 <span>
                   <MapPin size={17} />
-
                   {university.city}
                 </span>
 
                 <span>
                   <GraduationCap size={17} />
-
                   {university.colleges.length} كلية
                 </span>
 
               </div>
+
             </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* =========================
-          Colleges & Majors
-      ========================== */}
-
-      <section className="colleges-section">
-        <div className="container">
-
-          <div className="section-heading">
-
-            <span className="section-kicker">
-              التخصصات الأكاديمية
-            </span>
-
-            <h2>
-              كليات الجامعة
-            </h2>
-
-            <p>
-              اختر الكلية للتعرف على التخصصات والبرامج
-              المرتبطة بها.
-            </p>
-
-          </div>
-
-
-          <div className="colleges-grid">
-
-            {university.colleges.map(
-              (college, index) => (
-
-                <details
-                  className="college-card"
-                  key={college.name}
-                >
-
-                  <summary>
-
-                    <span className="college-number">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-
-                    <span className="college-icon">
-                      <GraduationCap size={22} />
-                    </span>
-
-                    <span className="college-name">
-                      {college.name}
-                    </span>
-
-                    <span className="college-count">
-                      {college.majors.length}
-                    </span>
-
-                  </summary>
-
-
-                  <div className="majors-list">
-
-                    <div className="majors-title">
-
-                      <BookOpen size={17} />
-
-                      التخصصات
-
-                    </div>
-
-
-                    <div className="majors-items">
-
-                      {college.majors.map(
-                        (major) => (
-
-                          <span key={major}>
-                            {major}
-                          </span>
-
-                        )
-                      )}
-
-                    </div>
-
-                  </div>
-
-                </details>
-
-              )
-            )}
 
           </div>
 
@@ -207,85 +108,96 @@ export default async function UniversityPage({ params }: Props) {
 
 
       {/* =========================
-          Student Section
+          University Sections
       ========================== */}
 
-      <section className="student-section">
-
+      <section className="university-sections">
         <div className="container">
 
           <div className="section-heading">
 
             <span className="section-kicker">
-              للطلاب
+              خدمات الجامعة
             </span>
 
             <h2>
-              ماذا تريد أن تعرف؟
+              اختر القسم الذي تريد الوصول إليه
             </h2>
 
             <p>
-              أهم المعلومات التي يحتاجها الطالب أثناء
-              دراسته الجامعية.
+              استعرض الكليات والتخصصات أو انتقل إلى
+              بوابة الطالب الخاصة بالجامعة.
             </p>
 
           </div>
 
 
-          <div className="student-grid">
+          <div className="university-actions">
 
-            <StudentCard
-              icon={<Search size={23} />}
-              title="القبول والتسجيل"
-              description="معلومات القبول والتسجيل والبرامج المتاحة."
-            />
+            {/* Colleges & Majors */}
 
-            <StudentCard
-              icon={<Globe size={23} />}
-              title="البوابة الأكاديمية"
-              description="الوصول إلى الأنظمة والبوابات الإلكترونية."
-            />
+            <Link
+              href={`/universities/${university.slug}/colleges`}
+              className="university-action university-action-primary"
+            >
 
-            <StudentCard
-              icon={<ClipboardList size={23} />}
-              title="التسجيل في المقررات"
-              description="معلومات التسجيل والحذف والإضافة."
-            />
+              <div className="action-icon">
+                <GraduationCap size={30} />
+              </div>
 
-            <StudentCard
-              icon={<CalendarDays size={23} />}
-              title="التقويم الأكاديمي"
-              description="مواعيد الدراسة والاختبارات والإجازات."
-            />
+              <div className="action-content">
 
-            <StudentCard
-              icon={<BarChart3 size={23} />}
-              title="النتائج والسجل الأكاديمي"
-              description="معلومات النتائج والمعدل والسجل الأكاديمي."
-            />
+                <h3>
+                  الكليات والتخصصات
+                </h3>
 
-            <StudentCard
-              icon={<Mail size={23} />}
-              title="البريد الجامعي"
-              description="معلومات البريد والخدمات المرتبطة به."
-            />
+                <p>
+                  استعرض كليات الجامعة والتخصصات
+                  والبرامج الأكاديمية المتاحة.
+                </p>
 
-            <StudentCard
-              icon={<FileText size={23} />}
-              title="الأدلة والشروحات"
-              description="شروحات مبسطة للأنظمة والخدمات الجامعية."
-            />
+              </div>
 
-            <StudentCard
-              icon={<HelpCircle size={23} />}
-              title="الأسئلة الشائعة"
-              description="إجابات عن أكثر الاستفسارات التي يبحث عنها الطلاب."
-            />
+              <span className="action-arrow">
+                <ArrowRight size={20} />
+              </span>
+
+            </Link>
+
+
+            {/* Student Portal */}
+
+            <Link
+              href={`/universities/${university.slug}/student`}
+              className="university-action university-action-secondary"
+            >
+
+              <div className="action-icon">
+                <BookOpen size={30} />
+              </div>
+
+              <div className="action-content">
+
+                <h3>
+                  بوابة الطالب
+                </h3>
+
+                <p>
+                  الوصول إلى الأدلة والملفات والشروحات
+                  والخدمات المهمة للطلاب.
+                </p>
+
+              </div>
+
+              <span className="action-arrow">
+                <ArrowRight size={20} />
+              </span>
+
+            </Link>
 
           </div>
 
         </div>
-
       </section>
 
 
@@ -301,7 +213,9 @@ export default async function UniversityPage({ params }: Props) {
         }
 
 
-        /* Hero */
+        /* =========================
+           Hero
+        ========================== */
 
         .university-details-hero {
           padding: 45px 0 70px;
@@ -328,6 +242,8 @@ export default async function UniversityPage({ params }: Props) {
           align-items: center;
           gap: 8px;
 
+          margin-bottom: 45px;
+
           color: rgba(255, 255, 255, 0.9);
 
           text-decoration: none;
@@ -335,7 +251,13 @@ export default async function UniversityPage({ params }: Props) {
           font-size: 14px;
           font-weight: 700;
 
-          margin-bottom: 45px;
+          transition:
+            opacity 0.2s ease;
+        }
+
+
+        .back-link:hover {
+          opacity: 0.75;
         }
 
 
@@ -364,7 +286,8 @@ export default async function UniversityPage({ params }: Props) {
           background: #fff;
 
           box-shadow:
-            0 18px 40px rgba(0, 0, 0, 0.16);
+            0 18px 40px
+            rgba(0, 0, 0, 0.16);
         }
 
 
@@ -464,23 +387,19 @@ export default async function UniversityPage({ params }: Props) {
         }
 
 
-        /* Sections */
+        /* =========================
+           Sections
+        ========================== */
 
-        .colleges-section,
-        .student-section {
+        .university-sections {
           padding: 80px 0;
         }
 
 
-        .student-section {
-          background: #fff;
-        }
-
-
         .section-heading {
-          text-align: center;
-
           margin-bottom: 38px;
+
+          text-align: center;
         }
 
 
@@ -505,13 +424,15 @@ export default async function UniversityPage({ params }: Props) {
           );
 
           font-weight: 900;
+
+          line-height: 1.5;
         }
 
 
         .section-heading p {
           max-width: 650px;
 
-          margin: auto;
+          margin: 0 auto;
 
           color: #697791;
 
@@ -519,40 +440,111 @@ export default async function UniversityPage({ params }: Props) {
         }
 
 
-        /* Colleges */
+        /* =========================
+           University Actions
+        ========================== */
 
-        .colleges-grid {
+        .university-actions {
           display: grid;
 
           grid-template-columns:
             repeat(
-              3,
+              2,
               minmax(0, 1fr)
             );
 
-          gap: 16px;
+          gap: 20px;
+
+          max-width: 900px;
+
+          margin: 0 auto;
         }
 
 
-        .college-card {
-          background: #fff;
+        .university-action {
+          position: relative;
 
-          border: 1px solid #e4ebf4;
+          display: flex;
+          align-items: center;
 
-          border-radius: 18px;
+          gap: 18px;
 
-          overflow: hidden;
+          min-height: 150px;
+
+          padding: 25px;
+
+          border-radius: 24px;
+
+          text-decoration: none;
+
+          border: 1px solid;
 
           transition:
-            border-color 0.25s ease,
+            transform 0.25s ease,
             box-shadow 0.25s ease,
-            transform 0.25s ease;
+            border-color 0.25s ease,
+            background 0.25s ease;
         }
 
 
-        .college-card:hover {
-          transform: translateY(-3px);
+        .university-action:hover {
+          transform: translateY(-5px);
+        }
 
+
+        .university-action-primary {
+          background: #2455c4;
+
+          border-color: #2455c4;
+
+          color: #fff;
+
+          box-shadow:
+            0 12px 30px
+            rgba(
+              36,
+              85,
+              196,
+              0.16
+            );
+        }
+
+
+        .university-action-primary:hover {
+          background: #1f4caf;
+
+          border-color: #1f4caf;
+
+          box-shadow:
+            0 18px 40px
+            rgba(
+              36,
+              85,
+              196,
+              0.22
+            );
+        }
+
+
+        .university-action-secondary {
+          background: #fff;
+
+          border-color: #e4ebf4;
+
+          color: #17233d;
+
+          box-shadow:
+            0 10px 30px
+            rgba(
+              23,
+              35,
+              61,
+              0.06
+            );
+        }
+
+
+        .university-action-secondary:hover {
           border-color:
             rgba(
               36,
@@ -562,247 +554,151 @@ export default async function UniversityPage({ params }: Props) {
             );
 
           box-shadow:
-            0 12px 30px
+            0 18px 40px
             rgba(
               36,
               85,
               196,
-              0.08
+              0.09
             );
         }
 
 
-        .college-card summary {
-          list-style: none;
+        .action-icon {
+          width: 62px;
+          height: 62px;
 
-          cursor: pointer;
-
-          display: grid;
-
-          grid-template-columns:
-            34px 45px 1fr 28px;
-
-          align-items: center;
-
-          gap: 10px;
-
-          padding: 17px;
-
-          direction: rtl;
-        }
-
-
-        .college-card
-        summary::-webkit-details-marker {
-          display: none;
-        }
-
-
-        .college-number {
-          color: #a4aec0;
-
-          font-size: 11px;
-
-          font-weight: 800;
-
-          direction: ltr;
-
-          text-align: center;
-        }
-
-
-        .college-icon {
-          width: 45px;
-          height: 45px;
+          flex: 0 0 62px;
 
           display: flex;
           align-items: center;
           justify-content: center;
 
-          border-radius: 13px;
+          border-radius: 18px;
+        }
 
+
+        .university-action-primary
+        .action-icon {
+          background:
+            rgba(
+              255,
+              255,
+              255,
+              0.14
+            );
+
+          color: #fff;
+        }
+
+
+        .university-action-secondary
+        .action-icon {
           background: #e8f1ff;
 
           color: #2455c4;
         }
 
 
-        .college-name {
-          color: #17233d;
-
-          font-size: 14px;
-
-          font-weight: 800;
-
-          line-height: 1.6;
+        .action-content {
+          flex: 1;
         }
 
 
-        .college-count {
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        .action-content h3 {
+          margin: 0 0 7px;
 
-          width: 28px;
-          height: 28px;
+          font-size: 18px;
 
-          border-radius: 50%;
-
-          background: #f4f7fb;
-
-          color: #2455c4;
-
-          font-size: 11px;
-
-          font-weight: 800;
-        }
-
-
-        .majors-list {
-          padding:
-            0 20px 20px;
-
-          direction: rtl;
-        }
-
-
-        .majors-title {
-          display: flex;
-          align-items: center;
-
-          gap: 7px;
-
-          margin-bottom: 12px;
-
-          color: #2455c4;
-
-          font-size: 13px;
-
-          font-weight: 800;
-        }
-
-
-        .majors-items {
-          display: flex;
-
-          flex-wrap: wrap;
-
-          gap: 8px;
-        }
-
-
-        .majors-items span {
-          padding:
-            8px 11px;
-
-          border-radius: 10px;
-
-          background: #f4f7fb;
-
-          color: #53617a;
-
-          font-size: 12px;
-
-          font-weight: 600;
+          font-weight: 900;
 
           line-height: 1.5;
         }
 
 
-        /* Student Cards */
-
-        .student-grid {
-          display: grid;
-
-          grid-template-columns:
-            repeat(
-              4,
-              minmax(0, 1fr)
-            );
-
-          gap: 16px;
+        .university-action-primary
+        .action-content h3 {
+          color: #fff;
         }
 
 
-        .student-card {
-          display: flex;
+        .university-action-secondary
+        .action-content h3 {
+          color: #17233d;
+        }
 
-          align-items: flex-start;
 
-          gap: 14px;
+        .action-content p {
+          margin: 0;
 
-          padding: 20px;
+          font-size: 12px;
 
-          background: #fff;
+          line-height: 1.9;
+        }
 
-          border: 1px solid #e4ebf4;
 
-          border-radius: 18px;
-
-          box-shadow:
-            0 8px 25px
+        .university-action-primary
+        .action-content p {
+          color:
             rgba(
-              23,
-              35,
-              61,
-              0.04
+              255,
+              255,
+              255,
+              0.82
             );
         }
 
 
-        .student-icon {
-          width: 48px;
-          height: 48px;
+        .university-action-secondary
+        .action-content p {
+          color: #697791;
+        }
 
-          flex: 0 0 48px;
+
+        .action-arrow {
+          width: 38px;
+          height: 38px;
+
+          flex: 0 0 38px;
 
           display: flex;
           align-items: center;
           justify-content: center;
 
-          border-radius: 14px;
+          border-radius: 50%;
+        }
 
-          background: #e8f1ff;
+
+        .university-action-primary
+        .action-arrow {
+          background:
+            rgba(
+              255,
+              255,
+              255,
+              0.12
+            );
+
+          color: #fff;
+        }
+
+
+        .university-action-secondary
+        .action-arrow {
+          background: #f4f7fb;
 
           color: #2455c4;
         }
 
 
-        .student-card h3 {
-          margin: 0 0 7px;
+        /* =========================
+           Responsive
+        ========================== */
 
-          color: #17233d;
+        @media (max-width: 800px) {
 
-          font-size: 15px;
-
-          font-weight: 800;
-
-          line-height: 1.6;
-        }
-
-
-        .student-card p {
-          margin: 0;
-
-          color: #697791;
-
-          font-size: 12px;
-
-          line-height: 1.8;
-        }
-
-
-        /* Responsive */
-
-        @media (max-width: 1050px) {
-
-          .colleges-grid,
-          .student-grid {
-            grid-template-columns:
-              repeat(
-                2,
-                minmax(0, 1fr)
-              );
+          .university-actions {
+            grid-template-columns: 1fr;
           }
 
         }
@@ -814,12 +710,6 @@ export default async function UniversityPage({ params }: Props) {
             align-items: flex-start;
 
             flex-direction: column;
-          }
-
-
-          .colleges-grid,
-          .student-grid {
-            grid-template-columns: 1fr;
           }
 
         }
@@ -846,47 +736,39 @@ export default async function UniversityPage({ params }: Props) {
             height: 100px;
           }
 
+
+          .university-sections {
+            padding: 60px 0;
+          }
+
+
+          .university-action {
+            min-height: 135px;
+
+            padding: 20px;
+
+            gap: 12px;
+          }
+
+
+          .action-icon {
+            width: 52px;
+            height: 52px;
+
+            flex-basis: 52px;
+
+            border-radius: 15px;
+          }
+
+
+          .action-content h3 {
+            font-size: 16px;
+          }
+
         }
 
       `}</style>
 
     </main>
-  )
-}
-
-
-/* =========================
-   Student Card
-========================= */
-
-function StudentCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: ReactNode
-  title: string
-  description: string
-}) {
-  return (
-    <article className="student-card">
-
-      <div className="student-icon">
-        {icon}
-      </div>
-
-      <div>
-
-        <h3>
-          {title}
-        </h3>
-
-        <p>
-          {description}
-        </p>
-
-      </div>
-
-    </article>
   )
 }
