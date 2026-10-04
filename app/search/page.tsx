@@ -11,7 +11,6 @@ import {
   GraduationCap,
   HelpCircle,
   LayoutGrid,
-  MapPin,
   MessageCircle,
   Search,
   Sparkles,
@@ -32,6 +31,16 @@ type SearchItem = {
   href: string
   icon: typeof Search
   category: string
+}
+
+type RecommendedService = {
+  id: string
+  title: string
+  subtitle: string
+  about: string
+  href: string
+  icon: typeof Search
+  score: number
 }
 
 /* =========================================================
@@ -56,7 +65,6 @@ function normalizeArabic(value: string) {
 
 /* =========================================================
    حساب المسافة بين كلمتين
-   يستخدم لاكتشاف الأخطاء الإملائية البسيطة
    ========================================================= */
 
 function levenshteinDistance(a: string, b: string) {
@@ -75,12 +83,11 @@ function levenshteinDistance(a: string, b: string) {
       if (b.charAt(i - 1) === a.charAt(j - 1)) {
         matrix[i][j] = matrix[i - 1][j - 1]
       } else {
-        matrix[i][j] =
-          Math.min(
-            matrix[i - 1][j] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j - 1] + 1
-          )
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j - 1] + 1
+        )
       }
     }
   }
@@ -89,10 +96,13 @@ function levenshteinDistance(a: string, b: string) {
 }
 
 /* =========================================================
-   درجة التشابه بين كلمتين
+   درجة التشابه
    ========================================================= */
 
-function wordSimilarity(queryWord: string, targetWord: string) {
+function wordSimilarity(
+  queryWord: string,
+  targetWord: string
+) {
   if (!queryWord || !targetWord) {
     return 0
   }
@@ -115,7 +125,10 @@ function wordSimilarity(queryWord: string, targetWord: string) {
     }
   }
 
-  if (queryWord.length <= 2 || targetWord.length <= 2) {
+  if (
+    queryWord.length <= 2 ||
+    targetWord.length <= 2
+  ) {
     return 0
   }
 
@@ -131,9 +144,6 @@ function wordSimilarity(queryWord: string, targetWord: string) {
 
   const similarity = 1 - distance / maxLength
 
-  /*
-   * لا نعتبر الكلمات شديدة الاختلاف متشابهة.
-   */
   if (queryWord.length <= 3) {
     return distance <= 1 ? similarity : 0
   }
@@ -173,9 +183,6 @@ function calculateSearchScore(
 
   let score = 0
 
-  /*
-   * تطابق العبارة كاملة
-   */
   if (title === normalizedQuery) {
     score += 100
   }
@@ -196,9 +203,6 @@ function calculateSearchScore(
     score += 25
   }
 
-  /*
-   * تقسيم البحث إلى كلمات
-   */
   const queryWords = normalizedQuery
     .split(' ')
     .filter(Boolean)
@@ -239,9 +243,6 @@ function calculateSearchScore(
     score += bestWordScore * 12
   }
 
-  /*
-   * تطابق بدايات الكلمات
-   */
   for (const queryWord of queryWords) {
     for (const targetWord of searchableWords) {
       if (
@@ -254,9 +255,6 @@ function calculateSearchScore(
     }
   }
 
-  /*
-   * وجود كل كلمات البحث داخل النص
-   */
   if (
     queryWords.length > 1 &&
     queryWords.every((word) =>
@@ -274,7 +272,7 @@ function calculateSearchScore(
 }
 
 /* =========================================================
-   النتائج الأساسية الموجودة في الموقع
+   العناصر الأساسية
    ========================================================= */
 
 const baseSearchItems: SearchItem[] = [
@@ -289,6 +287,7 @@ const baseSearchItems: SearchItem[] = [
     icon: BookOpen,
     category: 'عن المنصة',
   },
+
   {
     id: 'services',
     title: 'خدماتنا',
@@ -300,6 +299,7 @@ const baseSearchItems: SearchItem[] = [
     icon: LayoutGrid,
     category: 'الخدمات',
   },
+
   {
     id: 'research-services',
     title: 'الخدمات البحثية',
@@ -311,6 +311,7 @@ const baseSearchItems: SearchItem[] = [
     icon: FileText,
     category: 'الخدمات',
   },
+
   {
     id: 'packages',
     title: 'الباقات',
@@ -322,6 +323,7 @@ const baseSearchItems: SearchItem[] = [
     icon: BriefcaseBusiness,
     category: 'الخدمات',
   },
+
   {
     id: 'previous-works',
     title: 'أعمالنا السابقة',
@@ -333,6 +335,7 @@ const baseSearchItems: SearchItem[] = [
     icon: Trophy,
     category: 'أعمالنا',
   },
+
   {
     id: 'achievements',
     title: 'إنجازاتنا',
@@ -344,6 +347,7 @@ const baseSearchItems: SearchItem[] = [
     icon: Trophy,
     category: 'إنجازاتنا',
   },
+
   {
     id: 'testimonials',
     title: 'آراء العملاء',
@@ -355,6 +359,7 @@ const baseSearchItems: SearchItem[] = [
     icon: Users,
     category: 'آراء العملاء',
   },
+
   {
     id: 'gpa',
     title: 'حاسبة المعدل',
@@ -366,6 +371,7 @@ const baseSearchItems: SearchItem[] = [
     icon: Calculator,
     category: 'أدوات طلابية',
   },
+
   {
     id: 'faq',
     title: 'الأسئلة الشائعة',
@@ -377,6 +383,7 @@ const baseSearchItems: SearchItem[] = [
     icon: HelpCircle,
     category: 'المساعدة',
   },
+
   {
     id: 'contact',
     title: 'تواصل معنا',
@@ -391,18 +398,17 @@ const baseSearchItems: SearchItem[] = [
 ]
 
 /* =========================================================
-   بناء فهرس البحث الكامل
+   فهرس البحث الكامل
    ========================================================= */
 
 const searchItems: SearchItem[] = [
   ...baseSearchItems,
 
-  /*
-   * الخدمات بكل تفاصيلها
-   */
   ...services.map((service) => ({
     id: `service-${service.id}`,
+
     title: service.title,
+
     description: [
       service.subtitle,
       service.about,
@@ -413,6 +419,7 @@ const searchItems: SearchItem[] = [
         .join(' '),
       service.orderText,
     ].join(' '),
+
     keywords: [
       service.title,
       service.subtitle,
@@ -425,19 +432,22 @@ const searchItems: SearchItem[] = [
         .join(' '),
       service.orderText,
     ].join(' '),
+
     href: `/services/${service.id}`,
+
     icon: service.icon,
+
     category: 'خدمات منصة هديل',
   })),
 
-  /*
-   * الجامعات والكليات والتخصصات
-   */
   ...universities.flatMap((university) => {
     const universityResult: SearchItem = {
       id: `university-${university.slug}`,
+
       title: university.name,
+
       description: university.description,
+
       keywords: [
         university.name,
         university.city,
@@ -445,36 +455,55 @@ const searchItems: SearchItem[] = [
         university.description,
         'جامعة جامعات كلية كليات تخصص تخصصات بوابة الطالب',
       ].join(' '),
+
       href: `/universities/${university.slug}`,
+
       icon: GraduationCap,
+
       category: 'الجامعات',
     }
 
     const collegeResults: SearchItem[] =
-      university.colleges.map((college, index) => ({
-        id: `college-${university.slug}-${index}`,
-        title: college.name,
-        description: `كلية ${college.name} في ${university.name}. تضم تخصصات وبرامج أكاديمية متعددة.`,
-        keywords: [
-          university.name,
-          university.city,
-          college.name,
-          college.majors.join(' '),
-          'جامعة جامعة كلية كليات تخصص تخصصات برنامج برامج',
-        ].join(' '),
-        href: `/universities/${university.slug}/colleges`,
-        icon: GraduationCap,
-        category: `كليات ${university.name}`,
-      }))
+      university.colleges.map(
+        (college, index) => ({
+          id: `college-${university.slug}-${index}`,
+
+          title: college.name,
+
+          description:
+            `كلية ${college.name} في ${university.name}. تضم تخصصات وبرامج أكاديمية متعددة.`,
+
+          keywords: [
+            university.name,
+            university.city,
+            college.name,
+            college.majors.join(' '),
+            'جامعة كلية كليات تخصص تخصصات برنامج برامج',
+          ].join(' '),
+
+          href:
+            `/universities/${university.slug}/colleges`,
+
+          icon: GraduationCap,
+
+          category:
+            `كليات ${university.name}`,
+        })
+      )
 
     const majorResults: SearchItem[] =
       university.colleges.flatMap(
         (college, collegeIndex) =>
           college.majors.map(
             (major, majorIndex) => ({
-              id: `major-${university.slug}-${collegeIndex}-${majorIndex}`,
+              id:
+                `major-${university.slug}-${collegeIndex}-${majorIndex}`,
+
               title: major,
-              description: `تخصص ${major} ضمن ${college.name} في ${university.name}.`,
+
+              description:
+                `تخصص ${major} ضمن ${college.name} في ${university.name}.`,
+
               keywords: [
                 major,
                 college.name,
@@ -482,9 +511,14 @@ const searchItems: SearchItem[] = [
                 university.city,
                 'تخصص تخصصات كلية جامعة دراسة بكالوريوس برنامج',
               ].join(' '),
-              href: `/universities/${university.slug}/colleges`,
+
+              href:
+                `/universities/${university.slug}/colleges`,
+
               icon: GraduationCap,
-              category: `تخصصات ${university.name}`,
+
+              category:
+                `تخصصات ${university.name}`,
             })
           )
       )
@@ -498,53 +532,381 @@ const searchItems: SearchItem[] = [
 ]
 
 /* =========================================================
-   صفحة البحث
+   استخراج نبذة قصيرة
+   ========================================================= */
+
+function createSnippet(
+  text: string,
+  query: string
+) {
+  const cleanText = text.trim()
+
+  if (!cleanText) {
+    return 'تعرف على المزيد من التفاصيل والمعلومات.'
+  }
+
+  if (!query) {
+    return cleanText.length > 150
+      ? `${cleanText.slice(0, 150)}...`
+      : cleanText
+  }
+
+  const normalizedText =
+    normalizeArabic(cleanText)
+
+  const normalizedQuery =
+    normalizeArabic(query)
+
+  const position =
+    normalizedText.indexOf(normalizedQuery)
+
+  if (position === -1) {
+    const words = normalizedQuery
+      .split(' ')
+      .filter(Boolean)
+
+    const foundWord = words.find((word) =>
+      normalizedText.includes(word)
+    )
+
+    if (!foundWord) {
+      return cleanText.length > 150
+        ? `${cleanText.slice(0, 150)}...`
+        : cleanText
+    }
+
+    const wordPosition =
+      normalizedText.indexOf(foundWord)
+
+    const start = Math.max(
+      0,
+      wordPosition - 55
+    )
+
+    const end = Math.min(
+      cleanText.length,
+      wordPosition + 100
+    )
+
+    return `${start > 0 ? '…' : ''}${cleanText.slice(
+      start,
+      end
+    )}${end < cleanText.length ? '…' : ''}`
+  }
+
+  const start = Math.max(
+    0,
+    position - 55
+  )
+
+  const end = Math.min(
+    cleanText.length,
+    position +
+      normalizedQuery.length +
+      95
+  )
+
+  return `${start > 0 ? '…' : ''}${cleanText.slice(
+    start,
+    end
+  )}${end < cleanText.length ? '…' : ''}`
+}
+
+/* =========================================================
+   إبراز الكلمات المطابقة
+   ========================================================= */
+
+function HighlightText({
+  text,
+  query,
+}: {
+  text: string
+  query: string
+}) {
+  if (!query.trim()) {
+    return <>{text}</>
+  }
+
+  const queryWords = query
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+
+  if (queryWords.length === 0) {
+    return <>{text}</>
+  }
+
+  const pattern = queryWords
+    .map((word) =>
+      word.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        '\\$&'
+      )
+    )
+    .join('|')
+
+  if (!pattern) {
+    return <>{text}</>
+  }
+
+  const regex = new RegExp(
+    `(${pattern})`,
+    'giu'
+  )
+
+  const parts = text.split(regex)
+
+  return (
+    <>
+      {parts.map((part, index) => {
+        const normalizedPart =
+          normalizeArabic(part)
+
+        const isMatch =
+          queryWords.some(
+            (word) =>
+              normalizedPart ===
+                normalizeArabic(word) ||
+              normalizedPart.includes(
+                normalizeArabic(word)
+              )
+          )
+
+        if (!isMatch) {
+          return (
+            <span key={index}>
+              {part}
+            </span>
+          )
+        }
+
+        return (
+          <mark
+            key={index}
+            className="search-highlight"
+          >
+            {part}
+          </mark>
+        )
+      })}
+    </>
+  )
+}
+
+/* =========================================================
+   Breadcrumb
+   ========================================================= */
+
+function getBreadcrumb(item: SearchItem) {
+  if (item.id.startsWith('university-')) {
+    return [
+      'الرئيسية',
+      'الجامعات',
+      item.title,
+    ]
+  }
+
+  if (item.id.startsWith('college-')) {
+    return [
+      'الرئيسية',
+      'الجامعات',
+      'الكليات والتخصصات',
+      item.title,
+    ]
+  }
+
+  if (item.id.startsWith('major-')) {
+    return [
+      'الرئيسية',
+      'الجامعات',
+      'الكليات والتخصصات',
+      'التخصصات',
+      item.title,
+    ]
+  }
+
+  if (item.id.startsWith('service-')) {
+    return [
+      'الرئيسية',
+      'خدماتنا',
+      item.title,
+    ]
+  }
+
+  return [
+    'الرئيسية',
+    item.category,
+    item.title,
+  ]
+}
+
+/* =========================================================
+   الخدمات المقترحة
+   ========================================================= */
+
+function getRecommendedServices(
+  query: string
+): RecommendedService[] {
+  const allServices =
+    services.map((service) => {
+      const searchableText = [
+        service.title,
+        service.subtitle,
+        service.category,
+        service.about,
+        service.whatWeOffer.join(' '),
+        service.requirements.join(' '),
+        service.faqs
+          .map((faq) => `${faq.q} ${faq.a}`)
+          .join(' '),
+        service.orderText,
+      ].join(' ')
+
+      const normalizedQuery =
+        normalizeArabic(query)
+
+      const normalizedText =
+        normalizeArabic(searchableText)
+
+      let score = 0
+
+      if (normalizedQuery) {
+        if (
+          normalizeArabic(
+            service.title
+          ).includes(normalizedQuery)
+        ) {
+          score += 100
+        }
+
+        if (
+          normalizeArabic(
+            service.subtitle
+          ).includes(normalizedQuery)
+        ) {
+          score += 60
+        }
+
+        if (
+          normalizedText.includes(
+            normalizedQuery
+          )
+        ) {
+          score += 40
+        }
+
+        const words =
+          normalizedQuery
+            .split(' ')
+            .filter(Boolean)
+
+        for (const word of words) {
+          if (
+            normalizedText.includes(word)
+          ) {
+            score += 25
+          }
+        }
+      }
+
+      return {
+        id: service.id,
+        title: service.title,
+        subtitle: service.subtitle,
+        about: service.about,
+        href: `/services/${service.id}`,
+        icon: service.icon,
+        score,
+      }
+    })
+
+  const sorted = [...allServices].sort(
+    (a, b) => b.score - a.score
+  )
+
+  const matching = sorted.filter(
+    (service) => service.score > 0
+  )
+
+  const fallback =
+    sorted.filter(
+      (service) => service.score === 0
+    )
+
+  return [
+    ...matching,
+    ...fallback,
+  ].slice(0, 4)
+}
+
+/* =========================================================
+   الصفحة
    ========================================================= */
 
 function SearchPageContent() {
   const searchParams = useSearchParams()
 
-  const query = searchParams.get('q')?.trim() ?? ''
+  const query =
+    searchParams.get('q')?.trim() ?? ''
 
   const results = useMemo(() => {
     if (!query) {
       return baseSearchItems
     }
 
-    const scoredResults = searchItems
-      .map((item) => ({
-        item,
-        score: calculateSearchScore(
-          query,
-          item
-        ),
-      }))
-      .filter((result) => {
-        /*
-         * الحد الأدنى حتى لا تظهر نتائج بعيدة جدًا.
-         */
-        return result.score >= 18
-      })
-      .sort((a, b) => {
-        if (b.score !== a.score) {
-          return b.score - a.score
-        }
-
-        return a.item.title.localeCompare(
-          b.item.title,
-          'ar'
+    const scoredResults =
+      searchItems
+        .map((item) => ({
+          item,
+          score:
+            calculateSearchScore(
+              query,
+              item
+            ),
+        }))
+        .filter(
+          (result) =>
+            result.score >= 18
         )
-      })
+        .sort((a, b) => {
+          if (
+            b.score !== a.score
+          ) {
+            return (
+              b.score - a.score
+            )
+          }
+
+          return a.item.title.localeCompare(
+            b.item.title,
+            'ar'
+          )
+        })
 
     return scoredResults.map(
       (result) => result.item
     )
   }, [query])
 
+  const recommendedServices =
+    useMemo(
+      () =>
+        getRecommendedServices(
+          query
+        ),
+      [query]
+    )
+
   return (
     <main className="search-page">
+
+      {/* =================================================
+          رأس البحث
+          ================================================= */}
+
       <section className="search-hero">
         <div className="container">
+
           <div className="search-hero-icon">
             <Search size={28} />
           </div>
@@ -561,9 +923,9 @@ function SearchPageContent() {
           </h1>
 
           <p>
-            ابحث عن الخدمات، الجامعات، الكليات،
-            التخصصات، الأقسام والمعلومات الموجودة
-            في منصة هديل.
+            ابحث عن الخدمات، الجامعات،
+            الكليات، التخصصات، الأقسام
+            والمعلومات الموجودة في منصة هديل.
           </p>
 
           <form
@@ -586,12 +948,19 @@ function SearchPageContent() {
               بحث
             </button>
           </form>
+
         </div>
       </section>
 
+      {/* =================================================
+          نتائج البحث
+          ================================================= */}
+
       <section className="search-results-section">
         <div className="container">
+
           <div className="search-results-header">
+
             <div>
               <span className="section-label">
                 نتائج البحث
@@ -615,52 +984,127 @@ function SearchPageContent() {
                 <ArrowLeft size={16} />
               </Link>
             )}
+
           </div>
 
           {results.length > 0 ? (
             <div className="search-grid">
+
               {results.map((item) => {
                 const Icon = item.icon
+                const breadcrumb =
+                  getBreadcrumb(item)
+
+                const snippet =
+                  createSnippet(
+                    item.description,
+                    query
+                  )
 
                 return (
-                  <Link
-                    href={item.href}
+                  <article
                     className="search-card"
                     key={item.id}
                   >
-                    <div className="search-card-icon">
-                      <Icon size={24} />
+
+                    <div className="search-card-top">
+
+                      <div className="search-card-icon">
+                        <Icon size={24} />
+                      </div>
+
+                      <span className="search-card-category">
+                        {item.category}
+                      </span>
+
                     </div>
 
                     <div className="search-card-content">
-                      <span>{item.category}</span>
 
-                      <h3>{item.title}</h3>
+                      <Link
+                        href={item.href}
+                        className="search-card-title"
+                      >
+                        {item.title}
+                      </Link>
 
-                      <p>{item.description}</p>
+                      <p className="search-card-snippet">
+                        <HighlightText
+                          text={snippet}
+                          query={query}
+                        />
+                      </p>
 
-                      <strong>
-                        الانتقال للقسم
-                        <ArrowLeft size={16} />
-                      </strong>
+                      <nav
+                        className="search-breadcrumb"
+                        aria-label="مسار الصفحة"
+                      >
+                        {breadcrumb.map(
+                          (
+                            part,
+                            index
+                          ) => (
+                            <span
+                              key={`${part}-${index}`}
+                            >
+                              {index > 0 && (
+                                <span className="breadcrumb-separator">
+                                  ←
+                                </span>
+                              )}
+
+                              <span
+                                className={
+                                  index ===
+                                  breadcrumb.length -
+                                    1
+                                    ? 'breadcrumb-current'
+                                    : ''
+                                }
+                              >
+                                {part}
+                              </span>
+                            </span>
+                          )
+                        )}
+                      </nav>
+
                     </div>
-                  </Link>
+
+                    <div className="search-card-footer">
+
+                      <Link
+                        href={item.href}
+                        className="search-more-button"
+                      >
+                        عرض المزيد
+                        <ArrowLeft size={16} />
+                      </Link>
+
+                    </div>
+
+                  </article>
                 )
               })}
+
             </div>
           ) : (
             <div className="no-results">
+
               <div className="no-results-icon">
                 <Search size={32} />
               </div>
 
-              <h3>لم نجد ما تبحث عنه</h3>
+              <h3>
+                لم نجد ما تبحث عنه
+              </h3>
 
               <p>
-                جرّب استخدام كلمة مختلفة أو اكتب جزءًا
-                من الكلمة فقط.
+                جرّب استخدام كلمة مختلفة
+                أو اكتب جزءًا من الكلمة فقط.
                 <br />
-                مثال: جامعة، طب، حاسب، بحث، معدل، خدمات.
+                مثال: جامعة، طب، حاسب،
+                بحث، معدل، خدمات.
               </p>
 
               <Link
@@ -670,10 +1114,100 @@ function SearchPageContent() {
                 العودة للرئيسية
                 <ArrowLeft size={17} />
               </Link>
+
             </div>
           )}
 
+          {/* =================================================
+              خدمات قد تعجبك أو قد تحتاجها
+              ================================================= */}
+
+          <section className="recommended-section">
+
+            <div className="recommended-header">
+
+              <div>
+                <span className="section-label">
+                  اقتراحات لك
+                </span>
+
+                <h2>
+                  خدمات قد تعجبك أو قد تحتاجها
+                </h2>
+
+                <p>
+                  اخترنا لك بعض الخدمات التي قد
+                  تكون مناسبة لما تبحث عنه.
+                </p>
+              </div>
+
+              <Link
+                href="/services"
+                className="recommended-all"
+              >
+                عرض جميع الخدمات
+                <ArrowLeft size={16} />
+              </Link>
+
+            </div>
+
+            <div className="recommended-grid">
+
+              {recommendedServices.map(
+                (service) => {
+                  const Icon =
+                    service.icon
+
+                  return (
+                    <Link
+                      href={service.href}
+                      className="recommended-card"
+                      key={service.id}
+                    >
+
+                      <div className="recommended-icon">
+                        <Icon size={22} />
+                      </div>
+
+                      <div className="recommended-content">
+
+                        <span>
+                          خدمة من منصة هديل
+                        </span>
+
+                        <h3>
+                          {service.title}
+                        </h3>
+
+                        <p>
+                          {service.subtitle ||
+                            service.about}
+                        </p>
+
+                        <strong>
+                          تعرف على الخدمة
+                          <ArrowLeft
+                            size={15}
+                          />
+                        </strong>
+
+                      </div>
+
+                    </Link>
+                  )
+                }
+              )}
+
+            </div>
+
+          </section>
+
+          {/* =================================================
+              المساعدة
+              ================================================= */}
+
           <div className="search-help">
+
             <div className="search-help-icon">
               <CheckCircle2 size={23} />
             </div>
@@ -684,8 +1218,8 @@ function SearchPageContent() {
               </strong>
 
               <p>
-                يمكنك التواصل معنا مباشرة وسيساعدك فريق
-                منصة هديل.
+                يمكنك التواصل معنا مباشرة
+                وسيساعدك فريق منصة هديل.
               </p>
             </div>
 
@@ -698,13 +1232,21 @@ function SearchPageContent() {
               <MessageCircle size={17} />
               تواصل معنا
             </a>
+
           </div>
+
         </div>
       </section>
 
       <style jsx>{`
+
+        /* ================================================
+           الصفحة
+           ================================================ */
+
         .search-page {
           min-height: 70vh;
+
           background:
             radial-gradient(
               circle at 15% 10%,
@@ -717,14 +1259,22 @@ function SearchPageContent() {
               #ffffff 45%,
               #f4f7fc 100%
             );
+
           color: #17305f;
         }
+
+        /* ================================================
+           رأس البحث
+           ================================================ */
 
         .search-hero {
           position: relative;
           overflow: hidden;
+
           padding: 76px 0 72px;
+
           text-align: center;
+
           background:
             radial-gradient(
               circle at 50% -30%,
@@ -737,16 +1287,24 @@ function SearchPageContent() {
               #2455c4 52%,
               #163878 100%
             );
+
           color: #ffffff;
         }
 
         .search-hero::after {
           content: '';
+
           position: absolute;
+
           width: 280px;
           height: 280px;
-          border: 1px solid rgba(255, 255, 255, 0.13);
+
+          border:
+            1px solid
+            rgba(255, 255, 255, 0.13);
+
           border-radius: 50%;
+
           left: -100px;
           bottom: -170px;
         }
@@ -754,27 +1312,44 @@ function SearchPageContent() {
         .search-hero-icon {
           position: relative;
           z-index: 1;
+
           width: 64px;
           height: 64px;
+
           margin: 0 auto 18px;
+
           display: flex;
           align-items: center;
           justify-content: center;
+
           border-radius: 20px;
+
           color: #173f91;
+
           background: #ffffff;
-          border: 2px solid #e2bc68;
-          box-shadow: 0 14px 35px rgba(0, 0, 0, 0.16);
+
+          border:
+            2px solid
+            #e2bc68;
+
+          box-shadow:
+            0 14px 35px
+            rgba(0, 0, 0, 0.16);
         }
 
         .search-eyebrow {
           position: relative;
           z-index: 1;
+
           display: inline-flex;
           align-items: center;
+
           gap: 7px;
+
           margin-bottom: 13px;
+
           color: #f7c25e;
+
           font-size: 13px;
           font-weight: 900;
         }
@@ -782,38 +1357,72 @@ function SearchPageContent() {
         .search-hero h1 {
           position: relative;
           z-index: 1;
+
           margin: 0;
-          font-size: clamp(28px, 5vw, 46px);
+
+          font-size:
+            clamp(28px, 5vw, 46px);
+
           font-weight: 950;
+
           letter-spacing: -0.8px;
         }
 
         .search-hero p {
           position: relative;
           z-index: 1;
+
           max-width: 620px;
-          margin: 14px auto 28px;
-          color: rgba(255, 255, 255, 0.84);
+
+          margin:
+            14px auto 28px;
+
+          color:
+            rgba(255, 255, 255, 0.84);
+
           line-height: 1.9;
+
           font-size: 15px;
         }
+
+        /* ================================================
+           شريط البحث
+           ================================================ */
 
         .search-form {
           position: relative;
           z-index: 2;
+
           max-width: 680px;
+
           min-height: 62px;
+
           margin: 0 auto;
-          padding: 7px 8px 7px 18px;
+
+          padding:
+            7px 8px 7px 18px;
+
           display: flex;
           align-items: center;
+
           gap: 12px;
+
           direction: rtl;
-          border: 1px solid rgba(255, 255, 255, 0.3);
+
+          border:
+            1px solid
+            rgba(255, 255, 255, 0.3);
+
           border-radius: 18px;
-          background: rgba(255, 255, 255, 0.14);
+
+          background:
+            rgba(255, 255, 255, 0.14);
+
           backdrop-filter: blur(16px);
-          box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+
+          box-shadow:
+            0 18px 45px
+            rgba(0, 0, 0, 0.18);
         }
 
         .search-form > svg {
@@ -824,94 +1433,182 @@ function SearchPageContent() {
         .search-form input {
           min-width: 0;
           flex: 1;
+
           height: 46px;
+
           border: 0;
           outline: 0;
+
           background: transparent;
+
           color: #ffffff;
+
           font-size: 15px;
+
           font-family: inherit;
         }
 
         .search-form input::placeholder {
-          color: rgba(255, 255, 255, 0.68);
+          color:
+            rgba(255, 255, 255, 0.68);
         }
 
         .search-form button {
           flex: 0 0 auto;
+
           min-width: 82px;
           height: 46px;
+
           padding: 0 18px;
+
           border: 0;
+
           border-radius: 13px;
-          background: linear-gradient(
-            135deg,
-            #f7c25e,
-            #d5aa54
-          );
+
+          background:
+            linear-gradient(
+              135deg,
+              #f7c25e,
+              #d5aa54
+            );
+
           color: #17305f;
+
           font-family: inherit;
+
           font-size: 14px;
           font-weight: 950;
+
           cursor: pointer;
-          box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+
+          box-shadow:
+            0 8px 18px
+            rgba(0, 0, 0, 0.15);
         }
+
+        /* ================================================
+           النتائج
+           ================================================ */
 
         .search-results-section {
           padding: 70px 0 90px;
         }
 
         .search-results-header {
+          width: 100%;
+          max-width: 1050px;
+
+          margin:
+            0 auto 30px;
+
           display: flex;
+
           align-items: flex-end;
-          justify-content: space-between;
+
+          justify-content:
+            space-between;
+
           gap: 20px;
-          margin-bottom: 30px;
+
+          direction: rtl;
         }
 
         .section-label {
           display: block;
+
           margin-bottom: 7px;
+
           color: #d5aa54;
+
           font-size: 12px;
+
           font-weight: 950;
         }
 
         .search-results-header h2 {
           margin: 0;
+
           color: #173f91;
-          font-size: clamp(23px, 4vw, 31px);
+
+          font-size:
+            clamp(23px, 4vw, 31px);
+
           font-weight: 950;
         }
 
         .clear-search {
           display: inline-flex;
+
           align-items: center;
+
           gap: 7px;
+
           color: #2455c4;
+
           font-size: 13px;
+
           font-weight: 850;
+
           text-decoration: none;
         }
 
+        /* ================================================
+           شبكة النتائج
+           ================================================ */
+
         .search-grid {
+          width: 100%;
+          max-width: 1050px;
+
+          margin: 0 auto;
+
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 18px;
+
+          grid-template-columns:
+            repeat(
+              2,
+              minmax(0, 1fr)
+            );
+
+          gap: 20px;
+
+          direction: ltr;
         }
+
+        /* ================================================
+           بطاقة النتيجة
+           ================================================ */
 
         .search-card {
           min-width: 0;
+
           display: flex;
-          align-items: flex-start;
-          gap: 17px;
-          padding: 22px;
+
+          flex-direction: column;
+
+          padding: 24px;
+
+          text-align: right;
+
+          direction: rtl;
+
           color: inherit;
+
           text-decoration: none;
-          border: 1px solid rgba(36, 85, 196, 0.12);
-          border-radius: 20px;
-          background: rgba(255, 255, 255, 0.9);
-          box-shadow: 0 10px 28px rgba(23, 63, 145, 0.08);
+
+          border:
+            1px solid
+            rgba(36, 85, 196, 0.12);
+
+          border-radius: 22px;
+
+          background:
+            rgba(255, 255, 255, 0.94);
+
+          box-shadow:
+            0 10px 28px
+            rgba(23, 63, 145, 0.08);
+
           transition:
             transform 0.2s ease,
             box-shadow 0.2s ease,
@@ -919,202 +1616,727 @@ function SearchPageContent() {
         }
 
         .search-card:hover {
-          transform: translateY(-3px);
-          border-color: rgba(213, 170, 84, 0.55);
-          box-shadow: 0 16px 34px rgba(23, 63, 145, 0.13);
+          transform:
+            translateY(-4px);
+
+          border-color:
+            rgba(213, 170, 84, 0.6);
+
+          box-shadow:
+            0 18px 38px
+            rgba(23, 63, 145, 0.13);
+        }
+
+        .search-card-top {
+          display: flex;
+
+          align-items: center;
+
+          justify-content:
+            space-between;
+
+          gap: 15px;
+
+          margin-bottom: 17px;
         }
 
         .search-card-icon {
-          flex: 0 0 auto;
-          width: 52px;
-          height: 52px;
+          flex:
+            0 0 auto;
+
+          width: 54px;
+          height: 54px;
+
           display: flex;
+
           align-items: center;
           justify-content: center;
-          border-radius: 16px;
+
+          border-radius: 17px;
+
           color: #173f91;
-          background: linear-gradient(
-            145deg,
-            #ffffff,
-            #eef3fc
-          );
-          border: 1px solid rgba(213, 170, 84, 0.58);
+
+          background:
+            linear-gradient(
+              145deg,
+              #ffffff,
+              #eef3fc
+            );
+
+          border:
+            1px solid
+            rgba(213, 170, 84, 0.58);
+        }
+
+        .search-card-category {
+          display: inline-flex;
+
+          align-items: center;
+
+          min-height: 30px;
+
+          padding:
+            0 11px;
+
+          border-radius: 999px;
+
+          color: #173f91;
+
+          background:
+            rgba(36, 85, 196, 0.06);
+
+          font-size: 11px;
+
+          font-weight: 900;
         }
 
         .search-card-content {
           min-width: 0;
+
           flex: 1;
         }
 
-        .search-card-content > span {
+        .search-card-title {
           display: block;
-          margin-bottom: 4px;
-          color: #d5aa54;
-          font-size: 11px;
-          font-weight: 900;
+
+          margin-bottom: 10px;
+
+          color: #173f91;
+
+          font-size: 20px;
+
+          line-height: 1.5;
+
+          font-weight: 950;
+
+          text-decoration: none;
+
+          transition:
+            color 0.2s ease;
         }
 
-        .search-card h3 {
-          margin: 0 0 7px;
+        .search-card-title:hover {
+          color: #d5aa54;
+        }
+
+        .search-card-snippet {
+          min-height: 52px;
+
+          margin: 0;
+
+          color: #687895;
+
+          font-size: 13px;
+
+          line-height: 1.9;
+        }
+
+        /* ================================================
+           إبراز الكلمة المفتاحية
+           ================================================ */
+
+        .search-highlight {
+          padding:
+            1px 4px;
+
+          border-radius: 5px;
+
           color: #173f91;
-          font-size: 18px;
+
+          background:
+            rgba(213, 170, 84, 0.25);
+
           font-weight: 950;
         }
 
-        .search-card p {
-          margin: 0;
-          color: #687895;
-          font-size: 13px;
+        /* ================================================
+           Breadcrumb
+           ================================================ */
+
+        .search-breadcrumb {
+          display: flex;
+
+          flex-wrap: wrap;
+
+          align-items: center;
+
+          gap: 4px;
+
+          margin-top: 17px;
+
+          color: #8b98ad;
+
+          font-size: 11px;
+
           line-height: 1.8;
         }
 
-        .search-card strong {
-          margin-top: 14px;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          color: #2455c4;
-          font-size: 12px;
+        .breadcrumb-separator {
+          display: inline-block;
+
+          margin:
+            0 5px;
+
+          color: #d5aa54;
+
           font-weight: 900;
         }
 
+        .breadcrumb-current {
+          color: #2455c4;
+
+          font-weight: 850;
+        }
+
+        /* ================================================
+           زر عرض المزيد
+           ================================================ */
+
+        .search-card-footer {
+          display: flex;
+
+          justify-content:
+            flex-start;
+
+          margin-top: 20px;
+
+          padding-top: 17px;
+
+          border-top:
+            1px solid
+            rgba(36, 85, 196, 0.08);
+        }
+
+        .search-more-button {
+          display: inline-flex;
+
+          align-items: center;
+
+          justify-content: center;
+
+          gap: 7px;
+
+          min-height: 40px;
+
+          padding:
+            0 14px;
+
+          border-radius: 11px;
+
+          color: #173f91;
+
+          background:
+            rgba(36, 85, 196, 0.06);
+
+          text-decoration: none;
+
+          font-size: 12px;
+
+          font-weight: 950;
+
+          transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
+        }
+
+        .search-more-button:hover {
+          color: #17305f;
+
+          background:
+            linear-gradient(
+              135deg,
+              #f7c25e,
+              #d5aa54
+            );
+
+          transform:
+            translateX(-2px);
+        }
+
+        /* ================================================
+           لا توجد نتائج
+           ================================================ */
+
         .no-results {
-          padding: 50px 25px;
+          width: 100%;
+          max-width: 1050px;
+
+          margin: 0 auto;
+
+          padding:
+            50px 25px;
+
           text-align: center;
-          border: 1px solid rgba(36, 85, 196, 0.12);
+
+          border:
+            1px solid
+            rgba(36, 85, 196, 0.12);
+
           border-radius: 22px;
+
           background: #ffffff;
-          box-shadow: 0 12px 30px rgba(23, 63, 145, 0.07);
+
+          box-shadow:
+            0 12px 30px
+            rgba(23, 63, 145, 0.07);
         }
 
         .no-results-icon {
           width: 68px;
           height: 68px;
-          margin: 0 auto 17px;
+
+          margin:
+            0 auto 17px;
+
           display: flex;
+
           align-items: center;
           justify-content: center;
+
           border-radius: 50%;
+
           color: #173f91;
+
           background: #eef3fc;
-          border: 1px solid #d5aa54;
+
+          border:
+            1px solid
+            #d5aa54;
         }
 
         .no-results h3 {
-          margin: 0 0 8px;
+          margin:
+            0 0 8px;
+
           color: #173f91;
+
           font-size: 21px;
+
           font-weight: 950;
         }
 
         .no-results p {
-          margin: 0 auto 22px;
+          margin:
+            0 auto 22px;
+
           color: #687895;
+
           line-height: 1.9;
+
           font-size: 14px;
         }
 
         .primary-button {
           display: inline-flex;
+
           align-items: center;
+
           justify-content: center;
+
           gap: 8px;
+
           min-height: 46px;
-          padding: 0 18px;
+
+          padding:
+            0 18px;
+
           border-radius: 13px;
+
           color: #17305f;
-          background: linear-gradient(
-            135deg,
-            #f7c25e,
-            #d5aa54
-          );
+
+          background:
+            linear-gradient(
+              135deg,
+              #f7c25e,
+              #d5aa54
+            );
+
           font-size: 13px;
+
           font-weight: 950;
+
           text-decoration: none;
         }
 
-        .search-help {
-          margin-top: 35px;
-          padding: 19px 21px;
+        /* ================================================
+           الخدمات المقترحة
+           ================================================ */
+
+        .recommended-section {
+          width: 100%;
+          max-width: 1050px;
+
+          margin:
+            65px auto 0;
+
+          padding-top: 55px;
+
+          border-top:
+            1px solid
+            rgba(36, 85, 196, 0.1);
+        }
+
+        .recommended-header {
           display: flex;
+
+          align-items: flex-end;
+
+          justify-content:
+            space-between;
+
+          gap: 25px;
+
+          margin-bottom: 25px;
+
+          direction: rtl;
+        }
+
+        .recommended-header h2 {
+          margin: 0;
+
+          color: #173f91;
+
+          font-size:
+            clamp(22px, 4vw, 29px);
+
+          font-weight: 950;
+        }
+
+        .recommended-header p {
+          margin:
+            8px 0 0;
+
+          color: #687895;
+
+          font-size: 13px;
+
+          line-height: 1.8;
+        }
+
+        .recommended-all {
+          flex:
+            0 0 auto;
+
+          display: inline-flex;
+
           align-items: center;
+
+          gap: 7px;
+
+          color: #2455c4;
+
+          font-size: 12px;
+
+          font-weight: 950;
+
+          text-decoration: none;
+        }
+
+        .recommended-grid {
+          display: grid;
+
+          grid-template-columns:
+            repeat(
+              4,
+              minmax(0, 1fr)
+            );
+
           gap: 15px;
-          border: 1px solid rgba(213, 170, 84, 0.32);
+
+          direction: rtl;
+        }
+
+        .recommended-card {
+          min-width: 0;
+
+          display: flex;
+
+          flex-direction: column;
+
+          padding: 18px;
+
+          color: inherit;
+
+          text-decoration: none;
+
+          border:
+            1px solid
+            rgba(36, 85, 196, 0.11);
+
           border-radius: 18px;
-          background: linear-gradient(
-            135deg,
-            rgba(23, 63, 145, 0.06),
-            rgba(213, 170, 84, 0.07)
-          );
+
+          background:
+            rgba(255, 255, 255, 0.92);
+
+          box-shadow:
+            0 8px 24px
+            rgba(23, 63, 145, 0.06);
+
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease;
+        }
+
+        .recommended-card:hover {
+          transform:
+            translateY(-3px);
+
+          border-color:
+            rgba(213, 170, 84, 0.55);
+
+          box-shadow:
+            0 15px 30px
+            rgba(23, 63, 145, 0.1);
+        }
+
+        .recommended-icon {
+          width: 46px;
+          height: 46px;
+
+          margin-bottom: 14px;
+
+          display: flex;
+
+          align-items: center;
+          justify-content: center;
+
+          border-radius: 14px;
+
+          color: #173f91;
+
+          background:
+            linear-gradient(
+              145deg,
+              #ffffff,
+              #eef3fc
+            );
+
+          border:
+            1px solid
+            rgba(213, 170, 84, 0.52);
+        }
+
+        .recommended-content {
+          min-width: 0;
+        }
+
+        .recommended-content > span {
+          display: block;
+
+          margin-bottom: 5px;
+
+          color: #d5aa54;
+
+          font-size: 10px;
+
+          font-weight: 900;
+        }
+
+        .recommended-content h3 {
+          margin:
+            0 0 7px;
+
+          color: #173f91;
+
+          font-size: 15px;
+
+          line-height: 1.6;
+
+          font-weight: 950;
+        }
+
+        .recommended-content p {
+          display: -webkit-box;
+
+          overflow: hidden;
+
+          margin: 0;
+
+          color: #687895;
+
+          font-size: 11px;
+
+          line-height: 1.8;
+
+          -webkit-line-clamp: 3;
+
+          -webkit-box-orient: vertical;
+        }
+
+        .recommended-content strong {
+          margin-top: 14px;
+
+          display: inline-flex;
+
+          align-items: center;
+
+          gap: 6px;
+
+          color: #2455c4;
+
+          font-size: 11px;
+
+          font-weight: 950;
+        }
+
+        /* ================================================
+           المساعدة
+           ================================================ */
+
+        .search-help {
+          width: 100%;
+          max-width: 1050px;
+
+          margin:
+            35px auto 0;
+
+          padding:
+            19px 21px;
+
+          display: flex;
+
+          align-items: center;
+
+          gap: 15px;
+
+          border:
+            1px solid
+            rgba(213, 170, 84, 0.32);
+
+          border-radius: 18px;
+
+          background:
+            linear-gradient(
+              135deg,
+              rgba(23, 63, 145, 0.06),
+              rgba(213, 170, 84, 0.07)
+            );
         }
 
         .search-help-icon {
-          flex: 0 0 auto;
+          flex:
+            0 0 auto;
+
           width: 46px;
           height: 46px;
+
           display: flex;
+
           align-items: center;
           justify-content: center;
+
           border-radius: 14px;
+
           color: #173f91;
+
           background: #ffffff;
-          border: 1px solid rgba(213, 170, 84, 0.5);
+
+          border:
+            1px solid
+            rgba(213, 170, 84, 0.5);
         }
 
         .search-help > div:nth-child(2) {
           min-width: 0;
+
           flex: 1;
         }
 
         .search-help strong {
           color: #173f91;
+
           font-size: 14px;
+
           font-weight: 950;
         }
 
         .search-help p {
-          margin: 4px 0 0;
+          margin:
+            4px 0 0;
+
           color: #687895;
+
           font-size: 12px;
         }
 
         .search-whatsapp {
-          flex: 0 0 auto;
+          flex:
+            0 0 auto;
+
           display: inline-flex;
+
           align-items: center;
+
           gap: 7px;
+
           min-height: 42px;
-          padding: 0 14px;
+
+          padding:
+            0 14px;
+
           border-radius: 12px;
+
           color: #ffffff;
+
           background: #173f91;
+
           text-decoration: none;
+
           font-size: 12px;
+
           font-weight: 900;
         }
 
+        /* ================================================
+           الجوال
+           ================================================ */
+
+        @media (max-width: 900px) {
+
+          .recommended-grid {
+            grid-template-columns:
+              repeat(
+                2,
+                minmax(0, 1fr)
+              );
+          }
+
+        }
+
         @media (max-width: 700px) {
+
           .search-hero {
-            padding: 55px 0 52px;
+            padding:
+              55px 0 52px;
           }
 
           .search-form {
             min-height: 58px;
+
             padding-left: 7px;
           }
 
           .search-form button {
             min-width: 72px;
-            padding: 0 13px;
+
+            padding:
+              0 13px;
           }
 
           .search-results-section {
-            padding: 52px 0 65px;
+            padding:
+              52px 0 65px;
           }
 
           .search-results-header {
-            align-items: flex-start;
-            flex-direction: column;
+            align-items:
+              flex-start;
+
+            flex-direction:
+              column;
+
             gap: 12px;
           }
 
@@ -1122,18 +2344,38 @@ function SearchPageContent() {
             grid-template-columns: 1fr;
           }
 
+          .recommended-header {
+            align-items:
+              flex-start;
+
+            flex-direction:
+              column;
+
+            gap: 13px;
+          }
+
+          .recommended-grid {
+            grid-template-columns: 1fr;
+          }
+
           .search-help {
-            align-items: flex-start;
+            align-items:
+              flex-start;
+
             flex-wrap: wrap;
           }
 
           .search-whatsapp {
             width: 100%;
-            justify-content: center;
+
+            justify-content:
+              center;
           }
+
         }
 
         @media (max-width: 420px) {
+
           .search-form {
             gap: 7px;
           }
@@ -1147,18 +2389,39 @@ function SearchPageContent() {
           }
 
           .search-card {
-            padding: 17px;
+            padding: 18px;
           }
 
           .search-card-icon {
             width: 46px;
             height: 46px;
           }
+
+          .search-card-category {
+            max-width: 170px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+          }
+
+          .recommended-card {
+            padding: 17px;
+          }
+
         }
+
       `}</style>
+
     </main>
   )
 }
+
+/* =========================================================
+   التصدير
+   ========================================================= */
 
 export default function SearchPage() {
   return (
