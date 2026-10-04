@@ -900,10 +900,6 @@ function SearchPageContent() {
   return (
     <main className="search-page">
 
-      {/* =================================================
-          رأس البحث
-          ================================================= */}
-
       <section className="search-hero">
         <div className="container">
 
@@ -951,10 +947,6 @@ function SearchPageContent() {
 
         </div>
       </section>
-
-      {/* =================================================
-          نتائج البحث
-          ================================================= */}
 
       <section className="search-results-section">
         <div className="container">
@@ -1118,15 +1110,11 @@ function SearchPageContent() {
             </div>
           )}
 
-          {/* =================================================
-              خدمات قد تعجبك أو قد تحتاجها
-              ================================================= */}
-
           <section className="recommended-section">
 
             <div className="recommended-header">
 
-              <div>
+              <div className="recommended-heading-content">
                 <span className="section-label">
                   اقتراحات لك
                 </span>
@@ -1202,10 +1190,6 @@ function SearchPageContent() {
 
           </section>
 
-          {/* =================================================
-              المساعدة
-              ================================================= */}
-
           <div className="search-help">
 
             <div className="search-help-icon">
@@ -1240,10 +1224,6 @@ function SearchPageContent() {
 
       <style jsx>{`
 
-        /* ================================================
-           الصفحة
-           ================================================ */
-
         .search-page {
           min-height: 70vh;
 
@@ -1263,9 +1243,9 @@ function SearchPageContent() {
           color: #17305f;
         }
 
-        /* ================================================
+        /* =================================================
            رأس البحث
-           ================================================ */
+           ================================================= */
 
         .search-hero {
           position: relative;
@@ -1343,6 +1323,7 @@ function SearchPageContent() {
 
           display: inline-flex;
           align-items: center;
+          justify-content: center;
 
           gap: 7px;
 
@@ -1385,9 +1366,9 @@ function SearchPageContent() {
           font-size: 15px;
         }
 
-        /* ================================================
+        /* =================================================
            شريط البحث
-           ================================================ */
+           ================================================= */
 
         .search-form {
           position: relative;
@@ -1486,9 +1467,9 @@ function SearchPageContent() {
             rgba(0, 0, 0, 0.15);
         }
 
-        /* ================================================
+        /* =================================================
            النتائج
-           ================================================ */
+           ================================================= */
 
         .search-results-section {
           padding: 70px 0 90px;
@@ -1552,9 +1533,9 @@ function SearchPageContent() {
           text-decoration: none;
         }
 
-        /* ================================================
+        /* =================================================
            شبكة النتائج
-           ================================================ */
+           ================================================= */
 
         .search-grid {
           width: 100%;
@@ -1575,9 +1556,9 @@ function SearchPageContent() {
           direction: ltr;
         }
 
-        /* ================================================
-           بطاقة النتيجة
-           ================================================ */
+        /* =================================================
+           بطاقة النتيجة - كل شيء في المنتصف
+           ================================================= */
 
         .search-card {
           min-width: 0;
@@ -1586,9 +1567,11 @@ function SearchPageContent() {
 
           flex-direction: column;
 
+          align-items: center;
+
           padding: 24px;
 
-          text-align: right;
+          text-align: center;
 
           direction: rtl;
 
@@ -1628,22 +1611,22 @@ function SearchPageContent() {
         }
 
         .search-card-top {
+          width: 100%;
+
           display: flex;
+
+          flex-direction: column;
 
           align-items: center;
 
-          justify-content:
-            space-between;
+          justify-content: center;
 
-          gap: 15px;
+          gap: 12px;
 
           margin-bottom: 17px;
         }
 
         .search-card-icon {
-          flex:
-            0 0 auto;
-
           width: 54px;
           height: 54px;
 
@@ -1672,6 +1655,7 @@ function SearchPageContent() {
           display: inline-flex;
 
           align-items: center;
+          justify-content: center;
 
           min-height: 30px;
 
@@ -1691,9 +1675,11 @@ function SearchPageContent() {
         }
 
         .search-card-content {
+          width: 100%;
+
           min-width: 0;
 
-          flex: 1;
+          text-align: center;
         }
 
         .search-card-title {
@@ -1708,6 +1694,8 @@ function SearchPageContent() {
           line-height: 1.5;
 
           font-weight: 950;
+
+          text-align: center;
 
           text-decoration: none;
 
@@ -1729,11 +1717,13 @@ function SearchPageContent() {
           font-size: 13px;
 
           line-height: 1.9;
+
+          text-align: center;
         }
 
-        /* ================================================
+        /* =================================================
            إبراز الكلمة المفتاحية
-           ================================================ */
+           ================================================= */
 
         .search-highlight {
           padding:
@@ -1749,9 +1739,9 @@ function SearchPageContent() {
           font-weight: 950;
         }
 
-        /* ================================================
+        /* =================================================
            Breadcrumb
-           ================================================ */
+           ================================================= */
 
         .search-breadcrumb {
           display: flex;
@@ -1759,6 +1749,8 @@ function SearchPageContent() {
           flex-wrap: wrap;
 
           align-items: center;
+
+          justify-content: center;
 
           gap: 4px;
 
@@ -1769,6 +1761,8 @@ function SearchPageContent() {
           font-size: 11px;
 
           line-height: 1.8;
+
+          text-align: center;
         }
 
         .breadcrumb-separator {
@@ -1788,15 +1782,17 @@ function SearchPageContent() {
           font-weight: 850;
         }
 
-        /* ================================================
+        /* =================================================
            زر عرض المزيد
-           ================================================ */
+           ================================================= */
 
         .search-card-footer {
+          width: 100%;
+
           display: flex;
 
           justify-content:
-            flex-start;
+            center;
 
           margin-top: 20px;
 
@@ -1851,12 +1847,12 @@ function SearchPageContent() {
             );
 
           transform:
-            translateX(-2px);
+            translateY(-2px);
         }
 
-        /* ================================================
+        /* =================================================
            لا توجد نتائج
-           ================================================ */
+           ================================================= */
 
         .no-results {
           width: 100%;
@@ -1959,9 +1955,9 @@ function SearchPageContent() {
           text-decoration: none;
         }
 
-        /* ================================================
-           الخدمات المقترحة
-           ================================================ */
+        /* =================================================
+           خدمات قد تعجبك أو قد تحتاجها
+           ================================================= */
 
         .recommended-section {
           width: 100%;
@@ -1975,21 +1971,38 @@ function SearchPageContent() {
           border-top:
             1px solid
             rgba(36, 85, 196, 0.1);
+
+          text-align: center;
         }
 
         .recommended-header {
           display: flex;
 
-          align-items: flex-end;
+          flex-direction: column;
 
-          justify-content:
-            space-between;
+          align-items: center;
 
-          gap: 25px;
+          justify-content: center;
+
+          gap: 15px;
 
           margin-bottom: 25px;
 
           direction: rtl;
+
+          text-align: center;
+        }
+
+        .recommended-heading-content {
+          width: 100%;
+
+          display: flex;
+
+          flex-direction: column;
+
+          align-items: center;
+
+          text-align: center;
         }
 
         .recommended-header h2 {
@@ -2001,6 +2014,8 @@ function SearchPageContent() {
             clamp(22px, 4vw, 29px);
 
           font-weight: 950;
+
+          text-align: center;
         }
 
         .recommended-header p {
@@ -2012,15 +2027,16 @@ function SearchPageContent() {
           font-size: 13px;
 
           line-height: 1.8;
+
+          text-align: center;
         }
 
         .recommended-all {
-          flex:
-            0 0 auto;
-
           display: inline-flex;
 
           align-items: center;
+
+          justify-content: center;
 
           gap: 7px;
 
@@ -2034,6 +2050,8 @@ function SearchPageContent() {
         }
 
         .recommended-grid {
+          width: 100%;
+
           display: grid;
 
           grid-template-columns:
@@ -2053,6 +2071,10 @@ function SearchPageContent() {
           display: flex;
 
           flex-direction: column;
+
+          align-items: center;
+
+          justify-content: flex-start;
 
           padding: 18px;
 
@@ -2077,6 +2099,8 @@ function SearchPageContent() {
             transform 0.2s ease,
             box-shadow 0.2s ease,
             border-color 0.2s ease;
+
+          text-align: center;
         }
 
         .recommended-card:hover {
@@ -2095,7 +2119,8 @@ function SearchPageContent() {
           width: 46px;
           height: 46px;
 
-          margin-bottom: 14px;
+          margin:
+            0 auto 14px;
 
           display: flex;
 
@@ -2119,7 +2144,17 @@ function SearchPageContent() {
         }
 
         .recommended-content {
+          width: 100%;
+
           min-width: 0;
+
+          display: flex;
+
+          flex-direction: column;
+
+          align-items: center;
+
+          text-align: center;
         }
 
         .recommended-content > span {
@@ -2132,6 +2167,8 @@ function SearchPageContent() {
           font-size: 10px;
 
           font-weight: 900;
+
+          text-align: center;
         }
 
         .recommended-content h3 {
@@ -2145,6 +2182,8 @@ function SearchPageContent() {
           line-height: 1.6;
 
           font-weight: 950;
+
+          text-align: center;
         }
 
         .recommended-content p {
@@ -2160,6 +2199,8 @@ function SearchPageContent() {
 
           line-height: 1.8;
 
+          text-align: center;
+
           -webkit-line-clamp: 3;
 
           -webkit-box-orient: vertical;
@@ -2172,6 +2213,8 @@ function SearchPageContent() {
 
           align-items: center;
 
+          justify-content: center;
+
           gap: 6px;
 
           color: #2455c4;
@@ -2179,11 +2222,13 @@ function SearchPageContent() {
           font-size: 11px;
 
           font-weight: 950;
+
+          text-align: center;
         }
 
-        /* ================================================
+        /* =================================================
            المساعدة
-           ================================================ */
+           ================================================= */
 
         .search-help {
           width: 100%;
@@ -2289,12 +2334,11 @@ function SearchPageContent() {
           font-weight: 900;
         }
 
-        /* ================================================
+        /* =================================================
            الجوال
-           ================================================ */
+           ================================================= */
 
         @media (max-width: 900px) {
-
           .recommended-grid {
             grid-template-columns:
               repeat(
@@ -2302,11 +2346,9 @@ function SearchPageContent() {
                 minmax(0, 1fr)
               );
           }
-
         }
 
         @media (max-width: 700px) {
-
           .search-hero {
             padding:
               55px 0 52px;
@@ -2332,12 +2374,14 @@ function SearchPageContent() {
 
           .search-results-header {
             align-items:
-              flex-start;
+              center;
 
             flex-direction:
               column;
 
             gap: 12px;
+
+            text-align: center;
           }
 
           .search-grid {
@@ -2346,7 +2390,7 @@ function SearchPageContent() {
 
           .recommended-header {
             align-items:
-              flex-start;
+              center;
 
             flex-direction:
               column;
@@ -2360,9 +2404,20 @@ function SearchPageContent() {
 
           .search-help {
             align-items:
-              flex-start;
+              center;
+
+            justify-content:
+              center;
 
             flex-wrap: wrap;
+
+            text-align: center;
+          }
+
+          .search-help > div:nth-child(2) {
+            flex: 1 1 100%;
+
+            text-align: center;
           }
 
           .search-whatsapp {
@@ -2371,11 +2426,9 @@ function SearchPageContent() {
             justify-content:
               center;
           }
-
         }
 
         @media (max-width: 420px) {
-
           .search-form {
             gap: 7px;
           }
@@ -2410,11 +2463,9 @@ function SearchPageContent() {
           .recommended-card {
             padding: 17px;
           }
-
         }
 
       `}</style>
-
     </main>
   )
 }
