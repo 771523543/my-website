@@ -1,5 +1,7 @@
 'use client'
 
+import '@/app/auth/auth.css'
+
 import { useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -66,19 +68,20 @@ export default function AuthPanel({
 
     try {
       if (mode === 'register') {
-        const { data, error: signUpError } = await supabase.auth.signUp({
-          email: email.trim(),
-          password,
-          options: {
-            data: {
-              full_name: fullName.trim() || null,
-              phone: phone.trim() || null,
-              university: university.trim() || null,
-              major: major.trim() || null,
-              academic_level: academicLevel.trim() || null,
+        const { data, error: signUpError } =
+          await supabase.auth.signUp({
+            email: email.trim(),
+            password,
+            options: {
+              data: {
+                full_name: fullName.trim() || null,
+                phone: phone.trim() || null,
+                university: university.trim() || null,
+                major: major.trim() || null,
+                academic_level: academicLevel.trim() || null,
+              },
             },
-          },
-        })
+          })
 
         if (signUpError) throw signUpError
 
@@ -133,11 +136,12 @@ export default function AuthPanel({
     setLoading(true)
 
     try {
-      const { error: verifyError } = await supabase.auth.verifyOtp({
-        email: email.trim(),
-        token: otp.trim(),
-        type: 'signup',
-      })
+      const { error: verifyError } =
+        await supabase.auth.verifyOtp({
+          email: email.trim(),
+          token: otp.trim(),
+          type: 'signup',
+        })
 
       if (verifyError) throw verifyError
 
@@ -161,10 +165,11 @@ export default function AuthPanel({
     setLoading(true)
 
     try {
-      const { error: resendError } = await supabase.auth.resend({
-        type: 'signup',
-        email: email.trim(),
-      })
+      const { error: resendError } =
+        await supabase.auth.resend({
+          type: 'signup',
+          email: email.trim(),
+        })
 
       if (resendError) throw resendError
 
@@ -189,11 +194,11 @@ export default function AuthPanel({
   return (
     <main
       dir="rtl"
-      className="mx-auto w-full max-w-xl px-4 py-8 sm:py-12"
+      className="auth-page mx-auto w-full max-w-xl px-4 py-8 sm:py-12"
     >
-      <section className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
-        <div className="bg-blue-700 px-6 py-8 text-center text-white sm:px-10">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15">
+      <section className="auth-card overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm">
+        <div className="auth-heading bg-blue-700 px-6 py-8 text-center text-white sm:px-10">
+          <div className="auth-brand-icon mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15">
             <GraduationCap size={30} />
           </div>
 
@@ -214,13 +219,13 @@ export default function AuthPanel({
           </p>
         </div>
 
-        <div className="p-5 sm:p-8">
+        <div className="auth-form p-5 sm:p-8">
           {!verifying && (
-            <div className="mb-7 grid grid-cols-2 gap-2 rounded-xl bg-gray-100 p-1">
+            <div className="auth-tabs mb-7 grid grid-cols-2 gap-2 rounded-xl bg-gray-100 p-1">
               <button
                 type="button"
                 onClick={() => changeMode('register')}
-                className={`rounded-lg px-3 py-3 text-sm font-semibold transition ${
+                className={`auth-tab rounded-lg px-3 py-3 text-sm font-semibold transition ${
                   mode === 'register'
                     ? 'bg-white text-blue-700 shadow-sm'
                     : 'text-gray-600'
@@ -232,7 +237,7 @@ export default function AuthPanel({
               <button
                 type="button"
                 onClick={() => changeMode('login')}
-                className={`rounded-lg px-3 py-3 text-sm font-semibold transition ${
+                className={`auth-tab rounded-lg px-3 py-3 text-sm font-semibold transition ${
                   mode === 'login'
                     ? 'bg-white text-blue-700 shadow-sm'
                     : 'text-gray-600'
@@ -246,7 +251,7 @@ export default function AuthPanel({
           {error && (
             <div
               role="alert"
-              className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-700"
+              className="auth-alert auth-alert-error mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-700"
             >
               {error}
             </div>
@@ -255,7 +260,7 @@ export default function AuthPanel({
           {message && (
             <div
               role="status"
-              className="mb-5 rounded-xl border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-800"
+              className="auth-alert auth-alert-success mb-5 rounded-xl border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-800"
             >
               {message}
             </div>
@@ -267,11 +272,13 @@ export default function AuthPanel({
                 <label className={labelClass} htmlFor="otp">
                   رمز التحقق
                 </label>
+
                 <div className="relative">
                   <ShieldCheck
                     className="absolute right-3 top-3.5 text-gray-400"
                     size={19}
                   />
+
                   <input
                     id="otp"
                     type="text"
@@ -289,7 +296,7 @@ export default function AuthPanel({
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3.5 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
+                className="auth-submit flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3.5 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading && (
                   <LoaderCircle className="animate-spin" size={19} />
@@ -301,7 +308,7 @@ export default function AuthPanel({
                 type="button"
                 onClick={resendCode}
                 disabled={loading}
-                className="w-full py-2 text-sm font-medium text-blue-700 hover:underline disabled:opacity-60"
+                className="auth-text-button w-full py-2 text-sm font-medium text-blue-700 hover:underline disabled:opacity-60"
               >
                 إعادة إرسال الرمز
               </button>
@@ -314,7 +321,7 @@ export default function AuthPanel({
                   setError('')
                   setMessage('')
                 }}
-                className="w-full py-2 text-sm text-gray-600 hover:underline"
+                className="auth-text-button w-full py-2 text-sm text-gray-600 hover:underline"
               >
                 العودة إلى التسجيل
               </button>
@@ -332,16 +339,20 @@ export default function AuthPanel({
                     <label className={labelClass} htmlFor="fullName">
                       الاسم الكامل (اختياري)
                     </label>
+
                     <div className="relative">
                       <UserRound
                         className="absolute right-3 top-3.5 text-gray-400"
                         size={19}
                       />
+
                       <input
                         id="fullName"
                         autoComplete="name"
                         value={fullName}
-                        onChange={(event) => setFullName(event.target.value)}
+                        onChange={(event) =>
+                          setFullName(event.target.value)
+                        }
                         placeholder="اسم الطالب"
                         className={`${inputClass} pr-10`}
                       />
@@ -354,11 +365,13 @@ export default function AuthPanel({
                 <label className={labelClass} htmlFor="email">
                   البريد الإلكتروني
                 </label>
+
                 <div className="relative">
                   <Mail
                     className="absolute right-3 top-3.5 text-gray-400"
                     size={19}
                   />
+
                   <input
                     id="email"
                     type="email"
@@ -376,11 +389,13 @@ export default function AuthPanel({
                 <label className={labelClass} htmlFor="password">
                   كلمة المرور
                 </label>
+
                 <div className="relative">
                   <LockKeyhole
                     className="absolute right-3 top-3.5 text-gray-400"
                     size={19}
                   />
+
                   <input
                     id="password"
                     type="password"
@@ -390,7 +405,9 @@ export default function AuthPanel({
                         : 'current-password'
                     }
                     value={password}
-                    onChange={(event) => setPassword(event.target.value)}
+                    onChange={(event) =>
+                      setPassword(event.target.value)
+                    }
                     placeholder="6 أحرف على الأقل"
                     className={`${inputClass} pr-10`}
                     minLength={6}
@@ -405,17 +422,21 @@ export default function AuthPanel({
                     <label className={labelClass} htmlFor="phone">
                       رقم الهاتف (اختياري)
                     </label>
+
                     <div className="relative">
                       <Phone
                         className="absolute right-3 top-3.5 text-gray-400"
                         size={19}
                       />
+
                       <input
                         id="phone"
                         type="tel"
                         autoComplete="tel"
                         value={phone}
-                        onChange={(event) => setPhone(event.target.value)}
+                        onChange={(event) =>
+                          setPhone(event.target.value)
+                        }
                         placeholder="رقم الهاتف"
                         className={`${inputClass} pr-10`}
                       />
@@ -426,11 +447,13 @@ export default function AuthPanel({
                     <label className={labelClass} htmlFor="university">
                       الجامعة (اختياري)
                     </label>
+
                     <div className="relative">
                       <GraduationCap
                         className="absolute right-3 top-3.5 text-gray-400"
                         size={19}
                       />
+
                       <input
                         id="university"
                         value={university}
@@ -447,11 +470,13 @@ export default function AuthPanel({
                     <label className={labelClass} htmlFor="major">
                       التخصص (اختياري)
                     </label>
+
                     <div className="relative">
                       <BookOpen
                         className="absolute right-3 top-3.5 text-gray-400"
                         size={19}
                       />
+
                       <input
                         id="major"
                         value={major}
@@ -463,9 +488,13 @@ export default function AuthPanel({
                   </div>
 
                   <div>
-                    <label className={labelClass} htmlFor="academicLevel">
+                    <label
+                      className={labelClass}
+                      htmlFor="academicLevel"
+                    >
                       المستوى الدراسي (اختياري)
                     </label>
+
                     <input
                       id="academicLevel"
                       value={academicLevel}
@@ -482,11 +511,12 @@ export default function AuthPanel({
               <button
                 type="submit"
                 disabled={loading}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3.5 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
+                className="auth-submit flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3.5 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading && (
                   <LoaderCircle className="animate-spin" size={19} />
                 )}
+
                 {loading
                   ? 'يرجى الانتظار...'
                   : mode === 'register'
@@ -509,6 +539,7 @@ export default function AuthPanel({
                 {mode === 'register'
                   ? 'لديك حساب بالفعل؟'
                   : 'ليس لديك حساب؟'}{' '}
+
                 <button
                   type="button"
                   onClick={() =>
@@ -518,7 +549,9 @@ export default function AuthPanel({
                   }
                   className="font-semibold text-blue-700 hover:underline"
                 >
-                  {mode === 'register' ? 'تسجيل الدخول' : 'إنشاء حساب'}
+                  {mode === 'register'
+                    ? 'تسجيل الدخول'
+                    : 'إنشاء حساب'}
                 </button>
               </p>
             </form>
