@@ -1,4 +1,3 @@
-
 'use client'
 
 import '@/app/auth/auth.css'
@@ -7,14 +6,14 @@ import { useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
-  UserRound,
   Mail,
   LockKeyhole,
-  Phone,
   GraduationCap,
-  BookOpen,
   LoaderCircle,
   ShieldCheck,
+  Eye,
+  EyeOff,
+  UserRound,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
@@ -32,47 +31,18 @@ export default function AuthPanel({
   const [mode, setMode] = useState<AuthMode>(initialMode)
   const [loading, setLoading] = useState(false)
   const [verifying, setVerifying] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [otp, setOtp] = useState('')
 
-  const [fullName, setFullName] = useState('')
-  const [phone, setPhone] = useState('')
-  const [university, setUniversity] = useState('')
-  const [major, setMajor] = useState('')
-  const [academicLevel, setAcademicLevel] = useState('')
-
   function changeMode(nextMode: AuthMode) {
     setMode(nextMode)
     setError('')
     setMessage('')
-  }
-
-  async function handleGoogleLogin() {
-    setError('')
-    setMessage('')
-    setLoading(true)
-
-    try {
-      const { error: googleError } =
-        await supabase.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: `${window.location.origin}/auth/callback`,
-          },
-        })
-
-      if (googleError) throw googleError
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'تعذر تسجيل الدخول باستخدام Google. حاول مرة أخرى.'
-      )
-      setLoading(false)
-    }
+    setShowPassword(false)
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -80,7 +50,9 @@ export default function AuthPanel({
     setError('')
     setMessage('')
 
-    if (!email.trim() || !password) {
+    const cleanEmail = email.trim()
+
+    if (!cleanEmail || !password) {
       setError('يرجى إدخال البريد الإلكتروني وكلمة المرور.')
       return
     }
@@ -94,25 +66,17 @@ export default function AuthPanel({
 
     try {
       if (mode === 'register') {
+        // إنشاء الحساب بالبريد الإلكتروني وكلمة المرور فقط
         const { data, error: signUpError } =
           await supabase.auth.signUp({
-            email: email.trim(),
+            email: cleanEmail,
             password,
-            options: {
-              data: {
-                full_name: fullName.trim() || null,
-                phone: phone.trim() || null,
-                university: university.trim() || null,
-                major: major.trim() || null,
-                academic_level: academicLevel.trim() || null,
-              },
-            },
           })
 
         if (signUpError) throw signUpError
 
         if (data.session) {
-          setMessage('تم إنشاء الحساب وتسجيل الدخول بنجاح.')
+          setMessage('تم إنشاء الحساب بنجاح.')
           router.push('/account')
           router.refresh()
           return
@@ -127,9 +91,10 @@ export default function AuthPanel({
           setError('لم يكتمل إنشاء الحساب. حاول مرة أخرى.')
         }
       } else {
+        // تسجيل الدخول بالبريد الإلكتروني وكلمة المرور فقط
         const { error: loginError } =
           await supabase.auth.signInWithPassword({
-            email: email.trim(),
+            email: cleanEmail,
             password,
           })
 
@@ -212,10 +177,10 @@ export default function AuthPanel({
   }
 
   const inputClass =
-    'w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100'
+    'w-full rounded-xl border border-gray-300 bg-white px-4 py-3.5 text-sm text-gray-900 outline-none transition focus:border-blue-600 focus:ring-2 focus:ring-blue-100'
 
   const labelClass =
-    'mb-2 block text-sm font-medium text-gray-700'
+    'mb-2 block text-center text-sm font-semibold text-gray-700'
 
   return (
     <main
@@ -240,12 +205,12 @@ export default function AuthPanel({
             {verifying
               ? 'أدخل رمز التحقق الذي أرسلناه إلى بريدك الإلكتروني.'
               : mode === 'register'
-                ? 'أنشئ حسابك للوصول إلى الخدمات الطلابية.'
+                ? 'أنشئ حسابك باستخدام بريدك الإلكتروني وكلمة المرور.'
                 : 'سجّل دخولك لمتابعة حسابك وطلباتك الطلابية.'}
           </p>
         </div>
 
-        <div className="auth-form p-5 sm:p-8">
+        <div className="auth-form p-5 text-center sm:p-8">
           {!verifying && (
             <div className="auth-tabs mb-7 grid grid-cols-2 gap-2 rounded-xl bg-gray-100 p-1">
               <button
@@ -257,7 +222,10 @@ export default function AuthPanel({
                     : 'text-gray-600'
                 }`}
               >
-                إنشاء حساب
+                <span className="flex items-center justify-center gap-2">
+                  <UserRound size={18} />
+                  إنشاء حساب
+                </span>
               </button>
 
               <button
@@ -269,7 +237,10 @@ export default function AuthPanel({
                     : 'text-gray-600'
                 }`}
               >
-                تسجيل الدخول
+                <span className="flex items-center justify-center gap-2">
+                  <LockKeyhole size={18} />
+                  تسجيل الدخول
+                </span>
               </button>
             </div>
           )}
@@ -277,7 +248,7 @@ export default function AuthPanel({
           {error && (
             <div
               role="alert"
-              className="auth-alert auth-alert-error mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm leading-6 text-red-700"
+              className="auth-alert auth-alert-error mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-center text-sm leading-6 text-red-700"
             >
               {error}
             </div>
@@ -286,7 +257,7 @@ export default function AuthPanel({
           {message && (
             <div
               role="status"
-              className="auth-alert auth-alert-success mb-5 rounded-xl border border-green-200 bg-green-50 p-4 text-sm leading-6 text-green-800"
+              className="auth-alert auth-alert-success mb-5 rounded-xl border border-green-200 bg-green-50 p-4 text-center text-sm leading-6 text-green-800"
             >
               {message}
             </div>
@@ -313,7 +284,7 @@ export default function AuthPanel({
                     value={otp}
                     onChange={(event) => setOtp(event.target.value)}
                     placeholder="أدخل الرمز المرسل إليك"
-                    className={`${inputClass} pr-10`}
+                    className={`${inputClass} pr-10 text-center`}
                     required
                   />
                 </div>
@@ -353,276 +324,126 @@ export default function AuthPanel({
               </button>
             </form>
           ) : (
-            <>
-              <button
-                type="button"
-                onClick={handleGoogleLogin}
-                disabled={loading}
-                className="mb-5 flex w-full items-center justify-center gap-3 rounded-xl border border-gray-300 bg-white px-4 py-3.5 font-semibold text-gray-800 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {loading ? (
-                  <LoaderCircle className="animate-spin" size={20} />
-                ) : (
-                  <svg
-                    aria-hidden="true"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 48 48"
-                  >
-                    <path
-                      fill="#EA4335"
-                      d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5Z"
-                    />
-                    <path
-                      fill="#4285F4"
-                      d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.76 7.18l7.73 6C44.42 37.99 46.98 31.86 46.98 24.55Z"
-                    />
-                    <path
-                      fill="#FBBC05"
-                      d="M10.53 28.59A14.4 14.4 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.9 23.9 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19Z"
-                    />
-                    <path
-                      fill="#34A853"
-                      d="M24 48c6.48 0 11.93-2.13 15.91-5.8l-7.73-6c-2.14 1.44-4.89 2.3-8.18 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48Z"
-                    />
-                  </svg>
-                )}
-                المتابعة باستخدام Google
-              </button>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className={labelClass} htmlFor="email">
+                  البريد الإلكتروني
+                </label>
 
-              <div className="mb-5 flex items-center gap-3">
-                <div className="h-px flex-1 bg-gray-200" />
-                <span className="text-sm text-gray-500">
-                  أو باستخدام البريد الإلكتروني
-                </span>
-                <div className="h-px flex-1 bg-gray-200" />
+                <div className="relative">
+                  <Mail
+                    className="absolute right-3 top-3.5 text-blue-600"
+                    size={19}
+                  />
+
+                  <input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="أدخل بريدك الإلكتروني"
+                    className={`${inputClass} pr-10 text-center`}
+                    required
+                  />
+                </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                {mode === 'register' && (
-                  <>
-                    <p className="text-xs leading-6 text-gray-500">
-                      الحقول التالية اختيارية، ويمكنك تركها فارغة وإكمالها
-                      لاحقًا.
-                    </p>
+              <div>
+                <label className={labelClass} htmlFor="password">
+                  كلمة المرور
+                </label>
 
-                    <div>
-                      <label className={labelClass} htmlFor="fullName">
-                        الاسم الكامل (اختياري)
-                      </label>
+                <div className="relative">
+                  <LockKeyhole
+                    className="absolute right-3 top-3.5 text-blue-600"
+                    size={19}
+                  />
 
-                      <div className="relative">
-                        <UserRound
-                          className="absolute right-3 top-3.5 text-gray-400"
-                          size={19}
-                        />
-
-                        <input
-                          id="fullName"
-                          autoComplete="name"
-                          value={fullName}
-                          onChange={(event) =>
-                            setFullName(event.target.value)
-                          }
-                          placeholder="اسم الطالب"
-                          className={`${inputClass} pr-10`}
-                        />
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                <div>
-                  <label className={labelClass} htmlFor="email">
-                    البريد الإلكتروني
-                  </label>
-
-                  <div className="relative">
-                    <Mail
-                      className="absolute right-3 top-3.5 text-gray-400"
-                      size={19}
-                    />
-
-                    <input
-                      id="email"
-                      type="email"
-                      autoComplete="email"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                      placeholder="student@example.com"
-                      className={`${inputClass} pr-10`}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className={labelClass} htmlFor="password">
-                    كلمة المرور
-                  </label>
-
-                  <div className="relative">
-                    <LockKeyhole
-                      className="absolute right-3 top-3.5 text-gray-400"
-                      size={19}
-                    />
-
-                    <input
-                      id="password"
-                      type="password"
-                      autoComplete={
-                        mode === 'register'
-                          ? 'new-password'
-                          : 'current-password'
-                      }
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
-                      placeholder="6 أحرف على الأقل"
-                      className={`${inputClass} pr-10`}
-                      minLength={6}
-                      required
-                    />
-                  </div>
-                </div>
-
-                {mode === 'register' && (
-                  <>
-                    <div>
-                      <label className={labelClass} htmlFor="phone">
-                        رقم الهاتف (اختياري)
-                      </label>
-
-                      <div className="relative">
-                        <Phone
-                          className="absolute right-3 top-3.5 text-gray-400"
-                          size={19}
-                        />
-
-                        <input
-                          id="phone"
-                          type="tel"
-                          autoComplete="tel"
-                          value={phone}
-                          onChange={(event) => setPhone(event.target.value)}
-                          placeholder="رقم الهاتف"
-                          className={`${inputClass} pr-10`}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className={labelClass} htmlFor="university">
-                        الجامعة (اختياري)
-                      </label>
-
-                      <div className="relative">
-                        <GraduationCap
-                          className="absolute right-3 top-3.5 text-gray-400"
-                          size={19}
-                        />
-
-                        <input
-                          id="university"
-                          value={university}
-                          onChange={(event) =>
-                            setUniversity(event.target.value)
-                          }
-                          placeholder="اسم الجامعة"
-                          className={`${inputClass} pr-10`}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className={labelClass} htmlFor="major">
-                        التخصص (اختياري)
-                      </label>
-
-                      <div className="relative">
-                        <BookOpen
-                          className="absolute right-3 top-3.5 text-gray-400"
-                          size={19}
-                        />
-
-                        <input
-                          id="major"
-                          value={major}
-                          onChange={(event) => setMajor(event.target.value)}
-                          placeholder="التخصص الدراسي"
-                          className={`${inputClass} pr-10`}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label
-                        className={labelClass}
-                        htmlFor="academicLevel"
-                      >
-                        المستوى الدراسي (اختياري)
-                      </label>
-
-                      <input
-                        id="academicLevel"
-                        value={academicLevel}
-                        onChange={(event) =>
-                          setAcademicLevel(event.target.value)
-                        }
-                        placeholder="مثال: المستوى الثالث"
-                        className={inputClass}
-                      />
-                    </div>
-                  </>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="auth-submit flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3.5 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
-                >
-                  {loading && (
-                    <LoaderCircle className="animate-spin" size={19} />
-                  )}
-
-                  {loading
-                    ? 'يرجى الانتظار...'
-                    : mode === 'register'
-                      ? 'إنشاء الحساب'
-                      : 'تسجيل الدخول'}
-                </button>
-
-                {mode === 'login' && (
-                  <div className="text-center">
-                    <Link
-                      href="/auth/forgot-password"
-                      className="text-sm text-blue-700 hover:underline"
-                    >
-                      نسيت كلمة المرور؟
-                    </Link>
-                  </div>
-                )}
-
-                <p className="text-center text-sm text-gray-600">
-                  {mode === 'register'
-                    ? 'لديك حساب بالفعل؟'
-                    : 'ليس لديك حساب؟'}{' '}
+                  <input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete={
+                      mode === 'register'
+                        ? 'new-password'
+                        : 'current-password'
+                    }
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    placeholder={
+                      mode === 'register'
+                        ? '6 أحرف على الأقل'
+                        : 'أدخل كلمة المرور'
+                    }
+                    className={`${inputClass} px-12 text-center`}
+                    minLength={6}
+                    required
+                  />
 
                   <button
                     type="button"
-                    onClick={() =>
-                      changeMode(
-                        mode === 'register' ? 'login' : 'register'
-                      )
+                    onClick={() => setShowPassword((value) => !value)}
+                    aria-label={
+                      showPassword ? 'إخفاء كلمة المرور' : 'إظهار كلمة المرور'
                     }
-                    className="font-semibold text-blue-700 hover:underline"
+                    className="absolute left-3 top-3.5 text-gray-500 hover:text-blue-700"
                   >
-                    {mode === 'register'
-                      ? 'تسجيل الدخول'
-                      : 'إنشاء حساب'}
+                    {showPassword ? (
+                      <EyeOff size={19} />
+                    ) : (
+                      <Eye size={19} />
+                    )}
                   </button>
-                </p>
-              </form>
-            </>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="auth-submit flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-4 py-3.5 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {loading && (
+                  <LoaderCircle className="animate-spin" size={19} />
+                )}
+
+                {loading
+                  ? 'يرجى الانتظار...'
+                  : mode === 'register'
+                    ? 'إنشاء الحساب'
+                    : 'تسجيل الدخول'}
+              </button>
+
+              {mode === 'login' && (
+                <div className="text-center">
+                  <Link
+                    href="/auth/forgot-password"
+                    className="text-sm font-medium text-blue-700 hover:underline"
+                  >
+                    نسيت كلمة المرور؟
+                  </Link>
+                </div>
+              )}
+
+              <p className="text-center text-sm text-gray-600">
+                {mode === 'register'
+                  ? 'لديك حساب بالفعل؟'
+                  : 'ليس لديك حساب؟'}{' '}
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    changeMode(
+                      mode === 'register' ? 'login' : 'register'
+                    )
+                  }
+                  className="font-semibold text-blue-700 hover:underline"
+                >
+                  {mode === 'register'
+                    ? 'تسجيل الدخول'
+                    : 'إنشاء حساب'}
+                </button>
+              </p>
+            </form>
           )}
         </div>
       </section>
