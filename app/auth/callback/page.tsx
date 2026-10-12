@@ -16,25 +16,52 @@ export default function AuthCallbackPage() {
 
     async function completeLogin() {
       try {
-        const params = new URLSearchParams(window.location.search)
-        const code = params.get('code')
+        const url = new URL(window.location.href)
+        const query = url.searchParams
+        const hash = new URLSearchParams(url.hash.replace(/^#/, ''))
+
         const oauthError =
-          params.get('error_description') || params.get('error')
+          query.get('error_description') ||
+          query.get('error') ||
+          hash.get('error_description') ||
+          hash.get('error')
 
         if (oauthError) {
           throw new Error(oauthError)
         }
 
-        if (!code) {
-          throw new Error(
-            'لم يصل رمز تسجيل الدخول. حاول تسجيل الدخول باستخدام Google مرة أخرى.'
-          )
+        const code = query.get('code')
+
+        if (code) {
+          const { error: exchangeError } =
+            await supabase.auth.exchangeCodeForSession(code)
+
+          if (exchangeError) throw exchangeError
+        } else {
+          const accessToken = hash.get('access_token')
+          const refreshToken = hash.get('refresh_token')
+
+          if (accessToken && refreshToken) {
+            const { error: sessionError } =
+              await supabase.auth.setSession({
+                access_token: accessToken,
+                refresh_token: refreshToken,
+              })
+
+            if (sessionError) throw sessionError
+          }
         }
 
-        const { error: sessionError } =
-          await supabase.auth.exchangeCodeForSession(code)
+        const { data, error: sessionError } =
+          await supabase.auth.getSession()
 
         if (sessionError) throw sessionError
+
+        if (!data.session) {
+          throw new Error(
+            'لم يتم إنشاء جلسة دخول. تحقق من إعدادات Google في Supabase ثم حاول مرة أخرى.'
+          )
+        }
 
         if (active) {
           router.replace('/account')
@@ -51,7 +78,7 @@ export default function AuthCallbackPage() {
       }
     }
 
-    completeLogin()
+    void completeLogin()
 
     return () => {
       active = false
@@ -70,7 +97,10 @@ export default function AuthCallbackPage() {
               تعذر تسجيل الدخول
             </h1>
 
-            <p className="mt-4 break-words text-sm leading-7 text-gray-600">
+            <p
+              role="alert"
+              className="mt-4 break-words text-sm leading-7 text-gray-600"
+            >
               {error}
             </p>
 
