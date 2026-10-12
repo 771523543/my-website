@@ -175,7 +175,9 @@ export default function ServicesPage() {
                       href={`/services/order/${service.id}`}
                       className="service-order-button"
                     >
-                      <Send size={17} />
+                      <span className="service-order-icon">
+                        <Send size={17} strokeWidth={2.3} />
+                      </span>
                       <span>اطلب عبر الموقع</span>
                     </Link>
 
@@ -616,17 +618,44 @@ export default function ServicesPage() {
           box-shadow: 0 8px 18px rgba(23, 63, 145, 0.18);
         }
 
+        /* زر الطلب عبر الموقع: خلفية فاتحة وأيقونة زرقاء */
         .service-order-button {
-          color: white;
-          background: linear-gradient(145deg, #2455c4, #173f91);
-          border: 1px solid #2455c4;
+          color: #173f91;
+          background: #f0f5ff;
+          border: 1px solid #c8daf8;
+        }
+
+        .service-order-button .service-order-icon {
+          display: inline-flex;
+          flex-shrink: 0;
+          align-items: center;
+          justify-content: center;
+          width: 30px;
+          height: 30px;
+          color: #ffffff;
+          background: linear-gradient(145deg, #3474e8, #173f91);
+          border-radius: 9px;
+          box-shadow: 0 3px 8px rgba(36, 85, 196, 0.2);
+          transition:
+            transform 0.2s ease,
+            background 0.2s ease;
+        }
+
+        .service-order-button .service-order-icon svg {
+          color: #ffffff;
         }
 
         .service-order-button:hover {
-          color: white;
-          background: linear-gradient(145deg, #2c63dc, #173f91);
+          color: #173f91;
+          background: #e2ecff;
+          border-color: #9dbcf1;
           transform: translateY(-2px);
-          box-shadow: 0 10px 20px rgba(36, 85, 196, 0.25);
+          box-shadow: 0 8px 18px rgba(36, 85, 196, 0.12);
+        }
+
+        .service-order-button:hover .service-order-icon {
+          background: #173f91;
+          transform: translateX(-2px);
         }
 
         .service-whatsapp-card-button {
