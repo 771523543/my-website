@@ -1,26 +1,53 @@
+
 'use client'
 
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   ArrowLeft,
   Menu,
   MessageCircle,
   Search,
   Sparkles,
+  UserRound,
+  UserRoundPlus,
+  LogIn,
   X,
 } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 
 const whatsapp = 'https://wa.me/967776280186'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const pathname = usePathname()
   const router = useRouter()
 
   const isServicesPage = pathname.startsWith('/services')
+
+  useEffect(() => {
+    let mounted = true
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (mounted) {
+        setIsLoggedIn(Boolean(data.session))
+      }
+    })
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsLoggedIn(Boolean(session))
+    })
+
+    return () => {
+      mounted = false
+      subscription.unsubscribe()
+    }
+  }, [])
 
   const closeMenu = () => {
     setMenuOpen(false)
@@ -70,10 +97,7 @@ export default function Header() {
                 : 'nav-links'
             }
           >
-            <a
-              href={homeLink}
-              onClick={closeMenu}
-            >
+            <a href={homeLink} onClick={closeMenu}>
               الرئيسية
             </a>
 
@@ -114,26 +138,70 @@ export default function Header() {
             </a>
 
             <a
-              href={
-                isServicesPage
-                  ? '/#faq'
-                  : '#faq'
-              }
+              href={isServicesPage ? '/#faq' : '#faq'}
               onClick={closeMenu}
             >
               الأسئلة الشائعة
             </a>
 
             <a
-              href={
-                isServicesPage
-                  ? '/#contact'
-                  : '#contact'
-              }
+              href={isServicesPage ? '/#contact' : '#contact'}
               onClick={closeMenu}
             >
               اتصل بنا
             </a>
+
+            {isLoggedIn ? (
+              <a
+                href="/account"
+                onClick={closeMenu}
+                aria-label="الانتقال إلى حساب الطالب"
+              >
+                <UserRound
+                  size={17}
+                  style={{
+                    display: 'inline-block',
+                    verticalAlign: 'middle',
+                    marginLeft: '6px',
+                  }}
+                />
+                حسابي
+              </a>
+            ) : (
+              <>
+                <a
+                  href="/auth/login"
+                  onClick={closeMenu}
+                  aria-label="تسجيل الدخول إلى منصة هديل"
+                >
+                  <LogIn
+                    size={17}
+                    style={{
+                      display: 'inline-block',
+                      verticalAlign: 'middle',
+                      marginLeft: '6px',
+                    }}
+                  />
+                  تسجيل الدخول
+                </a>
+
+                <a
+                  href="/auth/register"
+                  onClick={closeMenu}
+                  aria-label="إنشاء حساب طالب جديد"
+                >
+                  <UserRoundPlus
+                    size={17}
+                    style={{
+                      display: 'inline-block',
+                      verticalAlign: 'middle',
+                      marginLeft: '6px',
+                    }}
+                  />
+                  إنشاء حساب
+                </a>
+              </>
+            )}
           </nav>
 
           <div className="nav-actions">
