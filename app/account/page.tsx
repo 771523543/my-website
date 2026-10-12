@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useEffect, useState, type FormEvent } from 'react'
@@ -73,6 +74,7 @@ export default function AccountPage() {
     useState<StudentProfile>(emptyProfile)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [signingOut, setSigningOut] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
@@ -191,21 +193,34 @@ export default function AccountPage() {
   }
 
   async function signOut() {
+    if (signingOut) return
+
     setError('')
+    setMessage('')
+    setSigningOut(true)
 
-    const { error: signOutError } =
-      await supabase.auth.signOut()
+    try {
+      const { error: signOutError } =
+        await supabase.auth.signOut()
 
-    if (signOutError) {
-      setError(signOutError.message)
-      return
+      if (signOutError) throw signOutError
+
+      router.replace('/auth/login')
+      router.refresh()
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'تعذر تسجيل الخروج. حاول مرة أخرى.'
+      )
+    } finally {
+      setSigningOut(false)
     }
-
-    router.replace('/auth/login')
-    router.refresh()
   }
 
-  function handleCard(id: string) {
+  function handleCard(
+    id: (typeof dashboardItems)[number]['id']
+  ) {
     setMessage('')
     setError('')
 
@@ -224,14 +239,19 @@ export default function AccountPage() {
       return
     }
 
-    if (id === 'services') {
-      router.push('/services')
+    if (id === 'requests') {
+      router.push('/account/requests')
       return
     }
 
-    setMessage(
-      'صفحة الطلبات والمتابعة سنضيفها في الخطوة التالية.'
-    )
+    if (id === 'tracking') {
+      router.push('/account/tracking')
+      return
+    }
+
+    if (id === 'services') {
+      router.push('/services')
+    }
   }
 
   const fields: {
@@ -313,7 +333,6 @@ export default function AccountPage() {
   return (
     <main dir="rtl" className="account-page">
       <div className="account-container">
-        {/* واجهة الترحيب: بدون عرض البريد الإلكتروني */}
         <header className="account-welcome">
           <div className="account-welcome-icon">
             <GraduationCap size={32} strokeWidth={1.8} />
@@ -351,6 +370,13 @@ export default function AccountPage() {
             {dashboardItems.map((item) => {
               const Icon = item.icon
 
+              const actionLabel = {
+                profile: 'عرض البيانات',
+                requests: 'عرض طلباتي',
+                tracking: 'متابعة الحالة',
+                services: 'استعراض الخدمات',
+              }[item.id]
+
               return (
                 <button
                   key={item.id}
@@ -371,11 +397,7 @@ export default function AccountPage() {
                   </span>
 
                   <span className="account-action-link">
-                    {item.id === 'services'
-                      ? 'استعراض الخدمات'
-                      : item.id === 'profile'
-                        ? 'عرض البيانات'
-                        : 'قريبًا'}
+                    {actionLabel}
                     <ArrowLeft size={15} />
                   </span>
                 </button>
@@ -387,17 +409,9 @@ export default function AccountPage() {
         {message && (
           <div
             role="status"
-            className={`account-notice ${
-              message === 'تم حفظ بياناتك بنجاح.'
-                ? 'account-notice-success'
-                : 'account-notice-info'
-            }`}
+            className="account-notice account-notice-success"
           >
-            {message === 'تم حفظ بياناتك بنجاح.' ? (
-              <Save size={18} />
-            ) : (
-              <Clock3 size={18} />
-            )}
+            <Save size={18} />
             {message}
           </div>
         )}
@@ -507,10 +521,11 @@ export default function AccountPage() {
           <button
             type="button"
             onClick={signOut}
+            disabled={signingOut}
             className="account-logout-button"
           >
             <LogOut size={17} />
-            تسجيل الخروج
+            {signingOut ? 'جارٍ تسجيل الخروج...' : 'تسجيل الخروج'}
           </button>
         </footer>
       </div>
@@ -726,12 +741,6 @@ export default function AccountPage() {
           line-height: 1.8;
         }
 
-        .account-notice-info {
-          border: 1px solid #dbe6ff;
-          background: #f0f5ff;
-          color: #244b9c;
-        }
-
         .account-notice-error {
           border: 1px solid #f3cccc;
           background: #fff5f5;
@@ -885,7 +894,8 @@ export default function AccountPage() {
           background: #1b429e;
         }
 
-        .account-save-button:disabled {
+        .account-save-button:disabled,
+        .account-logout-button:disabled {
           cursor: not-allowed;
           opacity: 0.65;
         }
@@ -929,7 +939,7 @@ export default function AccountPage() {
           cursor: pointer;
         }
 
-        .account-logout-button:hover {
+        .account-logout-button:hover:not(:disabled) {
           border-color: #f0caca;
           background: #fff5f5;
           color: #a72d35;
