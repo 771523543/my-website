@@ -8,6 +8,7 @@ import {
   CheckCircle2,
   Send,
   Sparkles,
+  MessageCircle,
 } from 'lucide-react'
 
 import {
@@ -20,22 +21,10 @@ const categories: {
   id: 'all' | ServiceCategory
   label: string
 }[] = [
-  {
-    id: 'all',
-    label: 'جميع الخدمات',
-  },
-  {
-    id: 'research',
-    label: 'الخدمات البحثية',
-  },
-  {
-    id: 'academic',
-    label: 'الخدمات الأكاديمية',
-  },
-  {
-    id: 'design',
-    label: 'التصميم والخدمات المهنية',
-  },
+  { id: 'all', label: 'جميع الخدمات' },
+  { id: 'research', label: 'الخدمات البحثية' },
+  { id: 'academic', label: 'الخدمات الأكاديمية' },
+  { id: 'design', label: 'التصميم والخدمات المهنية' },
 ]
 
 export default function ServicesPage() {
@@ -75,7 +64,6 @@ export default function ServicesPage() {
               <span className="services-section-label">
                 استكشف خدماتنا
               </span>
-
               <h2>اختر الخدمة المناسبة لاحتياجك</h2>
             </div>
 
@@ -115,10 +103,7 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          <div
-            id="all-services"
-            className="services-grid"
-          >
+          <div id="all-services" className="services-grid">
             {services.map((service, index) => {
               const Icon = service.icon
 
@@ -144,7 +129,6 @@ export default function ServicesPage() {
                       fill
                       sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
                     />
-
                     <div className="service-page-image-overlay" />
                   </div>
 
@@ -166,17 +150,15 @@ export default function ServicesPage() {
                     </p>
 
                     <div className="service-page-points">
-                      {service.whatWeOffer
-                        .slice(0, 3)
-                        .map((item) => (
-                          <div
-                            key={item}
-                            className="service-page-point"
-                          >
-                            <CheckCircle2 size={16} />
-                            <span>{item}</span>
-                          </div>
-                        ))}
+                      {service.whatWeOffer.slice(0, 3).map((item) => (
+                        <div
+                          key={item}
+                          className="service-page-point"
+                        >
+                          <CheckCircle2 size={16} />
+                          <span>{item}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
@@ -189,14 +171,25 @@ export default function ServicesPage() {
                       <ArrowLeft size={17} />
                     </Link>
 
-                    {/* زر إنشاء الطلب */}
                     <Link
                       href={`/services/order/${service.id}`}
                       className="service-order-button"
                     >
-                      <Send size={16} />
-                      <span>اطلب خدمتك الآن</span>
+                      <Send size={17} />
+                      <span>اطلب عبر الموقع</span>
                     </Link>
+
+                    <a
+                      href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+                        `السلام عليكم، أرغب في طلب خدمة: ${service.title}`
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="service-whatsapp-card-button"
+                    >
+                      <MessageCircle size={18} />
+                      <span>اطلب عبر واتساب</span>
+                    </a>
                   </div>
                 </article>
               )
@@ -210,9 +203,7 @@ export default function ServicesPage() {
           <div className="services-bottom-card">
             <div>
               <span>هل تحتاج إلى مساعدة؟</span>
-
               <h2>لم تجد الخدمة المناسبة؟</h2>
-
               <p>
                 تواصل معنا وسنساعدك في معرفة
                 الخدمة المناسبة لاحتياجك.
@@ -587,20 +578,22 @@ export default function ServicesPage() {
 
         .service-page-card-footer {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 9px;
+          grid-template-columns: 1fr;
+          gap: 10px;
           padding: 0 23px 23px;
         }
 
         .service-details-button,
-        .service-order-button {
+        .service-order-button,
+        .service-whatsapp-card-button {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 7px;
+          gap: 8px;
           min-height: 46px;
+          padding: 10px 12px;
           border-radius: 12px;
-          font-size: 12px;
+          font-size: 13px;
           font-weight: 850;
           text-decoration: none;
           transition:
@@ -634,6 +627,19 @@ export default function ServicesPage() {
           background: linear-gradient(145deg, #2c63dc, #173f91);
           transform: translateY(-2px);
           box-shadow: 0 10px 20px rgba(36, 85, 196, 0.25);
+        }
+
+        .service-whatsapp-card-button {
+          color: #ffffff;
+          background: #168b51;
+          border: 1px solid #168b51;
+        }
+
+        .service-whatsapp-card-button:hover {
+          color: #ffffff;
+          background: #107443;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 18px rgba(22, 139, 81, 0.2);
         }
 
         .services-bottom-cta {
