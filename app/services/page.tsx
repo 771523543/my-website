@@ -1,3 +1,4 @@
+
 'use client'
 
 import Image from 'next/image'
@@ -40,9 +41,6 @@ const categories: {
 export default function ServicesPage() {
   return (
     <main className="services-page">
-      {/* =========================
-          Hero
-      ========================= */}
       <section className="services-hero">
         <div className="container">
           <div className="services-hero-content">
@@ -64,17 +62,12 @@ export default function ServicesPage() {
 
             <div className="services-hero-badge">
               <Sparkles size={17} />
-              <span>
-                خدمات متنوعة في مكان واحد
-              </span>
+              <span>خدمات متنوعة في مكان واحد</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* =========================
-          Services Content
-      ========================= */}
       <section className="services-content">
         <div className="container">
           <div className="services-intro">
@@ -83,9 +76,7 @@ export default function ServicesPage() {
                 استكشف خدماتنا
               </span>
 
-              <h2>
-                اختر الخدمة المناسبة لاحتياجك
-              </h2>
+              <h2>اختر الخدمة المناسبة لاحتياجك</h2>
             </div>
 
             <p>
@@ -94,9 +85,6 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          {/* =========================
-              التصنيفات
-          ========================= */}
           <div
             className="services-categories"
             aria-label="تصنيفات الخدمات"
@@ -106,9 +94,7 @@ export default function ServicesPage() {
                 key={category.id}
                 type="button"
                 className={`services-category ${
-                  category.id === 'all'
-                    ? 'active'
-                    : ''
+                  category.id === 'all' ? 'active' : ''
                 }`}
                 onClick={() => {
                   const targetId =
@@ -116,15 +102,12 @@ export default function ServicesPage() {
                       ? 'all-services'
                       : `first-${category.id}`
 
-                  const element =
-                    document.getElementById(
-                      targetId
-                    )
-
-                  element?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start',
-                  })
+                  document
+                    .getElementById(targetId)
+                    ?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start',
+                    })
                 }}
               >
                 {category.label}
@@ -132,9 +115,6 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          {/* =========================
-              بطاقات الخدمات
-          ========================= */}
           <div
             id="all-services"
             className="services-grid"
@@ -142,19 +122,9 @@ export default function ServicesPage() {
             {services.map((service, index) => {
               const Icon = service.icon
 
-              const whatsappMessage =
-                encodeURIComponent(
-                  service.orderText
-                )
-
-              const whatsappUrl =
-                `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`
-
               const isFirstInCategory =
                 services.findIndex(
-                  (item) =>
-                    item.category ===
-                    service.category
+                  (item) => item.category === service.category
                 ) === index
 
               return (
@@ -167,43 +137,25 @@ export default function ServicesPage() {
                   }
                   className="service-page-card"
                 >
-                  {/* =========================
-                      صورة الخدمة
-                  ========================= */}
                   <div className="service-page-image">
                     <Image
                       src={service.image}
                       alt={service.title}
                       fill
-                      sizes="
-                        (max-width: 650px) 100vw,
-                        (max-width: 950px) 50vw,
-                        33vw
-                      "
+                      sizes="(max-width: 650px) 100vw, (max-width: 950px) 50vw, 33vw"
                     />
 
                     <div className="service-page-image-overlay" />
                   </div>
 
-                  {/* =========================
-                      الأيقونة
-                  ========================= */}
                   <div className="service-page-card-top">
                     <div className="service-page-icon">
-                      <Icon
-                        size={30}
-                        strokeWidth={1.8}
-                      />
+                      <Icon size={30} strokeWidth={1.8} />
                     </div>
                   </div>
 
-                  {/* =========================
-                      محتوى البطاقة
-                  ========================= */}
                   <div className="service-page-card-body">
-                    <h3>
-                      {service.title}
-                    </h3>
+                    <h3>{service.title}</h3>
 
                     <p className="service-page-subtitle">
                       {service.subtitle}
@@ -221,45 +173,30 @@ export default function ServicesPage() {
                             key={item}
                             className="service-page-point"
                           >
-                            <CheckCircle2
-                              size={16}
-                            />
-
-                            <span>
-                              {item}
-                            </span>
+                            <CheckCircle2 size={16} />
+                            <span>{item}</span>
                           </div>
                         ))}
                     </div>
                   </div>
 
-                  {/* =========================
-                      الأزرار
-                  ========================= */}
                   <div className="service-page-card-footer">
                     <Link
                       href={`/services/${service.id}`}
                       className="service-details-button"
                     >
-                      <span>
-                        تفاصيل الخدمة
-                      </span>
-
+                      <span>تفاصيل الخدمة</span>
                       <ArrowLeft size={17} />
                     </Link>
 
-                    <a
-                      href={whatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    {/* زر إنشاء الطلب */}
+                    <Link
+                      href={`/services/order/${service.id}`}
                       className="service-order-button"
                     >
                       <Send size={16} />
-
-                      <span>
-                        اطلب خدمتك الآن
-                      </span>
-                    </a>
+                      <span>اطلب خدمتك الآن</span>
+                    </Link>
                   </div>
                 </article>
               )
@@ -268,20 +205,13 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* =========================
-          Bottom CTA
-      ========================= */}
       <section className="services-bottom-cta">
         <div className="container">
           <div className="services-bottom-card">
             <div>
-              <span>
-                هل تحتاج إلى مساعدة؟
-              </span>
+              <span>هل تحتاج إلى مساعدة؟</span>
 
-              <h2>
-                لم تجد الخدمة المناسبة؟
-              </h2>
+              <h2>لم تجد الخدمة المناسبة؟</h2>
 
               <p>
                 تواصل معنا وسنساعدك في معرفة
@@ -309,23 +239,16 @@ export default function ServicesPage() {
           color: var(--foreground);
         }
 
-        /* =========================
-           Hero
-        ========================= */
-
         .services-hero {
           position: relative;
           overflow: hidden;
           padding: 120px 0 72px;
-
-          background:
-            linear-gradient(
-              145deg,
-              #173f91 0%,
-              #2455c4 50%,
-              #163878 100%
-            );
-
+          background: linear-gradient(
+            145deg,
+            #173f91 0%,
+            #2455c4 50%,
+            #163878 100%
+          );
           color: white;
         }
 
@@ -337,14 +260,11 @@ export default function ServicesPage() {
           top: -300px;
           left: -150px;
           border-radius: 50%;
-
-          background:
-            radial-gradient(
-              circle,
-              rgba(255,255,255,0.14),
-              transparent 70%
-            );
-
+          background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.14),
+            transparent 70%
+          );
           pointer-events: none;
         }
 
@@ -355,21 +275,16 @@ export default function ServicesPage() {
           height: 300px;
           left: -90px;
           bottom: -170px;
-
-          border:
-            1px solid
-            rgba(213,170,84,0.25);
-
+          border: 1px solid rgba(213, 170, 84, 0.25);
           border-radius: 50%;
+          pointer-events: none;
         }
 
         .services-hero-content {
           position: relative;
           z-index: 1;
-
           max-width: 800px;
           margin-inline: auto;
-
           text-align: center;
         }
 
@@ -378,9 +293,7 @@ export default function ServicesPage() {
           align-items: center;
           gap: 9px;
           margin-bottom: 16px;
-
           color: #f0c56d;
-
           font-size: 14px;
           font-weight: 800;
         }
@@ -388,27 +301,17 @@ export default function ServicesPage() {
         .services-kicker-dot {
           width: 8px;
           height: 8px;
-
           border-radius: 50%;
-
           background: #f0c56d;
-
-          box-shadow:
-            0 0 0 5px
-            rgba(240,197,109,0.13);
+          box-shadow: 0 0 0 5px rgba(240, 197, 109, 0.13);
         }
 
         .services-hero h1 {
           margin: 0;
-
           color: white;
-
-          font-size:
-            clamp(36px, 6vw, 58px);
-
+          font-size: clamp(36px, 6vw, 58px);
           font-weight: 900;
           line-height: 1.2;
-
           letter-spacing: -1px;
         }
 
@@ -419,10 +322,7 @@ export default function ServicesPage() {
         .services-hero p {
           max-width: 690px;
           margin: 20px auto 0;
-
-          color:
-            rgba(255,255,255,0.86);
-
+          color: rgba(255, 255, 255, 0.86);
           font-size: 17px;
           line-height: 2;
         }
@@ -431,34 +331,20 @@ export default function ServicesPage() {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-
           margin-top: 25px;
           padding: 9px 15px;
-
           color: #173f91;
-
           background: #fff8e8;
-
-          border:
-            1px solid #f1d89e;
-
+          border: 1px solid #f1d89e;
           border-radius: 999px;
-
           font-size: 13px;
           font-weight: 800;
-
-          box-shadow:
-            0 8px 20px
-            rgba(0,0,0,0.12);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
 
         .services-hero-badge svg {
           color: #c98b25;
         }
-
-        /* =========================
-           Content
-        ========================= */
 
         .services-content {
           padding: 70px 0 85px;
@@ -468,7 +354,6 @@ export default function ServicesPage() {
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
-
           gap: 30px;
           margin-bottom: 28px;
         }
@@ -476,21 +361,15 @@ export default function ServicesPage() {
         .services-section-label {
           display: inline-block;
           margin-bottom: 7px;
-
           color: var(--primary);
-
           font-size: 14px;
           font-weight: 850;
         }
 
         .services-intro h2 {
           margin: 0;
-
           color: var(--foreground);
-
-          font-size:
-            clamp(27px, 4vw, 37px);
-
+          font-size: clamp(27px, 4vw, 37px);
           font-weight: 900;
           line-height: 1.3;
         }
@@ -498,21 +377,14 @@ export default function ServicesPage() {
         .services-intro p {
           max-width: 390px;
           margin: 0;
-
           color: var(--muted-foreground);
-
           line-height: 1.9;
           text-align: right;
         }
 
-        /* =========================
-           Categories
-        ========================= */
-
         .services-categories {
           display: flex;
           flex-wrap: wrap;
-
           gap: 10px;
           margin-bottom: 30px;
         }
@@ -520,23 +392,14 @@ export default function ServicesPage() {
         .services-category {
           min-height: 44px;
           padding: 0 17px;
-
-          color:
-            var(--muted-foreground);
-
+          color: var(--muted-foreground);
           background: white;
-
-          border:
-            1px solid var(--border);
-
+          border: 1px solid var(--border);
           border-radius: 12px;
-
           font: inherit;
           font-size: 13px;
           font-weight: 750;
-
           cursor: pointer;
-
           transition:
             color 0.2s ease,
             background 0.2s ease,
@@ -547,155 +410,85 @@ export default function ServicesPage() {
 
         .services-category:hover {
           color: var(--primary);
-
           border-color: #9ebceb;
-
-          transform:
-            translateY(-1px);
-
-          box-shadow:
-            0 7px 15px
-            rgba(23,63,145,0.08);
+          transform: translateY(-1px);
+          box-shadow: 0 7px 15px rgba(23, 63, 145, 0.08);
         }
 
         .services-category.active {
           color: white;
-
-          background:
-            linear-gradient(
-              145deg,
-              #173f91,
-              #2455c4
-            );
-
+          background: linear-gradient(145deg, #173f91, #2455c4);
           border-color: #173f91;
-
-          box-shadow:
-            0 8px 18px
-            rgba(23,63,145,0.18);
+          box-shadow: 0 8px 18px rgba(23, 63, 145, 0.18);
         }
-
-        /* =========================
-           Services Grid
-        ========================= */
 
         .services-grid {
           display: grid;
-
-          grid-template-columns:
-            repeat(
-              3,
-              minmax(0, 1fr)
-            );
-
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 22px;
         }
 
         .service-page-card {
           display: flex;
-
           min-width: 0;
-
           flex-direction: column;
-
           overflow: hidden;
-
-          background:
-            linear-gradient(
-              145deg,
-              #ffffff 0%,
-              #f7faff 100%
-            );
-
-          border:
-            1px solid #dbe6f5;
-
+          background: linear-gradient(145deg, #ffffff 0%, #f7faff 100%);
+          border: 1px solid #dbe6f5;
           border-radius: 22px;
-
           box-shadow:
-            0 18px 40px
-            rgba(23,63,145,0.09),
-            inset 0 1px 0
-            rgba(255,255,255,0.95);
-
+            0 18px 40px rgba(23, 63, 145, 0.09),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95);
           transition:
             transform 0.3s ease,
             border-color 0.3s ease,
             box-shadow 0.3s ease;
-
           scroll-margin-top: 120px;
         }
 
         .service-page-card:hover {
-          transform:
-            translateY(-8px);
-
-          border-color:
-            #d5aa54;
-
+          transform: translateY(-8px);
+          border-color: #d5aa54;
           box-shadow:
-            0 24px 45px
-            rgba(23,63,145,0.14),
-            0 0 0 4px
-            rgba(213,170,84,0.07);
+            0 24px 45px rgba(23, 63, 145, 0.14),
+            0 0 0 4px rgba(213, 170, 84, 0.07);
         }
-
-        /* =========================
-           صورة الخدمة
-        ========================= */
 
         .service-page-image {
           position: relative;
-
           width: 100%;
           height: 205px;
-
           overflow: hidden;
-
           background: #e8f1ff;
         }
 
         .service-page-image img {
           object-fit: cover;
-
-          transition:
-            transform 0.45s ease;
+          transition: transform 0.45s ease;
         }
 
-        .service-page-card:hover
-        .service-page-image img {
-          transform:
-            scale(1.05);
+        .service-page-card:hover .service-page-image img {
+          transform: scale(1.05);
         }
 
         .service-page-image-overlay {
           position: absolute;
           inset: 0;
-
-          background:
-            linear-gradient(
-              to bottom,
-              rgba(23,35,61,0.02) 40%,
-              rgba(23,35,61,0.32) 100%
-            );
-
+          background: linear-gradient(
+            to bottom,
+            rgba(23, 35, 61, 0.02) 40%,
+            rgba(23, 35, 61, 0.32) 100%
+          );
           pointer-events: none;
         }
-
-        /* =========================
-           Icon
-        ========================= */
 
         .service-page-card-top {
           position: relative;
           z-index: 3;
-
           display: flex;
           align-items: center;
           justify-content: center;
-
           width: 100%;
-
           padding: 0;
           margin-top: -31px;
         }
@@ -704,185 +497,112 @@ export default function ServicesPage() {
           display: flex;
           align-items: center;
           justify-content: center;
-
           width: 66px;
           height: 66px;
-
           color: #174fae;
-
-          background:
-            radial-gradient(
-              circle at 30% 25%,
-              #ffffff 0%,
-              #edf4ff 30%,
-              #d8e8ff 65%,
-              #b8d0f3 100%
-            );
-
-          border:
-            4px solid #d5aa54;
-
+          background: radial-gradient(
+            circle at 30% 25%,
+            #ffffff 0%,
+            #edf4ff 30%,
+            #d8e8ff 65%,
+            #b8d0f3 100%
+          );
+          border: 4px solid #d5aa54;
           border-radius: 19px;
-
           box-shadow:
-            0 12px 25px
-            rgba(23,63,145,0.18),
-            inset 5px 5px 10px
-            rgba(255,255,255,0.85),
-            inset -6px -7px 12px
-            rgba(36,85,196,0.16);
-
+            0 12px 25px rgba(23, 63, 145, 0.18),
+            inset 5px 5px 10px rgba(255, 255, 255, 0.85),
+            inset -6px -7px 12px rgba(36, 85, 196, 0.16);
           transition:
             transform 0.3s ease,
             color 0.3s ease,
             box-shadow 0.3s ease;
         }
 
-        .service-page-card:hover
-        .service-page-icon {
+        .service-page-card:hover .service-page-icon {
           color: white;
-
-          background:
-            linear-gradient(
-              145deg,
-              #173f91,
-              #2455c4
-            );
-
-          transform:
-            translateY(-4px)
-            scale(1.04);
-
+          background: linear-gradient(145deg, #173f91, #2455c4);
+          transform: translateY(-4px) scale(1.04);
           box-shadow:
-            0 15px 30px
-            rgba(23,63,145,0.25),
-            0 0 0 5px
-            rgba(213,170,84,0.10);
+            0 15px 30px rgba(23, 63, 145, 0.25),
+            0 0 0 5px rgba(213, 170, 84, 0.1);
         }
-
-        /* =========================
-           Card Body
-        ========================= */
 
         .service-page-card-body {
           flex: 1;
-
-          padding:
-            18px 23px 23px;
+          padding: 18px 23px 23px;
         }
 
         .service-page-card h3 {
           margin: 0;
-
           color: var(--foreground);
-
           font-size: 21px;
           font-weight: 900;
-
           line-height: 1.5;
           text-align: center;
         }
 
         .service-page-subtitle {
-          margin:
-            6px 0 17px;
-
+          margin: 6px 0 17px;
           color: #c98b25;
-
           font-size: 13px;
           font-weight: 800;
-
           line-height: 1.7;
           text-align: center;
         }
 
         .service-page-about {
           margin: 0;
-
-          color:
-            var(--muted-foreground);
-
+          color: var(--muted-foreground);
           font-size: 14px;
-
           line-height: 1.9;
           text-align: right;
-
           direction: rtl;
         }
 
-        /* =========================
-           Points
-        ========================= */
-
         .service-page-points {
           display: grid;
-
           gap: 9px;
-
           margin-top: 18px;
           padding-top: 16px;
-
-          border-top:
-            1px solid #e3ebf5;
+          border-top: 1px solid #e3ebf5;
         }
 
         .service-page-point {
           display: flex;
           align-items: flex-start;
-
           gap: 8px;
-
           color: #66738b;
-
           font-size: 12px;
           line-height: 1.8;
-
           text-align: right;
           direction: rtl;
         }
 
         .service-page-point svg {
           flex-shrink: 0;
-
           margin-top: 3px;
-
           color: #2455c4;
         }
 
-        /* =========================
-           Buttons
-        ========================= */
-
         .service-page-card-footer {
           display: grid;
-
-          grid-template-columns:
-            1fr 1fr;
-
+          grid-template-columns: 1fr 1fr;
           gap: 9px;
-
-          padding:
-            0 23px 23px;
+          padding: 0 23px 23px;
         }
 
         .service-details-button,
         .service-order-button {
           display: flex;
-
           align-items: center;
           justify-content: center;
-
           gap: 7px;
-
           min-height: 46px;
-
           border-radius: 12px;
-
           font-size: 12px;
           font-weight: 850;
-
           text-decoration: none;
-
           transition:
             color 0.2s ease,
             background 0.2s ease,
@@ -892,120 +612,66 @@ export default function ServicesPage() {
 
         .service-details-button {
           color: #173f91;
-
           background: #edf4ff;
-
-          border:
-            1px solid #d4e3fa;
+          border: 1px solid #d4e3fa;
         }
 
         .service-details-button:hover {
           color: white;
-
-          background:
-            #173f91;
-
-          transform:
-            translateY(-2px);
-
-          box-shadow:
-            0 8px 18px
-            rgba(23,63,145,0.18);
+          background: #173f91;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 18px rgba(23, 63, 145, 0.18);
         }
 
         .service-order-button {
           color: white;
-
-          background:
-            linear-gradient(
-              145deg,
-              #2455c4,
-              #173f91
-            );
-
-          border:
-            1px solid #2455c4;
+          background: linear-gradient(145deg, #2455c4, #173f91);
+          border: 1px solid #2455c4;
         }
 
         .service-order-button:hover {
           color: white;
-
-          background:
-            linear-gradient(
-              145deg,
-              #2c63dc,
-              #173f91
-            );
-
-          transform:
-            translateY(-2px);
-
-          box-shadow:
-            0 10px 20px
-            rgba(36,85,196,0.25);
+          background: linear-gradient(145deg, #2c63dc, #173f91);
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(36, 85, 196, 0.25);
         }
 
-        /* =========================
-           Bottom CTA
-        ========================= */
-
         .services-bottom-cta {
-          padding:
-            0 0 80px;
+          padding: 0 0 80px;
         }
 
         .services-bottom-card {
           position: relative;
           overflow: hidden;
-
           display: flex;
-
           align-items: center;
           justify-content: space-between;
-
           gap: 25px;
-
           padding: 32px;
-
-          background:
-            linear-gradient(
-              145deg,
-              #173f91 0%,
-              #2455c4 52%,
-              #163878 100%
-            );
-
-          border:
-            2px solid
-            rgba(213,170,84,0.65);
-
+          background: linear-gradient(
+            145deg,
+            #173f91 0%,
+            #2455c4 52%,
+            #163878 100%
+          );
+          border: 2px solid rgba(213, 170, 84, 0.65);
           border-radius: 22px;
-
           color: white;
-
           box-shadow:
-            0 20px 45px
-            rgba(23,63,145,0.18),
-            inset 0 1px 0
-            rgba(255,255,255,0.18);
+            0 20px 45px rgba(23, 63, 145, 0.18),
+            inset 0 1px 0 rgba(255, 255, 255, 0.18);
         }
 
         .services-bottom-card::after {
           content: '';
-
           position: absolute;
-
           width: 260px;
           height: 260px;
-
           left: -120px;
           bottom: -190px;
-
-          border:
-            1px solid
-            rgba(213,170,84,0.22);
-
+          border: 1px solid rgba(213, 170, 84, 0.22);
           border-radius: 50%;
+          pointer-events: none;
         }
 
         .services-bottom-card > div {
@@ -1015,66 +681,42 @@ export default function ServicesPage() {
 
         .services-bottom-card > div > span {
           color: #f0c56d;
-
           font-size: 13px;
           font-weight: 800;
         }
 
         .services-bottom-card h2 {
-          margin:
-            5px 0;
-
+          margin: 5px 0;
           color: white;
-
           font-size: 25px;
           font-weight: 900;
         }
 
         .services-bottom-card p {
           margin: 0;
-
-          color:
-            rgba(255,255,255,0.78);
-
+          color: rgba(255, 255, 255, 0.78);
           line-height: 1.8;
-
           font-size: 14px;
-
           text-align: right;
         }
 
         .services-whatsapp-button {
           position: relative;
           z-index: 1;
-
           display: inline-flex;
-
           align-items: center;
           justify-content: center;
-
           gap: 8px;
-
           min-height: 50px;
-
           flex-shrink: 0;
-
-          padding:
-            0 20px;
-
+          padding: 0 20px;
           color: #173f91;
-
           background: white;
-
-          border:
-            2px solid #d5aa54;
-
+          border: 2px solid #d5aa54;
           border-radius: 13px;
-
           font-size: 13px;
           font-weight: 900;
-
           text-decoration: none;
-
           transition:
             transform 0.2s ease,
             background 0.2s ease,
@@ -1083,39 +725,24 @@ export default function ServicesPage() {
 
         .services-whatsapp-button:hover {
           background: #fff8e8;
-
-          transform:
-            translateY(-2px);
-
-          box-shadow:
-            0 10px 20px
-            rgba(0,0,0,0.16);
+          transform: translateY(-2px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.16);
         }
-
-        /* =========================
-           Responsive
-        ========================= */
 
         @media (max-width: 950px) {
           .services-grid {
-            grid-template-columns:
-              repeat(
-                2,
-                minmax(0, 1fr)
-              );
+            grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
           .services-intro {
             align-items: flex-start;
-
             flex-direction: column;
           }
         }
 
         @media (max-width: 650px) {
           .services-hero {
-            padding:
-              105px 0 55px;
+            padding: 105px 0 55px;
           }
 
           .services-hero h1 {
@@ -1127,8 +754,7 @@ export default function ServicesPage() {
           }
 
           .services-content {
-            padding:
-              55px 0 65px;
+            padding: 55px 0 65px;
           }
 
           .services-grid {
@@ -1137,9 +763,7 @@ export default function ServicesPage() {
 
           .services-categories {
             display: grid;
-
-            grid-template-columns:
-              1fr 1fr;
+            grid-template-columns: 1fr 1fr;
           }
 
           .services-category {
@@ -1152,11 +776,8 @@ export default function ServicesPage() {
 
           .services-bottom-card {
             align-items: stretch;
-
             flex-direction: column;
-
-            padding:
-              25px 20px;
+            padding: 25px 20px;
           }
 
           .services-whatsapp-button {
