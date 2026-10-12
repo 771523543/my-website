@@ -8,7 +8,6 @@ import {
   ClipboardList,
   ChartNoAxesCombined,
   GraduationCap,
-  Mail,
   Phone,
   BookOpen,
   School,
@@ -70,7 +69,6 @@ const dashboardItems = [
 export default function AccountPage() {
   const router = useRouter()
 
-  const [email, setEmail] = useState('')
   const [profile, setProfile] =
     useState<StudentProfile>(emptyProfile)
   const [loading, setLoading] = useState(true)
@@ -93,8 +91,6 @@ export default function AccountPage() {
         }
 
         if (!active) return
-
-        setEmail(data.user.email ?? '')
 
         const { data: student, error: profileError } =
           await supabase
@@ -292,6 +288,7 @@ export default function AccountPage() {
             padding: 24px 16px;
             background: #f7f9fd;
           }
+
           .account-loading {
             display: flex;
             align-items: center;
@@ -301,6 +298,7 @@ export default function AccountPage() {
             color: #697791;
             font-size: 14px;
           }
+
           .account-loading-dot {
             width: 9px;
             height: 9px;
@@ -315,6 +313,7 @@ export default function AccountPage() {
   return (
     <main dir="rtl" className="account-page">
       <div className="account-container">
+        {/* واجهة الترحيب: بدون عرض البريد الإلكتروني */}
         <header className="account-welcome">
           <div className="account-welcome-icon">
             <GraduationCap size={32} strokeWidth={1.8} />
@@ -330,11 +329,6 @@ export default function AccountPage() {
             <p>
               مرحبًا بك في منصة هديل للخدمات الطلابية
             </p>
-
-            <span className="account-email">
-              <Mail size={15} />
-              <span dir="ltr">{email}</span>
-            </span>
           </div>
         </header>
 
@@ -587,20 +581,10 @@ export default function AccountPage() {
         }
 
         .account-welcome p {
-          margin: 5px 0 13px;
+          margin: 5px 0 0;
           color: #fff;
           font-size: 14px;
           line-height: 1.8;
-        }
-
-        .account-email {
-          display: inline-flex;
-          align-items: center;
-          gap: 7px;
-          max-width: 100%;
-          color: #edf3ff;
-          font-size: 12px;
-          overflow-wrap: anywhere;
         }
 
         .account-dashboard {
@@ -982,11 +966,6 @@ export default function AccountPage() {
 
           .account-welcome p {
             font-size: 12px;
-          }
-
-          .account-email {
-            align-items: flex-start;
-            font-size: 10px;
           }
 
           .account-dashboard {
