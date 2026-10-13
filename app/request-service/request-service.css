@@ -686,3 +686,235 @@
     transition: none;
   }
 }
+
+/* =========================================
+   تحسين المحاذاة والأرقام والأيقونات
+   منصة هديل - صفحة طلب خدمة جديدة
+   ========================================= */
+
+/* تثبيت اتجاه ومحاذاة الصفحة العربية */
+.request-page {
+  direction: rtl;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* الترحيب يبقى في المنتصف */
+.request-page .welcome-card {
+  text-align: center;
+  align-items: center;
+}
+
+.request-page .welcome-card h1,
+.request-page .welcome-card p {
+  width: 100%;
+  text-align: center;
+}
+
+/* محاذاة عنوان كل قسم ورقمه */
+.request-page .section-heading {
+  direction: rtl;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  text-align: right;
+}
+
+.request-page .section-number {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* منع العناوين والوصف من الانزياح */
+.request-page .section-heading > div,
+.request-page .section-heading h2,
+.request-page .section-heading p {
+  min-width: 0;
+  text-align: right;
+}
+
+.request-page .section-heading h2 {
+  margin-top: 0;
+}
+
+/* توحيد بطاقات التصنيفات والأيقونات */
+.request-page .category-option {
+  direction: rtl;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-align: right;
+}
+
+.request-page .category-icon {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+
+.request-page .category-icon svg {
+  display: block;
+  flex: 0 0 auto;
+  width: 21px;
+  height: 21px;
+}
+
+.request-page .category-label {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: right;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.request-page .radio-dot {
+  flex: 0 0 18px;
+  align-self: center;
+}
+
+/* الحقول والعناوين ومحاذاة النصوص */
+.request-page .field {
+  direction: rtl;
+  align-items: stretch;
+  text-align: right;
+}
+
+.request-page .field label {
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+
+.request-page .field input,
+.request-page .field textarea {
+  direction: rtl;
+  text-align: right;
+}
+
+.request-page .field input[type="date"] {
+  direction: ltr;
+  text-align: left;
+}
+
+.request-page .field-hint {
+  width: 100%;
+  text-align: right;
+}
+
+/* حقل التاريخ والأيقونة */
+.request-page .date-field {
+  direction: rtl;
+  display: flex;
+  align-items: center;
+}
+
+.request-page .date-field > svg {
+  flex: 0 0 auto;
+}
+
+.request-page .date-field input {
+  min-width: 0;
+}
+
+/* التنبيهات والملفات */
+.request-page .notice,
+.request-page .feedback,
+.request-page .file-item {
+  direction: rtl;
+  text-align: right;
+}
+
+.request-page .notice > svg,
+.request-page .feedback > svg,
+.request-page .file-item > svg {
+  flex: 0 0 auto;
+}
+
+.request-page .file-info {
+  text-align: right;
+}
+
+.request-page .file-info strong,
+.request-page .file-info span {
+  overflow-wrap: anywhere;
+}
+
+/* منطقة رفع الملفات تبقى في المنتصف */
+.request-page .upload-zone {
+  direction: rtl;
+  align-items: center;
+  text-align: center;
+}
+
+.request-page .upload-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.request-page .upload-icon svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+/* زر الإرسال والأيقونة */
+.request-page .submit-button {
+  direction: rtl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.request-page .submit-button svg {
+  flex: 0 0 auto;
+}
+
+/* الجوال */
+@media (max-width: 600px) {
+  .request-page .section-heading {
+    align-items: center;
+    gap: 10px;
+  }
+
+  .request-page .section-number {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+  }
+
+  .request-page .category-option {
+    gap: 10px;
+    text-align: right;
+  }
+
+  .request-page .category-icon {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .request-page .category-label {
+    line-height: 1.9;
+  }
+
+  .request-page .field input,
+  .request-page .field textarea {
+    max-width: 100%;
+  }
+}
+
