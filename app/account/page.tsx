@@ -16,7 +16,7 @@ import {
   LogOut,
   ArrowLeft,
   ChevronUp,
-  Clock3,
+  ShieldCheck,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
@@ -78,6 +78,7 @@ export default function AccountPage() {
   const [profileOpen, setProfileOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
     let active = true
@@ -94,6 +95,17 @@ export default function AccountPage() {
 
         if (!active) return
 
+        // التحقق من صلاحية الإدارة من Supabase
+        const { data: adminResult, error: adminError } =
+          await supabase.rpc('is_hadeel_admin')
+
+        if (!active) return
+
+        setIsAdmin(
+          !adminError && adminResult === true
+        )
+
+        // تحميل بيانات الطالب
         const { data: student, error: profileError } =
           await supabase
             .from('student_profiles')
@@ -404,6 +416,21 @@ export default function AccountPage() {
               )
             })}
           </div>
+
+          {/* يظهر الزر فقط إذا أكدت قاعدة البيانات صلاحية الإدارة */}
+          {isAdmin && (
+            <div className="account-admin-action">
+              <button
+                type="button"
+                className="account-admin-button"
+                onClick={() => router.push('/admin')}
+              >
+                <ShieldCheck size={20} />
+                <span>لوحة الإدارة</span>
+                <ArrowLeft size={16} />
+              </button>
+            </div>
+          )}
         </section>
 
         {message && (
@@ -670,7 +697,8 @@ export default function AccountPage() {
         .account-profile-toggle:focus-visible,
         .account-save-button:focus-visible,
         .account-logout-button:focus-visible,
-        .account-footer-link:focus-visible {
+        .account-footer-link:focus-visible,
+        .account-admin-button:focus-visible {
           outline: 3px solid #2455c455;
           outline-offset: 3px;
         }
@@ -728,6 +756,38 @@ export default function AccountPage() {
           color: #2455c4;
           font-size: 11px;
           font-weight: 800;
+        }
+
+        .account-admin-action {
+          display: flex;
+          justify-content: center;
+          margin-top: 20px;
+        }
+
+        .account-admin-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          min-height: 48px;
+          padding: 12px 24px;
+          border: 0;
+          border-radius: 12px;
+          background: #2455c4;
+          color: #fff;
+          font-family: inherit;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+          box-shadow: 0 8px 18px #2455c426;
+          transition:
+            background 0.18s ease,
+            transform 0.18s ease;
+        }
+
+        .account-admin-button:hover {
+          background: #1b429e;
+          transform: translateY(-1px);
         }
 
         .account-notice {
@@ -1029,10 +1089,15 @@ export default function AccountPage() {
           .account-logout-button {
             width: 100%;
           }
+
+          .account-admin-button {
+            width: 100%;
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .account-action-card {
+          .account-action-card,
+          .account-admin-button {
             transition: none;
           }
         }
