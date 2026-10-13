@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
@@ -22,6 +23,12 @@ type RequestStatus =
   | 'completed'
   | 'rejected'
 
+type StudentProfile = {
+  id: string
+  full_name: string | null
+  phone: string | null
+}
+
 type ServiceRequest = {
   id: string
   student_id: string
@@ -31,10 +38,7 @@ type ServiceRequest = {
   created_at: string
   updated_at: string
   services?: { name: string } | { name: string }[] | null
-  student_profiles?:
-    | { full_name: string | null; phone: string | null }
-    | { full_name: string | null; phone: string | null }[]
-    | null
+  student_profiles?: StudentProfile | null
 }
 
 type Attachment = {
@@ -84,9 +88,11 @@ function formatDate(value: string) {
 
 function formatSize(bytes: number | null) {
   if (bytes == null) return 'الحجم غير معروف'
+
   if (bytes < 1024 * 1024) {
     return `${Math.max(1, Math.round(bytes / 1024))} كيلوبايت`
   }
+
   return `${(bytes / (1024 * 1024)).toFixed(2)} ميجابايت`
 }
 
@@ -140,7 +146,7 @@ export default function AdminPage() {
 
       if (adminError) {
         throw new Error(
-          'تعذر التحقق من صلاحيات المدير. تأكد من إعدادات Supabase.'
+          `تعذر التحقق من صلاحيات المدير: ${adminError.message}`
         )
       }
 
@@ -152,6 +158,7 @@ export default function AdminPage() {
 
       setAuthorized(true)
 
+      // تحميل الطلبات دون ربط student_profiles بعلاقة غير موجودة.
       const { data: requestRows, error: requestError } =
         await supabase
           .from('service_requests')
@@ -163,11 +170,7 @@ export default function AdminPage() {
             status,
             created_at,
             updated_at,
-            services(name),
-            student_profiles!service_requests_student_id_fkey(
-              full_name,
-              phone
-            )
+            services(name)
           `)
           .order('created_at', { ascending: false })
 
@@ -180,8 +183,47 @@ export default function AdminPage() {
       const requestData =
         (requestRows ?? []) as unknown as ServiceRequest[]
 
-      setRequests(requestData)
+      // تحميل ملفات الطلاب باستعلام مستقل.
+      const studentIds = [
+        ...new Set(
+          requestData
+            .map((request) => request.student_id)
+            .filter(Boolean)
+        ),
+      ]
 
+      let profileRows: StudentProfile[] = []
+
+      if (studentIds.length > 0) {
+        const { data: profiles, error: profilesError } =
+          await supabase
+            .from('student_profiles')
+            .select('id, full_name, phone')
+            .in('id', studentIds)
+
+        if (profilesError) {
+          throw new Error(
+            `تعذر تحميل بيانات الطلاب: ${profilesError.message}`
+          )
+        }
+
+        profileRows = (profiles ?? []) as StudentProfile[]
+      }
+
+      const profilesById = new Map(
+        profileRows.map((profile) => [profile.id, profile])
+      )
+
+      const enrichedRequests: ServiceRequest[] =
+        requestData.map((request) => ({
+          ...request,
+          student_profiles:
+            profilesById.get(request.student_id) ?? null,
+        }))
+
+      setRequests(enrichedRequests)
+
+      // تحميل المرفقات.
       const { data: attachmentRows, error: attachmentError } =
         await supabase
           .from('request_attachments')
@@ -415,10 +457,20 @@ export default function AdminPage() {
   if (loading) {
     return (
       <main dir="rtl" className="admin-page">
-        <div className="admin-loading">جارٍ التحقق من صلاحيات المدير...</div>
+        <div className="admin-loading">
+          جارٍ التحقق من صلاحيات المدير...
+        </div>
         <style jsx>{`
-          .admin-page { min-height: 70vh; padding: 32px 16px; background: #f7f9fd; }
-          .admin-loading { padding: 50px 10px; text-align: center; color: #697791; }
+          .admin-page {
+            min-height: 70vh;
+            padding: 32px 16px;
+            background: #f7f9fd;
+          }
+          .admin-loading {
+            padding: 50px 10px;
+            text-align: center;
+            color: #697791;
+          }
         `}</style>
       </main>
     )
@@ -436,11 +488,38 @@ export default function AdminPage() {
           </button>
         </section>
         <style jsx>{`
-          .admin-page { min-height: 70vh; padding: 32px 16px; background: #f7f9fd; }
-          .admin-denied { max-width: 480px; margin: 30px auto; padding: 30px 20px; border: 1px solid #e4ebf4; border-radius: 20px; background: white; text-align: center; color: #2455c4; }
-          .admin-denied h1 { color: #17233d; }
-          .admin-denied p { color: #697791; line-height: 1.9; overflow-wrap: anywhere; }
-          .admin-denied button { padding: 11px 16px; border: 0; border-radius: 10px; background: #2455c4; color: white; font: inherit; cursor: pointer; }
+          .admin-page {
+            min-height: 70vh;
+            padding: 32px 16px;
+            background: #f7f9fd;
+          }
+          .admin-denied {
+            max-width: 480px;
+            margin: 30px auto;
+            padding: 30px 20px;
+            border: 1px solid #e4ebf4;
+            border-radius: 20px;
+            background: white;
+            text-align: center;
+            color: #2455c4;
+          }
+          .admin-denied h1 {
+            color: #17233d;
+          }
+          .admin-denied p {
+            color: #697791;
+            line-height: 1.9;
+            overflow-wrap: anywhere;
+          }
+          .admin-denied button {
+            padding: 11px 16px;
+            border: 0;
+            border-radius: 10px;
+            background: #2455c4;
+            color: white;
+            font: inherit;
+            cursor: pointer;
+          }
         `}</style>
       </main>
     )
@@ -571,7 +650,7 @@ export default function AdminPage() {
             <div className="admin-list">
               {requests.map((request) => {
                 const service = getRelation(request.services)
-                const student = getRelation(request.student_profiles)
+                const student = request.student_profiles
                 const requestFiles = attachments.filter(
                   (file) => file.request_id === request.id
                 )
@@ -584,8 +663,10 @@ export default function AdminPage() {
                         <p>{service?.name || 'خدمة طلابية'}</p>
                       </div>
 
-                      <span className={`admin-status admin-status-${request.status}`}>
-                        {statusLabels[request.status]}
+                      <span
+                        className={`admin-status admin-status-${request.status}`}
+                      >
+                        {statusLabels[request.status] || request.status}
                       </span>
                     </div>
 
@@ -593,7 +674,9 @@ export default function AdminPage() {
                       <span>
                         الطالب: {student?.full_name || 'لم يضف اسمه'}
                       </span>
-                      {student?.phone && <span>الهاتف: {student.phone}</span>}
+                      {student?.phone && (
+                        <span>الهاتف: {student.phone}</span>
+                      )}
                       <span>التقديم: {formatDate(request.created_at)}</span>
                     </div>
 
@@ -649,7 +732,8 @@ export default function AdminPage() {
                               <div className="admin-file-info">
                                 <strong>{file.file_name}</strong>
                                 <small>
-                                  {formatSize(file.file_size)} · {formatDate(file.created_at)}
+                                  {formatSize(file.file_size)} ·{' '}
+                                  {formatDate(file.created_at)}
                                 </small>
                               </div>
                               <button
@@ -681,83 +765,430 @@ export default function AdminPage() {
       </div>
 
       <style jsx>{`
-        .admin-page { min-height: 75vh; padding: 30px 16px 60px; background: #f7f9fd; color: #17233d; }
-        .admin-container { max-width: 1050px; margin: 0 auto; }
-        .admin-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; padding: 24px; border-radius: 21px; background: linear-gradient(120deg, #2455c4, #1b429e); color: white; }
-        .admin-brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
-        .admin-brand-icon { display: grid; place-items: center; flex: 0 0 54px; height: 54px; border: 1px solid #ffffff50; border-radius: 16px; background: #ffffff20; }
-        .admin-brand > div > span { font-size: 12px; color: #e1eaff; font-weight: 800; }
-        .admin-brand h1 { margin: 3px 0; font-size: clamp(23px, 4vw, 30px); font-weight: 900; }
-        .admin-brand p { margin: 0; font-size: 12px; line-height: 1.8; color: #f0f4ff; }
-        .admin-header-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-        .admin-header-actions button { display: inline-flex; align-items: center; gap: 7px; padding: 10px 12px; border: 1px solid #ffffff55; border-radius: 10px; background: #ffffff18; color: white; font: inherit; font-size: 12px; cursor: pointer; }
-        .admin-header-actions button:disabled { opacity: .6; }
-        .admin-alert { display: flex; align-items: flex-start; gap: 9px; margin-top: 15px; padding: 13px 15px; border-radius: 12px; font-size: 13px; line-height: 1.8; overflow-wrap: anywhere; }
-        .admin-alert-error { border: 1px solid #f3cccc; background: #fff5f5; color: #a72d35; }
-        .admin-alert-success { border: 1px solid #ccebd8; background: #f1fbf5; color: #176c40; }
-        .admin-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; margin: 20px 0; }
-        .admin-stats article { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 7px 11px; padding: 17px; border: 1px solid #e4ebf4; border-radius: 16px; background: white; color: #2455c4; }
-        .admin-stats article span { color: #697791; font-size: 12px; }
-        .admin-stats article strong { grid-column: 2; color: #17233d; font-size: 24px; }
-        .admin-upload, .admin-requests { margin-top: 20px; padding: 22px; border: 1px solid #e4ebf4; border-radius: 18px; background: white; }
-        .admin-section-title { display: flex; align-items: center; gap: 11px; margin-bottom: 18px; color: #2455c4; }
-        .admin-section-title h2 { margin: 0; color: #17233d; font-size: 18px; font-weight: 900; }
-        .admin-section-title p { margin: 4px 0 0; color: #697791; font-size: 12px; line-height: 1.8; }
-        .admin-upload label, .admin-status-control label { display: block; margin: 13px 0 7px; color: #39465e; font-size: 12px; font-weight: 800; }
-        .admin-upload select, .admin-upload input[type="file"], .admin-status-control select { width: 100%; min-width: 0; padding: 11px; border: 1px solid #dce5f5; border-radius: 10px; background: #fff; color: #17233d; font: inherit; font-size: 13px; }
-        .admin-upload input[type="file"] { font-size: 12px; }
-        .admin-upload select:focus, .admin-upload input:focus, .admin-status-control select:focus { outline: 2px solid #2455c433; border-color: #2455c4; }
-        .admin-hint, .admin-progress { font-size: 12px; line-height: 1.9; }
-        .admin-hint { color: #697791; }
-        .admin-progress { color: #2455c4; font-weight: 800; }
-        .admin-list { display: grid; gap: 15px; }
-        .admin-request-card { min-width: 0; padding: 20px; border: 1px solid #e4ebf4; border-radius: 15px; background: #fff; }
-        .admin-request-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-        .admin-request-title { min-width: 0; }
-        .admin-request-title h3 { margin: 0; font-size: 17px; line-height: 1.7; font-weight: 900; overflow-wrap: anywhere; }
-        .admin-request-title p { margin: 3px 0 0; color: #697791; font-size: 12px; }
-        .admin-status { flex-shrink: 0; padding: 7px 10px; border-radius: 999px; font-size: 11px; font-weight: 850; }
-        .admin-status-pending { background: #fff4d9; color: #895a00; }
-        .admin-status-in_progress { background: #eaf1ff; color: #2455c4; }
-        .admin-status-completed { background: #e4f7ed; color: #176c40; }
-        .admin-status-rejected { background: #fff0f0; color: #a72d35; }
-        .admin-student-info { display: flex; flex-wrap: wrap; gap: 8px 17px; margin-top: 15px; color: #697791; font-size: 12px; line-height: 1.8; }
-        .admin-request-id { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; color: #697791; font-size: 11px; }
-        .admin-request-id code { overflow-wrap: anywhere; color: #2455c4; }
-        .admin-details { margin-top: 14px; padding-top: 13px; border-top: 1px solid #edf0f5; font-size: 12px; }
-        .admin-details summary { color: #2455c4; font-weight: 800; cursor: pointer; }
-        .admin-details p { white-space: pre-wrap; overflow-wrap: anywhere; color: #49566e; line-height: 1.9; }
-        .admin-status-control { display: grid; grid-template-columns: minmax(100px, 150px) minmax(0, 1fr); align-items: center; gap: 10px; margin-top: 17px; padding-top: 14px; border-top: 1px solid #edf0f5; }
-        .admin-status-control label { margin: 0; }
-        .admin-status-control select { max-width: 300px; }
-        .admin-status-control > span { grid-column: 2; color: #2455c4; font-size: 11px; }
-        .admin-files { margin-top: 17px; padding-top: 15px; border-top: 1px solid #edf0f5; }
-        .admin-files h4 { margin: 0 0 10px; font-size: 13px; font-weight: 900; }
-        .admin-no-files { color: #8994a8; font-size: 12px; }
-        .admin-files ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
-        .admin-files li { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 10px; border: 1px solid #e9eef6; border-radius: 11px; color: #2455c4; }
-        .admin-file-info { display: grid; flex: 1; min-width: 0; gap: 4px; }
-        .admin-file-info strong { color: #17233d; font-size: 12px; overflow-wrap: anywhere; }
-        .admin-file-info small { color: #8994a8; font-size: 10px; line-height: 1.7; }
-        .admin-files li button { display: grid; place-items: center; flex: 0 0 35px; width: 35px; height: 35px; border: 1px solid #dce5f5; border-radius: 9px; background: white; color: #2455c4; cursor: pointer; }
-        .admin-files li button:last-child { color: #b72e39; }
-        .admin-files li button:disabled { opacity: .5; cursor: not-allowed; }
-        .admin-empty { padding: 30px 12px; color: #697791; text-align: center; font-size: 13px; }
+        .admin-page {
+          min-height: 75vh;
+          padding: 30px 16px 60px;
+          background: #f7f9fd;
+          color: #17233d;
+        }
+        .admin-container {
+          max-width: 1050px;
+          margin: 0 auto;
+        }
+        .admin-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 18px;
+          padding: 24px;
+          border-radius: 21px;
+          background: linear-gradient(120deg, #2455c4, #1b429e);
+          color: white;
+        }
+        .admin-brand {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          min-width: 0;
+        }
+        .admin-brand-icon {
+          display: grid;
+          place-items: center;
+          flex: 0 0 54px;
+          height: 54px;
+          border: 1px solid #ffffff50;
+          border-radius: 16px;
+          background: #ffffff20;
+        }
+        .admin-brand > div > span {
+          font-size: 12px;
+          color: #e1eaff;
+          font-weight: 800;
+        }
+        .admin-brand h1 {
+          margin: 3px 0;
+          font-size: clamp(23px, 4vw, 30px);
+          font-weight: 900;
+        }
+        .admin-brand p {
+          margin: 0;
+          font-size: 12px;
+          line-height: 1.8;
+          color: #f0f4ff;
+        }
+        .admin-header-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+        .admin-header-actions button {
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          padding: 10px 12px;
+          border: 1px solid #ffffff55;
+          border-radius: 10px;
+          background: #ffffff18;
+          color: white;
+          font: inherit;
+          font-size: 12px;
+          cursor: pointer;
+        }
+        .admin-header-actions button:disabled {
+          opacity: 0.6;
+        }
+        .admin-alert {
+          display: flex;
+          align-items: flex-start;
+          gap: 9px;
+          margin-top: 15px;
+          padding: 13px 15px;
+          border-radius: 12px;
+          font-size: 13px;
+          line-height: 1.8;
+          overflow-wrap: anywhere;
+        }
+        .admin-alert-error {
+          border: 1px solid #f3cccc;
+          background: #fff5f5;
+          color: #a72d35;
+        }
+        .admin-alert-success {
+          border: 1px solid #ccebd8;
+          background: #f1fbf5;
+          color: #176c40;
+        }
+        .admin-stats {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 13px;
+          margin: 20px 0;
+        }
+        .admin-stats article {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          align-items: center;
+          gap: 7px 11px;
+          padding: 17px;
+          border: 1px solid #e4ebf4;
+          border-radius: 16px;
+          background: white;
+          color: #2455c4;
+        }
+        .admin-stats article span {
+          color: #697791;
+          font-size: 12px;
+        }
+        .admin-stats article strong {
+          grid-column: 2;
+          color: #17233d;
+          font-size: 24px;
+        }
+        .admin-upload,
+        .admin-requests {
+          margin-top: 20px;
+          padding: 22px;
+          border: 1px solid #e4ebf4;
+          border-radius: 18px;
+          background: white;
+        }
+        .admin-section-title {
+          display: flex;
+          align-items: center;
+          gap: 11px;
+          margin-bottom: 18px;
+          color: #2455c4;
+        }
+        .admin-section-title h2 {
+          margin: 0;
+          color: #17233d;
+          font-size: 18px;
+          font-weight: 900;
+        }
+        .admin-section-title p {
+          margin: 4px 0 0;
+          color: #697791;
+          font-size: 12px;
+          line-height: 1.8;
+        }
+        .admin-upload label,
+        .admin-status-control label {
+          display: block;
+          margin: 13px 0 7px;
+          color: #39465e;
+          font-size: 12px;
+          font-weight: 800;
+        }
+        .admin-upload select,
+        .admin-upload input[type='file'],
+        .admin-status-control select {
+          width: 100%;
+          min-width: 0;
+          padding: 11px;
+          border: 1px solid #dce5f5;
+          border-radius: 10px;
+          background: #fff;
+          color: #17233d;
+          font: inherit;
+          font-size: 13px;
+        }
+        .admin-upload input[type='file'] {
+          font-size: 12px;
+        }
+        .admin-upload select:focus,
+        .admin-upload input:focus,
+        .admin-status-control select:focus {
+          outline: 2px solid #2455c433;
+          border-color: #2455c4;
+        }
+        .admin-hint,
+        .admin-progress {
+          font-size: 12px;
+          line-height: 1.9;
+        }
+        .admin-hint {
+          color: #697791;
+        }
+        .admin-progress {
+          color: #2455c4;
+          font-weight: 800;
+        }
+        .admin-list {
+          display: grid;
+          gap: 15px;
+        }
+        .admin-request-card {
+          min-width: 0;
+          padding: 20px;
+          border: 1px solid #e4ebf4;
+          border-radius: 15px;
+          background: #fff;
+        }
+        .admin-request-heading {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 12px;
+        }
+        .admin-request-title {
+          min-width: 0;
+        }
+        .admin-request-title h3 {
+          margin: 0;
+          font-size: 17px;
+          line-height: 1.7;
+          font-weight: 900;
+          overflow-wrap: anywhere;
+        }
+        .admin-request-title p {
+          margin: 3px 0 0;
+          color: #697791;
+          font-size: 12px;
+        }
+        .admin-status {
+          flex-shrink: 0;
+          padding: 7px 10px;
+          border-radius: 999px;
+          font-size: 11px;
+          font-weight: 850;
+        }
+        .admin-status-pending {
+          background: #fff4d9;
+          color: #895a00;
+        }
+        .admin-status-in_progress {
+          background: #eaf1ff;
+          color: #2455c4;
+        }
+        .admin-status-completed {
+          background: #e4f7ed;
+          color: #176c40;
+        }
+        .admin-status-rejected {
+          background: #fff0f0;
+          color: #a72d35;
+        }
+        .admin-student-info {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px 17px;
+          margin-top: 15px;
+          color: #697791;
+          font-size: 12px;
+          line-height: 1.8;
+        }
+        .admin-request-id {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          margin-top: 12px;
+          color: #697791;
+          font-size: 11px;
+        }
+        .admin-request-id code {
+          overflow-wrap: anywhere;
+          color: #2455c4;
+        }
+        .admin-details {
+          margin-top: 14px;
+          padding-top: 13px;
+          border-top: 1px solid #edf0f5;
+          font-size: 12px;
+        }
+        .admin-details summary {
+          color: #2455c4;
+          font-weight: 800;
+          cursor: pointer;
+        }
+        .admin-details p {
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+          color: #49566e;
+          line-height: 1.9;
+        }
+        .admin-status-control {
+          display: grid;
+          grid-template-columns: minmax(100px, 150px) minmax(0, 1fr);
+          align-items: center;
+          gap: 10px;
+          margin-top: 17px;
+          padding-top: 14px;
+          border-top: 1px solid #edf0f5;
+        }
+        .admin-status-control label {
+          margin: 0;
+        }
+        .admin-status-control select {
+          max-width: 300px;
+        }
+        .admin-status-control > span {
+          grid-column: 2;
+          color: #2455c4;
+          font-size: 11px;
+        }
+        .admin-files {
+          margin-top: 17px;
+          padding-top: 15px;
+          border-top: 1px solid #edf0f5;
+        }
+        .admin-files h4 {
+          margin: 0 0 10px;
+          font-size: 13px;
+          font-weight: 900;
+        }
+        .admin-no-files {
+          color: #8994a8;
+          font-size: 12px;
+        }
+        .admin-files ul {
+          display: grid;
+          gap: 8px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+        .admin-files li {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          min-width: 0;
+          padding: 10px;
+          border: 1px solid #e9eef6;
+          border-radius: 11px;
+          color: #2455c4;
+        }
+        .admin-file-info {
+          display: grid;
+          flex: 1;
+          min-width: 0;
+          gap: 4px;
+        }
+        .admin-file-info strong {
+          color: #17233d;
+          font-size: 12px;
+          overflow-wrap: anywhere;
+        }
+        .admin-file-info small {
+          color: #8994a8;
+          font-size: 10px;
+          line-height: 1.7;
+        }
+        .admin-files li button {
+          display: grid;
+          place-items: center;
+          flex: 0 0 35px;
+          width: 35px;
+          height: 35px;
+          border: 1px solid #dce5f5;
+          border-radius: 9px;
+          background: white;
+          color: #2455c4;
+          cursor: pointer;
+        }
+        .admin-files li button:last-child {
+          color: #b72e39;
+        }
+        .admin-files li button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        .admin-empty {
+          padding: 30px 12px;
+          color: #697791;
+          text-align: center;
+          font-size: 13px;
+        }
         @media (max-width: 600px) {
-          .admin-page { padding: 20px 11px 40px; }
-          .admin-header { padding: 19px 15px; }
-          .admin-stats { gap: 8px; }
-          .admin-stats article { padding: 12px 9px; gap: 6px; }
-          .admin-stats article span { font-size: 10px; line-height: 1.6; }
-          .admin-stats article strong { font-size: 21px; }
-          .admin-upload, .admin-requests { padding: 16px 12px; }
-          .admin-request-card { padding: 15px 12px; }
-          .admin-request-heading { flex-direction: column; }
-          .admin-status-control { grid-template-columns: 1fr; gap: 8px; }
-          .admin-status-control select { max-width: none; }
-          .admin-status-control > span { grid-column: 1; }
-          .admin-files li { gap: 6px; padding: 8px 6px; }
-          .admin-files li button { flex-basis: 32px; width: 32px; height: 32px; }
+          .admin-page {
+            padding: 20px 11px 40px;
+          }
+          .admin-header {
+            padding: 19px 15px;
+          }
+          .admin-stats {
+            gap: 8px;
+          }
+          .admin-stats article {
+            padding: 12px 9px;
+            gap: 6px;
+          }
+          .admin-stats article span {
+            font-size: 10px;
+            line-height: 1.6;
+          }
+          .admin-stats article strong {
+            font-size: 21px;
+          }
+          .admin-upload,
+          .admin-requests {
+            padding: 16px 12px;
+          }
+          .admin-request-card {
+            padding: 15px 12px;
+          }
+          .admin-request-heading {
+            flex-direction: column;
+          }
+          .admin-status-control {
+            grid-template-columns: 1fr;
+            gap: 8px;
+          }
+          .admin-status-control select {
+            max-width: none;
+          }
+          .admin-status-control > span {
+            grid-column: 1;
+          }
+          .admin-files li {
+            gap: 6px;
+            padding: 8px 6px;
+          }
+          .admin-files li button {
+            flex-basis: 32px;
+            width: 32px;
+            height: 32px;
+          }
         }
       `}</style>
     </main>
