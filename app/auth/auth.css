@@ -681,3 +681,29 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* الفاصل بين تسجيل Google والبريد الإلكتروني */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 22px 0;
+  color: #8a8a8a;
+  font-size: 12px;
+  text-align: center;
+}
+
+.auth-divider span:first-child,
+.auth-divider span:last-child {
+  flex: 1;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+/* محاذاة البريد وكلمة المرور ورمز التحقق */
+.auth-page .auth-form input[dir="ltr"] {
+  direction: ltr;
+  text-align: left !important;
+}
+
