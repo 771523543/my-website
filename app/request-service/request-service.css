@@ -13,9 +13,11 @@
   background: #f4f6fa;
   color: var(--request-text);
   direction: rtl;
+  text-align: right;
   font-family: inherit;
-  line-height: 1.6;
+  line-height: 1.7;
   isolation: isolate;
+  overflow-wrap: anywhere;
 }
 
 .request-page *,
@@ -43,6 +45,7 @@
 .request-page .back-link {
   display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 8px;
   margin: 0 0 18px;
   color: var(--request-blue);
@@ -54,11 +57,13 @@
   color: var(--request-blue-dark);
 }
 
+/* بطاقة الترحيب */
 .request-page .welcome-card {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 15px;
   overflow: hidden;
   padding: 32px 26px;
@@ -93,25 +98,34 @@
 }
 
 .request-page .brand-icon {
+  position: relative;
   z-index: 1;
   display: grid;
   place-items: center;
+  flex: 0 0 66px;
   width: 66px;
   height: 66px;
-  flex: 0 0 auto;
   border-radius: 20px;
   background: #fff;
   color: var(--request-blue);
   box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
 }
 
+.request-page .brand-icon svg {
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+
 .request-page .welcome-card h1 {
   position: relative;
   z-index: 1;
+  width: 100%;
   margin: 0;
   font-size: clamp(23px, 4vw, 31px);
   line-height: 1.8;
   font-weight: 850;
+  text-align: center;
 }
 
 .request-page .welcome-card h1 span {
@@ -127,13 +141,16 @@
 .request-page .welcome-card p {
   position: relative;
   z-index: 1;
+  width: 100%;
   max-width: 630px;
   margin: 0;
   color: #fff;
   font-size: 15px;
   line-height: 2;
+  text-align: center;
 }
 
+/* النموذج */
 .request-page .request-form {
   margin-top: 22px;
   padding: 10px 26px 26px;
@@ -144,6 +161,7 @@
 }
 
 .request-page .form-section {
+  min-width: 0;
   padding: 24px 0;
   border-bottom: 1px solid #edf0f5;
 }
@@ -152,24 +170,39 @@
   border-bottom: 0;
 }
 
+/* أرقام الأقسام والعناوين */
 .request-page .section-heading {
   display: flex;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
   gap: 12px;
   margin-bottom: 19px;
+  direction: rtl;
+  text-align: right;
 }
 
 .request-page .section-number {
-  display: grid;
+  display: inline-flex;
   flex: 0 0 36px;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   width: 36px;
   height: 36px;
+  padding: 0;
   border-radius: 12px;
   background: #eaf1ff;
   color: var(--request-blue);
   font-size: 16px;
   font-weight: 850;
+  line-height: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.request-page .section-heading > div {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .request-page .section-heading h2 {
@@ -178,6 +211,7 @@
   font-size: 18px;
   font-weight: 800;
   line-height: 1.7;
+  text-align: right;
 }
 
 .request-page .section-heading p {
@@ -185,8 +219,10 @@
   color: var(--request-muted);
   font-size: 13px;
   line-height: 1.9;
+  text-align: right;
 }
 
+/* تصنيفات الخدمات */
 .request-page .category-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -195,8 +231,9 @@
 
 .request-page .category-option {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
   min-width: 0;
   min-height: 76px;
   padding: 13px;
@@ -230,30 +267,44 @@
 }
 
 .request-page .category-icon {
-  display: grid;
+  display: inline-flex;
   flex: 0 0 42px;
-  place-items: center;
+  align-items: center;
+  justify-content: center;
   width: 42px;
   height: 42px;
+  align-self: center;
   border-radius: 12px;
   background: #edf3ff;
   color: var(--request-blue);
 }
 
+.request-page .category-icon svg {
+  display: block;
+  flex: 0 0 auto;
+  width: 21px;
+  height: 21px;
+}
+
 .request-page .category-label {
-  flex: 1 1 auto;
+  flex: 1 1 0;
   min-width: 0;
+  color: inherit;
   font-size: 13px;
   font-weight: 700;
-  line-height: 1.8;
+  line-height: 1.9;
+  text-align: right;
   overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .request-page .radio-dot {
   position: relative;
+  display: inline-block;
   flex: 0 0 18px;
   width: 18px;
   height: 18px;
+  align-self: center;
   border: 1.5px solid #c4cedd;
   border-radius: 50%;
 }
@@ -262,17 +313,24 @@
   border: 5px solid var(--request-blue);
 }
 
+/* الحقول */
 .request-page .field {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: 9px;
   min-width: 0;
+  direction: rtl;
+  text-align: right;
 }
 
 .request-page .field label {
+  display: block;
+  width: 100%;
   color: #263852;
   font-size: 14px;
   font-weight: 750;
+  text-align: right;
 }
 
 .request-page .field input,
@@ -289,7 +347,9 @@
   background: #fff;
   color: #263852;
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.9;
+  text-align: right;
+  direction: rtl;
   box-shadow: none;
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
@@ -304,6 +364,7 @@
 .request-page .field textarea::placeholder {
   color: #9aa5b5;
   opacity: 1;
+  text-align: right;
 }
 
 .request-page .field textarea {
@@ -312,17 +373,21 @@
 }
 
 .request-page .field-hint {
+  width: 100%;
   color: var(--request-muted);
   font-size: 12px;
-  text-align: left;
+  line-height: 1.8;
+  text-align: right;
 }
 
 .request-page .other-field {
   margin-top: 15px;
 }
 
+/* حقل التاريخ */
 .request-page .date-field {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
   min-width: 0;
@@ -330,10 +395,14 @@
   border: 1px solid #dce4ef;
   border-radius: 12px;
   color: var(--request-blue);
+  direction: rtl;
 }
 
 .request-page .date-field > svg {
+  display: block;
   flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
 }
 
 .request-page .date-field input {
@@ -348,13 +417,20 @@
   box-shadow: none;
 }
 
+.request-page .date-field input[type="date"] {
+  direction: ltr;
+  text-align: left;
+}
+
 .request-page .date-field input:focus {
   border: 0;
   box-shadow: none;
 }
 
+/* تنبيه موعد التسليم */
 .request-page .notice {
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
   gap: 10px;
   margin-top: 14px;
@@ -363,19 +439,28 @@
   border-radius: 12px;
   background: #fff9e8;
   color: #805d11;
+  direction: rtl;
+  text-align: right;
 }
 
 .request-page .notice > svg {
+  display: block;
   flex: 0 0 auto;
-  margin-top: 2px;
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
 }
 
 .request-page .notice p {
+  flex: 1 1 auto;
+  min-width: 0;
   margin: 0;
   font-size: 13px;
   line-height: 1.9;
+  text-align: right;
 }
 
+/* رفع الملفات */
 .request-page .upload-zone {
   display: flex;
   flex-direction: column;
@@ -392,6 +477,7 @@
   color: #263852;
   font-size: inherit;
   text-align: center;
+  direction: rtl;
   cursor: pointer;
   transition: background 160ms ease, border-color 160ms ease;
 }
@@ -403,9 +489,10 @@
 }
 
 .request-page .upload-icon {
-  display: grid;
-  flex: 0 0 auto;
-  place-items: center;
+  display: inline-flex;
+  flex: 0 0 54px;
+  align-items: center;
+  justify-content: center;
   width: 54px;
   height: 54px;
   border-radius: 16px;
@@ -413,16 +500,24 @@
   color: var(--request-blue);
 }
 
+.request-page .upload-icon svg {
+  display: block;
+  flex: 0 0 auto;
+  width: 26px;
+  height: 26px;
+}
+
 .request-page .upload-zone strong {
+  max-width: 100%;
   font-size: 14px;
-  line-height: 1.8;
+  line-height: 1.9;
 }
 
 .request-page .upload-zone > span:not(.upload-icon) {
   max-width: 100%;
   color: var(--request-muted);
   font-size: 12px;
-  line-height: 1.8;
+  line-height: 1.9;
   overflow-wrap: anywhere;
 }
 
@@ -441,6 +536,7 @@
   clip-path: inset(50%);
 }
 
+/* قائمة الملفات المرفقة */
 .request-page .file-list {
   display: grid;
   gap: 9px;
@@ -449,6 +545,7 @@
 
 .request-page .file-item {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 11px;
   min-width: 0;
@@ -456,10 +553,15 @@
   border: 1px solid var(--request-border);
   border-radius: 12px;
   color: var(--request-blue);
+  direction: rtl;
+  text-align: right;
 }
 
 .request-page .file-item > svg {
+  display: block;
   flex: 0 0 auto;
+  width: 21px;
+  height: 21px;
 }
 
 .request-page .file-info {
@@ -468,12 +570,14 @@
   flex-direction: column;
   min-width: 0;
   gap: 3px;
+  text-align: right;
 }
 
 .request-page .file-info strong {
   color: #263852;
   font-size: 13px;
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .request-page .file-info span {
@@ -495,8 +599,10 @@
   cursor: pointer;
 }
 
+/* رسائل الخطأ والنجاح */
 .request-page .feedback {
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
   gap: 11px;
   margin: 18px 0;
@@ -505,11 +611,22 @@
   font-size: 13px;
   line-height: 1.9;
   overflow-wrap: anywhere;
+  direction: rtl;
+  text-align: right;
 }
 
 .request-page .feedback > svg {
+  display: block;
   flex: 0 0 auto;
-  margin-top: 2px;
+  width: 21px;
+  height: 21px;
+  margin-top: 3px;
+}
+
+.request-page .feedback > div {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: right;
 }
 
 .request-page .feedback p {
@@ -541,8 +658,10 @@
   text-decoration: underline;
 }
 
+/* زر إرسال الطلب */
 .request-page .submit-button {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 10px;
@@ -556,9 +675,18 @@
   color: #17365d;
   font-size: 15px;
   font-weight: 850;
+  text-align: center;
+  direction: rtl;
   cursor: pointer;
   box-shadow: 0 5px 14px rgb(245 197 66 / 22%);
   transition: transform 160ms ease, filter 160ms ease;
+}
+
+.request-page .submit-button svg {
+  display: block;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
 }
 
 .request-page .submit-button:hover:not(:disabled) {
@@ -579,6 +707,7 @@
   text-align: center;
 }
 
+/* حالة التحميل */
 .request-page .loading-card {
   display: flex;
   flex-direction: column;
@@ -587,6 +716,7 @@
   gap: 12px;
   min-height: 55vh;
   color: var(--request-blue);
+  text-align: center;
 }
 
 .request-page .loading-card p {
@@ -597,18 +727,13 @@
   animation: request-service-spin 1s linear infinite;
 }
 
-@keyframes request_service_spin_unused {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes request-service-spin {
   to {
     transform: rotate(360deg);
   }
 }
 
+/* الشاشات الصغيرة */
 @media (max-width: 600px) {
   .request-page {
     padding: 16px 11px 36px;
@@ -622,14 +747,16 @@
 
   .request-page .welcome-card h1 {
     font-size: clamp(22px, 6vw, 27px);
+    line-height: 1.9;
   }
 
   .request-page .welcome-card p {
     font-size: 13px;
-    line-height: 1.95;
+    line-height: 2;
   }
 
   .request-page .brand-icon {
+    flex-basis: 58px;
     width: 58px;
     height: 58px;
     border-radius: 17px;
@@ -645,6 +772,28 @@
     padding: 21px 0;
   }
 
+  .request-page .section-heading {
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .request-page .section-number {
+    flex-basis: 34px;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    font-size: 15px;
+  }
+
+  .request-page .section-heading h2 {
+    font-size: 16px;
+  }
+
+  .request-page .section-heading p {
+    font-size: 12px;
+  }
+
   .request-page .category-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 9px;
@@ -653,26 +802,54 @@
   .request-page .category-option {
     min-height: 66px;
     padding: 10px;
+    gap: 10px;
+  }
+
+  .request-page .category-icon {
+    flex-basis: 40px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .request-page .category-icon svg {
+    width: 20px;
+    height: 20px;
   }
 
   .request-page .category-label {
     font-size: 12px;
-  }
-
-  .request-page .section-heading h2 {
-    font-size: 16px;
+    line-height: 1.9;
   }
 
   .request-page .field input,
   .request-page .field textarea {
-    font-size: 13px;
+    font-size: 14px;
+    padding: 13px 12px;
+  }
+
+  .request-page .date-field {
+    gap: 7px;
+    padding-right: 10px;
   }
 
   .request-page .upload-zone {
-    padding-inline: 12px;
+    min-height: 180px;
+    padding: 20px 12px;
+  }
+
+  .request-page .feedback {
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .request-page .submit-button {
+    min-height: 52px;
+    padding: 13px 15px;
+    font-size: 14px;
   }
 }
 
+/* احترام إعداد تقليل الحركة */
 @media (prefers-reduced-motion: reduce) {
   .request-page .request-spin {
     animation-duration: 2s;
@@ -685,236 +862,8 @@
   .request-page .submit-button {
     transition: none;
   }
-}
 
-/* =========================================
-   تحسين المحاذاة والأرقام والأيقونات
-   منصة هديل - صفحة طلب خدمة جديدة
-   ========================================= */
-
-/* تثبيت اتجاه ومحاذاة الصفحة العربية */
-.request-page {
-  direction: rtl;
-  text-align: right;
-  overflow-wrap: anywhere;
-}
-
-/* الترحيب يبقى في المنتصف */
-.request-page .welcome-card {
-  text-align: center;
-  align-items: center;
-}
-
-.request-page .welcome-card h1,
-.request-page .welcome-card p {
-  width: 100%;
-  text-align: center;
-}
-
-/* محاذاة عنوان كل قسم ورقمه */
-.request-page .section-heading {
-  direction: rtl;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  text-align: right;
-}
-
-.request-page .section-number {
-  flex: 0 0 36px;
-  width: 36px;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  line-height: 1;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
-/* منع العناوين والوصف من الانزياح */
-.request-page .section-heading > div,
-.request-page .section-heading h2,
-.request-page .section-heading p {
-  min-width: 0;
-  text-align: right;
-}
-
-.request-page .section-heading h2 {
-  margin-top: 0;
-}
-
-/* توحيد بطاقات التصنيفات والأيقونات */
-.request-page .category-option {
-  direction: rtl;
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  text-align: right;
-}
-
-.request-page .category-icon {
-  flex: 0 0 42px;
-  width: 42px;
-  height: 42px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-}
-
-.request-page .category-icon svg {
-  display: block;
-  flex: 0 0 auto;
-  width: 21px;
-  height: 21px;
-}
-
-.request-page .category-label {
-  flex: 1 1 0;
-  min-width: 0;
-  text-align: right;
-  overflow-wrap: anywhere;
-  word-break: normal;
-}
-
-.request-page .radio-dot {
-  flex: 0 0 18px;
-  align-self: center;
-}
-
-/* الحقول والعناوين ومحاذاة النصوص */
-.request-page .field {
-  direction: rtl;
-  align-items: stretch;
-  text-align: right;
-}
-
-.request-page .field label {
-  display: block;
-  width: 100%;
-  text-align: right;
-}
-
-.request-page .field input,
-.request-page .field textarea {
-  direction: rtl;
-  text-align: right;
-}
-
-.request-page .field input[type="date"] {
-  direction: ltr;
-  text-align: left;
-}
-
-.request-page .field-hint {
-  width: 100%;
-  text-align: right;
-}
-
-/* حقل التاريخ والأيقونة */
-.request-page .date-field {
-  direction: rtl;
-  display: flex;
-  align-items: center;
-}
-
-.request-page .date-field > svg {
-  flex: 0 0 auto;
-}
-
-.request-page .date-field input {
-  min-width: 0;
-}
-
-/* التنبيهات والملفات */
-.request-page .notice,
-.request-page .feedback,
-.request-page .file-item {
-  direction: rtl;
-  text-align: right;
-}
-
-.request-page .notice > svg,
-.request-page .feedback > svg,
-.request-page .file-item > svg {
-  flex: 0 0 auto;
-}
-
-.request-page .file-info {
-  text-align: right;
-}
-
-.request-page .file-info strong,
-.request-page .file-info span {
-  overflow-wrap: anywhere;
-}
-
-/* منطقة رفع الملفات تبقى في المنتصف */
-.request-page .upload-zone {
-  direction: rtl;
-  align-items: center;
-  text-align: center;
-}
-
-.request-page .upload-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.request-page .upload-icon svg {
-  display: block;
-  flex: 0 0 auto;
-}
-
-/* زر الإرسال والأيقونة */
-.request-page .submit-button {
-  direction: rtl;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.request-page .submit-button svg {
-  flex: 0 0 auto;
-}
-
-/* الجوال */
-@media (max-width: 600px) {
-  .request-page .section-heading {
-    align-items: center;
-    gap: 10px;
-  }
-
-  .request-page .section-number {
-    flex-basis: 34px;
-    width: 34px;
-    height: 34px;
-    border-radius: 11px;
-  }
-
-  .request-page .category-option {
-    gap: 10px;
-    text-align: right;
-  }
-
-  .request-page .category-icon {
-    flex-basis: 40px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .request-page .category-label {
-    line-height: 1.9;
-  }
-
-  .request-page .field input,
-  .request-page .field textarea {
-    max-width: 100%;
+  .request-page .submit-button:hover:not(:disabled) {
+    transform: none;
   }
 }
-
