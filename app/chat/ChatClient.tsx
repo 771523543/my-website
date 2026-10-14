@@ -1,4 +1,3 @@
-
 'use client'
 
 import {
@@ -56,6 +55,7 @@ export default function ChatClient() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const channelRef = useRef<RealtimeChannel | null>(null)
 
+  // تحميل الرسائل وتحديد ردود المدير التي قرأها الطالب.
   const loadMessages = useCallback(async (id: string) => {
     const { data, error: queryError } = await supabase
       .from('chat_messages')
@@ -67,7 +67,60 @@ export default function ChatClient() {
 
     if (queryError) throw queryError
 
-    setMessages((data ?? []) as ChatMessage[])
+    const loadedMessages = (data ?? []) as ChatMessage[]
+
+    // ردود المدير التي لم يسبق تسجيل قراءتها.
+    const unreadAdminMessages = loadedMessages.filter(
+      (message) =>
+        message.sender_role === 'admin' &&
+        message.read_at === null
+    )
+
+    let updatedReadTimes: Record<string, string> = {}
+
+    if (unreadAdminMessages.length > 0) {
+      const messageIds = unreadAdminMessages.map(
+        (message) => message.id
+      )
+
+      const readAt = new Date().toISOString()
+
+      const { data: updatedMessages, error: updateError } =
+        await supabase
+          .from('chat_messages')
+          .update({ read_at: readAt })
+          .in('id', messageIds)
+          .eq('conversation_id', id)
+          .eq('sender_role', 'admin')
+          .is('read_at', null)
+          .select('id, read_at')
+
+      // لا نمنع ظهور المحادثة إذا تعذر تحديث حالة القراءة.
+      if (updateError) {
+        console.error(
+          'تعذر تحديث حالة قراءة ردود المدير:',
+          updateError.message
+        )
+      } else {
+        updatedReadTimes = Object.fromEntries(
+          (updatedMessages ?? []).map((message) => [
+            message.id,
+            message.read_at,
+          ])
+        )
+      }
+    }
+
+    // تحديث حالة الرسائل محليًا بالنتائج المؤكدة من قاعدة البيانات.
+    const finalMessages = loadedMessages.map((message) => {
+      const confirmedReadAt = updatedReadTimes[message.id]
+
+      return confirmedReadAt
+        ? { ...message, read_at: confirmedReadAt }
+        : message
+    })
+
+    setMessages(finalMessages)
   }, [])
 
   useEffect(() => {
@@ -93,7 +146,7 @@ export default function ChatClient() {
           return
         }
 
-        // نبحث عن محادثة الحساب الحالية فقط.
+        // نبحث عن محادثة الحساب الحالي فقط.
         const { data: existing, error: findError } = await supabase
           .from('chat_conversations')
           .select('id')
@@ -104,13 +157,14 @@ export default function ChatClient() {
 
         let id = existing?.id as string | undefined
 
-        // إذا لم توجد محادثة للحساب، ننشئ واحدة.
+        // إنشاء محادثة إذا لم تكن موجودة.
         if (!id) {
-          const { data: created, error: createError } = await supabase
-            .from('chat_conversations')
-            .insert({ visitor_id: user.id })
-            .select('id')
-            .single()
+          const { data: created, error: createError } =
+            await supabase
+              .from('chat_conversations')
+              .insert({ visitor_id: user.id })
+              .select('id')
+              .single()
 
           if (createError) {
             // إعادة البحث إذا أنشأ الحساب محادثة في تبويب آخر.
@@ -121,6 +175,7 @@ export default function ChatClient() {
               .maybeSingle()
 
             if (!retry?.id) throw createError
+
             id = retry.id
           } else {
             id = created.id
