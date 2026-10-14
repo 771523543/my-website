@@ -1,21 +1,21 @@
 
 .request-page {
-  --request-blue: #2459a9;
-  --request-blue-dark: #173e78;
-  --request-yellow: #f5c542;
-  --request-text: #243247;
-  --request-muted: #6b778c;
-  --request-border: #dfe6f0;
+  --request-blue: #1556a5;
+  --request-blue-dark: #10396f;
+  --request-yellow: #ffc642;
+  --request-text: #18365e;
+  --request-muted: #7890b2;
+  --request-border: #d8e5f6;
 
-  box-sizing: border-box;
   min-height: 100vh;
-  padding: 28px 16px 64px;
-  background: #f4f6fa;
+  padding: 20px 22px 48px;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(81, 155, 237, .13), transparent 27rem),
+    linear-gradient(135deg, #f4f9ff 0%, #edf5ff 55%, #f8fbff 100%);
   color: var(--request-text);
   direction: rtl;
   text-align: right;
-  font-family: inherit;
-  line-height: 1.7;
+  line-height: 1.75;
   isolation: isolate;
   overflow-wrap: anywhere;
 }
@@ -29,7 +29,7 @@
 .request-page button,
 .request-page input,
 .request-page textarea {
-  font-family: inherit;
+  font: inherit;
 }
 
 .request-page button {
@@ -38,18 +38,17 @@
 
 .request-page .request-shell {
   width: 100%;
-  max-width: 850px;
+  max-width: 1240px;
   margin-inline: auto;
 }
 
 .request-page .back-link {
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
   gap: 8px;
-  margin: 0 0 18px;
+  margin: 0 0 14px;
   color: var(--request-blue);
-  font-weight: 700;
+  font-weight: 800;
   text-decoration: none;
 }
 
@@ -57,44 +56,46 @@
   color: var(--request-blue-dark);
 }
 
-/* بطاقة الترحيب */
+/* مقدمة الصفحة */
 .request-page .welcome-card {
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 15px;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 178px;
   overflow: hidden;
-  padding: 32px 26px;
-  border-radius: 22px;
-  background: linear-gradient(140deg, #2459a9 0%, #173e78 100%);
+  padding: 28px 34px;
+  border-radius: 20px;
+  background: linear-gradient(115deg, #102f61 0%, #174b91 57%, #1d5eaa 100%);
   color: #fff;
-  text-align: center;
-  box-shadow: 0 12px 32px rgb(36 89 169 / 16%);
-}
-
-.request-page .welcome-card::before,
-.request-page .welcome-card::after {
-  position: absolute;
-  border: 1px solid rgb(255 255 255 / 12%);
-  border-radius: 50%;
-  content: '';
-  pointer-events: none;
+  box-shadow: 0 15px 34px rgba(20, 68, 128, .17);
 }
 
 .request-page .welcome-card::before {
-  top: -135px;
-  left: -70px;
-  width: 210px;
-  height: 210px;
+  content: '';
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  left: -80px;
+  top: -170px;
+  border: 1px solid rgba(255, 255, 255, .13);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 35px rgba(255, 255, 255, .025),
+    0 0 0 75px rgba(255, 255, 255, .025);
+  pointer-events: none;
 }
 
 .request-page .welcome-card::after {
-  right: -95px;
-  bottom: -95px;
-  width: 150px;
-  height: 150px;
+  content: '✦';
+  position: absolute;
+  left: 34%;
+  bottom: 12px;
+  color: rgba(255, 255, 255, .16);
+  font-size: 62px;
+  pointer-events: none;
 }
 
 .request-page .brand-icon {
@@ -102,82 +103,152 @@
   z-index: 1;
   display: grid;
   place-items: center;
-  flex: 0 0 66px;
-  width: 66px;
-  height: 66px;
-  border-radius: 20px;
-  background: #fff;
-  color: var(--request-blue);
-  box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
+  flex: 0 0 74px;
+  width: 74px;
+  height: 74px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, .12);
+  color: var(--request-yellow);
 }
 
 .request-page .brand-icon svg {
-  display: block;
-  width: 30px;
-  height: 30px;
+  width: 42px;
+  height: 42px;
 }
 
 .request-page .welcome-card h1 {
   position: relative;
   z-index: 1;
-  width: 100%;
+  flex: 1;
   margin: 0;
-  font-size: clamp(23px, 4vw, 31px);
-  line-height: 1.8;
-  font-weight: 850;
-  text-align: center;
+  font-size: clamp(25px, 3vw, 37px);
+  font-weight: 900;
+  line-height: 1.5;
+  text-align: right;
 }
 
 .request-page .welcome-card h1 span {
-  display: inline;
-  padding: 4px 14px;
-  border-radius: 10px;
-  background: var(--request-yellow);
-  color: #17365d;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+  color: var(--request-yellow);
 }
 
 .request-page .welcome-card p {
   position: relative;
   z-index: 1;
-  width: 100%;
-  max-width: 630px;
-  margin: 0;
-  color: #fff;
-  font-size: 15px;
+  max-width: 420px;
+  margin: 8px 0 0;
+  color: #edf5ff;
+  font-size: 14px;
   line-height: 2;
+  text-align: right;
+}
+
+/* تخطيط النموذج واللوحة الجانبية */
+.request-page .request-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 255px;
+  align-items: start;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.request-page .request-form {
+  min-width: 0;
+  padding: 8px 28px 26px;
+  border: 1px solid rgba(215, 229, 247, .9);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 10px 30px rgba(34, 78, 132, .07);
+}
+
+.request-page .request-sidebar {
+  position: sticky;
+  top: 18px;
+  overflow: hidden;
+  padding: 22px 18px 0;
+  border: 1px solid #d9e8fb;
+  border-radius: 20px;
+  background: linear-gradient(160deg, #fff 0%, #eef6ff 72%, #dcecff 100%);
+  box-shadow: 0 10px 28px rgba(34, 78, 132, .07);
+}
+
+.request-page .sidebar-cap {
+  margin: 0 0 8px;
+  color: var(--request-blue-dark);
+  font-size: 20px;
+  font-weight: 900;
   text-align: center;
 }
 
-/* النموذج */
-.request-page .request-form {
-  margin-top: 22px;
-  padding: 10px 26px 26px;
-  border: 1px solid #e8edf5;
-  border-radius: 22px;
-  background: #fff;
-  box-shadow: 0 8px 28px rgb(25 48 84 / 5%);
+.request-page .sidebar-motto {
+  margin: 0 0 18px;
+  color: #6d88ad;
+  font-size: 12px;
+  text-align: center;
 }
 
+.request-page .sidebar-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid #dce9f8;
+}
+
+.request-page .sidebar-feature > svg {
+  flex: 0 0 25px;
+  width: 25px;
+  height: 25px;
+  color: var(--request-blue);
+}
+
+.request-page .sidebar-feature strong {
+  display: block;
+  color: #204b82;
+  font-size: 13px;
+}
+
+.request-page .sidebar-feature span {
+  display: block;
+  margin-top: 3px;
+  color: var(--request-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.request-page .sidebar-art {
+  display: grid;
+  place-items: center;
+  min-height: 170px;
+  margin: 8px -18px 0;
+  background: radial-gradient(ellipse at 50% 90%, rgba(42, 118, 202, .23), transparent 58%);
+  color: #2a65a9;
+}
+
+.request-page .sidebar-art svg {
+  width: 92px;
+  height: 92px;
+  stroke-width: 1.2;
+}
+
+/* أقسام النموذج */
 .request-page .form-section {
   min-width: 0;
-  padding: 24px 0;
-  border-bottom: 1px solid #edf0f5;
+  padding: 22px 0;
+  border-bottom: 1px solid #eaf0f8;
 }
 
 .request-page .form-section:last-of-type {
   border-bottom: 0;
 }
 
-/* أرقام الأقسام والعناوين */
 .request-page .section-heading {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   gap: 12px;
-  margin-bottom: 19px;
+  margin-bottom: 17px;
   direction: rtl;
   text-align: right;
 }
@@ -189,147 +260,131 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  padding: 0;
-  border-radius: 12px;
-  background: #eaf1ff;
+  border: 1px solid #d8e8ff;
+  border-radius: 50%;
+  background: #e9f2ff;
   color: var(--request-blue);
   font-size: 16px;
-  font-weight: 850;
+  font-weight: 900;
   line-height: 1;
-  text-align: center;
   font-variant-numeric: tabular-nums;
 }
 
 .request-page .section-heading > div {
-  flex: 1 1 auto;
+  flex: 1;
   min-width: 0;
 }
 
 .request-page .section-heading h2 {
-  margin: 0 0 4px;
-  color: #1c3559;
-  font-size: 18px;
-  font-weight: 800;
+  margin: 0 0 3px;
+  color: #173f75;
+  font-size: 17px;
+  font-weight: 900;
   line-height: 1.7;
-  text-align: right;
 }
 
 .request-page .section-heading p {
   margin: 0;
   color: var(--request-muted);
-  font-size: 13px;
-  line-height: 1.9;
-  text-align: right;
+  font-size: 12px;
+  line-height: 1.8;
 }
 
 /* تصنيفات الخدمات */
 .request-page .category-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
 
 .request-page .category-option {
+  position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 11px;
+  justify-content: center;
+  gap: 8px;
   min-width: 0;
-  min-height: 76px;
-  padding: 13px;
+  min-height: 112px;
+  padding: 16px 12px;
   border: 1px solid var(--request-border);
-  border-radius: 14px;
+  border-radius: 13px;
   background: #fff;
   color: var(--request-text);
-  font-size: inherit;
-  text-align: right;
+  text-align: center;
   cursor: pointer;
-  transition: border-color 160ms ease, background 160ms ease;
+  transition: border-color .18s ease, background .18s ease, transform .18s ease;
 }
 
 .request-page .category-option:hover {
-  border-color: #9bb7e8;
-  background: #f8faff;
+  border-color: #8db9f0;
+  background: #f8fbff;
+  transform: translateY(-1px);
 }
 
 .request-page .category-option.selected {
-  border-color: var(--request-blue);
-  background: #eef4ff;
-  box-shadow: inset 0 0 0 1px var(--request-blue);
-}
-
-.request-page .category-option:focus-visible,
-.request-page .upload-zone:focus-visible,
-.request-page .submit-button:focus-visible,
-.request-page .remove-file:focus-visible {
-  outline: 3px solid rgb(36 89 169 / 35%);
-  outline-offset: 3px;
+  border-color: #2679df;
+  background: linear-gradient(145deg, #edf6ff, #f8fbff);
+  box-shadow: inset 0 0 0 1px #2679df;
 }
 
 .request-page .category-icon {
   display: inline-flex;
-  flex: 0 0 42px;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
-  align-self: center;
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
   border-radius: 12px;
-  background: #edf3ff;
-  color: var(--request-blue);
+  background: #e8f2ff;
+  color: #2472cb;
 }
 
 .request-page .category-icon svg {
-  display: block;
-  flex: 0 0 auto;
-  width: 21px;
-  height: 21px;
+  width: 23px;
+  height: 23px;
 }
 
 .request-page .category-label {
-  flex: 1 1 0;
-  min-width: 0;
-  color: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.9;
-  text-align: right;
-  overflow-wrap: anywhere;
-  word-break: normal;
+  max-width: 100%;
+  color: #163e74;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.8;
 }
 
 .request-page .radio-dot {
-  position: relative;
-  display: inline-block;
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
-  align-self: center;
-  border: 1.5px solid #c4cedd;
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  display: block;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #c5d5e9;
   border-radius: 50%;
+  background: #fff;
 }
 
 .request-page .category-option.selected .radio-dot {
-  border: 5px solid var(--request-blue);
+  border: 5px solid #2679df;
 }
 
-/* الحقول */
+/* حقول الإدخال */
 .request-page .field {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 9px;
+  gap: 8px;
   min-width: 0;
   direction: rtl;
-  text-align: right;
 }
 
 .request-page .field label {
   display: block;
   width: 100%;
-  color: #263852;
-  font-size: 14px;
-  font-weight: 750;
+  color: #29466c;
+  font-size: 13px;
+  font-weight: 800;
   text-align: right;
 }
 
@@ -340,84 +395,81 @@
   min-width: 0;
   max-width: 100%;
   margin: 0;
-  padding: 14px 15px;
-  border: 1px solid #dce4ef;
-  border-radius: 12px;
+  padding: 13px 14px;
+  border: 1px solid #d4e1f2;
+  border-radius: 11px;
   outline: none;
   background: #fff;
-  color: #263852;
-  font-size: 14px;
+  color: #1e3b60;
+  font-size: 13px;
   line-height: 1.9;
   text-align: right;
   direction: rtl;
   box-shadow: none;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  transition: border-color .18s ease, box-shadow .18s ease;
 }
 
 .request-page .field input:focus,
 .request-page .field textarea:focus {
-  border-color: var(--request-blue);
-  box-shadow: 0 0 0 3px rgb(36 89 169 / 10%);
+  border-color: #3a83d9;
+  box-shadow: 0 0 0 3px rgba(42, 117, 204, .1);
 }
 
 .request-page .field input::placeholder,
 .request-page .field textarea::placeholder {
-  color: #9aa5b5;
+  color: #8ba0bd;
   opacity: 1;
   text-align: right;
 }
 
 .request-page .field textarea {
-  min-height: 150px;
+  min-height: 125px;
   resize: vertical;
 }
 
 .request-page .field-hint {
   width: 100%;
   color: var(--request-muted);
-  font-size: 12px;
-  line-height: 1.8;
-  text-align: right;
+  font-size: 11px;
+  text-align: left;
 }
 
 .request-page .other-field {
-  margin-top: 15px;
+  margin-top: 14px;
 }
 
-/* حقل التاريخ */
+/* موعد التسليم */
 .request-page .date-field {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   min-width: 0;
-  padding-right: 14px;
-  border: 1px solid #dce4ef;
-  border-radius: 12px;
+  padding-right: 12px;
+  border: 1px solid #d4e1f2;
+  border-radius: 11px;
   color: var(--request-blue);
-  direction: rtl;
 }
 
 .request-page .date-field > svg {
-  display: block;
   flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
+  width: 19px;
+  height: 19px;
 }
 
 .request-page .date-field input {
-  flex: 1 1 auto;
+  flex: 1;
   width: 100%;
   min-width: 0;
-  padding: 13px 10px;
+  padding: 12px 9px;
   border: 0;
-  border-radius: 12px;
+  border-radius: 11px;
   background: transparent;
-  color: #263852;
+  color: #244568;
   box-shadow: none;
 }
 
-.request-page .date-field input[type="date"] {
+.request-page .date-field input[type='date'] {
   direction: ltr;
   text-align: left;
 }
@@ -427,103 +479,92 @@
   box-shadow: none;
 }
 
-/* تنبيه موعد التسليم */
 .request-page .notice {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 10px;
-  margin-top: 14px;
-  padding: 13px 14px;
-  border: 1px solid #f5e5b6;
-  border-radius: 12px;
-  background: #fff9e8;
-  color: #805d11;
-  direction: rtl;
-  text-align: right;
+  gap: 9px;
+  margin-top: 12px;
+  padding: 11px 12px;
+  border: 1px solid #f5e5ba;
+  border-radius: 11px;
+  background: #fff9eb;
+  color: #8a651c;
 }
 
 .request-page .notice > svg {
-  display: block;
   flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   margin-top: 3px;
 }
 
 .request-page .notice p {
-  flex: 1 1 auto;
+  flex: 1;
   min-width: 0;
   margin: 0;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.9;
-  text-align: right;
 }
 
-/* رفع الملفات */
+/* رفع المرفقات */
 .request-page .upload-zone {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   min-width: 0;
-  min-height: 195px;
-  padding: 24px 15px;
-  border: 1.5px dashed #9db6dc;
-  border-radius: 16px;
-  background: #f8faff;
-  color: #263852;
-  font-size: inherit;
+  min-height: 150px;
+  padding: 20px 14px;
+  border: 1.5px dashed #a9c8ed;
+  border-radius: 13px;
+  background: #f8fbff;
+  color: #29466c;
   text-align: center;
-  direction: rtl;
   cursor: pointer;
-  transition: background 160ms ease, border-color 160ms ease;
+  transition: background .18s ease, border-color .18s ease;
 }
 
 .request-page .upload-zone:hover,
 .request-page .upload-zone.dragging {
-  border-color: var(--request-blue);
-  background: #edf4ff;
+  border-color: #2679df;
+  background: #edf6ff;
 }
 
 .request-page .upload-icon {
   display: inline-flex;
-  flex: 0 0 54px;
   align-items: center;
   justify-content: center;
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  background: #e5eeff;
-  color: var(--request-blue);
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: #e8f2ff;
+  color: #2674ca;
 }
 
 .request-page .upload-icon svg {
-  display: block;
-  flex: 0 0 auto;
-  width: 26px;
-  height: 26px;
+  width: 27px;
+  height: 27px;
 }
 
 .request-page .upload-zone strong {
   max-width: 100%;
-  font-size: 14px;
-  line-height: 1.9;
+  font-size: 12px;
+  line-height: 1.8;
 }
 
 .request-page .upload-zone > span:not(.upload-icon) {
   max-width: 100%;
   color: var(--request-muted);
-  font-size: 12px;
-  line-height: 1.9;
-  overflow-wrap: anywhere;
+  font-size: 11px;
+  line-height: 1.8;
 }
 
 .request-page .upload-zone .upload-limit {
-  color: #7d899c;
-  font-size: 11px;
+  color: #8297b3;
+  font-size: 10px;
 }
 
 .request-page .visually-hidden {
@@ -536,101 +577,91 @@
   clip-path: inset(50%);
 }
 
-/* قائمة الملفات المرفقة */
 .request-page .file-list {
   display: grid;
-  gap: 9px;
-  margin-top: 12px;
+  gap: 7px;
+  margin-top: 10px;
 }
 
 .request-page .file-item {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 11px;
+  gap: 9px;
   min-width: 0;
-  padding: 12px;
-  border: 1px solid var(--request-border);
-  border-radius: 12px;
+  padding: 9px 10px;
+  border: 1px solid #e0eaf6;
+  border-radius: 10px;
+  background: #fff;
   color: var(--request-blue);
-  direction: rtl;
-  text-align: right;
 }
 
 .request-page .file-item > svg {
-  display: block;
   flex: 0 0 auto;
-  width: 21px;
-  height: 21px;
+  width: 19px;
+  height: 19px;
 }
 
 .request-page .file-info {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1;
   flex-direction: column;
   min-width: 0;
-  gap: 3px;
-  text-align: right;
+  gap: 2px;
 }
 
 .request-page .file-info strong {
-  color: #263852;
-  font-size: 13px;
+  color: #28496f;
+  font-size: 11px;
   overflow-wrap: anywhere;
-  word-break: break-word;
 }
 
 .request-page .file-info span {
   color: var(--request-muted);
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .request-page .remove-file {
   display: grid;
-  flex: 0 0 34px;
+  flex: 0 0 30px;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   border: 0;
-  border-radius: 9px;
+  border-radius: 8px;
   background: #fff0f0;
   color: #bd3333;
   cursor: pointer;
 }
 
-/* رسائل الخطأ والنجاح */
+/* رسائل الحالة */
 .request-page .feedback {
   display: flex;
-  flex-direction: row;
   align-items: flex-start;
-  gap: 11px;
-  margin: 18px 0;
-  padding: 14px;
-  border-radius: 12px;
-  font-size: 13px;
+  gap: 10px;
+  margin: 16px 0;
+  padding: 13px;
+  border-radius: 11px;
+  font-size: 12px;
   line-height: 1.9;
   overflow-wrap: anywhere;
-  direction: rtl;
-  text-align: right;
 }
 
 .request-page .feedback > svg {
-  display: block;
   flex: 0 0 auto;
-  width: 21px;
-  height: 21px;
+  width: 20px;
+  height: 20px;
   margin-top: 3px;
 }
 
 .request-page .feedback > div {
-  flex: 1 1 auto;
+  flex: 1;
   min-width: 0;
-  text-align: right;
 }
 
 .request-page .feedback p {
-  margin: 5px 0;
+  margin: 4px 0;
 }
 
 .request-page .error-feedback {
@@ -646,7 +677,7 @@
 }
 
 .request-page .request-number {
-  font-size: 12px;
+  font-size: 11px;
   overflow-wrap: anywhere;
 }
 
@@ -658,56 +689,53 @@
   text-decoration: underline;
 }
 
-/* زر إرسال الطلب */
+/* زر الإرسال */
 .request-page .submit-button {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 9px;
   width: 100%;
-  min-height: 54px;
-  margin-top: 22px;
-  padding: 14px 20px;
+  min-height: 51px;
+  margin-top: 20px;
+  padding: 13px 18px;
   border: 0;
-  border-radius: 14px;
-  background: var(--request-yellow);
-  color: #17365d;
-  font-size: 15px;
-  font-weight: 850;
+  border-radius: 11px;
+  background: linear-gradient(100deg, #ffcf55, #ffc13b);
+  color: #153d70;
+  font-size: 14px;
+  font-weight: 900;
   text-align: center;
-  direction: rtl;
   cursor: pointer;
-  box-shadow: 0 5px 14px rgb(245 197 66 / 22%);
-  transition: transform 160ms ease, filter 160ms ease;
+  box-shadow: 0 6px 15px rgba(235, 174, 43, .2);
+  transition: filter .18s ease, transform .18s ease;
 }
 
 .request-page .submit-button svg {
-  display: block;
   flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
+  width: 19px;
+  height: 19px;
 }
 
 .request-page .submit-button:hover:not(:disabled) {
-  filter: brightness(0.97);
+  filter: brightness(.98);
   transform: translateY(-1px);
 }
 
 .request-page .submit-button:disabled {
-  opacity: 0.7;
+  opacity: .7;
   cursor: wait;
 }
 
 .request-page .privacy-note {
-  margin: 13px 0 0;
+  margin: 11px 0 0;
   color: var(--request-muted);
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.9;
   text-align: center;
 }
 
-/* حالة التحميل */
+/* التحميل */
 .request-page .loading-card {
   display: flex;
   flex-direction: column;
@@ -733,119 +761,161 @@
   }
 }
 
-/* الشاشات الصغيرة */
-@media (max-width: 600px) {
-  .request-page {
-    padding: 16px 11px 36px;
+/* الوصول بلوحة المفاتيح */
+.request-page .category-option:focus-visible,
+.request-page .upload-zone:focus-visible,
+.request-page .submit-button:focus-visible,
+.request-page .remove-file:focus-visible {
+  outline: 3px solid rgba(36, 89, 169, .35);
+  outline-offset: 3px;
+}
+
+/* الأجهزة اللوحية */
+@media (max-width: 900px) {
+  .request-page .request-layout {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 12px;
+  }
+
+  .request-page .request-form {
+    padding-inline: 20px;
+  }
+
+  .request-page .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .request-page .welcome-card {
-    gap: 13px;
-    padding: 25px 17px;
-    border-radius: 18px;
+    flex-wrap: wrap;
+  }
+}
+
+/* الجوال */
+@media (max-width: 680px) {
+  .request-page {
+    padding: 13px 10px 28px;
+  }
+
+  .request-page .welcome-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 22px 18px;
+    border-radius: 17px;
   }
 
   .request-page .welcome-card h1 {
-    font-size: clamp(22px, 6vw, 27px);
-    line-height: 1.9;
+    font-size: 25px;
   }
 
   .request-page .welcome-card p {
     font-size: 13px;
-    line-height: 2;
   }
 
   .request-page .brand-icon {
-    flex-basis: 58px;
-    width: 58px;
-    height: 58px;
-    border-radius: 17px;
+    width: 56px;
+    height: 56px;
+    flex-basis: 56px;
+    border-radius: 16px;
+  }
+
+  .request-page .brand-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .request-page .request-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 13px;
+  }
+
+  .request-page .request-sidebar {
+    position: static;
+    padding: 17px;
   }
 
   .request-page .request-form {
-    margin-top: 15px;
-    padding: 5px 15px 19px;
-    border-radius: 18px;
+    padding: 4px 14px 18px;
+    border-radius: 16px;
   }
 
-  .request-page .form-section {
-    padding: 21px 0;
+  .request-page .sidebar-cap {
+    font-size: 17px;
+    margin-bottom: 4px;
   }
 
-  .request-page .section-heading {
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
+  .request-page .sidebar-motto {
+    margin-bottom: 5px;
   }
 
-  .request-page .section-number {
-    flex-basis: 34px;
-    width: 34px;
-    height: 34px;
-    border-radius: 11px;
-    font-size: 15px;
+  .request-page .sidebar-feature {
+    padding: 11px 0;
   }
 
-  .request-page .section-heading h2 {
-    font-size: 16px;
-  }
-
-  .request-page .section-heading p {
-    font-size: 12px;
+  .request-page .sidebar-art {
+    display: none;
   }
 
   .request-page .category-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 9px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .request-page .category-option {
-    min-height: 66px;
-    padding: 10px;
-    gap: 10px;
+    min-height: 104px;
+    padding: 13px 8px;
+    gap: 7px;
   }
 
   .request-page .category-icon {
-    flex-basis: 40px;
-    width: 40px;
-    height: 40px;
-  }
-
-  .request-page .category-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
   }
 
   .request-page .category-label {
-    font-size: 12px;
-    line-height: 1.9;
+    font-size: 11px;
+  }
+
+  .request-page .section-heading {
+    gap: 9px;
+    margin-bottom: 14px;
+  }
+
+  .request-page .section-number {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    font-size: 14px;
+  }
+
+  .request-page .section-heading h2 {
+    font-size: 15px;
+  }
+
+  .request-page .section-heading p {
+    font-size: 11px;
+  }
+
+  .request-page .form-section {
+    padding: 18px 0;
   }
 
   .request-page .field input,
   .request-page .field textarea {
-    font-size: 14px;
-    padding: 13px 12px;
-  }
-
-  .request-page .date-field {
-    gap: 7px;
-    padding-right: 10px;
+    padding: 12px;
+    font-size: 13px;
   }
 
   .request-page .upload-zone {
-    min-height: 180px;
-    padding: 20px 12px;
+    min-height: 140px;
   }
+}
 
-  .request-page .feedback {
-    gap: 8px;
-    padding: 12px;
-  }
-
-  .request-page .submit-button {
-    min-height: 52px;
-    padding: 13px 15px;
-    font-size: 14px;
+@media (max-width: 360px) {
+  .request-page .category-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
