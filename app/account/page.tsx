@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useEffect, useState, type FormEvent } from 'react'
@@ -17,6 +16,7 @@ import {
   ArrowLeft,
   ChevronUp,
   ShieldCheck,
+  MessageCircle,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
@@ -95,15 +95,13 @@ export default function AccountPage() {
 
         if (!active) return
 
-        // التحقق من صلاحية الإدارة من Supabase
+        // التحقق من صلاحية الإدارة من قاعدة البيانات
         const { data: adminResult, error: adminError } =
           await supabase.rpc('is_hadeel_admin')
 
         if (!active) return
 
-        setIsAdmin(
-          !adminError && adminResult === true
-        )
+        setIsAdmin(!adminError && adminResult === true)
 
         // تحميل بيانات الطالب
         const { data: student, error: profileError } =
@@ -417,17 +415,51 @@ export default function AccountPage() {
             })}
           </div>
 
-          {/* يظهر الزر فقط إذا أكدت قاعدة البيانات صلاحية الإدارة */}
+          {/* أزرار الإدارة — تظهر فقط لحساب المدير */}
           {isAdmin && (
             <div className="account-admin-action">
               <button
                 type="button"
-                className="account-admin-button"
+                className="account-admin-button account-admin-orders"
                 onClick={() => router.push('/admin')}
               >
-                <ShieldCheck size={20} />
-                <span>لوحة الإدارة</span>
-                <ArrowLeft size={16} />
+                <span className="account-admin-icon">
+                  <ShieldCheck size={21} />
+                </span>
+
+                <span className="account-admin-text">
+                  <strong>لوحة إدارة الطلبات</strong>
+                  <small>
+                    إدارة طلبات الطلاب ومتابعة حالتها
+                  </small>
+                </span>
+
+                <ArrowLeft
+                  size={18}
+                  className="account-admin-arrow"
+                />
+              </button>
+
+              <button
+                type="button"
+                className="account-admin-button account-admin-chat"
+                onClick={() => router.push('/admin/chat')}
+              >
+                <span className="account-admin-icon">
+                  <MessageCircle size={21} />
+                </span>
+
+                <span className="account-admin-text">
+                  <strong>إدارة محادثات الطلاب</strong>
+                  <small>
+                    عرض محادثات الطلاب والرد على استفساراتهم
+                  </small>
+                </span>
+
+                <ArrowLeft
+                  size={18}
+                  className="account-admin-arrow"
+                />
               </button>
             </div>
           )}
@@ -552,7 +584,9 @@ export default function AccountPage() {
             className="account-logout-button"
           >
             <LogOut size={17} />
-            {signingOut ? 'جارٍ تسجيل الخروج...' : 'تسجيل الخروج'}
+            {signingOut
+              ? 'جارٍ تسجيل الخروج...'
+              : 'تسجيل الخروج'}
           </button>
         </footer>
       </div>
@@ -566,6 +600,7 @@ export default function AccountPage() {
           padding: 34px 16px 56px;
           background: #f7f9fd;
           color: var(--account-navy);
+          box-sizing: border-box;
         }
 
         .account-container {
@@ -758,36 +793,100 @@ export default function AccountPage() {
           font-weight: 800;
         }
 
+        /* أزرار الإدارة */
         .account-admin-action {
-          display: flex;
-          justify-content: center;
-          margin-top: 20px;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: 12px;
+          width: 100%;
+          max-width: 620px;
+          margin: 24px auto 0;
+          box-sizing: border-box;
         }
 
         .account-admin-button {
-          display: inline-flex;
+          display: flex;
           align-items: center;
-          justify-content: center;
-          gap: 10px;
-          min-height: 48px;
-          padding: 12px 24px;
-          border: 0;
-          border-radius: 12px;
-          background: #2455c4;
+          gap: 14px;
+          width: 100%;
+          min-width: 0;
+          min-height: 76px;
+          padding: 14px 18px;
+          border: 1px solid transparent;
+          border-radius: 17px;
           color: #fff;
           font-family: inherit;
-          font-size: 14px;
-          font-weight: 800;
+          text-align: right;
           cursor: pointer;
-          box-shadow: 0 8px 18px #2455c426;
+          box-sizing: border-box;
           transition:
-            background 0.18s ease,
-            transform 0.18s ease;
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            filter 0.2s ease;
+          -webkit-tap-highlight-color: transparent;
         }
 
         .account-admin-button:hover {
-          background: #1b429e;
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          filter: brightness(1.04);
+        }
+
+        .account-admin-orders {
+          background: linear-gradient(
+            120deg,
+            #2b63ce,
+            #19449a
+          );
+          box-shadow: 0 8px 20px #2455c426;
+        }
+
+        .account-admin-chat {
+          background: linear-gradient(
+            120deg,
+            #159675,
+            #087052
+          );
+          box-shadow: 0 8px 20px #08705224;
+        }
+
+        .account-admin-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex: 0 0 46px;
+          width: 46px;
+          height: 46px;
+          border: 1px solid #ffffff38;
+          border-radius: 14px;
+          background: #ffffff1c;
+          color: #fff;
+        }
+
+        .account-admin-text {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          gap: 5px;
+          min-width: 0;
+        }
+
+        .account-admin-text strong {
+          color: #fff;
+          font-size: 14px;
+          font-weight: 900;
+          line-height: 1.7;
+        }
+
+        .account-admin-text small {
+          color: #ffffffdf;
+          font-size: 11px;
+          font-weight: 500;
+          line-height: 1.7;
+        }
+
+        .account-admin-arrow {
+          flex-shrink: 0;
+          margin-right: auto;
         }
 
         .account-notice {
@@ -1067,6 +1166,33 @@ export default function AccountPage() {
             font-size: 10px;
           }
 
+          .account-admin-action {
+            gap: 10px;
+            margin-top: 18px;
+          }
+
+          .account-admin-button {
+            min-height: 70px;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 14px;
+          }
+
+          .account-admin-icon {
+            flex-basis: 42px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+          }
+
+          .account-admin-text strong {
+            font-size: 13px;
+          }
+
+          .account-admin-text small {
+            font-size: 10px;
+          }
+
           .account-profile-toggle {
             padding: 17px 14px;
           }
@@ -1087,10 +1213,6 @@ export default function AccountPage() {
 
           .account-footer-link,
           .account-logout-button {
-            width: 100%;
-          }
-
-          .account-admin-button {
             width: 100%;
           }
         }
