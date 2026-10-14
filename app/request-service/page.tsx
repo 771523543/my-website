@@ -23,6 +23,9 @@ import {
   LoaderCircle,
   CalendarDays,
   ArrowRight,
+  ShieldCheck,
+  Clock3,
+  Headset,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
@@ -44,7 +47,7 @@ const categories = [
   },
   {
     value: 'software',
-    label: 'مشاريع وبرمجيات (علوم حاسب / تصميم مواقع)',
+    label: 'مشاريع وبرمجيات وعلوم الحاسب',
     icon: Code2,
   },
   {
@@ -52,7 +55,7 @@ const categories = [
     label: 'تلخيص المقررات وحل الواجبات',
     icon: BookOpen,
   },
-  { value: 'other', label: 'أخرى (تحديد يدوي)', icon: Wrench },
+  { value: 'other', label: 'خدمة أخرى', icon: Wrench },
 ] as const
 
 const serviceSlugByCategory: Record<string, string | null> = {
@@ -130,7 +133,6 @@ export default function RequestServicePage() {
 
   function addFiles(incoming: FileList | File[]) {
     setError('')
-
     const selected = Array.from(incoming)
     const combined = [...files]
 
@@ -194,7 +196,6 @@ export default function RequestServicePage() {
     }
 
     setSaving(true)
-
     let savedRequestId = ''
 
     try {
@@ -260,7 +261,6 @@ export default function RequestServicePage() {
       const uploadErrors: string[] = []
 
       for (const file of files) {
-        // يجب أن يبدأ المسار بمعرّف الطلب حتى تطابقه سياسات التخزين.
         const path = `${inserted.id}/${crypto.randomUUID()}-${safeFileName(file.name)}`
 
         const { error: uploadError } = await supabase.storage
@@ -291,7 +291,6 @@ export default function RequestServicePage() {
         if (attachmentError) {
           console.error('Attachment record error:', attachmentError)
           uploadErrors.push(file.name)
-
           await supabase.storage.from(BUCKET).remove([path])
         }
       }
@@ -348,263 +347,300 @@ export default function RequestServicePage() {
 
         <header className="welcome-card">
           <div className="brand-icon">
-            <GraduationCap size={37} strokeWidth={1.8} />
+            <GraduationCap size={40} strokeWidth={1.8} />
           </div>
 
           <h1>
-            <span>أهلاً بك في منصة هديل 🎓</span>
+            <span>طلبك يبدأ من هنا</span>
           </h1>
 
           <p>
-            نحن نحرص على خدمتك وتلبية طلبك بدقة وسرعة. أخبرنا بالخدمة التي
-            تحتاجها وقدم تفاصيلها لنبدأ العمل عليها فوراً.
+            أهلاً بك في منصة هديل. أخبرنا بما تحتاجه، وأضف تفاصيل طلبك
+            والمستندات اللازمة لنتمكن من فهم احتياجك بوضوح.
           </p>
         </header>
 
-        <form className="request-form" onSubmit={submitRequest}>
-          <section className="form-section">
-            <div className="section-heading">
-              <span className="section-number">1</span>
+        <div className="request-layout">
+          <aside className="request-sidebar">
+            <h2 className="sidebar-cap">معك في كل خطوة</h2>
+            <p className="sidebar-motto">
+              في هديل، راحتك ونجاحك أولويتنا
+            </p>
+
+            <div className="sidebar-feature">
+              <ShieldCheck aria-hidden="true" />
               <div>
-                <h2>اختر تصنيف الخدمة</h2>
-                <p>حدد التصنيف الأقرب إلى الخدمة التي تحتاجها.</p>
+                <strong>طلب منظم وواضح</strong>
+                <span>اجمع تفاصيل الخدمة في مكان واحد.</span>
               </div>
             </div>
 
-            <div className="category-grid">
-              {categories.map(item => {
-                const Icon = item.icon
-                const active = category === item.value
-
-                return (
-                  <button
-                    key={item.value}
-                    type="button"
-                    className={`category-option ${active ? 'selected' : ''}`}
-                    onClick={() => setCategory(item.value)}
-                    aria-pressed={active}
-                  >
-                    <span className="category-icon">
-                      <Icon size={22} />
-                    </span>
-                    <span className="category-label">{item.label}</span>
-                    <span className="radio-dot" aria-hidden="true" />
-                  </button>
-                )
-              })}
+            <div className="sidebar-feature">
+              <Clock3 aria-hidden="true" />
+              <div>
+                <strong>موعد التسليم</strong>
+                <span>حدد الموعد المطلوب من البداية.</span>
+              </div>
             </div>
 
-            {category === 'other' && (
-              <div className="field other-field">
-                <label htmlFor="otherCategory">اسم الخدمة المطلوبة *</label>
+            <div className="sidebar-feature">
+              <Headset aria-hidden="true" />
+              <div>
+                <strong>متابعة الطلب</strong>
+                <span>ارجع إلى صفحة طلباتي لمتابعة الحالة.</span>
+              </div>
+            </div>
+
+            <div className="sidebar-art" aria-hidden="true">
+              <GraduationCap />
+            </div>
+          </aside>
+
+          <form className="request-form" onSubmit={submitRequest}>
+            <section className="form-section">
+              <div className="section-heading">
+                <span className="section-number">1</span>
+                <div>
+                  <h2>ما الخدمة التي تحتاجها؟</h2>
+                  <p>اختر التصنيف الأقرب إلى طلبك.</p>
+                </div>
+              </div>
+
+              <div className="category-grid">
+                {categories.map(item => {
+                  const Icon = item.icon
+                  const active = category === item.value
+
+                  return (
+                    <button
+                      key={item.value}
+                      type="button"
+                      className={`category-option ${active ? 'selected' : ''}`}
+                      onClick={() => setCategory(item.value)}
+                      aria-pressed={active}
+                    >
+                      <span className="category-icon">
+                        <Icon size={22} />
+                      </span>
+                      <span className="category-label">{item.label}</span>
+                      <span className="radio-dot" aria-hidden="true" />
+                    </button>
+                  )
+                })}
+              </div>
+
+              {category === 'other' && (
+                <div className="field other-field">
+                  <label htmlFor="otherCategory">اسم الخدمة المطلوبة *</label>
+                  <input
+                    id="otherCategory"
+                    value={otherCategory}
+                    onChange={event => setOtherCategory(event.target.value)}
+                    placeholder="اكتب اسم الخدمة التي تحتاجها"
+                    required
+                    maxLength={150}
+                  />
+                </div>
+              )}
+            </section>
+
+            <section className="form-section">
+              <div className="section-heading">
+                <span className="section-number">2</span>
+                <div>
+                  <h2>عنوان الطلب</h2>
+                  <p>اكتب عنواناً مختصراً يوضح المطلوب.</p>
+                </div>
+              </div>
+
+              <div className="field">
+                <label htmlFor="requestTitle">عنوان الطلب *</label>
                 <input
-                  id="otherCategory"
-                  value={otherCategory}
-                  onChange={event => setOtherCategory(event.target.value)}
-                  placeholder="اكتب اسم الخدمة التي تحتاجها"
+                  id="requestTitle"
+                  value={title}
+                  onChange={event => setTitle(event.target.value)}
+                  placeholder="مثال: إعداد عرض تقديمي لمقرر إدارة الأعمال"
                   required
-                  maxLength={150}
+                  minLength={3}
+                  maxLength={180}
                 />
+              </div>
+            </section>
+
+            <section className="form-section">
+              <div className="section-heading">
+                <span className="section-number">3</span>
+                <div>
+                  <h2>تفاصيل الطلب</h2>
+                  <p>أضف كل المعلومات والشروط المهمة.</p>
+                </div>
+              </div>
+
+              <div className="field">
+                <label htmlFor="requestDetails">تفاصيل الطلب وشروطه *</label>
+                <textarea
+                  id="requestDetails"
+                  value={details}
+                  onChange={event => setDetails(event.target.value)}
+                  placeholder="اشرح المطلوب، وعدد الصفحات أو الشرائح، والمراجع، وأي تعليمات خاصة..."
+                  required
+                  minLength={10}
+                  maxLength={10000}
+                  rows={6}
+                />
+                <span className="field-hint">
+                  {details.length.toLocaleString('ar')} / 10000
+                </span>
+              </div>
+            </section>
+
+            <section className="form-section">
+              <div className="section-heading">
+                <span className="section-number">4</span>
+                <div>
+                  <h2>موعد التسليم</h2>
+                  <p>حدد التاريخ الذي تحتاج فيه إلى إنجاز الخدمة.</p>
+                </div>
+              </div>
+
+              <div className="field">
+                <label htmlFor="deadline">تاريخ التسليم المطلوب (اختياري)</label>
+                <div className="date-field">
+                  <CalendarDays size={20} />
+                  <input
+                    id="deadline"
+                    type="date"
+                    min={tomorrowDate()}
+                    value={deadline}
+                    onChange={event => setDeadline(event.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="notice">
+                <AlertCircle size={19} />
+                <p>
+                  يُفضّل تحديد موعد يسبق الموعد النهائي لتسليم العمل بيوم
+                  على الأقل، لإتاحة وقت للمراجعة.
+                </p>
+              </div>
+            </section>
+
+            <section className="form-section">
+              <div className="section-heading">
+                <span className="section-number">5</span>
+                <div>
+                  <h2>المرفقات</h2>
+                  <p>أضف النماذج أو التعليمات أو المراجع إن وجدت.</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className={`upload-zone ${dragging ? 'dragging' : ''}`}
+                onClick={() => fileInput.current?.click()}
+                onDragOver={event => {
+                  event.preventDefault()
+                  setDragging(true)
+                }}
+                onDragLeave={() => setDragging(false)}
+                onDrop={event => {
+                  event.preventDefault()
+                  setDragging(false)
+                  addFiles(event.dataTransfer.files)
+                }}
+              >
+                <span className="upload-icon">
+                  <UploadCloud size={30} />
+                </span>
+                <strong>اختر الملفات أو اسحبها إلى هنا</strong>
+                <span>PDF وWord وPowerPoint وExcel والصور</span>
+                <span className="upload-limit">
+                  5 ملفات كحد أقصى، و10 ميجابايت لكل ملف
+                </span>
+              </button>
+
+              <input
+                ref={fileInput}
+                type="file"
+                className="visually-hidden"
+                multiple
+                accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.webp"
+                onChange={event => {
+                  if (event.target.files) addFiles(event.target.files)
+                  event.target.value = ''
+                }}
+              />
+
+              {files.length > 0 && (
+                <div className="file-list">
+                  {files.map((file, index) => (
+                    <div
+                      className="file-item"
+                      key={`${file.name}-${file.lastModified}`}
+                    >
+                      <FileIcon size={20} />
+                      <div className="file-info">
+                        <strong>{file.name}</strong>
+                        <span>
+                          {(file.size / (1024 * 1024)).toFixed(2)} ميجابايت
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        className="remove-file"
+                        aria-label={`حذف ${file.name}`}
+                        onClick={() => removeFile(index)}
+                      >
+                        <X size={18} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
+            {error && (
+              <div className="feedback error-feedback" role="alert">
+                <AlertCircle size={21} />
+                <p>{error}</p>
               </div>
             )}
-          </section>
 
-          <section className="form-section">
-            <div className="section-heading">
-              <span className="section-number">2</span>
-              <div>
-                <h2>عنوان الطلب باختصار</h2>
-                <p>اكتب عنوانًا يوضح المطلوب مباشرة.</p>
+            {success && (
+              <div className="feedback success-feedback" role="status">
+                <CheckCircle2 size={22} />
+                <div>
+                  <strong>{success}</strong>
+                  {requestId && (
+                    <p className="request-number">رقم الطلب: {requestId}</p>
+                  )}
+                  <Link href="/account/requests" className="requests-link">
+                    متابعة طلباتي
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className="field">
-              <label htmlFor="requestTitle">عنوان الطلب *</label>
-              <input
-                id="requestTitle"
-                value={title}
-                onChange={event => setTitle(event.target.value)}
-                placeholder="مثال: بحث تخرج في تخصص التمريض - إدارة الجودة الشاملة"
-                required
-                minLength={3}
-                maxLength={180}
-              />
-            </div>
-          </section>
-
-          <section className="form-section">
-            <div className="section-heading">
-              <span className="section-number">3</span>
-              <div>
-                <h2>تفاصيل الطلب وشروطه</h2>
-                <p>كلما كانت التفاصيل أوضح، ساعدنا ذلك على فهم طلبك.</p>
-              </div>
-            </div>
-
-            <div className="field">
-              <label htmlFor="requestDetails">تفاصيل الطلب *</label>
-              <textarea
-                id="requestDetails"
-                value={details}
-                onChange={event => setDetails(event.target.value)}
-                placeholder="اكتب تفاصيل طلبك بدقة، عدد الصفحات المطلوبة، المراجع، أو أي تعليمات خاصة أرسلها الأستاذ..."
-                required
-                minLength={10}
-                maxLength={10000}
-                rows={6}
-              />
-              <span className="field-hint">
-                {details.length.toLocaleString('ar')} / 10000
-              </span>
-            </div>
-          </section>
-
-          <section className="form-section">
-            <div className="section-heading">
-              <span className="section-number">4</span>
-              <div>
-                <h2>تاريخ التسليم المطلوب</h2>
-                <p>حدد الموعد الذي تحتاج فيه إلى إنجاز الخدمة.</p>
-              </div>
-            </div>
-
-            <div className="field">
-              <label htmlFor="deadline">موعد التسليم (اختياري)</label>
-              <div className="date-field">
-                <CalendarDays size={20} />
-                <input
-                  id="deadline"
-                  type="date"
-                  min={tomorrowDate()}
-                  value={deadline}
-                  onChange={event => setDeadline(event.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="notice">
-              <AlertCircle size={19} />
-              <p>
-                يرجى اختيار موعد يسبق الموعد النهائي لتسليم العمل بيوم على
-                الأقل.
-              </p>
-            </div>
-          </section>
-
-          <section className="form-section">
-            <div className="section-heading">
-              <span className="section-number">5</span>
-              <div>
-                <h2>إرفاق الملفات والمستندات</h2>
-                <p>أرفق الشروط أو النماذج أو المراجع إن وجدت.</p>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className={`upload-zone ${dragging ? 'dragging' : ''}`}
-              onClick={() => fileInput.current?.click()}
-              onDragOver={event => {
-                event.preventDefault()
-                setDragging(true)
-              }}
-              onDragLeave={() => setDragging(false)}
-              onDrop={event => {
-                event.preventDefault()
-                setDragging(false)
-                addFiles(event.dataTransfer.files)
-              }}
-            >
-              <span className="upload-icon">
-                <UploadCloud size={30} />
-              </span>
-              <strong>اضغط لاختيار الملفات أو اسحبها إلى هنا</strong>
-              <span>PDF وWord وPowerPoint وExcel والصور</span>
-              <span className="upload-limit">
-                بحد أقصى 5 ملفات، وحجم 10 ميجابايت لكل ملف
-              </span>
+            <button type="submit" className="submit-button" disabled={saving}>
+              {saving ? (
+                <>
+                  <LoaderCircle className="request-spin" size={21} />
+                  جارٍ إرسال الطلب...
+                </>
+              ) : (
+                <>
+                  <Send size={20} />
+                  إرسال الطلب
+                </>
+              )}
             </button>
 
-            <input
-              ref={fileInput}
-              type="file"
-              className="visually-hidden"
-              multiple
-              accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.webp"
-              onChange={event => {
-                if (event.target.files) addFiles(event.target.files)
-                event.target.value = ''
-              }}
-            />
-
-            {files.length > 0 && (
-              <div className="file-list">
-                {files.map((file, index) => (
-                  <div
-                    className="file-item"
-                    key={`${file.name}-${file.lastModified}`}
-                  >
-                    <FileIcon size={20} />
-                    <div className="file-info">
-                      <strong>{file.name}</strong>
-                      <span>
-                        {(file.size / (1024 * 1024)).toFixed(2)} ميجابايت
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      className="remove-file"
-                      aria-label={`حذف ${file.name}`}
-                      onClick={() => removeFile(index)}
-                    >
-                      <X size={18} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
-
-          {error && (
-            <div className="feedback error-feedback" role="alert">
-              <AlertCircle size={21} />
-              <p>{error}</p>
-            </div>
-          )}
-
-          {success && (
-            <div className="feedback success-feedback" role="status">
-              <CheckCircle2 size={22} />
-              <div>
-                <strong>{success}</strong>
-                {requestId && (
-                  <p className="request-number">رقم الطلب: {requestId}</p>
-                )}
-                <Link href="/account/requests" className="requests-link">
-                  متابعة طلباتي
-                </Link>
-              </div>
-            </div>
-          )}
-
-          <button type="submit" className="submit-button" disabled={saving}>
-            {saving ? (
-              <>
-                <LoaderCircle className="request-spin" size={21} />
-                جارٍ إرسال الطلب...
-              </>
-            ) : (
-              <>
-                <Send size={20} />
-                إرسال الطلب
-              </>
-            )}
-          </button>
-
-          <p className="privacy-note">
-            بإرسال الطلب، سيتم حفظ تفاصيله ضمن حسابك لتتمكن من متابعة حالته.
-          </p>
-        </form>
+            <p className="privacy-note">
+              سيتم حفظ طلبك ضمن حسابك لتتمكن من متابعة حالته لاحقاً.
+            </p>
+          </form>
+        </div>
       </div>
     </main>
   )
