@@ -1,27 +1,56 @@
 'use client'
 
 import Link from 'next/link'
-import { ClipboardPenLine } from 'lucide-react'
+import {
+  ClipboardList,
+  ClipboardPenLine,
+  UserRound,
+} from 'lucide-react'
 import styles from './FloatingRequestService.module.css'
 
 export default function FloatingWhatsApp() {
   return (
     <>
-      {/* أيقونة طلب الخدمة */}
+      {/* حسابي */}
       <Link
-        href="/request-service"
-        className={styles.floatingRequestService}
-        aria-label="طلب خدمة"
-        title="طلب خدمة"
+        href="/account"
+        className={`${styles.floatingAction} ${styles.accountAction}`}
+        aria-label="حسابي"
+        title="حسابي"
       >
-        <ClipboardPenLine
-          size={26}
-          strokeWidth={2.2}
-          aria-hidden="true"
-        />
+        <span className={styles.actionIcon}>
+          <UserRound size={22} strokeWidth={2.2} />
+        </span>
+        <span className={styles.actionLabel}>حسابي</span>
       </Link>
 
-      {/* واتساب الأصلي دون تغيير */}
+      {/* اطلب الخدمة */}
+      <Link
+        href="/request-service"
+        className={`${styles.floatingAction} ${styles.requestAction}`}
+        aria-label="اطلب الخدمة"
+        title="اطلب الخدمة"
+      >
+        <span className={styles.actionIcon}>
+          <ClipboardPenLine size={22} strokeWidth={2.2} />
+        </span>
+        <span className={styles.actionLabel}>اطلب الخدمة</span>
+      </Link>
+
+      {/* طلباتي */}
+      <Link
+        href="/account/requests"
+        className={`${styles.floatingAction} ${styles.requestsAction}`}
+        aria-label="طلباتي"
+        title="طلباتي"
+      >
+        <span className={styles.actionIcon}>
+          <ClipboardList size={22} strokeWidth={2.2} />
+        </span>
+        <span className={styles.actionLabel}>طلباتي</span>
+      </Link>
+
+      {/* واتساب الأصلي */}
       <a
         className="floating-whatsapp"
         href="https://wa.me/967776280186"
