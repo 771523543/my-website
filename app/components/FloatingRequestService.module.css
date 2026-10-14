@@ -52,6 +52,16 @@
   white-space: nowrap;
 }
 
+/* المحادثة — بنفسجي */
+.chatAction {
+  bottom: 286px;
+  color: #7651b5;
+}
+
+.chatAction .actionIcon {
+  background: linear-gradient(145deg, #a486e8, #6843a8);
+}
+
 /* حسابي — أزرق */
 .accountAction {
   bottom: 222px;
@@ -102,6 +112,10 @@
     font-size: 12px;
   }
 
+  .chatAction {
+    bottom: 258px;
+  }
+
   .accountAction {
     bottom: 196px;
   }
@@ -115,19 +129,17 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .floatingAction {
-    transition: none;
-  }
-}
-
-
-/* حركة ناعمة للأيقونات العائمة */
+/* حركة ناعمة للأزرار العائمة */
+.chatAction,
 .accountAction,
 .requestAction,
 .requestsAction {
   animation: hadeelFloat 3.2s ease-in-out infinite;
   will-change: transform;
+}
+
+.chatAction {
+  animation-delay: 1.35s;
 }
 
 .accountAction {
@@ -142,7 +154,8 @@
   animation-delay: 0.9s;
 }
 
-/* نبضة خفيفة عند المرور أو اللمس */
+/* تأثير المرور */
+.chatAction:hover,
 .accountAction:hover,
 .requestAction:hover,
 .requestsAction:hover {
@@ -150,7 +163,7 @@
   transform: translateY(-3px) scale(1.04);
 }
 
-/* الحركة لا تؤثر على الأجهزة التي تقلل الحركة */
+/* احترام إعدادات تقليل الحركة */
 @keyframes hadeelFloat {
   0%, 100% {
     translate: 0 0;
@@ -162,6 +175,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .floatingAction {
+    transition: none;
+  }
+
+  .chatAction,
   .accountAction,
   .requestAction,
   .requestsAction {
