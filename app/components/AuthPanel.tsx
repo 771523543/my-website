@@ -24,6 +24,24 @@ type AuthPanelProps = {
   initialMode?: AuthMode
 }
 
+/**
+ * يعيد المسار الداخلي الذي طلبه المستخدم.
+ * يمنع إعادة التوجيه إلى مواقع خارجية.
+ */
+function getNextPath() {
+  if (typeof window === 'undefined') return '/account'
+
+  const requested = new URLSearchParams(
+    window.location.search
+  ).get('next')
+
+  return requested &&
+    requested.startsWith('/') &&
+    !requested.startsWith('//')
+    ? requested
+    : '/account'
+}
+
 function GoogleLogo() {
   return (
     <svg
@@ -85,7 +103,7 @@ export default function AuthPanel({
         await supabase.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: `${window.location.origin}/account`,
+            redirectTo: `${window.location.origin}${getNextPath()}`,
           },
         })
 
@@ -100,7 +118,9 @@ export default function AuthPanel({
     }
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault()
     setError('')
     setMessage('')
@@ -130,8 +150,7 @@ export default function AuthPanel({
         if (signUpError) throw signUpError
 
         if (data.session) {
-          setMessage('تم إنشاء الحساب بنجاح.')
-          router.push('/account')
+          router.push(getNextPath())
           router.refresh()
           return
         }
@@ -153,7 +172,7 @@ export default function AuthPanel({
 
         if (loginError) throw loginError
 
-        router.push('/account')
+        router.push(getNextPath())
         router.refresh()
       }
     } catch (err) {
@@ -167,13 +186,17 @@ export default function AuthPanel({
     }
   }
 
-  async function handleVerify(event: FormEvent<HTMLFormElement>) {
+  async function handleVerify(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault()
     setError('')
     setMessage('')
 
     if (!otp.trim()) {
-      setError('أدخل رمز التحقق الذي وصلك عبر البريد الإلكتروني.')
+      setError(
+        'أدخل رمز التحقق الذي وصلك عبر البريد الإلكتروني.'
+      )
       return
     }
 
@@ -190,7 +213,7 @@ export default function AuthPanel({
       if (verifyError) throw verifyError
 
       setMessage('تم تأكيد بريدك الإلكتروني بنجاح.')
-      router.push('/account')
+      router.push(getNextPath())
       router.refresh()
     } catch (err) {
       setError(
@@ -217,7 +240,9 @@ export default function AuthPanel({
 
       if (resendError) throw resendError
 
-      setMessage('طلبنا إرسال رمز جديد إلى بريدك الإلكتروني.')
+      setMessage(
+        'طلبنا إرسال رمز جديد إلى بريدك الإلكتروني.'
+      )
     } catch (err) {
       setError(
         err instanceof Error
@@ -322,7 +347,9 @@ export default function AuthPanel({
                   inputMode="numeric"
                   autoComplete="one-time-code"
                   value={otp}
-                  onChange={(event) => setOtp(event.target.value)}
+                  onChange={(event) =>
+                    setOtp(event.target.value)
+                  }
                   placeholder="أدخل الرمز المرسل إليك"
                   className={inputClass}
                   required
@@ -397,7 +424,10 @@ export default function AuthPanel({
 
               <form onSubmit={handleSubmit}>
                 <div>
-                  <label className={labelClass} htmlFor="email">
+                  <label
+                    className={labelClass}
+                    htmlFor="email"
+                  >
                     <Mail size={19} />
                     البريد الإلكتروني
                   </label>
@@ -415,7 +445,9 @@ export default function AuthPanel({
                       dir="ltr"
                       autoComplete="email"
                       value={email}
-                      onChange={(event) => setEmail(event.target.value)}
+                      onChange={(event) =>
+                        setEmail(event.target.value)
+                      }
                       placeholder="name@example.com"
                       className={inputClass}
                       required
@@ -424,7 +456,10 @@ export default function AuthPanel({
                 </div>
 
                 <div>
-                  <label className={labelClass} htmlFor="password">
+                  <label
+                    className={labelClass}
+                    htmlFor="password"
+                  >
                     <LockKeyhole size={19} />
                     كلمة المرور
                   </label>
@@ -446,7 +481,9 @@ export default function AuthPanel({
                           : 'current-password'
                       }
                       value={password}
-                      onChange={(event) => setPassword(event.target.value)}
+                      onChange={(event) =>
+                        setPassword(event.target.value)
+                      }
                       placeholder={
                         mode === 'register'
                           ? '6 أحرف على الأقل'
@@ -459,7 +496,9 @@ export default function AuthPanel({
 
                     <button
                       type="button"
-                      onClick={() => setShowPassword((value) => !value)}
+                      onClick={() =>
+                        setShowPassword((value) => !value)
+                      }
                       aria-label={
                         showPassword
                           ? 'إخفاء كلمة المرور'
@@ -515,7 +554,9 @@ export default function AuthPanel({
                     type="button"
                     onClick={() =>
                       changeMode(
-                        mode === 'register' ? 'login' : 'register'
+                        mode === 'register'
+                          ? 'login'
+                          : 'register'
                       )
                     }
                   >
