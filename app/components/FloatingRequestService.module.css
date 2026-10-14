@@ -120,3 +120,52 @@
     transition: none;
   }
 }
+
+
+/* حركة ناعمة للأيقونات العائمة */
+.accountAction,
+.requestAction,
+.requestsAction {
+  animation: hadeelFloat 3.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+.accountAction {
+  animation-delay: 0s;
+}
+
+.requestAction {
+  animation-delay: 0.45s;
+}
+
+.requestsAction {
+  animation-delay: 0.9s;
+}
+
+/* نبضة خفيفة عند المرور أو اللمس */
+.accountAction:hover,
+.requestAction:hover,
+.requestsAction:hover {
+  animation-play-state: paused;
+  transform: translateY(-3px) scale(1.04);
+}
+
+/* الحركة لا تؤثر على الأجهزة التي تقلل الحركة */
+@keyframes hadeelFloat {
+  0%, 100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accountAction,
+  .requestAction,
+  .requestsAction {
+    animation: none !important;
+    will-change: auto;
+  }
+}
