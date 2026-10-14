@@ -1,0 +1,59 @@
+.floatingRequestService {
+  position: fixed;
+  z-index: 31;
+  left: 22px;
+  bottom: 92px;
+
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+
+  color: #ffffff;
+  background: linear-gradient(145deg, #d8b45c, #a97719);
+
+  box-shadow:
+    0 10px 24px rgba(169, 119, 25, 0.3),
+    0 0 0 5px rgba(200, 155, 60, 0.12);
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.floatingRequestService:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 13px 28px rgba(169, 119, 25, 0.38),
+    0 0 0 6px rgba(200, 155, 60, 0.16);
+}
+
+.floatingRequestService:focus-visible {
+  outline: 3px solid #2459a9;
+  outline-offset: 4px;
+}
+
+@media (max-width: 480px) {
+  .floatingRequestService {
+    left: 16px;
+    bottom: 82px;
+    width: 54px;
+    height: 54px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floatingRequestService {
+    transition: none;
+  }
+}
