@@ -1,0 +1,587 @@
+
+'use client'
+
+import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import {
+  ArrowRight, UploadCloud, FileText, Trash2, Eye, EyeOff, LogOut,
+  LoaderCircle, ShieldCheck, FolderOpen, ExternalLink, RefreshCw,
+} from 'lucide-react'
+import { supabase } from '@/lib/supabase'
+import './admin.css'
+
+const BUCKET = 'hadeel-previous-works'
+const MAX_FILE_SIZE = 25 * 1024 * 1024
+
+const SERVICES = [
+  { id: 'research', title: 'الخدمات البحثية والأكاديمية' },
+  { id: 'reports', title: 'التقارير الجامعية' },
+  { id: 'assignments', title: 'التكاليف الجامعية' },
+  { id: 'homework', title: 'الواجبات الدراسية' },
+  { id: 'lms', title: 'إدارة المنصات والمهام الدراسية' },
+  { id: 'presentation', title: 'العروض التقديمية والتصميم' },
+  { id: 'cv', title: 'السيرة الذاتية والخدمات المهنية' },
+  { id: 'case-study', title: 'دراسة الحالة' },
+  { id: 'feasibility', title: 'دراسات الجدوى' },
+  { id: 'graduation', title: 'مشاريع التخرج' },
+] as const
+
+type WorkItem = {
+  id: string
+  service_slug: string
+  title: string
+  description: string | null
+  file_path: string
+  file_name: string
+  mime_type: string | null
+  file_size: number | null
+  is_published: boolean
+  created_at: string
+}
+
+const formatSize = (bytes: number | null) => {
+  if (!bytes) return 'حجم غير معروف'
+  if (bytes < 1024 * 1024) {
+    return `${Math.max(1, Math.round(bytes / 1024))} كيلوبايت`
+  }
+  return `${(bytes / (1024 * 1024)).toFixed(1)} ميجابايت`
+}
+
+export default function AdminPreviousWorksPage() {
+  const router = useRouter()
+  const [checking, setChecking] = useState(true)
+  const [allowed, setAllowed] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [itemsLoading, setItemsLoading] = useState(true)
+  const [items, setItems] = useState<WorkItem[]>([])
+  const [service, setService] = useState<string>(SERVICES[0].id)
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [file, setFile] = useState<File | null>(null)
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
+
+  const loadItems = useCallback(async () => {
+    setItemsLoading(true)
+
+    const { data, error: queryError } = await supabase
+      .from('previous_work_items')
+      .select(
+        'id, service_slug, title, description, file_path, file_name, mime_type, file_size, is_published, created_at'
+      )
+      .order('created_at', { ascending: false })
+
+    if (queryError) {
+      setError(`تعذر تحميل الأعمال: ${queryError.message}`)
+    } else {
+      setItems((data ?? []) as WorkItem[])
+    }
+
+    setItemsLoading(false)
+  }, [])
+
+  useEffect(() => {
+    let active = true
+
+    const checkAdmin = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser()
+
+      if (!active) return
+
+      if (userError || !user) {
+        router.replace('/auth/login?next=%2Fadmin%2Fprevious-works')
+        return
+      }
+
+      const { data: isAdmin, error: adminError } =
+        await supabase.rpc('is_hadeel_admin')
+
+      if (!active) return
+
+      if (adminError || isAdmin !== true) {
+        setError('هذا القسم مخصص لحسابات الإدارة المعتمدة فقط.')
+        setChecking(false)
+        setAllowed(false)
+        return
+      }
+
+      setAllowed(true)
+      setChecking(false)
+      await loadItems()
+    }
+
+    void checkAdmin()
+
+    return () => {
+      active = false
+    }
+  }, [loadItems, router])
+
+  const handleUpload = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setError('')
+    setMessage('')
+
+    if (!file) {
+      setError('اختر ملفًا قبل رفع العمل.')
+      return
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setError('حجم الملف أكبر من 25 ميجابايت.')
+      return
+    }
+
+    const allowedTypes = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-powerpoint',
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'image/png',
+      'image/jpeg',
+      'image/webp',
+    ]
+
+    if (file.type && !allowedTypes.includes(file.type)) {
+      setError(
+        'نوع الملف غير مدعوم. استخدم PDF أو Word أو PowerPoint أو Excel أو صورة PNG/JPG/WebP.'
+      )
+      return
+    }
+
+    if (title.trim().length < 2) {
+      setError('اكتب عنوانًا لا يقل عن حرفين.')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        throw new Error('انتهت جلسة الدخول. سجّل الدخول مجددًا.')
+      }
+
+      const safeName =
+        file.name
+          .normalize('NFKC')
+          .replace(/[^\p{L}\p{N}._-]+/gu, '-')
+          .slice(-120) || 'file'
+
+      const path = `${service}/${crypto.randomUUID()}-${safeName}`
+
+      const { error: uploadError } = await supabase.storage
+        .from(BUCKET)
+        .upload(path, file, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type || undefined,
+        })
+
+      if (uploadError) throw uploadError
+
+      const { error: insertError } = await supabase
+        .from('previous_work_items')
+        .insert({
+          service_slug: service,
+          title: title.trim(),
+          description: description.trim() || null,
+          file_path: path,
+          file_name: file.name,
+          mime_type: file.type || null,
+          file_size: file.size,
+          is_published: true,
+          created_by: user.id,
+        })
+
+      if (insertError) {
+        await supabase.storage.from(BUCKET).remove([path])
+        throw insertError
+      }
+
+      setMessage('تم رفع العمل ونشره بنجاح.')
+      setTitle('')
+      setDescription('')
+      setFile(null)
+      event.currentTarget.reset()
+
+      await loadItems()
+    } catch (e) {
+      setError(
+        e instanceof Error ? e.message : 'حدث خطأ أثناء رفع الملف.'
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const togglePublished = async (item: WorkItem) => {
+    setError('')
+    setMessage('')
+
+    const { error: updateError } = await supabase
+      .from('previous_work_items')
+      .update({
+        is_published: !item.is_published,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', item.id)
+
+    if (updateError) {
+      setError(`تعذر تحديث حالة النشر: ${updateError.message}`)
+    } else {
+      setItems((current) =>
+        current.map((row) =>
+          row.id === item.id
+            ? { ...row, is_published: !row.is_published }
+            : row
+        )
+      )
+
+      setMessage(
+        item.is_published
+          ? 'تم إخفاء العمل عن الزوار.'
+          : 'تم نشر العمل للزوار.'
+      )
+    }
+  }
+
+  const deleteItem = async (item: WorkItem) => {
+    if (!window.confirm(`هل تريد حذف «${item.title}» نهائيًا؟`)) {
+      return
+    }
+
+    setError('')
+    setMessage('')
+
+    const { error: rowError } = await supabase
+      .from('previous_work_items')
+      .delete()
+      .eq('id', item.id)
+
+    if (rowError) {
+      setError(`تعذر حذف سجل العمل: ${rowError.message}`)
+      return
+    }
+
+    const { error: fileError } = await supabase.storage
+      .from(BUCKET)
+      .remove([item.file_path])
+
+    setItems((current) =>
+      current.filter((row) => row.id !== item.id)
+    )
+
+    if (fileError) {
+      setError(
+        `حُذف سجل العمل، لكن تعذر حذف الملف من التخزين: ${fileError.message}`
+      )
+    } else {
+      setMessage('تم حذف العمل وملفه بنجاح.')
+    }
+  }
+
+  const signOut = async () => {
+    await supabase.auth.signOut()
+    router.replace('/auth/login')
+  }
+
+  if (checking) {
+    return (
+      <main className="hwa-page">
+        <div className="hwa-state">
+          <LoaderCircle className="hwa-spin" />
+          جارٍ التحقق من صلاحيات الدخول…
+        </div>
+      </main>
+    )
+  }
+
+  if (!allowed) {
+    return (
+      <main className="hwa-page">
+        <section className="hwa-denied">
+          <ShieldCheck size={44} />
+          <h1>الدخول غير مسموح</h1>
+          <p>{error || 'هذه الصفحة مخصصة للإدارة.'}</p>
+          <Link href="/auth/login" className="hwa-primary">
+            العودة إلى تسجيل الدخول
+          </Link>
+          <Link href="/previous-works" className="hwa-back">
+            العودة إلى الأعمال السابقة
+          </Link>
+        </section>
+      </main>
+    )
+  }
+
+  return (
+    <main className="hwa-page" dir="rtl">
+      <header className="hwa-header">
+        <Link href="/previous-works" className="hwa-back">
+          <ArrowRight size={17} />
+          صفحة الأعمال السابقة
+        </Link>
+
+        <button
+          type="button"
+          className="hwa-logout"
+          onClick={signOut}
+        >
+          <LogOut size={17} />
+          تسجيل الخروج
+        </button>
+      </header>
+
+      <section className="hwa-hero">
+        <div className="hwa-hero-icon">
+          <ShieldCheck size={32} />
+        </div>
+        <span>منصة هديل · لوحة الإدارة</span>
+        <h1>إدارة الأعمال السابقة</h1>
+        <p>
+          ارفع نماذج الأعمال وصنّفها حسب الخدمة، وتحكّم في ظهورها للزوار.
+        </p>
+      </section>
+
+      {error && (
+        <div className="hwa-alert hwa-alert-error" role="alert">
+          {error}
+        </div>
+      )}
+
+      {message && (
+        <div className="hwa-alert hwa-alert-success" role="status">
+          {message}
+        </div>
+      )}
+
+      <div className="hwa-layout">
+        <section className="hwa-panel hwa-upload-panel">
+          <div className="hwa-panel-title">
+            <span className="hwa-title-icon">
+              <UploadCloud size={22} />
+            </span>
+            <div>
+              <h2>إضافة عمل جديد</h2>
+              <p>الملفات المدعومة حتى 25 ميجابايت</p>
+            </div>
+          </div>
+
+          <form onSubmit={handleUpload} className="hwa-form">
+            <label htmlFor="hwa-service">الخدمة</label>
+            <select
+              id="hwa-service"
+              value={service}
+              onChange={(e) => setService(e.target.value)}
+              required
+            >
+              {SERVICES.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.title}
+                </option>
+              ))}
+            </select>
+
+            <label htmlFor="hwa-title">عنوان العمل</label>
+            <input
+              id="hwa-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              minLength={2}
+              maxLength={180}
+              placeholder="مثال: نموذج تقرير جامعي"
+              required
+            />
+
+            <label htmlFor="hwa-description">
+              وصف مختصر <span>(اختياري)</span>
+            </label>
+            <textarea
+              id="hwa-description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              rows={3}
+              maxLength={1000}
+              placeholder="اكتب نبذة قصيرة عن العمل…"
+            />
+
+            <label htmlFor="hwa-file">الملف</label>
+            <input
+              id="hwa-file"
+              type="file"
+              accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.webp"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              required
+            />
+
+            <p className="hwa-hint">
+              PDF، Word، PowerPoint، Excel أو صور PNG/JPG/WebP.
+            </p>
+
+            {file && (
+              <div className="hwa-selected-file">
+                <FileText size={20} />
+                <span>{file.name}</span>
+                <small>{formatSize(file.size)}</small>
+              </div>
+            )}
+
+            <button
+              className="hwa-primary hwa-submit"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <LoaderCircle className="hwa-spin" size={19} />
+                  جارٍ الرفع…
+                </>
+              ) : (
+                <>
+                  <UploadCloud size={19} />
+                  رفع العمل ونشره
+                </>
+              )}
+            </button>
+          </form>
+        </section>
+
+        <section className="hwa-panel hwa-list-panel">
+          <div className="hwa-panel-title hwa-list-heading">
+            <span className="hwa-title-icon hwa-title-icon-purple">
+              <FolderOpen size={22} />
+            </span>
+
+            <div>
+              <h2>الأعمال المضافة</h2>
+              <p>{items.length} عمل في جميع الخدمات</p>
+            </div>
+
+            <button
+              className="hwa-refresh"
+              type="button"
+              onClick={() => void loadItems()}
+              title="تحديث القائمة"
+            >
+              <RefreshCw size={18} />
+            </button>
+          </div>
+
+          {itemsLoading ? (
+            <div className="hwa-empty">
+              <LoaderCircle className="hwa-spin" />
+              جارٍ تحميل الأعمال…
+            </div>
+          ) : items.length === 0 ? (
+            <div className="hwa-empty">
+              <FolderOpen size={35} />
+              <strong>لا توجد أعمال مضافة حتى الآن</strong>
+              <span>ارفع أول ملف من النموذج.</span>
+            </div>
+          ) : (
+            <div className="hwa-items">
+              {items.map((item) => {
+                const serviceTitle =
+                  SERVICES.find((s) => s.id === item.service_slug)?.title ??
+                  item.service_slug
+
+                const publicUrl = supabase.storage
+                  .from(BUCKET)
+                  .getPublicUrl(item.file_path).data.publicUrl
+
+                return (
+                  <article className="hwa-item" key={item.id}>
+                    <div className="hwa-item-file">
+                      <FileText size={22} />
+                    </div>
+
+                    <div className="hwa-item-main">
+                      <div className="hwa-item-title-row">
+                        <h3>{item.title}</h3>
+                        <span
+                          className={
+                            item.is_published
+                              ? 'hwa-status hwa-status-live'
+                              : 'hwa-status hwa-status-hidden'
+                          }
+                        >
+                          {item.is_published ? 'منشور' : 'مخفي'}
+                        </span>
+                      </div>
+
+                      <p>{serviceTitle}</p>
+
+                      {item.description && (
+                        <p className="hwa-item-description">
+                          {item.description}
+                        </p>
+                      )}
+
+                      <small>
+                        {item.file_name} · {formatSize(item.file_size)}
+                      </small>
+
+                      <div className="hwa-item-actions">
+                        <a
+                          href={publicUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <ExternalLink size={15} />
+                          فتح الملف
+                        </a>
+
+                        <button
+                          type="button"
+                          onClick={() => void togglePublished(item)}
+                        >
+                          {item.is_published ? (
+                            <>
+                              <EyeOff size={15} />
+                              إخفاء
+                            </>
+                          ) : (
+                            <>
+                              <Eye size={15} />
+                              نشر
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          className="hwa-delete"
+                          onClick={() => void deleteItem(item)}
+                        >
+                          <Trash2 size={15} />
+                          حذف
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          )}
+        </section>
+      </div>
+
+      <p className="hwa-security-note">
+        <ShieldCheck size={16} />
+        صلاحيات الإدارة محمية من خلال Supabase. لا ترفع ملفات تحتوي على
+        بيانات شخصية أو جامعية خاصة.
+      </p>
+    </main>
+  )
+}
