@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import {
   ArrowLeft,
+  LayoutDashboard,
   Menu,
   MessageCircle,
   Search,
@@ -22,6 +23,7 @@ const whatsapp = 'https://wa.me/967776280186'
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const pathname = usePathname()
   const router = useRouter()
@@ -31,16 +33,60 @@ export default function Header() {
   useEffect(() => {
     let mounted = true
 
-    supabase.auth.getSession().then(({ data }) => {
-      if (mounted) {
-        setIsLoggedIn(Boolean(data.session))
+    async function verifyAdmin(hasSession: boolean) {
+      if (!hasSession) {
+        if (mounted) setIsAdmin(false)
+        return
       }
-    })
+
+      try {
+        const { data, error } = await supabase.rpc(
+          'is_hadeel_admin'
+        )
+
+        if (mounted) {
+          setIsAdmin(!error && data === true)
+        }
+      } catch {
+        if (mounted) setIsAdmin(false)
+      }
+    }
+
+    async function loadSession() {
+      const { data, error } = await supabase.auth.getSession()
+
+      if (!mounted) return
+
+      if (error) {
+        setIsLoggedIn(false)
+        setIsAdmin(false)
+        return
+      }
+
+      const hasSession = Boolean(data.session)
+
+      setIsLoggedIn(hasSession)
+      void verifyAdmin(hasSession)
+    }
+
+    void loadSession()
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setIsLoggedIn(Boolean(session))
+      const hasSession = Boolean(session)
+
+      setIsLoggedIn(hasSession)
+
+      if (!hasSession) {
+        setIsAdmin(false)
+        return
+      }
+
+      // تنفيذ فحص الصلاحية بعد انتهاء حدث المصادقة
+      window.setTimeout(() => {
+        void verifyAdmin(true)
+      }, 0)
     })
 
     return () => {
@@ -152,21 +198,41 @@ export default function Header() {
             </a>
 
             {isLoggedIn ? (
-              <a
-                href="/account"
-                onClick={closeMenu}
-                aria-label="الانتقال إلى حساب الطالب"
-              >
-                <UserRound
-                  size={17}
-                  style={{
-                    display: 'inline-block',
-                    verticalAlign: 'middle',
-                    marginLeft: '6px',
-                  }}
-                />
-                حسابي
-              </a>
+              <>
+                {isAdmin && (
+                  <a
+                    href="/admin/center"
+                    onClick={closeMenu}
+                    aria-label="فتح مركز إدارة هديل"
+                  >
+                    <LayoutDashboard
+                      size={17}
+                      style={{
+                        display: 'inline-block',
+                        verticalAlign: 'middle',
+                        marginLeft: '6px',
+                      }}
+                    />
+                    مركز الإدارة
+                  </a>
+                )}
+
+                <a
+                  href="/account"
+                  onClick={closeMenu}
+                  aria-label="الانتقال إلى حساب الطالب"
+                >
+                  <UserRound
+                    size={17}
+                    style={{
+                      display: 'inline-block',
+                      verticalAlign: 'middle',
+                      marginLeft: '6px',
+                    }}
+                  />
+                  حسابي
+                </a>
+              </>
             ) : (
               <>
                 <a
