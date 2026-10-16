@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useCallback, useEffect, useState, type FormEvent } from 'react'
@@ -80,6 +79,35 @@ function getPublicUrl(path: string) {
   return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl
 }
 
+/**
+ * نستخدم امتدادًا إنجليزيًا آمنًا لمسار التخزين،
+ * ونحتفظ باسم الملف الأصلي في قاعدة البيانات.
+ */
+function getSafeExtension(file: File) {
+  const originalExtension = file.name.split('.').pop()?.toLowerCase()
+  const safeExtension = originalExtension?.replace(/[^a-z0-9]/g, '')
+
+  if (safeExtension) return safeExtension
+
+  const mimeExtensions: Record<string, string> = {
+    'application/pdf': 'pdf',
+    'application/msword': 'doc',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+      'docx',
+    'application/vnd.ms-powerpoint': 'ppt',
+    'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+      'pptx',
+    'application/vnd.ms-excel': 'xls',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+      'xlsx',
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'image/webp': 'webp',
+  }
+
+  return mimeExtensions[file.type] ?? 'bin'
+}
+
 export default function AdminPreviousWorksPage() {
   const router = useRouter()
 
@@ -138,9 +166,7 @@ export default function AdminPreviousWorksPage() {
         if (!active) return
 
         if (userError || !user) {
-          router.replace(
-            '/auth/login?next=%2Fadmin%2Fprevious-works'
-          )
+          router.replace('/auth/login?next=%2Fadmin%2Fprevious-works')
           return
         }
 
@@ -187,6 +213,10 @@ export default function AdminPreviousWorksPage() {
 
   async function handleUpload(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+
+    // نحفظ مرجع النموذج قبل بدء العمليات غير المتزامنة.
+    const form = event.currentTarget
+
     setError('')
     setSuccess('')
 
@@ -206,13 +236,16 @@ export default function AdminPreviousWorksPage() {
     }
 
     if (!ALLOWED_TYPES.includes(selectedFile.type)) {
-      setError('نوع الملف غير مدعوم. استخدم PDF أو Word أو PowerPoint أو Excel أو صورة.')
+      setError(
+        'نوع الملف غير مدعوم. استخدم PDF أو Word أو PowerPoint أو Excel أو صورة.'
+      )
       return
     }
 
     setUploading(true)
 
     let uploadedPath: string | null = null
+    let recordSaved = false
 
     try {
       const {
@@ -224,12 +257,10 @@ export default function AdminPreviousWorksPage() {
         throw new Error('انتهت جلسة الدخول. سجل الدخول مجدداً.')
       }
 
-      const safeName = selectedFile.name
-        .normalize('NFKC')
-        .replace(/[^\w.\-\u0600-\u06FF]/g, '_')
-        .slice(-150)
-
-      const filePath = `${serviceSlug}/${crypto.randomUUID()}-${safeName}`
+      // لا نستخدم اسم الملف العربي في مسار التخزين.
+      // مثال: cv/UUID.pdf
+      const extension = getSafeExtension(selectedFile)
+      const filePath = `${serviceSlug}/${crypto.randomUUID()}.${extension}`
 
       const { error: uploadError } = await supabase.storage
         .from(BUCKET)
@@ -249,7 +280,10 @@ export default function AdminPreviousWorksPage() {
           title: title.trim(),
           description: description.trim() || null,
           file_path: filePath,
+
+          // الاحتفاظ بالاسم الأصلي، حتى لو كان باللغة العربية.
           file_name: selectedFile.name,
+
           mime_type: selectedFile.type || null,
           file_size: selectedFile.size,
           is_published: true,
@@ -258,18 +292,31 @@ export default function AdminPreviousWorksPage() {
 
       if (insertError) throw insertError
 
+      // بعد نجاح حفظ السجل، لا نحذف الملف عند وقوع خطأ لاحق.
+      recordSaved = true
+
       setTitle('')
       setDescription('')
       setSelectedFile(null)
-
-      const form = event.currentTarget
       form.reset()
 
       setSuccess('تم رفع العمل وإضافته إلى قائمة الأعمال السابقة بنجاح.')
+
       await loadItems()
     } catch (err) {
-      if (uploadedPath) {
-        await supabase.storage.from(BUCKET).remove([uploadedPath])
+      // نحذف الملف فقط إذا فشل حفظ سجل العمل.
+      // لا نحذف ملفًا مرتبطًا بسجل تم حفظه بنجاح.
+      if (uploadedPath && !recordSaved) {
+        const { error: cleanupError } = await supabase.storage
+          .from(BUCKET)
+          .remove([uploadedPath])
+
+        if (cleanupError) {
+          console.error(
+            'تعذر تنظيف الملف بعد فشل حفظ سجل العمل:',
+            cleanupError.message
+          )
+        }
       }
 
       setError(
@@ -331,28 +378,29 @@ export default function AdminPreviousWorksPage() {
     setBusyId(item.id)
 
     try {
+      // حذف الملف أولًا حتى لا نفقد سجل العمل إذا فشل حذف الملف.
+      const { error: storageError } = await supabase.storage
+        .from(BUCKET)
+        .remove([item.file_path])
+
+      if (storageError) throw storageError
+
       const { error: deleteError } = await supabase
         .from('previous_work_items')
         .delete()
         .eq('id', item.id)
 
-      if (deleteError) throw deleteError
-
-      const { error: storageError } = await supabase.storage
-        .from(BUCKET)
-        .remove([item.file_path])
+      if (deleteError) {
+        throw new Error(
+          `حُذف الملف من التخزين، لكن تعذر حذف سجل العمل: ${deleteError.message}`
+        )
+      }
 
       setItems((current) =>
         current.filter((work) => work.id !== item.id)
       )
 
-      if (storageError) {
-        setError(
-          'حُذف سجل العمل، لكن تعذر حذف الملف من التخزين. تحقق من صلاحيات التخزين.'
-        )
-      } else {
-        setSuccess('تم حذف العمل وملفه بنجاح.')
-      }
+      setSuccess('تم حذف العمل وملفه بنجاح.')
     } catch (err) {
       setError(
         err instanceof Error
@@ -440,7 +488,10 @@ export default function AdminPreviousWorksPage() {
 
       {error && (
         <div className="hwa-alert hwa-alert-error" role="alert">
-          <XCircle size={18} style={{ verticalAlign: 'middle', marginLeft: 6 }} />
+          <XCircle
+            size={18}
+            style={{ verticalAlign: 'middle', marginLeft: 6 }}
+          />
           {error}
         </div>
       )}
