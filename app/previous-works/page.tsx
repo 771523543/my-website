@@ -1,3 +1,4 @@
+
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -60,7 +61,7 @@ const services = [
   {
     id: 'homework',
     title: 'الواجبات الدراسية',
-    description: 'مساعدة في إعداد الواجبات والمهام الدراسية.',
+    description: 'المساعدة في إعداد الواجبات والمهام الدراسية.',
     icon: BookOpen,
     color: '#3269c8',
     tint: '#eaf1ff',
@@ -156,7 +157,7 @@ export default function PreviousWorksPage() {
   return (
     <main className="previous-works-page" dir="rtl">
       <section className="previous-works-hero">
-        <div className="previous-works-hero-icon">
+        <div className="hero-icon">
           <FolderOpen size={38} strokeWidth={1.8} />
         </div>
 
@@ -176,84 +177,97 @@ export default function PreviousWorksPage() {
         </div>
       </section>
 
-      <section className="services-works-section">
-        <div className="section-title">
+      <section className="services-section">
+        <header className="section-title">
           <span className="section-eyebrow">استكشف أعمالنا</span>
           <h2>اختر الخدمة المناسبة</h2>
           <p>
-            اضغط على الخدمة للانتقال إلى معرض مستقل يضم نماذج
-            الأعمال المتعلقة بها.
+            لكل خدمة معرض مستقل يضم نماذج الأعمال المتعلقة بها.
           </p>
-        </div>
+        </header>
 
         {loading ? (
           <div className="page-state">
             <LoaderCircle className="loading-icon" size={30} />
             <strong>جارٍ تحميل الأعمال...</strong>
           </div>
-        ) : loadError ? (
-          <div className="page-state error-state">
-            <FileText size={30} />
-            <strong>{loadError}</strong>
-            <span>يمكنك المحاولة مرة أخرى لاحقًا.</span>
-          </div>
         ) : (
-          <div className="services-works-grid">
-            {services.map((service) => {
-              const Icon = service.icon
+          <>
+            {loadError && (
+              <div className="page-state error-state" role="status">
+                <FileText size={28} />
+                <strong>{loadError}</strong>
+                <span>
+                  ستظل بطاقات الخدمات ظاهرة، وقد تتعذر قراءة الأعداد مؤقتًا.
+                </span>
+              </div>
+            )}
 
-              const count = items.filter(
-                (item) => item.service_slug === service.id
-              ).length
+            <div className="services-grid">
+              {services.map((service) => {
+                const Icon = service.icon
+                const count = items.filter(
+                  (item) => item.service_slug === service.id
+                ).length
 
-              return (
-                <Link
-                  key={service.id}
-                  href={`/previous-works/${service.id}`}
-                  className="service-work-card"
-                  aria-label={`استعراض أعمال ${service.title}`}
-                  style={
-                    {
+                return (
+                  <Link
+                    key={service.id}
+                    href={`/previous-works/${service.id}`}
+                    className="service-card"
+                    aria-label={`استعراض أعمال ${service.title}`}
+                    style={{
                       '--service-color': service.color,
                       '--service-tint': service.tint,
-                    } as React.CSSProperties
-                  }
-                >
-                  <div className="service-work-icon">
-                    <Icon size={30} strokeWidth={1.9} />
-                  </div>
+                    } as React.CSSProperties}
+                  >
+                    <span className="service-arrow" aria-hidden="true">
+                      <ArrowRight size={17} />
+                    </span>
 
-                  <div className="service-work-content">
-                    <h3>{service.title}</h3>
-                    <p>{service.description}</p>
+                    <span className="service-icon">
+                      <Icon size={30} strokeWidth={1.9} />
+                    </span>
 
-                    <small>
-                      <FileCheck size={14} />
-                      {count}{' '}
-                      {count === 1 ? 'عمل منشور' : 'أعمال منشورة'}
-                    </small>
-                  </div>
+                    <span className="service-content">
+                      <strong className="service-title">
+                        {service.title}
+                      </strong>
 
-                  <span className="service-work-arrow" aria-hidden="true">
-                    <ArrowRight size={18} />
-                  </span>
-                </Link>
-              )
-            })}
-          </div>
+                      <span className="service-description">
+                        {service.description}
+                      </span>
+
+                      <span className="service-count">
+                        <FileCheck size={14} />
+                        {loadError
+                          ? 'تعذر تحميل العدد'
+                          : `${count} ${count === 1 ? 'عمل منشور' : 'أعمال منشورة'}`}
+                      </span>
+                    </span>
+
+                    <span className="service-cta">
+                      استعرض الأعمال
+                      <ArrowRight size={15} />
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          </>
         )}
       </section>
 
       <section className="works-note">
-        <div className="works-note-icon">
+        <div className="note-icon">
           <FolderOpen size={23} />
         </div>
 
-        <div className="works-note-content">
+        <div>
           <strong>لكل خدمة معرضها الخاص</strong>
           <p>
             عند إضافة عمل جديد ونشره من لوحة الإدارة، سيظهر ضمن
-            الخدمة التي اخترتها عند إضافة العمل.
+            الخدمة المحددة عند إضافة العمل.
           </p>
         </div>
       </section>
@@ -267,25 +281,17 @@ export default function PreviousWorksPage() {
 
       <style jsx>{`
         .previous-works-page {
-          --works-blue: #2459a9;
-          --works-blue-dark: #173e78;
-          --works-gold: #f5c542;
-          --works-text: #243247;
-          --works-muted: #697791;
-          --works-border: #e4ebf4;
-
+          --text: #243247;
+          --muted: #697791;
+          --border: #e4ebf4;
+          --blue: #2459a9;
           box-sizing: border-box;
           min-height: 100vh;
-          padding: 48px 20px 72px;
+          padding: 42px 20px 64px;
+          color: var(--text);
           background:
-            radial-gradient(
-              ellipse at 50% 0%,
-              #e8f1ff 0%,
-              transparent 48%
-            ),
+            radial-gradient(ellipse at 50% 0%, #e8f1ff 0%, transparent 48%),
             #f8fbff;
-          color: var(--works-text);
-          direction: rtl;
           overflow-x: clip;
         }
 
@@ -298,12 +304,12 @@ export default function PreviousWorksPage() {
         .previous-works-hero {
           position: relative;
           max-width: 850px;
-          margin: 0 auto 52px;
-          padding: 36px 24px;
+          margin: 0 auto 44px;
+          padding: 34px 24px;
           text-align: center;
-          border: 1px solid var(--works-border);
-          border-radius: 30px;
-          background: linear-gradient(145deg, #ffffff, #f4f8ff);
+          border: 1px solid var(--border);
+          border-radius: 28px;
+          background: linear-gradient(145deg, #fff, #f4f8ff);
           box-shadow: 0 16px 45px #173e9110;
           overflow: hidden;
         }
@@ -316,106 +322,91 @@ export default function PreviousWorksPage() {
           left: 12%;
           height: 4px;
           border-radius: 0 0 10px 10px;
-          background: linear-gradient(
-            90deg,
-            var(--works-blue),
-            var(--works-gold),
-            var(--works-blue)
-          );
+          background: linear-gradient(90deg, #2459a9, #f5c542, #2459a9);
         }
 
-        .previous-works-hero-icon {
+        .hero-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 82px;
-          height: 82px;
-          margin: 0 auto 20px;
+          width: 78px;
+          height: 78px;
+          margin: 0 auto 17px;
           border: 1px solid #dbe5f1;
-          border-radius: 25px;
+          border-radius: 24px;
           background: linear-gradient(145deg, #e8f1ff, #fff4df);
-          color: var(--works-blue);
-          box-shadow: 0 12px 28px #2455c414;
+          color: var(--blue);
         }
 
         .hero-brand {
           display: inline-flex;
-          align-items: center;
           justify-content: center;
           padding: 7px 14px;
           border: 1px solid #dbe5f1;
           border-radius: 999px;
           background: #fff;
-          color: var(--works-blue);
+          color: var(--blue);
           font-size: 13px;
           font-weight: 800;
         }
 
         .previous-works-hero h1 {
-          margin: 16px 0 12px;
-          color: var(--works-text);
-          font-size: clamp(30px, 5vw, 48px);
+          margin: 15px 0 10px;
+          font-size: clamp(29px, 5vw, 44px);
           font-weight: 900;
-          line-height: 1.4;
-          letter-spacing: -0.8px;
+          line-height: 1.5;
         }
 
         .previous-works-hero p {
           max-width: 620px;
           margin: 0 auto;
-          color: var(--works-muted);
+          color: var(--muted);
+          font-size: 15px;
           line-height: 2;
-          font-size: 16px;
         }
 
         .hero-decoration {
           display: flex;
           justify-content: center;
-          align-items: center;
           gap: 6px;
-          margin-top: 22px;
+          margin-top: 20px;
         }
 
         .hero-decoration span {
-          display: block;
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          background: var(--works-blue);
+          background: var(--blue);
           opacity: 0.3;
         }
 
         .hero-decoration span:nth-child(2) {
           width: 24px;
           border-radius: 10px;
-          background: var(--works-gold);
+          background: #f5c542;
           opacity: 1;
         }
 
-        .services-works-section {
+        .services-section {
+          width: 100%;
           max-width: 1150px;
           margin: 0 auto;
         }
 
         .section-title {
-          margin-bottom: 30px;
+          margin-bottom: 28px;
           text-align: center;
         }
 
         .section-eyebrow {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 6px;
-          color: var(--works-blue);
+          color: var(--blue);
           font-size: 13px;
           font-weight: 850;
         }
 
         .section-title h2 {
-          margin: 5px 0 8px;
-          color: var(--works-text);
-          font-size: clamp(25px, 3vw, 32px);
+          margin: 7px 0;
+          font-size: clamp(24px, 3vw, 32px);
           font-weight: 900;
           line-height: 1.5;
         }
@@ -423,117 +414,121 @@ export default function PreviousWorksPage() {
         .section-title p {
           max-width: 620px;
           margin: 0 auto;
-          color: var(--works-muted);
+          color: var(--muted);
           font-size: 14px;
           line-height: 1.9;
         }
 
-        .services-works-grid {
+        /* شبكة مستقلة لبطاقات الخدمات */
+        .services-grid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 20px;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 18px;
+          align-items: stretch;
         }
 
-        .service-work-card {
+        .service-card {
           position: relative;
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: center;
-          gap: 14px;
+          justify-content: flex-start;
           min-width: 0;
-          min-height: 230px;
-          padding: 28px 22px 24px;
-          border: 1px solid var(--works-border);
-          border-radius: 24px;
+          min-height: 260px;
+          padding: 28px 17px 20px;
+          border: 1px solid var(--border);
+          border-radius: 23px;
           background:
             radial-gradient(
-              circle at 5% 10%,
-              rgba(245, 197, 66, 0.1),
-              transparent 35%
+              circle at 5% 5%,
+              var(--service-tint),
+              transparent 48%
             ),
-            linear-gradient(145deg, #ffffff 0%, #f5f8ff 100%);
-          color: var(--works-text);
-          box-shadow:
-            0 12px 36px rgba(28, 59, 109, 0.06),
-            0 2px 8px rgba(28, 59, 109, 0.03);
+            #fff;
+          color: var(--text);
           text-align: center;
           text-decoration: none;
+          box-shadow: 0 8px 25px rgba(28, 59, 109, 0.06);
           transition:
-            transform 0.25s ease,
-            box-shadow 0.25s ease,
-            border-color 0.25s ease;
+            transform 0.22s ease,
+            box-shadow 0.22s ease,
+            border-color 0.22s ease;
           -webkit-tap-highlight-color: transparent;
         }
 
-        .service-work-card:hover {
+        .service-card:hover {
           transform: translateY(-4px);
           border-color: var(--service-color);
-          box-shadow: 0 16px 36px rgba(28, 59, 109, 0.12);
+          box-shadow: 0 15px 30px rgba(28, 59, 109, 0.12);
         }
 
-        .service-work-card:focus-visible {
+        .service-card:focus-visible {
           outline: 3px solid #2459a955;
           outline-offset: 4px;
         }
 
-        .service-work-icon {
+        .service-arrow {
+          position: absolute;
+          top: 12px;
+          left: 12px;
+          display: grid;
+          place-items: center;
+          width: 30px;
+          height: 30px;
+          border-radius: 10px;
+          background: var(--service-tint);
+          color: var(--service-color);
+        }
+
+        .service-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          flex: 0 0 72px;
-          width: 72px;
-          height: 72px;
+          flex: 0 0 68px;
+          width: 68px;
+          height: 68px;
+          margin-bottom: 15px;
           border: 1px solid #17233d08;
-          border-radius: 23px;
+          border-radius: 21px;
           background: var(--service-tint);
           color: var(--service-color);
-          box-shadow: 0 8px 20px #17233d08;
-          transition:
-            transform 0.25s ease,
-            border-radius 0.25s ease;
         }
 
-        .service-work-card:hover .service-work-icon {
-          transform: translateY(-2px);
-          border-radius: 20px;
-        }
-
-        .service-work-content {
+        .service-content {
           display: flex;
           flex-direction: column;
           align-items: center;
           width: 100%;
           min-width: 0;
-          text-align: center;
+          flex: 1;
         }
 
-        .service-work-content h3 {
-          margin: 0 0 8px;
+        .service-title {
+          display: block;
+          margin-bottom: 7px;
           color: #173e78;
-          font-size: 17px;
+          font-size: 16px;
           font-weight: 900;
-          line-height: 1.7;
+          line-height: 1.8;
           overflow-wrap: anywhere;
         }
 
-        .service-work-content p {
-          max-width: 320px;
-          margin: 0 auto;
-          color: #58677d;
-          font-size: 13px;
+        .service-description {
+          display: block;
+          max-width: 300px;
+          color: var(--muted);
+          font-size: 12px;
           line-height: 1.9;
           overflow-wrap: anywhere;
         }
 
-        .service-work-content small {
+        .service-count {
           display: inline-flex;
           align-items: center;
           justify-content: center;
           gap: 6px;
           margin-top: 12px;
-          padding: 6px 11px;
-          border: 1px solid #17233d08;
+          padding: 6px 10px;
           border-radius: 10px;
           background: var(--service-tint);
           color: var(--service-color);
@@ -541,47 +536,49 @@ export default function PreviousWorksPage() {
           font-weight: 800;
         }
 
-        .service-work-arrow {
-          position: absolute;
-          top: 14px;
-          left: 14px;
-          display: grid;
-          place-items: center;
-          width: 32px;
-          height: 32px;
-          border-radius: 11px;
-          background: var(--service-tint);
+        .service-cta {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 7px;
+          width: 100%;
+          margin-top: 16px;
+          padding: 10px 12px;
+          border: 1px solid var(--service-color);
+          border-radius: 12px;
+          background: #fff;
           color: var(--service-color);
+          font-size: 12px;
+          font-weight: 850;
           transition:
-            transform 0.2s ease,
             background 0.2s ease,
             color 0.2s ease;
         }
 
-        .service-work-card:hover .service-work-arrow {
-          transform: translateX(-3px);
+        .service-card:hover .service-cta {
           background: var(--service-color);
           color: #fff;
         }
 
         .page-state {
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          flex-direction: column;
           gap: 12px;
-          min-height: 180px;
-          padding: 25px;
-          border: 1px solid var(--works-border);
-          border-radius: 22px;
+          min-height: 160px;
+          margin-bottom: 18px;
+          padding: 24px;
+          border: 1px solid var(--border);
+          border-radius: 20px;
           background: #fff;
-          color: var(--works-muted);
+          color: var(--muted);
           text-align: center;
           font-size: 13px;
         }
 
         .page-state strong {
-          color: var(--works-text);
+          color: var(--text);
         }
 
         .error-state > svg {
@@ -589,8 +586,8 @@ export default function PreviousWorksPage() {
         }
 
         .loading-icon {
-          color: var(--works-blue);
-          animation: works-rotation 1s linear infinite;
+          color: var(--blue);
+          animation: rotation 1s linear infinite;
         }
 
         .works-note {
@@ -598,15 +595,15 @@ export default function PreviousWorksPage() {
           align-items: center;
           gap: 14px;
           max-width: 1150px;
-          margin: 32px auto 0;
-          padding: 20px 22px;
-          border: 1px solid var(--works-border);
-          border-radius: 20px;
+          margin: 30px auto 0;
+          padding: 19px 21px;
+          border: 1px solid var(--border);
+          border-radius: 19px;
           background: #fff;
           box-shadow: 0 7px 24px #17233d08;
         }
 
-        .works-note-icon {
+        .note-icon {
           display: grid;
           place-items: center;
           flex: 0 0 46px;
@@ -614,29 +611,24 @@ export default function PreviousWorksPage() {
           height: 46px;
           border-radius: 15px;
           background: #edf3ff;
-          color: var(--works-blue);
+          color: var(--blue);
         }
 
-        .works-note-content {
-          min-width: 0;
-        }
-
-        .works-note-content strong {
+        .works-note strong {
           display: block;
-          color: var(--works-text);
           font-size: 13px;
           font-weight: 900;
         }
 
-        .works-note-content p {
+        .works-note p {
           margin: 5px 0 0;
-          color: var(--works-muted);
+          color: var(--muted);
           font-size: 12px;
           line-height: 1.9;
         }
 
         .back-home {
-          margin-top: 38px;
+          margin-top: 34px;
           text-align: center;
         }
 
@@ -649,153 +641,172 @@ export default function PreviousWorksPage() {
           border: 1px solid #dbe5f1;
           border-radius: 12px;
           background: #fff;
-          color: var(--works-blue);
+          color: var(--blue);
           font-size: 13px;
           font-weight: 800;
           text-decoration: none;
-          box-shadow: 0 5px 16px #17233d08;
-          transition:
-            border-color 0.2s ease,
-            background 0.2s ease,
-            transform 0.2s ease;
         }
 
-        .back-home a:hover {
-          transform: translateY(-2px);
-          border-color: var(--works-blue);
-          background: #f1f6ff;
-        }
-
-        @keyframes works-rotation {
+        @keyframes rotation {
           to {
             transform: rotate(360deg);
           }
         }
 
-        @media (max-width: 760px) {
-          .previous-works-page {
-            padding: 28px 14px 48px;
-          }
-
-          .previous-works-hero {
-            margin-bottom: 34px;
-            padding: 28px 16px;
-            border-radius: 23px;
-          }
-
-          .previous-works-hero-icon {
-            width: 70px;
-            height: 70px;
-            border-radius: 21px;
-          }
-
-          .previous-works-hero h1 {
-            font-size: clamp(28px, 7vw, 38px);
-          }
-
-          .previous-works-hero p {
-            font-size: 14px;
-            line-height: 1.9;
-          }
-
-          .services-works-grid {
-            grid-template-columns: minmax(0, 1fr);
+        /* الأجهزة اللوحية */
+        @media (max-width: 900px) {
+          .services-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px;
           }
 
-          .service-work-card {
-            min-height: 215px;
-            padding: 25px 18px 22px;
-            gap: 12px;
+          .service-card {
+            min-height: 250px;
+          }
+        }
+
+        /* الجوال: بطاقتان في كل صف */
+        @media (max-width: 600px) {
+          .previous-works-page {
+            padding: 24px 12px 42px;
+          }
+
+          .previous-works-hero {
+            margin-bottom: 30px;
+            padding: 27px 14px;
             border-radius: 22px;
           }
 
-          .service-work-icon {
-            flex-basis: 64px;
-            width: 64px;
-            height: 64px;
+          .hero-icon {
+            width: 66px;
+            height: 66px;
             border-radius: 20px;
           }
 
-          .service-work-content h3 {
-            font-size: 16px;
+          .previous-works-hero h1 {
+            font-size: 28px;
           }
 
-          .service-work-content p {
+          .previous-works-hero p {
+            font-size: 13px;
+          }
+
+          .section-title {
+            margin-bottom: 20px;
+          }
+
+          .section-title h2 {
+            font-size: 24px;
+          }
+
+          .section-title p {
             font-size: 12px;
           }
 
-          .service-work-arrow {
-            top: 11px;
-            left: 11px;
-            width: 29px;
-            height: 29px;
+          .services-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 11px;
+          }
+
+          .service-card {
+            min-height: 240px;
+            padding: 24px 9px 12px;
+            border-radius: 17px;
+            gap: 0;
+          }
+
+          .service-arrow {
+            top: 8px;
+            left: 8px;
+            width: 25px;
+            height: 25px;
+            border-radius: 8px;
+          }
+
+          .service-icon {
+            flex-basis: 54px;
+            width: 54px;
+            height: 54px;
+            margin-bottom: 10px;
+            border-radius: 16px;
+          }
+
+          .service-icon :global(svg) {
+            width: 25px;
+            height: 25px;
+          }
+
+          .service-title {
+            font-size: 12px;
+            line-height: 1.8;
+          }
+
+          .service-description {
+            font-size: 10px;
+            line-height: 1.8;
+          }
+
+          .service-count {
+            gap: 4px;
+            margin-top: 9px;
+            padding: 5px 6px;
+            font-size: 9px;
+          }
+
+          .service-cta {
+            gap: 4px;
+            margin-top: 12px;
+            padding: 9px 4px;
+            border-radius: 9px;
+            font-size: 10px;
           }
 
           .works-note {
             align-items: flex-start;
-            padding: 15px;
-            border-radius: 17px;
+            margin-top: 22px;
+            padding: 14px;
+            border-radius: 16px;
           }
 
-          .works-note-icon {
-            flex-basis: 40px;
-            width: 40px;
-            height: 40px;
-          }
-
-          .back-home {
-            margin-top: 30px;
+          .note-icon {
+            flex-basis: 38px;
+            width: 38px;
+            height: 38px;
           }
         }
 
-        @media (max-width: 380px) {
-          .previous-works-page {
-            padding-right: 10px;
-            padding-left: 10px;
+        @media (max-width: 350px) {
+          .services-grid {
+            gap: 8px;
           }
 
-          .previous-works-hero {
-            padding-right: 12px;
-            padding-left: 12px;
+          .service-card {
+            min-height: 250px;
+            padding-right: 7px;
+            padding-left: 7px;
           }
 
-          .service-work-card {
-            min-height: 205px;
-            gap: 11px;
-            padding: 23px 13px 20px;
+          .service-title {
+            font-size: 11px;
           }
 
-          .service-work-icon {
-            flex-basis: 58px;
-            width: 58px;
-            height: 58px;
+          .service-description {
+            font-size: 9px;
           }
 
-          .service-work-content h3 {
-            font-size: 15px;
-          }
-
-          .service-work-content p {
-            font-size: 12px;
-          }
-
-          .service-work-arrow {
-            top: 9px;
-            left: 9px;
-            width: 27px;
-            height: 27px;
+          .service-cta {
+            font-size: 9px;
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .service-work-card,
-          .service-work-icon,
-          .service-work-arrow,
-          .back-home a,
+          .service-card,
+          .service-cta {
+            transition: none;
+          }
+
           .loading-icon {
             animation: none;
-            transition: none;
           }
         }
       `}</style>
