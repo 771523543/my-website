@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -213,13 +212,15 @@ export default function PreviousWorksPage() {
                   href={`/previous-works/${service.id}`}
                   className="service-work-card"
                   aria-label={`استعراض أعمال ${service.title}`}
-                  style={{
-                    '--service-color': service.color,
-                    '--service-tint': service.tint,
-                  } as React.CSSProperties}
+                  style={
+                    {
+                      '--service-color': service.color,
+                      '--service-tint': service.tint,
+                    } as React.CSSProperties
+                  }
                 >
                   <div className="service-work-icon">
-                    <Icon size={27} strokeWidth={1.9} />
+                    <Icon size={30} strokeWidth={1.9} />
                   </div>
 
                   <div className="service-work-content">
@@ -228,12 +229,13 @@ export default function PreviousWorksPage() {
 
                     <small>
                       <FileCheck size={14} />
-                      {count} {count === 1 ? 'عمل منشور' : 'أعمال منشورة'}
+                      {count}{' '}
+                      {count === 1 ? 'عمل منشور' : 'أعمال منشورة'}
                     </small>
                   </div>
 
                   <span className="service-work-arrow" aria-hidden="true">
-                    ←
+                    <ArrowRight size={18} />
                   </span>
                 </Link>
               )
@@ -265,10 +267,10 @@ export default function PreviousWorksPage() {
 
       <style jsx>{`
         .previous-works-page {
-          --works-blue: #2455c4;
-          --works-blue-dark: #173e91;
-          --works-gold: #e2a43d;
-          --works-text: #17233d;
+          --works-blue: #2459a9;
+          --works-blue-dark: #173e78;
+          --works-gold: #f5c542;
+          --works-text: #243247;
           --works-muted: #697791;
           --works-border: #e4ebf4;
 
@@ -396,12 +398,14 @@ export default function PreviousWorksPage() {
         }
 
         .section-title {
-          margin-bottom: 28px;
+          margin-bottom: 30px;
           text-align: center;
         }
 
         .section-eyebrow {
-          display: inline-block;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           margin-bottom: 6px;
           color: var(--works-blue);
           font-size: 13px;
@@ -427,106 +431,127 @@ export default function PreviousWorksPage() {
         .services-works-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 18px;
+          gap: 20px;
         }
 
         .service-work-card {
+          position: relative;
           display: flex;
+          flex-direction: column;
           align-items: center;
-          gap: 17px;
+          justify-content: center;
+          gap: 14px;
           min-width: 0;
-          min-height: 145px;
-          padding: 22px;
+          min-height: 230px;
+          padding: 28px 22px 24px;
           border: 1px solid var(--works-border);
-          border-radius: 22px;
-          background: #fff;
+          border-radius: 24px;
+          background:
+            radial-gradient(
+              circle at 5% 10%,
+              rgba(245, 197, 66, 0.1),
+              transparent 35%
+            ),
+            linear-gradient(145deg, #ffffff 0%, #f5f8ff 100%);
           color: var(--works-text);
-          box-shadow: 0 7px 24px #17233d08;
-          text-align: right;
+          box-shadow:
+            0 12px 36px rgba(28, 59, 109, 0.06),
+            0 2px 8px rgba(28, 59, 109, 0.03);
+          text-align: center;
           text-decoration: none;
           transition:
-            border-color 0.2s ease,
-            box-shadow 0.2s ease,
-            background 0.2s ease,
-            transform 0.2s ease;
+            transform 0.25s ease,
+            box-shadow 0.25s ease,
+            border-color 0.25s ease;
           -webkit-tap-highlight-color: transparent;
         }
 
         .service-work-card:hover {
-          transform: translateY(-3px);
-          border-color: var(--service-color, #b7ccef);
-          background: linear-gradient(
-            145deg,
-            #fff,
-            var(--service-tint, #f4f8ff)
-          );
-          box-shadow: 0 12px 28px #2455c414;
+          transform: translateY(-4px);
+          border-color: var(--service-color);
+          box-shadow: 0 16px 36px rgba(28, 59, 109, 0.12);
         }
 
         .service-work-card:focus-visible {
-          outline: 3px solid #2455c455;
-          outline-offset: 3px;
+          outline: 3px solid #2459a955;
+          outline-offset: 4px;
         }
 
         .service-work-icon {
           display: flex;
           align-items: center;
           justify-content: center;
-          flex: 0 0 62px;
-          width: 62px;
-          height: 62px;
+          flex: 0 0 72px;
+          width: 72px;
+          height: 72px;
           border: 1px solid #17233d08;
-          border-radius: 19px;
+          border-radius: 23px;
           background: var(--service-tint);
           color: var(--service-color);
+          box-shadow: 0 8px 20px #17233d08;
+          transition:
+            transform 0.25s ease,
+            border-radius 0.25s ease;
+        }
+
+        .service-work-card:hover .service-work-icon {
+          transform: translateY(-2px);
+          border-radius: 20px;
         }
 
         .service-work-content {
-          flex: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
           min-width: 0;
+          text-align: center;
         }
 
         .service-work-content h3 {
-          margin: 0 0 7px;
-          color: var(--works-text);
+          margin: 0 0 8px;
+          color: #173e78;
           font-size: 17px;
-          font-weight: 850;
+          font-weight: 900;
           line-height: 1.7;
           overflow-wrap: anywhere;
         }
 
         .service-work-content p {
-          margin: 0;
-          color: var(--works-muted);
+          max-width: 320px;
+          margin: 0 auto;
+          color: #58677d;
           font-size: 13px;
-          line-height: 1.85;
+          line-height: 1.9;
           overflow-wrap: anywhere;
         }
 
         .service-work-content small {
           display: inline-flex;
           align-items: center;
-          gap: 5px;
-          margin-top: 10px;
-          padding: 5px 9px;
-          border-radius: 8px;
-          background: #f0f5ff;
-          color: var(--works-blue);
+          justify-content: center;
+          gap: 6px;
+          margin-top: 12px;
+          padding: 6px 11px;
+          border: 1px solid #17233d08;
+          border-radius: 10px;
+          background: var(--service-tint);
+          color: var(--service-color);
           font-size: 11px;
-          font-weight: 750;
+          font-weight: 800;
         }
 
         .service-work-arrow {
+          position: absolute;
+          top: 14px;
+          left: 14px;
           display: grid;
           place-items: center;
-          flex: 0 0 34px;
-          width: 34px;
-          height: 34px;
+          width: 32px;
+          height: 32px;
           border-radius: 11px;
           background: var(--service-tint);
           color: var(--service-color);
-          font-size: 22px;
-          font-weight: 800;
           transition:
             transform 0.2s ease,
             background 0.2s ease,
@@ -578,6 +603,7 @@ export default function PreviousWorksPage() {
           border: 1px solid var(--works-border);
           border-radius: 20px;
           background: #fff;
+          box-shadow: 0 7px 24px #17233d08;
         }
 
         .works-note-icon {
@@ -628,9 +654,14 @@ export default function PreviousWorksPage() {
           font-weight: 800;
           text-decoration: none;
           box-shadow: 0 5px 16px #17233d08;
+          transition:
+            border-color 0.2s ease,
+            background 0.2s ease,
+            transform 0.2s ease;
         }
 
         .back-home a:hover {
+          transform: translateY(-2px);
           border-color: var(--works-blue);
           background: #f1f6ff;
         }
@@ -669,25 +700,25 @@ export default function PreviousWorksPage() {
 
           .services-works-grid {
             grid-template-columns: minmax(0, 1fr);
-            gap: 12px;
+            gap: 14px;
           }
 
           .service-work-card {
-            min-height: 0;
-            padding: 16px 14px;
+            min-height: 215px;
+            padding: 25px 18px 22px;
             gap: 12px;
-            border-radius: 18px;
+            border-radius: 22px;
           }
 
           .service-work-icon {
-            flex-basis: 52px;
-            width: 52px;
-            height: 52px;
-            border-radius: 15px;
+            flex-basis: 64px;
+            width: 64px;
+            height: 64px;
+            border-radius: 20px;
           }
 
           .service-work-content h3 {
-            font-size: 15px;
+            font-size: 16px;
           }
 
           .service-work-content p {
@@ -695,9 +726,10 @@ export default function PreviousWorksPage() {
           }
 
           .service-work-arrow {
-            flex-basis: 30px;
-            width: 30px;
-            height: 30px;
+            top: 11px;
+            left: 11px;
+            width: 29px;
+            height: 29px;
           }
 
           .works-note {
@@ -729,30 +761,38 @@ export default function PreviousWorksPage() {
           }
 
           .service-work-card {
-            gap: 9px;
-            padding: 13px 10px;
+            min-height: 205px;
+            gap: 11px;
+            padding: 23px 13px 20px;
           }
 
           .service-work-icon {
-            flex-basis: 46px;
-            width: 46px;
-            height: 46px;
+            flex-basis: 58px;
+            width: 58px;
+            height: 58px;
           }
 
           .service-work-content h3 {
-            font-size: 14px;
+            font-size: 15px;
+          }
+
+          .service-work-content p {
+            font-size: 12px;
           }
 
           .service-work-arrow {
-            flex-basis: 26px;
-            width: 26px;
-            height: 26px;
+            top: 9px;
+            left: 9px;
+            width: 27px;
+            height: 27px;
           }
         }
 
         @media (prefers-reduced-motion: reduce) {
           .service-work-card,
+          .service-work-icon,
           .service-work-arrow,
+          .back-home a,
           .loading-icon {
             animation: none;
             transition: none;
