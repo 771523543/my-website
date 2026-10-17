@@ -1,4 +1,3 @@
-
 'use client'
 
 import './previous-works-detail.css'
@@ -27,6 +26,8 @@ import {
   Scale,
   Search,
   Sparkles,
+  Eye,
+  ShoppingBag,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
@@ -60,7 +61,7 @@ const services = [
   {
     id: 'homework',
     title: 'الواجبات الدراسية',
-    description: 'مساعدة في إعداد الواجبات والمهام الدراسية.',
+    description: 'المساعدة في إعداد الواجبات والمهام الدراسية.',
     icon: BookOpen,
     color: '#3766a9',
     tint: '#eaf0f8',
@@ -128,7 +129,7 @@ type WorkItem = {
 function isImageFile(item: WorkItem) {
   return (
     Boolean(item.mime_type?.startsWith('image/')) ||
-    /\.(png|jpe?g|webp|gif)$/i.test(item.file_name)
+    /\.(png|jpe?g|webp|gif|bmp|avif)$/i.test(item.file_name)
   )
 }
 
@@ -138,6 +139,7 @@ function fileLabel(item: WorkItem) {
   if (/\.docx?$/i.test(item.file_name)) return 'Word'
   if (/\.pptx?$/i.test(item.file_name)) return 'PowerPoint'
   if (/\.xlsx?$/i.test(item.file_name)) return 'Excel'
+  if (/\.zip$/i.test(item.file_name)) return 'ZIP'
   return 'ملف مرفق'
 }
 
@@ -301,7 +303,7 @@ export default function PreviousWorksServicePage() {
                 <div className="pw-hero-stats">
                   <span>
                     <CheckCircle2 size={16} />
-                    أعمال منشورة وموثقة
+                    نماذج من أعمالنا
                   </span>
 
                   <span className="pw-stats-divider" />
@@ -353,7 +355,8 @@ export default function PreviousWorksServicePage() {
                   <h2>نماذج من أعمالنا</h2>
 
                   <p>
-                    تصفّح الأعمال والصور والملفات المنشورة ضمن هذه الخدمة.
+                    شاهد نماذج الأعمال، وافتح الملفات، واطلب خدمة
+                    مشابهة مباشرة من منصة هديل.
                   </p>
                 </div>
 
@@ -391,9 +394,7 @@ export default function PreviousWorksServicePage() {
                   <button
                     type="button"
                     className="pw-button pw-button-primary"
-                    onClick={() =>
-                      setRetryKey((value) => value + 1)
-                    }
+                    onClick={() => setRetryKey((value) => value + 1)}
                   >
                     <ArrowUpLeft size={17} />
                     إعادة المحاولة
@@ -431,6 +432,7 @@ export default function PreviousWorksServicePage() {
                       .getPublicUrl(item.file_path).data.publicUrl
 
                     const image = isImageFile(item)
+                    const label = fileLabel(item)
 
                     return (
                       <article className="pw-card" key={item.id}>
@@ -457,14 +459,14 @@ export default function PreviousWorksServicePage() {
                           </span>
 
                           <span className="pw-preview-open">
-                            <ExternalLink size={17} />
+                            <Eye size={17} />
                           </span>
                         </a>
 
                         <div className="pw-card-body">
                           <div className="pw-card-meta">
                             <span className="pw-file-badge">
-                              {fileLabel(item)}
+                              {label}
                             </span>
 
                             {formatFileSize(item.file_size) && (
@@ -489,16 +491,28 @@ export default function PreviousWorksServicePage() {
 
                               منصة هديل
                             </span>
+                          </div>
 
+                          <div className="pw-card-actions">
                             <a
                               href={url}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="pw-open-link"
+                              aria-label={`فتح ملف ${item.title}`}
                             >
-                              عرض العمل
-                              <ArrowLeft size={15} />
+                              <ExternalLink size={15} />
+                              معاينة العمل
                             </a>
+
+                            <Link
+                              href="/request-service"
+                              className="pw-request-link"
+                              aria-label={`طلب خدمة مشابهة لـ ${item.title}`}
+                            >
+                              <ShoppingBag size={15} />
+                              اطلب خدمة مشابهة
+                            </Link>
                           </div>
                         </div>
                       </article>
@@ -514,20 +528,19 @@ export default function PreviousWorksServicePage() {
               </span>
 
               <div className="pw-footer-copy">
-                <strong>
-                  اكتشف المزيد من أعمال منصة هديل
-                </strong>
+                <strong>هل تريد عملًا مشابهًا؟</strong>
 
                 <p>
-                  تعرّف على نماذج الخدمات الأخرى في معرضنا.
+                  أرسل طلبك عبر المنصة وسنساعدك في تحديد تفاصيل
+                  الخدمة التي تحتاجها.
                 </p>
               </div>
 
               <Link
-                href="/previous-works"
+                href="/request-service"
                 className="pw-footer-button"
               >
-                استكشف الخدمات
+                اطلب خدمتك الآن
                 <ArrowLeft size={16} />
               </Link>
             </footer>
