@@ -1,7 +1,9 @@
+
 import Hero from './components/Hero'
+import AboutGrid from './components/AboutGrid'
+import VisionMissionGoals from './components/VisionMissionGoals'
 import QuickSections from './components/QuickSections'
 import Stats from './components/Stats'
-import AboutGrid from './components/AboutGrid'
 import ServicesPreview from './components/ServicesPreview'
 import Packages from './components/Packages'
 import PreviousWorks from './components/PreviousWorks'
@@ -14,36 +16,43 @@ import Contact from './components/Contact'
 import RevealObserver from './components/RevealObserver'
 
 export default function Home() {
-return (
-<main id="top">
-<Hero />
+  return (
+    <main id="top">
+      {/* قسم الترحيب */}
+      <Hero />
 
-  <QuickSections />
+      {/* التعريف بمنصة هديل */}
+      <AboutGrid />
 
-  <Stats />
+      {/* الرؤية والرسالة والأهداف */}
+      <VisionMissionGoals />
 
-  <AboutGrid />
+      {/* الأقسام السريعة */}
+      <QuickSections />
 
-  <ServicesPreview />
+      {/* الإحصائيات */}
+      <Stats />
 
-  <Packages />
+      {/* بقية أقسام الصفحة الرئيسية */}
+      <ServicesPreview />
 
-  <PreviousWorks />
+      <Packages />
 
-  <Achievements />
+      <PreviousWorks />
 
-  <Testimonials />
+      <Achievements />
 
-  <AcademicAd />
+      <Testimonials />
 
-  <GpaCalculator />
+      <AcademicAd />
 
-  <FAQ />
+      <GpaCalculator />
 
-  <Contact />
+      <FAQ />
 
-  <RevealObserver />
-</main>
+      <Contact />
 
-)
+      <RevealObserver />
+    </main>
+  )
 }
