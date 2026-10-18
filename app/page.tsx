@@ -18,40 +18,49 @@ import RevealObserver from './components/RevealObserver'
 export default function Home() {
   return (
     <main id="top">
-      {/* قسم الترحيب */}
+      {/* 1. الترحيب بمنصة هديل */}
       <Hero />
 
-      {/* التعريف بمنصة هديل */}
-      <AboutGrid />
-
-      {/* الرؤية والرسالة والأهداف */}
+      {/* 2. عن منصة هديل: علم وإنجاز، الرؤية والرسالة */}
       <VisionMissionGoals />
 
-      {/* الأقسام السريعة */}
+      {/* 3. الأقسام السريعة */}
       <QuickSections />
 
-      {/* الإحصائيات */}
+      {/* 4. قصتنا وقيمنا وما يميزنا */}
+      <AboutGrid />
+
+      {/* 5. الإحصائيات */}
       <Stats />
 
-      {/* بقية أقسام الصفحة الرئيسية */}
+      {/* 6. الخدمات الطلابية */}
       <ServicesPreview />
 
+      {/* 7. الباقات */}
       <Packages />
 
+      {/* 8. معرض الأعمال والملفات */}
       <PreviousWorks />
 
+      {/* 9. الإنجازات */}
       <Achievements />
 
+      {/* 10. آراء العملاء */}
       <Testimonials />
 
+      {/* 11. الإعلان الأكاديمي */}
       <AcademicAd />
 
+      {/* 12. حاسبة المعدل */}
       <GpaCalculator />
 
+      {/* 13. الأسئلة الشائعة */}
       <FAQ />
 
+      {/* 14. التواصل */}
       <Contact />
 
+      {/* مراقب ظهور العناصر */}
       <RevealObserver />
     </main>
   )
