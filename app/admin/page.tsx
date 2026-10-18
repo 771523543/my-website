@@ -14,6 +14,7 @@ import {
   AlertCircle,
   CheckCircle2,
   LogOut,
+  WandSparkles,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
@@ -158,7 +159,6 @@ export default function AdminPage() {
 
       setAuthorized(true)
 
-      // تحميل الطلبات دون ربط student_profiles بعلاقة غير موجودة.
       const { data: requestRows, error: requestError } =
         await supabase
           .from('service_requests')
@@ -183,7 +183,6 @@ export default function AdminPage() {
       const requestData =
         (requestRows ?? []) as unknown as ServiceRequest[]
 
-      // تحميل ملفات الطلاب باستعلام مستقل.
       const studentIds = [
         ...new Set(
           requestData
@@ -223,7 +222,6 @@ export default function AdminPage() {
 
       setRequests(enrichedRequests)
 
-      // تحميل المرفقات.
       const { data: attachmentRows, error: attachmentError } =
         await supabase
           .from('request_attachments')
@@ -543,12 +541,22 @@ export default function AdminPage() {
           <div className="admin-header-actions">
             <button
               type="button"
+              className="admin-generator-button"
+              onClick={() => router.push('/admin/file-generator')}
+            >
+              <WandSparkles size={17} />
+              مولّد الملفات الذكي
+            </button>
+
+            <button
+              type="button"
               onClick={() => void loadData(true)}
               disabled={refreshing}
             >
               <RefreshCw size={16} />
               {refreshing ? 'جارٍ التحديث...' : 'تحديث'}
             </button>
+
             <button type="button" onClick={() => void signOut()}>
               <LogOut size={16} />
               خروج
@@ -825,6 +833,7 @@ export default function AdminPage() {
         .admin-header-actions button {
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 7px;
           padding: 10px 12px;
           border: 1px solid #ffffff55;
@@ -834,9 +843,25 @@ export default function AdminPage() {
           font: inherit;
           font-size: 12px;
           cursor: pointer;
+          transition: background 0.2s, transform 0.2s;
+        }
+        .admin-header-actions button:hover {
+          background: #ffffff30;
+        }
+        .admin-header-actions .admin-generator-button {
+          background: #ffffff;
+          color: #2455c4;
+          border-color: #ffffff;
+          font-weight: 900;
+          box-shadow: 0 3px 10px #102e6b30;
+        }
+        .admin-header-actions .admin-generator-button:hover {
+          background: #f0f5ff;
+          transform: translateY(-1px);
         }
         .admin-header-actions button:disabled {
           opacity: 0.6;
+          cursor: not-allowed;
         }
         .admin-alert {
           display: flex;
@@ -1188,6 +1213,12 @@ export default function AdminPage() {
             flex-basis: 32px;
             width: 32px;
             height: 32px;
+          }
+          .admin-header-actions {
+            width: 100%;
+          }
+          .admin-header-actions button {
+            flex: 1 1 auto;
           }
         }
       `}</style>
