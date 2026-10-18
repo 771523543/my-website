@@ -3,89 +3,69 @@
 
 import { useState } from 'react'
 import {
-  GraduationCap,
+  BookOpen,
   Eye,
   Lightbulb,
   Target,
+  GraduationCap,
   Code2,
   ShieldCheck,
   Smartphone,
   Rocket,
   ChevronDown,
-  Sparkles,
-  BookOpen,
+  Check,
 } from 'lucide-react'
 
-const sections = [
+const identityText =
+  'منصة هديل هي منصة رقمية متكاملة متخصصة في تقديم الحلول والخدمات الطلابية والأكاديمية، وخدمات التطوير الرقمي والتصاميم. نسعى لتسهيل المسيرة التعليمية والمهنية للطلاب والباحثين والمؤسسات من خلال تقديم خدمات عالية الجودة، تتسم بالدقة والسرعة والاحترافية.'
+
+const visionMission = [
   {
     number: '01',
-    title: 'الرؤية',
-    english: 'VISION',
-    short: 'الريادة في الخدمات الطلابية والأكاديمية الرقمية.',
-    description:
-      'أن نكون المنصة الأولى والرائدة في تقديم الخدمات الطلابية والأكاديمية الرقمية، والوجهة الموثوقة التي تمكّن الطلاب والباحثين من تحقيق النجاح والتميز الأكاديمي والمهني بكل سهولة وابتكار.',
+    title: 'رؤيتنا',
+    short: 'أن نكون الوجهة الأولى للخدمات الطلابية والأكاديمية الرقمية.',
+    long: 'أن نكون المنصة الأولى والرائدة في تقديم الخدمات الطلابية والأكاديمية الرقمية، والوجهة الموثوقة التي تمكّن الطلاب والباحثين من تحقيق النجاح والتميز الأكاديمي والمهني بكل سهولة وابتكار.',
     icon: Eye,
-    color: '#2455c4',
-    tint: '#e8f1ff',
   },
   {
     number: '02',
-    title: 'الرسالة',
-    english: 'MISSION',
-    short: 'خدمات شاملة ومبتكرة بجودة واحترافية.',
-    description:
-      'تقديم خدمات أكاديمية ورقمية شاملة ومبتكرة، بأعلى معايير الجودة والدقة، لمساندة الطلاب والباحثين وصنّاع المحتوى في إنجاز أعمالهم، وتذليل العقبات التعليمية والتقنية أمامهم عبر بيئة موثوقة وفريق متخصص.',
+    title: 'رسالتنا',
+    short: 'خدمات شاملة ومبتكرة تدعم النجاح الأكاديمي والرقمي.',
+    long: 'تقديم خدمات أكاديمية ورقمية شاملة ومبتكرة، بأعلى معايير الجودة والدقة، لمساندة الطلاب والباحثين وصنّاع المحتوى في إنجاز أعمالهم، وتذليل العقبات التعليمية والتقنية أمامهم عبر بيئة موثوقة وفريق متخصص.',
     icon: Lightbulb,
-    color: '#167b7b',
-    tint: '#e5f5f3',
   },
 ]
 
 const goals = [
   {
-    title: 'تقديم دعم أكاديمي متميز',
-    short: 'مساندة الطلاب والباحثين في أعمالهم الأكاديمية.',
-    description:
-      'مساعدة الطلاب والباحثين في إعداد وتنسيق البحوث والتقارير والعروض التقديمية وفق أفضل المعايير الأكاديمية.',
+    title: 'دعم أكاديمي متميز',
+    short: 'مساندة الطلاب والباحثين في إنجاز أعمالهم.',
+    long: 'مساعدة الطلاب والباحثين في إعداد وتنسيق البحوث والتقارير والعروض التقديمية وفق أفضل المعايير الأكاديمية.',
     icon: GraduationCap,
-    color: '#2455c4',
-    tint: '#e8f1ff',
   },
   {
-    title: 'توفير حلول تقنية ورقمية',
-    short: 'خدمات تقنية وحلول رقمية متطورة.',
-    description:
-      'تقديم خدمات الدعم التقني، وبرمجة وتصميم المواقع، والحلول الرقمية التي تلبي تطلعات مستخدمي المنصة.',
+    title: 'حلول تقنية ورقمية',
+    short: 'خدمات تقنية تلبي احتياجات المستخدمين.',
+    long: 'تقديم خدمات الدعم التقني، وبرمجة وتصميم المواقع، والحلول الرقمية التي تلبي تطلعات مستخدمي المنصة.',
     icon: Code2,
-    color: '#7355c7',
-    tint: '#f0eaff',
   },
   {
-    title: 'ضمان الجودة والدقة',
-    short: 'عناية بالتفاصيل والتزام بالمواعيد.',
-    description:
-      'الالتزام بتسليم الأعمال في الأوقات المحددة وبأعلى درجات الدقة والاحترافية التي تسهم في رضا العملاء.',
+    title: 'الجودة والدقة',
+    short: 'الاهتمام بالتفاصيل والالتزام بالمواعيد.',
+    long: 'الالتزام بتسليم الأعمال في الأوقات المحددة وبأعلى درجات الدقة والاحترافية التي تعزز رضا العملاء.',
     icon: ShieldCheck,
-    color: '#168653',
-    tint: '#e3f7ed',
   },
   {
-    title: 'تسهيل التجربة الرقمية',
-    short: 'الوصول إلى الخدمة بأقل جهد.',
-    description:
-      'تطوير واجهات واستراتيجيات تواصل سلسة تضمن وصول المستخدم إلى الخدمة التي يحتاجها بأسرع وقت وأقل جهد.',
+    title: 'تجربة رقمية سهلة',
+    short: 'الوصول إلى الخدمة بسهولة وسرعة.',
+    long: 'تطوير واجهات واستراتيجيات تواصل سلسة تضمن وصول المستخدم إلى الخدمة التي يحتاجها بأسرع وقت وأقل جهد.',
     icon: Smartphone,
-    color: '#c16b32',
-    tint: '#fff0e5',
   },
   {
-    title: 'التطوير والابتكار المستمر',
-    short: 'مواكبة التطورات التعليمية والتقنية.',
-    description:
-      'التوسع في الخدمات المقدمة لمواكبة أحدث التقنيات والاتجاهات التعليمية والتقنية الحديثة.',
+    title: 'التطوير والابتكار',
+    short: 'تطوير الخدمات ومواكبة المستجدات.',
+    long: 'التوسع في الخدمات المقدمة لمواكبة أحدث التقنيات والاتجاهات التعليمية والتقنية الحديثة.',
     icon: Rocket,
-    color: '#167f91',
-    tint: '#e3f7fa',
   },
 ]
 
@@ -99,703 +79,230 @@ function MoreButton({
   return (
     <button
       type="button"
-      className="vmg-more"
+      className="about-more-button"
       onClick={onClick}
       aria-expanded={open}
     >
       <span>{open ? 'عرض أقل' : 'اعرف أكثر'}</span>
       <ChevronDown
-        size={16}
-        className={open ? 'vmg-chevron is-open' : 'vmg-chevron'}
+        size={17}
+        strokeWidth={2.5}
+        className={open ? 'is-open' : ''}
       />
     </button>
   )
 }
 
 export default function VisionMissionGoals() {
-  const [expanded, setExpanded] = useState<string | null>(null)
+  const [openIdentity, setOpenIdentity] = useState(false)
+  const [openVision, setOpenVision] = useState<number | null>(null)
+  const [openGoal, setOpenGoal] = useState<number | null>(null)
 
   return (
     <section
       id="vision-mission-goals"
-      className="section soft-section reveal-section"
       data-reveal
-      dir="rtl"
+      className="section soft-section reveal-section"
     >
-      <style jsx>{`
-        .vmg-heading {
-          max-width: 700px;
-          margin: 0 auto 34px;
-          text-align: center;
-        }
-
-        .vmg-kicker {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          color: #2455c4;
-          font-size: 12px;
-          font-weight: 800;
-        }
-
-        .vmg-heading h2 {
-          margin: 10px 0 12px;
-          color: #17233d;
-          font-size: clamp(30px, 4vw, 46px);
-          font-weight: 900;
-          line-height: 1.4;
-          letter-spacing: -1px;
-        }
-
-        .vmg-heading h2 em,
-        .vmg-intro-content h3 em,
-        .vmg-block-heading h3 em {
-          color: #2455c4;
-          font-style: normal;
-        }
-
-        .vmg-heading > p {
-          margin: 0;
-          color: #697791;
-          font-size: 13px;
-          line-height: 1.9;
-        }
-
-        .vmg-intro {
-          display: grid;
-          grid-template-columns: 0.8fr 1.2fr;
-          align-items: center;
-          gap: 35px;
-          margin-bottom: 22px;
-          padding: 27px;
-          overflow: hidden;
-          border: 1px solid #e4ebf4;
-          border-radius: 26px;
-          background: #fff;
-          box-shadow: 0 14px 35px rgba(23, 35, 61, 0.065);
-        }
-
-        .vmg-intro-visual {
-          position: relative;
-          min-height: 250px;
-          display: grid;
-          place-items: center;
-          overflow: hidden;
-          border-radius: 22px;
-          background: linear-gradient(145deg, #e8f1ff, #f5f9ff);
-        }
-
-        .vmg-glow {
-          position: absolute;
-          width: 220px;
-          height: 220px;
-          border-radius: 50%;
-          background: #2455c4;
-          opacity: 0.08;
-          filter: blur(2px);
-        }
-
-        .vmg-emblem {
-          position: relative;
-          z-index: 1;
-          display: flex;
-          width: 155px;
-          height: 155px;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 12px;
-          border-radius: 27px 27px 27px 9px;
-          background: linear-gradient(145deg, #2d66df, #2455c4);
-          color: #fff;
-          box-shadow: 0 20px 42px rgba(36, 85, 196, 0.25);
-          transform: rotate(-4deg);
-          transition: transform 0.3s ease;
-        }
-
-        .vmg-intro:hover .vmg-emblem {
-          transform: rotate(-1deg) translateY(-5px);
-        }
-
-        .vmg-emblem span {
-          font-size: 21px;
-          font-weight: 900;
-          line-height: 1.4;
-          text-align: center;
-        }
-
-        .vmg-gold-badge {
-          position: absolute;
-          right: 18px;
-          bottom: 17px;
-          padding: 9px 14px;
-          border-radius: 999px;
-          background: #f7c25e;
-          color: #17233d;
-          font-size: 11px;
-          font-weight: 900;
-          box-shadow: 0 9px 20px rgba(23, 35, 61, 0.12);
-        }
-
-        .vmg-intro-content {
-          min-width: 0;
-        }
-
-        .vmg-intro-content h3 {
-          margin: 12px 0 14px;
-          color: #17233d;
-          font-size: clamp(25px, 3vw, 36px);
-          font-weight: 900;
-          line-height: 1.5;
-        }
-
-        .vmg-intro-content > p {
-          margin: 0;
-          color: #697791;
-          font-size: 14px;
-          line-height: 2.1;
-        }
-
-        .vmg-block {
-          min-width: 0;
-          padding: 25px;
-          border: 1px solid #e4ebf4;
-          border-radius: 24px;
-          background: #fff;
-          box-shadow: 0 12px 30px rgba(23, 35, 61, 0.055);
-        }
-
-        .vmg-block-heading {
-          max-width: 650px;
-          margin: 0 auto 22px;
-          text-align: center;
-        }
-
-        .vmg-block-heading h3 {
-          margin: 10px 0 8px;
-          color: #17233d;
-          font-size: clamp(23px, 3vw, 30px);
-          font-weight: 900;
-          line-height: 1.5;
-        }
-
-        .vmg-block-heading > p {
-          margin: 0;
-          color: #697791;
-          font-size: 12px;
-          line-height: 1.9;
-        }
-
-        .vmg-vision-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 15px;
-          margin-bottom: 22px;
-        }
-
-        .vmg-card {
-          position: relative;
-          min-width: 0;
-          min-height: 230px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 21px;
-          overflow: hidden;
-          border: 1px solid #e3ebf5;
-          border-radius: 19px;
-          background: linear-gradient(145deg, #f8fbff, #f4f8fd);
-          text-align: center;
-          transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease,
-            border-color 0.3s ease;
-          --vmg-color: #2455c4;
-          --vmg-tint: #e8f1ff;
-        }
-
-        .vmg-card::before {
-          position: absolute;
-          top: -45px;
-          right: -45px;
-          width: 110px;
-          height: 110px;
-          border-radius: 50%;
-          background: var(--vmg-color);
-          opacity: 0.045;
-          content: '';
-        }
-
-        .vmg-card:hover {
-          transform: translateY(-5px);
-          border-color: rgba(36, 85, 196, 0.18);
-          box-shadow: 0 15px 28px rgba(23, 35, 61, 0.09);
-        }
-
-        .vmg-card-top {
-          position: relative;
-          z-index: 1;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .vmg-number {
-          color: #dba33e;
-          font-size: 11px;
-          font-weight: 900;
-        }
-
-        .vmg-icon {
-          display: grid;
-          width: 58px;
-          height: 58px;
-          place-items: center;
-          border: 1px solid rgba(36, 85, 196, 0.1);
-          border-radius: 17px;
-          background: linear-gradient(145deg, var(--vmg-tint), #fff);
-          color: var(--vmg-color);
-          box-shadow: 0 9px 20px rgba(36, 85, 196, 0.08);
-          transition: transform 0.3s ease;
-        }
-
-        .vmg-card:hover .vmg-icon,
-        .vmg-goal:hover .vmg-icon {
-          transform: translateY(-3px) scale(1.04);
-        }
-
-        .vmg-card h4 {
-          position: relative;
-          z-index: 1;
-          margin: 15px 0 7px;
-          color: #17233d;
-          font-size: 20px;
-          font-weight: 900;
-          line-height: 1.6;
-        }
-
-        .vmg-english {
-          margin-bottom: 8px;
-          color: #8a96a8;
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: 1px;
-          direction: ltr;
-        }
-
-        .vmg-short {
-          position: relative;
-          z-index: 1;
-          margin: 0;
-          color: #697791;
-          font-size: 12px;
-          line-height: 1.9;
-        }
-
-        .vmg-description {
-          position: relative;
-          z-index: 1;
-          margin: 10px 0 0;
-          color: #697791;
-          font-size: 12px;
-          line-height: 2;
-        }
-
-        .vmg-goals-grid {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 13px;
-        }
-
-        .vmg-goal {
-          position: relative;
-          min-width: 0;
-          min-height: 200px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          padding: 20px 17px;
-          overflow: hidden;
-          border: 1px solid #e3ebf5;
-          border-radius: 19px;
-          background: linear-gradient(145deg, #f8fbff, #f3f8fd);
-          text-align: center;
-          transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease,
-            border-color 0.3s ease;
-          --vmg-color: #2455c4;
-          --vmg-tint: #e8f1ff;
-        }
-
-        .vmg-goal::before {
-          position: absolute;
-          top: -45px;
-          right: -45px;
-          width: 110px;
-          height: 110px;
-          border-radius: 50%;
-          background: var(--vmg-color);
-          opacity: 0.045;
-          content: '';
-        }
-
-        .vmg-goal:hover {
-          transform: translateY(-5px);
-          border-color: rgba(36, 85, 196, 0.18);
-          box-shadow: 0 15px 28px rgba(23, 35, 61, 0.09);
-        }
-
-        .vmg-goal h4 {
-          position: relative;
-          z-index: 1;
-          margin: 14px 0 7px;
-          color: #17233d;
-          font-size: 14px;
-          font-weight: 900;
-          line-height: 1.7;
-        }
-
-        .vmg-goal p {
-          position: relative;
-          z-index: 1;
-          margin: 0;
-          color: #697791;
-          font-size: 11px;
-          line-height: 1.9;
-        }
-
-        .vmg-more {
-          position: relative;
-          z-index: 2;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 6px;
-          min-height: 35px;
-          margin-top: auto;
-          padding: 8px 9px 0;
-          border: 0;
-          border-radius: 8px;
-          background: transparent;
-          color: #2455c4;
-          font: inherit;
-          font-size: 11px;
-          font-weight: 900;
-          cursor: pointer;
-        }
-
-        .vmg-more:focus-visible {
-          outline: 2px solid #2455c4;
-          outline-offset: 3px;
-        }
-
-        .vmg-chevron {
-          transition: transform 0.2s ease;
-        }
-
-        .vmg-chevron.is-open {
-          transform: rotate(180deg);
-        }
-
-        .vmg-footer {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          margin-top: 26px;
-          color: #697791;
-          font-size: 12px;
-          line-height: 1.9;
-          text-align: center;
-        }
-
-        .vmg-footer :global(svg) {
-          flex-shrink: 0;
-          color: #2455c4;
-        }
-
-        @media (max-width: 850px) {
-          .vmg-goals-grid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-        }
-
-        @media (max-width: 650px) {
-          .vmg-heading {
-            margin-bottom: 25px;
-          }
-
-          .vmg-intro {
-            grid-template-columns: minmax(0, 1fr);
-            gap: 22px;
-            padding: 17px;
-            border-radius: 22px;
-          }
-
-          .vmg-intro-visual {
-            min-height: 205px;
-          }
-
-          .vmg-emblem {
-            width: 130px;
-            height: 130px;
-          }
-
-          .vmg-intro-content {
-            padding: 0 4px 5px;
-            text-align: center;
-          }
-
-          .vmg-intro-content h3 {
-            font-size: 26px;
-          }
-
-          .vmg-intro-content > p {
-            font-size: 13px;
-          }
-
-          .vmg-block {
-            padding: 17px;
-            border-radius: 21px;
-          }
-
-          .vmg-vision-grid,
-          .vmg-goals-grid {
-            grid-template-columns: minmax(0, 1fr);
-            gap: 13px;
-          }
-
-          .vmg-card,
-          .vmg-goal {
-            min-height: 0;
-            padding: 20px;
-          }
-
-          .vmg-card h4 {
-            font-size: 19px;
-          }
-
-          .vmg-description {
-            font-size: 13px;
-          }
-
-          .vmg-goal h4 {
-            font-size: 15px;
-          }
-
-          .vmg-goal p {
-            font-size: 12px;
-          }
-
-          .vmg-more {
-            margin-top: 8px;
-          }
-
-          .vmg-footer {
-            align-items: flex-start;
-            padding: 0 8px;
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .vmg-emblem,
-          .vmg-card,
-          .vmg-goal,
-          .vmg-icon,
-          .vmg-chevron {
-            transition: none;
-          }
-
-          .vmg-intro:hover .vmg-emblem,
-          .vmg-card:hover,
-          .vmg-goal:hover,
-          .vmg-card:hover .vmg-icon,
-          .vmg-goal:hover .vmg-icon {
-            transform: none;
-          }
-        }
-      `}</style>
-
       <div className="container">
-        <header className="vmg-heading">
-          <span className="vmg-kicker">
-            <Sparkles size={15} />
-            عن منصة هديل
+        {/* العنوان الرئيسي بنفس أسلوب قسم قصتنا وقيمنا */}
+
+        <div className="about-main-heading">
+          <span className="section-kicker">
+            من نحن وإلى أين نتجه؟
           </span>
 
           <h2>
-            هويتنا <em>وطموحنا</em>
+            هويتنا وطموحنا
+            <br />
+            <em>نحو مستقبل أفضل</em>
           </h2>
 
           <p>
-            نتطلع إلى تقديم تجربة متكاملة تجمع الخدمات الأكاديمية
-            والطلاب والحلول الرقمية في مكان واحد.
+            تعرّف على منصة هديل ورؤيتها ورسالتها وأهدافها الاستراتيجية.
           </p>
-        </header>
+        </div>
 
-        <article className="vmg-intro" data-reveal>
-          <div className="vmg-intro-visual">
-            <div className="vmg-glow" />
+        <div className="about-grid">
+          {/* التعريف بالمنصة: بطاقة رئيسية كبيرة */}
 
-            <div className="vmg-emblem">
-              <GraduationCap size={43} strokeWidth={1.8} />
-              <span>
-                معرفة
-                <br />
-                تُنجز
+          <article
+            data-reveal
+            className="about-story-card reveal-section"
+          >
+            <div className="about-story-visual">
+              <div className="about-story-glow" />
+
+              <div className="story-card">
+                <BookOpen size={42} strokeWidth={1.8} />
+                <span>
+                  علم
+                  <br />
+                  وإنجاز
+                </span>
+              </div>
+
+              <span className="story-badge">
+                منصة هديل
               </span>
             </div>
 
-            <span className="vmg-gold-badge">
-              منصة هديل
-            </span>
-          </div>
+            <div className="about-story-content">
+              <span className="section-kicker">
+                التعريف بالمنصة
+              </span>
 
-          <div className="vmg-intro-content">
-            <span className="vmg-kicker">
-              <BookOpen size={15} />
-              التعريف بمنصة هديل
-            </span>
+              <h3>
+                بوابتك نحو
+                <br />
+                <em>الخدمات الأكاديمية والرقمية</em>
+              </h3>
 
-            <h3>
-              حلول متكاملة
-              <br />
-              <em>بثقة واحتراف</em>
-            </h3>
+              <p>
+                {openIdentity
+                  ? identityText
+                  : `${identityText.slice(0, 145)}...`}
+              </p>
 
-            <p>
-              منصة هديل هي منصة رقمية متكاملة متخصصة في تقديم
-              الحلول والخدمات الطلابية والأكاديمية، وخدمات
-              التطوير الرقمي والتصاميم. نسعى لتسهيل المسيرة
-              التعليمية والمهنية للطلاب والباحثين والمؤسسات
-              من خلال تقديم خدمات عالية الجودة، تتسم بالدقة
-              والسرعة والاحترافية.
-            </p>
-          </div>
-        </article>
+              <MoreButton
+                open={openIdentity}
+                onClick={() =>
+                  setOpenIdentity((current) => !current)
+                }
+              />
+            </div>
+          </article>
 
-        <div className="vmg-vision-grid">
-          {sections.map((item) => {
-            const Icon = item.icon
-            const isOpen = expanded === item.number
+          {/* الرؤية والرسالة: بطاقات بنفس تصميم بطاقات القيم */}
 
-            return (
-              <article
-                className="vmg-card"
-                key={item.number}
-                style={{
-                  '--vmg-color': item.color,
-                  '--vmg-tint': item.tint,
-                } as React.CSSProperties}
-                data-reveal
-              >
-                <div className="vmg-card-top">
-                  <span className="vmg-number">
-                    {item.number}
-                  </span>
+          <div
+            data-reveal
+            className="about-values reveal-section"
+          >
+            <div className="about-block-heading centered">
+              <span className="section-kicker">
+                رؤيتنا ورسالتنا
+              </span>
 
-                  <div className="vmg-icon">
-                    <Icon size={27} strokeWidth={1.8} />
-                  </div>
-                </div>
+              <h3>
+                ما الذي نسعى إليه؟
+              </h3>
 
-                <h4>{item.title}</h4>
+              <p>
+                طموح واضح ورسالة نعمل من أجل تحقيقها.
+              </p>
+            </div>
 
-                <span className="vmg-english">
-                  {item.english}
-                </span>
+            <div className="about-mini-grid">
+              {visionMission.map((item, index) => {
+                const Icon = item.icon
+                const isOpen = openVision === index
 
-                <p className="vmg-short">
-                  {item.short}
-                </p>
+                return (
+                  <article
+                    className={`about-mini-card ${
+                      isOpen ? 'is-expanded' : ''
+                    }`}
+                    key={item.title}
+                  >
+                    <div className="about-card-top">
+                      <span className="value-number">
+                        {item.number}
+                      </span>
 
-                {isOpen && (
-                  <p className="vmg-description">
-                    {item.description}
-                  </p>
-                )}
-
-                <MoreButton
-                  open={isOpen}
-                  onClick={() =>
-                    setExpanded(isOpen ? null : item.number)
-                  }
-                />
-              </article>
-            )
-          })}
-        </div>
-
-        <section className="vmg-block" data-reveal>
-          <header className="vmg-block-heading">
-            <span className="vmg-kicker">
-              <Target size={15} />
-              خطتنا نحو التميز
-            </span>
-
-            <h3>
-              أهدافنا <em>الاستراتيجية</em>
-            </h3>
-
-            <p>
-              نعمل على تطوير خدماتنا والارتقاء بتجربة المستفيد
-              من خلال أهداف واضحة تجمع الجودة والابتكار والسهولة.
-            </p>
-          </header>
-
-          <div className="vmg-goals-grid">
-            {goals.map((goal, index) => {
-              const Icon = goal.icon
-              const key = `goal-${index}`
-              const isOpen = expanded === key
-
-              return (
-                <article
-                  className="vmg-goal"
-                  key={goal.title}
-                  style={{
-                    '--vmg-color': goal.color,
-                    '--vmg-tint': goal.tint,
-                  } as React.CSSProperties}
-                >
-                  <div className="vmg-card-top">
-                    <span className="vmg-number">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-
-                    <div className="vmg-icon">
-                      <Icon size={26} strokeWidth={1.8} />
+                      <div className="about-icon-box">
+                        <Icon
+                          size={27}
+                          strokeWidth={1.8}
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <h4>{goal.title}</h4>
+                    <h4>{item.title}</h4>
 
-                  <p>
-                    {isOpen
-                      ? goal.description
-                      : goal.short}
-                  </p>
+                    <p>
+                      {isOpen ? item.long : item.short}
+                    </p>
 
-                  <MoreButton
-                    open={isOpen}
-                    onClick={() =>
-                      setExpanded(isOpen ? null : key)
-                    }
-                  />
-                </article>
-              )
-            })}
+                    <MoreButton
+                      open={isOpen}
+                      onClick={() =>
+                        setOpenVision(isOpen ? null : index)
+                      }
+                    />
+                  </article>
+                )
+              })}
+            </div>
           </div>
-        </section>
 
-        <div className="vmg-footer">
-          <ShieldCheck size={17} />
-          <span>
-            منصة هديل — جودة واهتمام وابتكار في الخدمات الطلابية والأكاديمية والرقمية.
-          </span>
+          {/* الأهداف: بطاقات المزايا بنفس أسلوب القسم الأصلي */}
+
+          <div
+            data-reveal
+            className="about-why reveal-section"
+          >
+            <div className="about-block-heading centered">
+              <span className="section-kicker">
+                أهدافنا الاستراتيجية
+              </span>
+
+              <h3>
+                خطواتنا نحو
+                <br />
+                <em>التميز والتطوير</em>
+              </h3>
+
+              <p>
+                أهداف نعمل عليها لتقديم تجربة أفضل لطلابنا وعملائنا.
+              </p>
+            </div>
+
+            <div className="about-feature-grid">
+              {goals.map((goal, index) => {
+                const Icon = goal.icon
+                const isOpen = openGoal === index
+
+                return (
+                  <article
+                    className={`about-feature-card ${
+                      isOpen ? 'is-expanded' : ''
+                    }`}
+                    key={goal.title}
+                  >
+                    <div className="feature-icon-box">
+                      <Icon
+                        size={28}
+                        strokeWidth={1.8}
+                      />
+                    </div>
+
+                    <div className="about-feature-content">
+                      <strong>{goal.title}</strong>
+
+                      <small>
+                        {isOpen ? goal.long : goal.short}
+                      </small>
+
+                      <MoreButton
+                        open={isOpen}
+                        onClick={() =>
+                          setOpenGoal(isOpen ? null : index)
+                        }
+                      />
+                    </div>
+
+                    <span className="feature-check">
+                      <Check
+                        size={14}
+                        strokeWidth={3}
+                      />
+                    </span>
+                  </article>
+                )
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </section>
