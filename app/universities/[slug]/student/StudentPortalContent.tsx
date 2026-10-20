@@ -12,7 +12,6 @@ FolderOpen,
 Search,
 Sparkles,
 LibraryBig,
-ExternalLink,
 Files,
 } from "lucide-react"
 
@@ -25,8 +24,6 @@ university: University
 
 export default function StudentPortalContent({ university }: Props) {
 const [search, setSearch] = useState("")
-
-const universityName = university.name
 
 return (
 <main className="student-portal" dir="rtl">
@@ -66,7 +63,7 @@ return (
 
       <h1>
         أهلًا بك في بوابة طالب
-        <span>{universityName}</span>
+        <span>{university.name}</span>
       </h1>
 
       <p>
@@ -241,3 +238,7 @@ return (
       </p>
     </div>
   </section>
+</main>
+
+)
+}
