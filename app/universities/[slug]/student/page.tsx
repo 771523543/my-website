@@ -8,7 +8,9 @@ import {
   type University,
 } from "@/app/components/universities/data"
 
-import StudentPortalContent from "./StudentPortalContent"
+import StudentPortalContent, {
+  type StudentFile,
+} from "./StudentPortalContent"
 
 type PageProps = {
   params: Promise<{
@@ -17,6 +19,7 @@ type PageProps = {
 }
 
 type UniversityRow = {
+  id: string
   slug: string
   name: string
   city: string | null
@@ -33,7 +36,7 @@ export default async function StudentPage({
   const { data, error } = await supabase
     .from("universities")
     .select(
-      "slug, name, city, description, founded, logo_url"
+      "id, slug, name, city, description, founded, logo_url"
     )
     .eq("slug", slug)
     .eq("published", true)
@@ -55,6 +58,7 @@ export default async function StudentPage({
   }
 
   let university: University
+  let files: StudentFile[] = []
 
   if (data) {
     const row = data as UniversityRow
@@ -76,11 +80,33 @@ export default async function StudentPage({
         "",
       colleges: fallback?.colleges || [],
     }
+
+    const { data: fileData, error: filesError } =
+      await supabase
+        .from("university_files")
+        .select(
+          "id, title, file_url, file_type, display_order"
+        )
+        .eq("university_id", row.id)
+        .order("display_order", { ascending: true })
+        .order("created_at", { ascending: false })
+
+    if (filesError) {
+      console.error(
+        "تعذر تحميل ملفات بوابة الطالب:",
+        filesError.message
+      )
+    } else {
+      files = (fileData || []) as StudentFile[]
+    }
   } else {
     university = fallback!
   }
 
   return (
-    <StudentPortalContent university={university} />
+    <StudentPortalContent
+      university={university}
+      files={files}
+    />
   )
 }
