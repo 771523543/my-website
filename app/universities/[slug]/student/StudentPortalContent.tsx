@@ -241,26 +241,3 @@ return (
       </p>
     </div>
   </section>
-
-  {/* التذييل */}
-  <footer className="sp-footer">
-    <Link href="/" className="sp-footer-brand">
-      <GraduationCap size={25} />
-      <span>منصة هديل</span>
-    </Link>
-
-    <p>معك في رحلتك الأكاديمية</p>
-
-    <Link href="/universities" className="sp-footer-link">
-      استكشف الجامعات
-      <ExternalLink size={15} />
-    </Link>
-
-    <span className="sp-footer-copy">
-      © منصة هديل — جميع الحقوق محفوظة
-    </span>
-  </footer>
-</main>
-
-)
-}
