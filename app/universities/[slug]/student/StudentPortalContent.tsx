@@ -12,9 +12,8 @@ FolderOpen,
 Search,
 Sparkles,
 LibraryBig,
-Download,
 ExternalLink,
-FileQuestion,
+Files,
 } from "lucide-react"
 
 import type { University } from "@/app/components/universities/data"
@@ -42,6 +41,7 @@ return (
       <span className="sp-brand-mark">
         <GraduationCap size={30} />
       </span>
+
       <span className="sp-brand-copy">
         <strong>منصة هديل</strong>
         <small>تعليم يصنع المستقبل</small>
@@ -104,8 +104,13 @@ return (
       <span className="sp-shortcut-icon sp-icon-gold">
         <BookOpen size={30} />
       </span>
+
       <h2>الموارد الأكاديمية</h2>
-      <p>شروحات وأدلة وروابط مفيدة لمساعدتك في مسيرتك الدراسية.</p>
+
+      <p>
+        شروحات وأدلة وروابط مفيدة لمساعدتك في مسيرتك الدراسية.
+      </p>
+
       <span className="sp-round-arrow">
         <ArrowLeft size={17} />
       </span>
@@ -113,10 +118,15 @@ return (
 
     <a href="#university-files" className="sp-shortcut-card">
       <span className="sp-shortcut-icon sp-icon-blue">
-        <FileText size={30} />
+        <Files size={30} />
       </span>
+
       <h2>الملفات والأدلة الجامعية</h2>
-      <p>ملفات PDF وWord والأدلة الجامعية التي تضيفها الإدارة.</p>
+
+      <p>
+        ملفات PDF وWord والأدلة الجامعية المتاحة للطلاب.
+      </p>
+
       <span className="sp-round-arrow">
         <ArrowLeft size={17} />
       </span>
@@ -134,10 +144,14 @@ return (
         <Search size={23} />
         ابحث عن ما تحتاجه
       </h2>
-      <p>اكتب اسم الملف أو الدليل أو المورد الأكاديمي للبحث السريع.</p>
+
+      <p>
+        اكتب اسم الملف أو الدليل أو المورد الأكاديمي للبحث السريع.
+      </p>
 
       <label className="sp-search-box">
         <Search size={21} />
+
         <input
           type="search"
           value={search}
@@ -145,6 +159,7 @@ return (
           placeholder="مثال: دليل التسجيل، الشروحات، المناهج..."
           aria-label="البحث عن الملفات والموارد الأكاديمية"
         />
+
         {search && (
           <button
             type="button"
@@ -156,9 +171,10 @@ return (
           </button>
         )}
       </label>
+
       <p className="sp-search-hint">
         {search
-          ? "سيُستخدم البحث عند توفر محتوى منشور في هذا القسم."
+          ? "سيُستخدم البحث عند ربط الملفات والموارد."
           : "ابحث بسهولة للوصول إلى المحتوى الذي تحتاجه."}
       </p>
     </div>
@@ -173,24 +189,25 @@ return (
       <span className="sp-section-icon sp-icon-blue">
         <FolderOpen size={25} />
       </span>
+
       <div>
         <h2>الملفات والأدلة الجامعية</h2>
-        <p>الأدلة والوثائق والملفات التي تساعدك في رحلتك الجامعية.</p>
+        <p>
+          الأدلة والوثائق والملفات التي تساعدك في رحلتك الجامعية.
+        </p>
       </div>
     </div>
 
     <div className="sp-empty-state">
       <span className="sp-empty-icon sp-icon-blue">
-        <FileQuestion size={34} />
+        <Files size={34} />
       </span>
+
       <h3>الملفات الجامعية</h3>
+
       <p>
-        ستظهر هنا الملفات والأدلة التي تنشرها إدارة منصة هديل لهذه الجامعة.
+        لا توجد ملفات متاحة حاليًا. ستظهر الملفات هنا عند نشرها.
       </p>
-      <span className="sp-admin-label">
-        <GraduationCap size={15} />
-        المحتوى يُدار من لوحة الإدارة
-      </span>
     </div>
   </section>
 
@@ -203,24 +220,25 @@ return (
       <span className="sp-section-icon sp-icon-gold">
         <BookOpen size={25} />
       </span>
+
       <div>
         <h2>الموارد الأكاديمية</h2>
-        <p>مصادر تعليمية وشروحات وروابط مفيدة لمسيرتك الأكاديمية.</p>
+        <p>
+          مصادر تعليمية وشروحات وروابط مفيدة لمسيرتك الأكاديمية.
+        </p>
       </div>
     </div>
 
     <div className="sp-empty-state">
       <span className="sp-empty-icon sp-icon-gold">
-        <LibraryBig size={34} />
+        <BookOpen size={34} />
       </span>
+
       <h3>الموارد الأكاديمية</h3>
+
       <p>
-        ستظهر هنا الشروحات والأدلة والروابط التعليمية التي تضيفها الإدارة.
+        لا توجد موارد متاحة حاليًا. ستظهر الموارد هنا عند نشرها.
       </p>
-      <span className="sp-admin-label sp-admin-label-gold">
-        <GraduationCap size={15} />
-        المحتوى يُدار من لوحة الإدارة
-      </span>
     </div>
   </section>
 
