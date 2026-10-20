@@ -18,6 +18,10 @@ import {
   BookOpen,
   MapPin,
   Globe,
+  FolderOpen,
+  BookMarked,
+  Search,
+  X,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 
@@ -58,6 +62,8 @@ type UniversityFile = {
   title: string
   file_url: string
   file_type: string | null
+  category: 'files' | 'resources'
+  display_order: number
 }
 
 const emptyForm = {
@@ -73,6 +79,14 @@ const emptyForm = {
   display_order: '0',
 }
 
+const MAX_FILE_SIZE = 20 * 1024 * 1024
+const MAX_LOGO_SIZE = 10 * 1024 * 1024
+
+const allowedExtensions = [
+  'pdf', 'doc', 'docx', 'ppt', 'pptx',
+  'xls', 'xlsx', 'png', 'jpg', 'jpeg', 'webp',
+]
+
 export default function AdminUniversitiesPage() {
   const router = useRouter()
 
@@ -80,13 +94,14 @@ export default function AdminUniversitiesPage() {
   const [allowed, setAllowed] = useState(false)
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
+  const [search, setSearch] = useState('')
 
   const [universities, setUniversities] = useState<University[]>([])
   const [selectedId, setSelectedId] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
-
   const [form, setForm] = useState(emptyForm)
   const [logoFile, setLogoFile] = useState<File | null>(null)
 
@@ -94,6 +109,7 @@ export default function AdminUniversitiesPage() {
   const [selectedCollegeId, setSelectedCollegeId] = useState('')
   const [collegeName, setCollegeName] = useState('')
   const [collegeDescription, setCollegeDescription] = useState('')
+
   const [majors, setMajors] = useState<Major[]>([])
   const [majorName, setMajorName] = useState('')
   const [majorDegree, setMajorDegree] = useState('')
@@ -101,9 +117,22 @@ export default function AdminUniversitiesPage() {
   const [universityFiles, setUniversityFiles] = useState<UniversityFile[]>([])
   const [attachment, setAttachment] = useState<File | null>(null)
   const [attachmentTitle, setAttachmentTitle] = useState('')
+  const [attachmentCategory, setAttachmentCategory] =
+    useState<'files' | 'resources'>('files')
 
   const selectedUniversity =
     universities.find((item) => item.id === selectedId) ?? null
+
+  const filteredUniversities = universities.filter((university) => {
+    const term = search.trim().toLowerCase()
+    if (!term) return true
+
+    return (
+      university.name.toLowerCase().includes(term) ||
+      university.slug.toLowerCase().includes(term) ||
+      (university.city ?? '').toLowerCase().includes(term)
+    )
+  })
 
   const loadUniversities = useCallback(async () => {
     setLoading(true)
@@ -148,6 +177,7 @@ export default function AdminUniversitiesPage() {
         .select('*')
         .eq('university_id', universityId)
         .order('display_order', { ascending: true }),
+
       supabase
         .from('university_files')
         .select('*')
@@ -175,10 +205,10 @@ export default function AdminUniversitiesPage() {
         : collegeRows[0]?.id ?? ''
     )
 
-    if (collegeRows.length === 0) {
+    if (!collegeRows.some((item) => item.id === selectedCollegeId)) {
       setMajors([])
     }
-  }, [])
+  }, [selectedCollegeId])
 
   const loadMajors = useCallback(async (collegeId: string) => {
     if (!collegeId) {
@@ -212,9 +242,7 @@ export default function AdminUniversitiesPage() {
       if (!active) return
 
       if (authError || !user) {
-        router.replace(
-          '/auth/login?next=%2Fadmin%2Funiversities'
-        )
+        router.replace('/auth/login?next=%2Fadmin%2Funiversities')
         return
       }
 
@@ -248,6 +276,7 @@ export default function AdminUniversitiesPage() {
       setColleges([])
       setMajors([])
       setUniversityFiles([])
+      setSelectedCollegeId('')
     }
   }, [allowed, selectedId, loadUniversityDetails])
 
@@ -290,7 +319,9 @@ export default function AdminUniversitiesPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  async function saveUniversity(event: React.FormEvent<HTMLFormElement>) {
+  async function saveUniversity(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault()
     setSaving(true)
     setError('')
@@ -332,6 +363,16 @@ export default function AdminUniversitiesPage() {
         throw new Error('تحقق من سنة التأسيس.')
       }
 
+      if (logoFile) {
+        if (!logoFile.type.startsWith('image/')) {
+          throw new Error('اختر ملف صورة صالحًا للشعار.')
+        }
+
+        if (logoFile.size > MAX_LOGO_SIZE) {
+          throw new Error('حجم الشعار يجب ألا يتجاوز 10 ميجابايت.')
+        }
+      }
+
       let universityId = editingId
 
       if (editingId) {
@@ -357,14 +398,6 @@ export default function AdminUniversitiesPage() {
       }
 
       if (logoFile) {
-        if (!logoFile.type.startsWith('image/')) {
-          throw new Error('اختر ملف صورة صالحًا للشعار.')
-        }
-
-        if (logoFile.size > 10 * 1024 * 1024) {
-          throw new Error('حجم الشعار يجب ألا يتجاوز 10 ميجابايت.')
-        }
-
         const extension =
           logoFile.name.split('.').pop()?.toLowerCase() || 'jpg'
         const path = `${universityId}/logo-${Date.now()}.${extension}`
@@ -430,14 +463,14 @@ export default function AdminUniversitiesPage() {
 
     setCollegeName('')
     setCollegeDescription('')
-    setNotice('تمت إضافة الكلية.')
+    setNotice('تمت إضافة الكلية بنجاح.')
     await loadUniversityDetails(selectedId)
   }
 
   async function deleteCollege(college: College) {
     if (
       !window.confirm(
-        `هل تريد حذف "${college.name}"؟ سيؤدي ذلك إلى حذف تخصصاتها أيضًا.`
+        `هل تريد حذف "${college.name}"؟ قد يؤدي ذلك إلى حذف تخصصاتها المرتبطة وفق إعدادات قاعدة البيانات.`
       )
     ) return
 
@@ -456,7 +489,7 @@ export default function AdminUniversitiesPage() {
       setMajors([])
     }
 
-    setNotice('تم حذف الكلية وتخصصاتها.')
+    setNotice('تم حذف الكلية.')
     await loadUniversityDetails(selectedId)
   }
 
@@ -483,7 +516,7 @@ export default function AdminUniversitiesPage() {
 
     setMajorName('')
     setMajorDegree('')
-    setNotice('تمت إضافة التخصص.')
+    setNotice('تمت إضافة التخصص بنجاح.')
     await loadMajors(selectedCollegeId)
   }
 
@@ -517,14 +550,22 @@ export default function AdminUniversitiesPage() {
     setError('')
     setNotice('')
 
-    if (attachment.size > 20 * 1024 * 1024) {
+    if (attachment.size > MAX_FILE_SIZE) {
       setError('حجم الملف يجب ألا يتجاوز 20 ميجابايت.')
       return
     }
 
+    const extension =
+      attachment.name.split('.').pop()?.toLowerCase() || ''
+
+    if (!allowedExtensions.includes(extension)) {
+      setError('نوع الملف غير مدعوم. اختر PDF أو Word أو PowerPoint أو Excel أو صورة.')
+      return
+    }
+
+    setUploading(true)
+
     try {
-      const extension =
-        attachment.name.split('.').pop()?.toLowerCase() || 'file'
       const path =
         `${selectedId}/files/${Date.now()}-${Math.random()
           .toString(36).slice(2, 8)}.${extension}`
@@ -549,14 +590,20 @@ export default function AdminUniversitiesPage() {
           title: attachmentTitle.trim(),
           file_url: urlData.publicUrl,
           file_type: extension,
+          category: attachmentCategory,
           display_order: universityFiles.length,
         })
 
-      if (insertError) throw insertError
+      if (insertError) {
+        throw new Error(
+          `تم رفع الملف إلى التخزين، لكن تعذر تسجيله في قاعدة البيانات: ${insertError.message}`
+        )
+      }
 
       setAttachment(null)
       setAttachmentTitle('')
-      setNotice('تم رفع الملف وحفظ رابطه.')
+      setAttachmentCategory('files')
+      setNotice('تم رفع الملف وحفظه في القسم المحدد.')
 
       const input = document.getElementById(
         'university-attachment'
@@ -566,9 +613,9 @@ export default function AdminUniversitiesPage() {
 
       await loadUniversityDetails(selectedId)
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'تعذر رفع الملف.'
-      )
+      setError(err instanceof Error ? err.message : 'تعذر رفع الملف.')
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -592,7 +639,7 @@ export default function AdminUniversitiesPage() {
   async function deleteUniversity(university: University) {
     if (
       !window.confirm(
-        `هل أنت متأكد من حذف "${university.name}"؟ سيُحذف معها سجل كلياتها وتخصصاتها وملفاتها.`
+        `هل أنت متأكد من حذف "${university.name}"؟ سيُحذف معها سجل بياناتها المرتبطة وفق إعدادات قاعدة البيانات.`
       )
     ) return
 
@@ -606,7 +653,7 @@ export default function AdminUniversitiesPage() {
       return
     }
 
-    setNotice('تم حذف الجامعة وبياناتها المرتبطة.')
+    setNotice('تم حذف الجامعة.')
     if (editingId === university.id) startNewUniversity()
     setSelectedId('')
     await loadUniversities()
@@ -629,7 +676,10 @@ export default function AdminUniversitiesPage() {
           <GraduationCap size={42} />
           <h1>إدارة الجامعات</h1>
           <p>هذه الصفحة مخصصة للمشرفين المعتمدين في منصة هديل.</p>
-          <button className="ua-button" onClick={() => router.replace('/account')}>
+          <button
+            className="ua-button"
+            onClick={() => router.replace('/account')}
+          >
             العودة إلى حسابي
           </button>
         </section>
@@ -637,6 +687,23 @@ export default function AdminUniversitiesPage() {
       </main>
     )
   }
+
+  const fileSections = [
+    {
+      id: 'files' as const,
+      title: 'الملفات والأدلة الجامعية',
+      description: 'الأدلة واللوائح والتقويمات والنماذج الجامعية.',
+      icon: FolderOpen,
+      items: universityFiles.filter((file) => file.category !== 'resources'),
+    },
+    {
+      id: 'resources' as const,
+      title: 'الموارد الأكاديمية',
+      description: 'المقررات والملخصات والمراجع والمواد التعليمية.',
+      icon: BookMarked,
+      items: universityFiles.filter((file) => file.category === 'resources'),
+    },
+  ]
 
   return (
     <main dir="rtl" className="ua-page">
@@ -671,20 +738,57 @@ export default function AdminUniversitiesPage() {
           <div>
             <span className="ua-eyebrow">منصة هديل · لوحة المشرف</span>
             <h1>إدارة الجامعات</h1>
-            <p>أضف الجامعات وحدّث بياناتها وشعاراتها وكلياتها وتخصصاتها وملفاتها.</p>
+            <p>
+              إدارة الجامعات والكليات والتخصصات وملفات بوابة الطالب من مكان واحد.
+            </p>
           </div>
         </section>
 
-        {error && <div className="ua-alert ua-alert-error" role="alert">{error}</div>}
-        {notice && <div className="ua-alert ua-alert-success" role="status">{notice}</div>}
+        <section className="ua-stats">
+          <article className="ua-stat">
+            <span className="ua-stat-icon blue"><GraduationCap size={22} /></span>
+            <div><strong>{universities.length}</strong><small>جامعة مسجلة</small></div>
+          </article>
+          <article className="ua-stat">
+            <span className="ua-stat-icon green"><BookOpen size={22} /></span>
+            <div><strong>{colleges.length}</strong><small>كلية في الجامعة المحددة</small></div>
+          </article>
+          <article className="ua-stat">
+            <span className="ua-stat-icon purple"><FileText size={22} /></span>
+            <div><strong>{universityFiles.length}</strong><small>ملف للجامعة المحددة</small></div>
+          </article>
+        </section>
 
-        <section className="ua-panel">
+        {error && (
+          <div className="ua-alert ua-alert-error" role="alert">
+            {error}
+            <button type="button" onClick={() => setError('')} aria-label="إغلاق">
+              <X size={16} />
+            </button>
+          </div>
+        )}
+
+        {notice && (
+          <div className="ua-alert ua-alert-success" role="status">
+            {notice}
+            <button type="button" onClick={() => setNotice('')} aria-label="إغلاق">
+              <X size={16} />
+            </button>
+          </div>
+        )}
+
+        <section className="ua-panel" id="university-form">
           <div className="ua-panel-heading">
             <div>
+              <span className="ua-section-kicker">بيانات الجامعة</span>
               <h2>{editingId ? 'تعديل بيانات الجامعة' : 'إضافة جامعة جديدة'}</h2>
-              <p>الحقول التي تحمل علامة * مطلوبة.</p>
+              <p>أدخل البيانات التي ستظهر في صفحات الجامعات بالموقع.</p>
             </div>
-            <button type="button" className="ua-button ua-button-light" onClick={startNewUniversity}>
+            <button
+              type="button"
+              className="ua-button ua-button-light"
+              onClick={startNewUniversity}
+            >
               <Plus size={17} />
               جامعة جديدة
             </button>
@@ -710,7 +814,7 @@ export default function AdminUniversitiesPage() {
                 onChange={(e) => setForm({ ...form, slug: e.target.value })}
                 placeholder="king-saud-university"
               />
-              <small>يُستخدم في رابط صفحة الجامعة، واستخدم الإنجليزية والأرقام والشرطة فقط.</small>
+              <small>استخدم الإنجليزية والأرقام والشرطة فقط.</small>
             </label>
 
             <label>
@@ -745,9 +849,10 @@ export default function AdminUniversitiesPage() {
             </label>
 
             <label>
-              ترتيب العرض
+              ترتيب الجامعة
               <input
                 type="number"
+                min="0"
                 value={form.display_order}
                 onChange={(e) => setForm({ ...form, display_order: e.target.value })}
               />
@@ -756,7 +861,7 @@ export default function AdminUniversitiesPage() {
             <label className="ua-full">
               وصف الجامعة
               <textarea
-                rows={3}
+                rows={4}
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 placeholder="نبذة تعريفية عن الجامعة..."
@@ -764,7 +869,7 @@ export default function AdminUniversitiesPage() {
             </label>
 
             <label>
-              الموقع الرسمي
+              رابط الموقع الرسمي
               <input
                 type="url"
                 dir="ltr"
@@ -775,7 +880,7 @@ export default function AdminUniversitiesPage() {
             </label>
 
             <label>
-              بوابة الطالب
+              رابط بوابة الطالب الخارجية (اختياري)
               <input
                 type="url"
                 dir="ltr"
@@ -783,20 +888,18 @@ export default function AdminUniversitiesPage() {
                 onChange={(e) => setForm({ ...form, student_portal_url: e.target.value })}
                 placeholder="https://..."
               />
+              <small>صفحة الملفات الداخلية للموقع مستقلة عن هذا الرابط.</small>
             </label>
 
             <label className="ua-upload ua-full">
-              <span><Upload size={19} /> شعار الجامعة</span>
+              <span><Upload size={18} /> شعار الجامعة</span>
               <input
                 type="file"
                 accept="image/png,image/jpeg,image/webp,image/svg+xml"
                 onChange={(e) => setLogoFile(e.target.files?.[0] ?? null)}
               />
               <small>
-                {logoFile?.name ||
-                  (editingId
-                    ? 'اختر صورة جديدة لاستبدال الشعار الحالي.'
-                    : 'اختر صورة الشعار من جهازك. الحد الأقصى 10 ميجابايت.')}
+                اختياري. عند اختيار شعار جديد سيُرفع إلى مساحة university-assets.
               </small>
             </label>
 
@@ -807,21 +910,30 @@ export default function AdminUniversitiesPage() {
                 onChange={(e) => setForm({ ...form, published: e.target.checked })}
               />
               <span>
-                <strong>نشر الجامعة</strong>
-                <small>عند التفعيل تصبح الجامعة مؤهلة للظهور في العرض العام بعد ربط صفحات الموقع بقاعدة البيانات.</small>
+                <strong>نشر الجامعة في الموقع</strong>
+                <small>عند إلغاء التحديد تُحفظ الجامعة كمسودة.</small>
               </span>
             </label>
 
             <div className="ua-form-actions ua-full">
-              <button className="ua-button" type="submit" disabled={saving}>
-                {saving ? <LoaderCircle className="ua-spin" size={18} /> : <Save size={18} />}
-                {saving ? 'جارٍ الحفظ...' : editingId ? 'حفظ التعديلات' : 'إضافة الجامعة'}
+              <button type="submit" className="ua-button" disabled={saving}>
+                {saving ? (
+                  <LoaderCircle className="ua-spin" size={17} />
+                ) : (
+                  <Save size={17} />
+                )}
+                {saving ? 'جارٍ الحفظ...' : 'حفظ بيانات الجامعة'}
               </button>
+
               {editingId && (
-                <button type="button" className="ua-button ua-button-danger" onClick={() => {
-                  const item = universities.find((u) => u.id === editingId)
-                  if (item) void deleteUniversity(item)
-                }}>
+                <button
+                  type="button"
+                  className="ua-button ua-button-danger"
+                  onClick={() => {
+                    const item = universities.find((u) => u.id === editingId)
+                    if (item) void deleteUniversity(item)
+                  }}
+                >
                   <Trash2 size={17} />
                   حذف الجامعة
                 </button>
@@ -833,19 +945,34 @@ export default function AdminUniversitiesPage() {
         <section className="ua-panel">
           <div className="ua-panel-heading">
             <div>
+              <span className="ua-section-kicker">قائمة الجامعات</span>
               <h2>الجامعات المسجلة</h2>
-              <p>اختر جامعة لإدارة كلياتها وتخصصاتها وملفاتها.</p>
+              <p>اختر جامعة لعرض كلياتها وتخصصاتها وملفات بوابة الطالب.</p>
             </div>
             <span className="ua-count">{universities.length} جامعة</span>
           </div>
 
+          <div className="ua-search">
+            <Search size={18} />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="ابحث باسم الجامعة أو المدينة..."
+            />
+          </div>
+
           {loading ? (
-            <div className="ua-empty"><LoaderCircle className="ua-spin" /> جارٍ تحميل الجامعات...</div>
-          ) : universities.length === 0 ? (
-            <div className="ua-empty">لا توجد جامعات في قاعدة البيانات بعد. أضف أول جامعة من النموذج أعلاه.</div>
+            <div className="ua-empty">
+              <LoaderCircle className="ua-spin" />
+              جارٍ تحميل الجامعات...
+            </div>
+          ) : filteredUniversities.length === 0 ? (
+            <div className="ua-empty">
+              لا توجد نتائج مطابقة للبحث.
+            </div>
           ) : (
             <div className="ua-university-list">
-              {universities.map((university) => (
+              {filteredUniversities.map((university) => (
                 <article
                   key={university.id}
                   className={`ua-university ${selectedId === university.id ? 'ua-selected' : ''}`}
@@ -853,23 +980,44 @@ export default function AdminUniversitiesPage() {
                   <button
                     type="button"
                     className="ua-university-main"
-                    onClick={() => setSelectedId(university.id)}
+                    onClick={() => {
+                      setSelectedId(university.id)
+                      setError('')
+                      setNotice('')
+                    }}
                   >
                     {university.logo_url ? (
-                      <img src={university.logo_url} alt="" className="ua-logo" />
+                      <img
+                        src={university.logo_url}
+                        alt={`شعار ${university.name}`}
+                        className="ua-logo"
+                      />
                     ) : (
-                      <span className="ua-logo ua-logo-placeholder"><GraduationCap size={24} /></span>
+                      <span className="ua-logo ua-logo-placeholder">
+                        <GraduationCap size={24} />
+                      </span>
                     )}
+
                     <span className="ua-university-info">
                       <strong>{university.name}</strong>
-                      <small><MapPin size={13} /> {university.city || 'لم تُحدد المدينة'}</small>
-                      <small>{university.slug}</small>
+                      <small>
+                        <MapPin size={13} />
+                        {university.city || 'لم تُحدد المدينة'}
+                      </small>
+                      <small dir="ltr">{university.slug}</small>
                     </span>
+
                     <span className={`ua-status ${university.published ? 'ua-status-live' : ''}`}>
                       {university.published ? 'منشورة' : 'مسودة'}
                     </span>
                   </button>
-                  <button type="button" className="ua-icon-button" aria-label={`تعديل ${university.name}`} onClick={() => startEditing(university)}>
+
+                  <button
+                    type="button"
+                    className="ua-icon-button"
+                    aria-label={`تعديل ${university.name}`}
+                    onClick={() => startEditing(university)}
+                  >
                     <Pencil size={17} />
                   </button>
                 </article>
@@ -883,21 +1031,33 @@ export default function AdminUniversitiesPage() {
             <section className="ua-panel">
               <div className="ua-panel-heading">
                 <div>
+                  <span className="ua-section-kicker">الهيكل الأكاديمي</span>
                   <h2><BookOpen size={21} /> الكليات والتخصصات</h2>
-                  <p>الجامعة المحددة: {selectedUniversity.name}</p>
+                  <p>الجامعة المحددة: <strong>{selectedUniversity.name}</strong></p>
                 </div>
               </div>
 
               <form className="ua-inline-form" onSubmit={addCollege}>
                 <label>
                   اسم الكلية *
-                  <input required value={collegeName} onChange={(e) => setCollegeName(e.target.value)} placeholder="كلية علوم الحاسب" />
+                  <input
+                    required
+                    value={collegeName}
+                    onChange={(e) => setCollegeName(e.target.value)}
+                    placeholder="كلية علوم الحاسب"
+                  />
                 </label>
                 <label>
                   وصف مختصر
-                  <input value={collegeDescription} onChange={(e) => setCollegeDescription(e.target.value)} placeholder="اختياري" />
+                  <input
+                    value={collegeDescription}
+                    onChange={(e) => setCollegeDescription(e.target.value)}
+                    placeholder="اختياري"
+                  />
                 </label>
-                <button className="ua-button" type="submit"><Plus size={17} /> إضافة كلية</button>
+                <button className="ua-button" type="submit">
+                  <Plus size={17} /> إضافة كلية
+                </button>
               </form>
 
               {colleges.length === 0 ? (
@@ -906,12 +1066,23 @@ export default function AdminUniversitiesPage() {
                 <div className="ua-college-layout">
                   <div className="ua-college-list">
                     {colleges.map((college) => (
-                      <div key={college.id} className={`ua-college-row ${selectedCollegeId === college.id ? 'ua-college-active' : ''}`}>
-                        <button type="button" onClick={() => setSelectedCollegeId(college.id)}>
+                      <div
+                        key={college.id}
+                        className={`ua-college-row ${selectedCollegeId === college.id ? 'ua-college-active' : ''}`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setSelectedCollegeId(college.id)}
+                        >
                           <strong>{college.name}</strong>
                           <small>{college.description || 'عرض التخصصات'}</small>
                         </button>
-                        <button type="button" className="ua-icon-button ua-delete-icon" aria-label={`حذف ${college.name}`} onClick={() => void deleteCollege(college)}>
+                        <button
+                          type="button"
+                          className="ua-icon-button ua-delete-icon"
+                          aria-label={`حذف ${college.name}`}
+                          onClick={() => void deleteCollege(college)}
+                        >
                           <Trash2 size={16} />
                         </button>
                       </div>
@@ -920,18 +1091,30 @@ export default function AdminUniversitiesPage() {
 
                   <div className="ua-major-area">
                     <h3>تخصصات الكلية</h3>
+
                     {selectedCollegeId ? (
                       <>
                         <form className="ua-inline-form" onSubmit={addMajor}>
                           <label>
                             اسم التخصص *
-                            <input required value={majorName} onChange={(e) => setMajorName(e.target.value)} placeholder="علوم الحاسب" />
+                            <input
+                              required
+                              value={majorName}
+                              onChange={(e) => setMajorName(e.target.value)}
+                              placeholder="علوم الحاسب"
+                            />
                           </label>
                           <label>
                             الدرجة العلمية
-                            <input value={majorDegree} onChange={(e) => setMajorDegree(e.target.value)} placeholder="بكالوريوس" />
+                            <input
+                              value={majorDegree}
+                              onChange={(e) => setMajorDegree(e.target.value)}
+                              placeholder="بكالوريوس"
+                            />
                           </label>
-                          <button type="submit" className="ua-button"><Plus size={17} /> إضافة تخصص</button>
+                          <button type="submit" className="ua-button">
+                            <Plus size={17} /> إضافة تخصص
+                          </button>
                         </form>
 
                         {majors.length === 0 ? (
@@ -944,7 +1127,12 @@ export default function AdminUniversitiesPage() {
                                   <strong>{major.name}</strong>
                                   {major.degree && <small>{major.degree}</small>}
                                 </span>
-                                <button type="button" className="ua-icon-button ua-delete-icon" aria-label={`حذف ${major.name}`} onClick={() => void deleteMajor(major)}>
+                                <button
+                                  type="button"
+                                  className="ua-icon-button ua-delete-icon"
+                                  aria-label={`حذف ${major.name}`}
+                                  onClick={() => void deleteMajor(major)}
+                                >
                                   <Trash2 size={16} />
                                 </button>
                               </li>
@@ -963,64 +1151,171 @@ export default function AdminUniversitiesPage() {
             <section className="ua-panel">
               <div className="ua-panel-heading">
                 <div>
-                  <h2><FileText size={21} /> ملفات الجامعة</h2>
-                  <p>ارفع ملفات تعريفية أو أدلة أو مستندات مرتبطة بالجامعة.</p>
+                  <span className="ua-section-kicker">بوابة الطالب</span>
+                  <h2><FolderOpen size={21} /> إدارة ملفات الجامعة</h2>
+                  <p>
+                    الملفات التي ترفعها هنا ستُربط بالجامعة المحددة وتُصنّف في بوابة الطالب.
+                  </p>
                 </div>
               </div>
 
-              <form className="ua-inline-form" onSubmit={uploadUniversityFile}>
+              <div className="ua-file-categories">
+                <div className="ua-category-summary">
+                  <span className="ua-category-icon gold"><FolderOpen size={23} /></span>
+                  <div>
+                    <strong>الملفات والأدلة الجامعية</strong>
+                    <small>الأدلة واللوائح والنماذج والتقويم الأكاديمي.</small>
+                  </div>
+                  <span className="ua-count">
+                    {fileSections[0].items.length}
+                  </span>
+                </div>
+                <div className="ua-category-summary">
+                  <span className="ua-category-icon green"><BookMarked size={23} /></span>
+                  <div>
+                    <strong>الموارد الأكاديمية</strong>
+                    <small>المقررات والملخصات والمراجع والمواد التعليمية.</small>
+                  </div>
+                  <span className="ua-count">
+                    {fileSections[1].items.length}
+                  </span>
+                </div>
+              </div>
+
+              <form className="ua-file-form" onSubmit={uploadUniversityFile}>
                 <label>
                   اسم الملف *
-                  <input required value={attachmentTitle} onChange={(e) => setAttachmentTitle(e.target.value)} placeholder="دليل القبول" />
+                  <input
+                    required
+                    value={attachmentTitle}
+                    onChange={(e) => setAttachmentTitle(e.target.value)}
+                    placeholder="مثال: دليل القبول الجامعي"
+                  />
                 </label>
+
                 <label>
-                  اختر الملف *
+                  القسم الذي سيظهر فيه الملف *
+                  <select
+                    required
+                    value={attachmentCategory}
+                    onChange={(e) =>
+                      setAttachmentCategory(
+                        e.target.value as 'files' | 'resources'
+                      )
+                    }
+                  >
+                    <option value="files">الملفات والأدلة الجامعية</option>
+                    <option value="resources">الموارد الأكاديمية</option>
+                  </select>
+                </label>
+
+                <label className="ua-upload">
+                  <span><Upload size={18} /> اختر الملف *</span>
                   <input
                     id="university-attachment"
                     required
                     type="file"
-                    accept=".pdf,.doc,.docx,.ppt,.pptx,.png,.jpg,.jpeg,.webp"
+                    accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.png,.jpg,.jpeg,.webp"
                     onChange={(e) => setAttachment(e.target.files?.[0] ?? null)}
                   />
+                  <small>الحد الأقصى 20 ميجابايت للملف الواحد.</small>
                 </label>
-                <button className="ua-button" type="submit"><Upload size={17} /> رفع الملف</button>
+
+                <button className="ua-button" type="submit" disabled={uploading}>
+                  {uploading ? (
+                    <LoaderCircle className="ua-spin" size={17} />
+                  ) : (
+                    <Upload size={17} />
+                  )}
+                  {uploading ? 'جارٍ رفع الملف...' : 'رفع الملف وحفظه'}
+                </button>
               </form>
 
-              {universityFiles.length === 0 ? (
-                <div className="ua-empty">لا توجد ملفات مسجلة لهذه الجامعة.</div>
-              ) : (
-                <div className="ua-file-list">
-                  {universityFiles.map((file) => (
-                    <article key={file.id} className="ua-file-row">
-                      <FileText size={22} />
+              {fileSections.map((section) => {
+                const SectionIcon = section.icon
+
+                return (
+                  <div className="ua-file-section" key={section.id}>
+                    <div className="ua-file-section-heading">
+                      <span className="ua-section-file-icon">
+                        <SectionIcon size={20} />
+                      </span>
                       <div>
-                        <strong>{file.title}</strong>
-                        <small>{file.file_type || 'ملف'}</small>
+                        <h3>{section.title}</h3>
+                        <p>{section.description}</p>
                       </div>
-                      <a href={file.file_url} target="_blank" rel="noreferrer" aria-label={`فتح ${file.title}`}><ExternalLink size={17} /></a>
-                      <button type="button" className="ua-icon-button ua-delete-icon" aria-label={`حذف ${file.title}`} onClick={() => void deleteUniversityFile(file)}><Trash2 size={16} /></button>
-                    </article>
-                  ))}
-                </div>
-              )}
+                      <span className="ua-count">{section.items.length}</span>
+                    </div>
+
+                    {section.items.length === 0 ? (
+                      <div className="ua-empty">
+                        لا توجد ملفات في هذا القسم حتى الآن.
+                      </div>
+                    ) : (
+                      <div className="ua-file-list">
+                        {section.items.map((file) => (
+                          <article key={file.id} className="ua-file-row">
+                            <FileText size={22} />
+                            <div>
+                              <strong>{file.title}</strong>
+                              <small>
+                                {file.file_type?.toUpperCase() || 'ملف'} · {section.title}
+                              </small>
+                            </div>
+                            <a
+                              href={file.file_url}
+                              target="_blank"
+                              rel="noreferrer"
+                              aria-label={`فتح ${file.title}`}
+                            >
+                              <ExternalLink size={17} />
+                            </a>
+                            <button
+                              type="button"
+                              className="ua-icon-button ua-delete-icon"
+                              aria-label={`حذف ${file.title}`}
+                              onClick={() => void deleteUniversityFile(file)}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </article>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </section>
 
             <section className="ua-panel ua-links-panel">
+              <span className="ua-section-kicker">روابط خارجية</span>
               <h2><Globe size={21} /> روابط الجامعة</h2>
-              <p>هذه الروابط محفوظة ضمن بيانات الجامعة، لكن عرضها في الصفحة العامة يتطلب ربط صفحات الموقع بها.</p>
+              <p>روابط الجامعة المحفوظة في قاعدة البيانات.</p>
+
               {selectedUniversity.official_url && (
-                <a href={selectedUniversity.official_url} target="_blank" rel="noreferrer">
+                <a
+                  href={selectedUniversity.official_url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <ExternalLink size={16} /> الموقع الرسمي
                 </a>
               )}
+
               {selectedUniversity.student_portal_url && (
-                <a href={selectedUniversity.student_portal_url} target="_blank" rel="noreferrer">
-                  <ExternalLink size={16} /> بوابة الطالب
+                <a
+                  href={selectedUniversity.student_portal_url}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <ExternalLink size={16} /> بوابة الطالب الخارجية
                 </a>
               )}
-              {!selectedUniversity.official_url && !selectedUniversity.student_portal_url && (
-                <p>لم تُضف روابط لهذه الجامعة بعد. يمكنك إدخالها من نموذج بيانات الجامعة.</p>
-              )}
+
+              {!selectedUniversity.official_url &&
+                !selectedUniversity.student_portal_url && (
+                  <p>لم تُضف روابط لهذه الجامعة بعد. يمكنك إدخالها من نموذج بيانات الجامعة.</p>
+                )}
             </section>
           </>
         )}
@@ -1043,114 +1338,687 @@ const styles = `
     background: #f5f7fb;
     color: #1e2b43;
   }
+
   .ua-container { max-width: 1100px; margin: 0 auto; }
-  .ua-header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:22px; }
-  .ua-back,.ua-refresh {
-    display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    border:1px solid #e0e7f1; border-radius:12px; padding:10px 13px;
-    background:white; color:#3a4c68; font:inherit; font-size:13px; font-weight:750; cursor:pointer;
+
+  .ua-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
   }
+
+  .ua-back, .ua-refresh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid #e0e7f1;
+    border-radius: 12px;
+    padding: 10px 13px;
+    background: white;
+    color: #3a4c68;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 750;
+    cursor: pointer;
+  }
+
   .ua-hero {
-    display:flex; align-items:center; gap:16px; padding:24px;
-    border:1px solid #dce6f7; border-radius:22px;
-    background:linear-gradient(120deg,#eaf2ff,#f5efff); margin-bottom:20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid #dce6f7;
+    border-radius: 22px;
+    background: linear-gradient(120deg, #eaf2ff, #f5efff);
+    margin-bottom: 18px;
   }
-  .ua-hero-icon { display:grid; place-items:center; width:64px; height:64px; flex-shrink:0; border-radius:19px; background:white; color:#315fb2; }
-  .ua-eyebrow { font-size:12px; font-weight:800; color:#637798; }
-  .ua-hero h1 { margin:5px 0; font-size:clamp(25px,4vw,34px); }
-  .ua-hero p { margin:0; color:#63718a; font-size:14px; line-height:1.9; }
-  .ua-panel { margin-top:20px; padding:22px; border:1px solid #e3e9f2; border-radius:20px; background:white; box-shadow:0 8px 26px #1b315408; }
-  .ua-panel-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:20px; }
-  .ua-panel-heading h2,.ua-links-panel h2 { display:flex; align-items:center; gap:9px; margin:0 0 5px; font-size:20px; }
-  .ua-panel-heading p,.ua-links-panel p { margin:0; color:#78849a; font-size:13px; line-height:1.8; }
-  .ua-count { flex-shrink:0; border-radius:99px; padding:7px 12px; background:#edf3ff; color:#315fb2; font-size:12px; font-weight:800; }
-  .ua-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
-  .ua-form label,.ua-inline-form label { display:flex; flex-direction:column; gap:8px; min-width:0; font-size:13px; font-weight:750; color:#35445d; }
-  .ua-form input:not([type=checkbox]):not([type=file]),.ua-form textarea,.ua-inline-form input:not([type=file]) {
-    width:100%; min-width:0; box-sizing:border-box; border:1px solid #dfe6f0; border-radius:11px;
-    background:#fbfcff; padding:12px; color:#1e2b43; font:inherit; font-size:14px; outline:none;
+
+  .ua-hero-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    border-radius: 19px;
+    background: white;
+    color: #315fb2;
   }
-  .ua-form textarea { resize:vertical; line-height:1.8; }
-  .ua-form input:focus,.ua-form textarea:focus,.ua-inline-form input:focus { border-color:#7ca2e6; box-shadow:0 0 0 3px #eaf1ff; }
-  .ua-form small,.ua-upload small,.ua-publish small { color:#7b879b; font-size:11px; font-weight:400; line-height:1.8; overflow-wrap:anywhere; }
-  .ua-full { grid-column:1/-1; }
-  .ua-upload { padding:14px; border:1px dashed #b8c9e5; border-radius:13px; background:#f8faff; }
-  .ua-upload span { display:flex; align-items:center; gap:8px; color:#315fb2; }
-  .ua-upload input { max-width:100%; font-size:12px; }
-  .ua-publish { display:flex; flex-direction:row!important; align-items:flex-start; gap:11px!important; padding:14px; border:1px solid #e3eaf5; border-radius:13px; background:#fbfcff; }
-  .ua-publish input { width:18px; height:18px; accent-color:#285eb5; margin-top:2px; }
-  .ua-publish span { display:flex; flex-direction:column; gap:4px; }
-  .ua-form-actions { display:flex; flex-wrap:wrap; gap:10px; }
-  .ua-button { display:inline-flex; align-items:center; justify-content:center; gap:8px; border:0; border-radius:11px; padding:12px 16px; background:#285eb5; color:white; font:inherit; font-size:13px; font-weight:800; cursor:pointer; }
-  .ua-button:disabled { opacity:.6; cursor:wait; }
-  .ua-button-light { background:#edf3ff; color:#315fb2; }
-  .ua-button-danger { background:#fff0f0; color:#b43b49; }
-  .ua-university-list { display:grid; gap:10px; }
-  .ua-university { display:flex; align-items:center; gap:8px; padding:10px; border:1px solid #e5eaf2; border-radius:14px; background:#fff; }
-  .ua-selected { border-color:#8baeea; background:#f8faff; }
-  .ua-university-main { display:flex; align-items:center; flex:1; min-width:0; gap:12px; border:0; background:transparent; text-align:right; cursor:pointer; color:inherit; }
-  .ua-logo { width:54px; height:54px; flex-shrink:0; border-radius:12px; object-fit:contain; background:white; border:1px solid #edf0f5; }
-  .ua-logo-placeholder { display:grid; place-items:center; color:#5275b4; }
-  .ua-university-info { display:flex; flex-direction:column; min-width:0; gap:4px; }
-  .ua-university-info strong { font-size:14px; overflow-wrap:anywhere; }
-  .ua-university-info small { display:flex; align-items:center; gap:4px; color:#7b879a; font-size:11px; overflow-wrap:anywhere; }
-  .ua-status { flex-shrink:0; padding:6px 9px; border-radius:99px; background:#f0f2f6; color:#707d91; font-size:11px; font-weight:800; }
-  .ua-status-live { background:#e6f8ee; color:#16754c; }
-  .ua-icon-button { display:grid; place-items:center; width:36px; height:36px; flex-shrink:0; border:1px solid #e1e7f0; border-radius:10px; background:white; color:#50627e; cursor:pointer; }
-  .ua-delete-icon { color:#b33f4c; }
-  .ua-inline-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:end; gap:12px; margin:16px 0; }
-  .ua-inline-form input[type=file] { max-width:100%; font-size:12px; }
-  .ua-college-layout { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:18px; margin-top:20px; }
-  .ua-college-list { display:grid; align-content:start; gap:8px; }
-  .ua-college-row { display:flex; align-items:center; gap:7px; padding:9px; border:1px solid #e6ebf3; border-radius:12px; }
-  .ua-college-active { border-color:#9bb7e9; background:#f3f7ff; }
-  .ua-college-row>button:first-child { flex:1; min-width:0; border:0; background:transparent; text-align:right; color:#273650; cursor:pointer; }
-  .ua-college-row strong,.ua-college-row small { display:block; overflow-wrap:anywhere; }
-  .ua-college-row strong { font-size:13px; }
-  .ua-college-row small { margin-top:4px; color:#8590a3; font-size:11px; }
-  .ua-major-area { min-width:0; padding:15px; border:1px solid #e7edf5; border-radius:15px; background:#fafbfe; }
-  .ua-major-area h3 { margin:0 0 10px; font-size:16px; }
-  .ua-major-list { display:grid; gap:8px; margin:14px 0 0; padding:0; list-style:none; }
-  .ua-major-list li { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px; border:1px solid #e5eaf2; border-radius:11px; background:white; }
-  .ua-major-list li span { display:flex; flex-direction:column; gap:4px; min-width:0; }
-  .ua-major-list strong { font-size:13px; overflow-wrap:anywhere; }
-  .ua-major-list small { color:#7d899c; font-size:11px; }
-  .ua-file-list { display:grid; gap:9px; margin-top:16px; }
-  .ua-file-row { display:flex; align-items:center; gap:12px; padding:12px; border:1px solid #e6ebf3; border-radius:12px; color:#526b98; }
-  .ua-file-row>div { display:flex; flex:1; min-width:0; flex-direction:column; gap:4px; }
-  .ua-file-row strong { color:#293851; font-size:13px; overflow-wrap:anywhere; }
-  .ua-file-row small { color:#8490a3; font-size:11px; }
-  .ua-file-row a { display:grid; place-items:center; width:35px; height:35px; border:1px solid #e2e8f2; border-radius:10px; color:#315fb2; }
-  .ua-links-panel { display:grid; gap:12px; }
-  .ua-links-panel a { display:inline-flex; align-items:center; gap:8px; color:#315fb2; font-size:13px; font-weight:750; text-decoration:none; }
-  .ua-alert { margin:14px 0; padding:12px 14px; border-radius:12px; font-size:13px; line-height:1.8; overflow-wrap:anywhere; }
-  .ua-alert-error { color:#a62f3e; border:1px solid #f1caca; background:#fff2f2; }
-  .ua-alert-success { color:#176f4a; border:1px solid #c9ead7; background:#effbf4; }
-  .ua-empty { display:flex; align-items:center; justify-content:center; gap:9px; min-height:90px; padding:16px; color:#7d899c; font-size:13px; line-height:1.8; text-align:center; }
-  .ua-footer { display:flex; align-items:center; justify-content:center; gap:8px; padding-top:25px; color:#8490a3; font-size:12px; }
-  .ua-center { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:#6b778c; }
-  .ua-denied { max-width:440px; margin:10vh auto; padding:28px; border:1px solid #e2e8f2; border-radius:20px; background:white; text-align:center; }
-  .ua-denied h1 { margin:12px 0; }
-  .ua-denied p { color:#718096; line-height:1.9; }
-  .ua-spin { animation:ua-spin 1s linear infinite; }
-  @keyframes ua-spin { to { transform:rotate(360deg); } }
-  @media(max-width:720px) {
-    .ua-page { padding:16px 11px 36px; }
-    .ua-hero { align-items:flex-start; padding:17px; }
-    .ua-hero-icon { width:48px; height:48px; border-radius:14px; }
-    .ua-panel { padding:15px; }
-    .ua-form { grid-template-columns:minmax(0,1fr); gap:13px; }
-    .ua-full { grid-column:auto; }
-    .ua-panel-heading { align-items:flex-start; }
-    .ua-panel-heading h2 { font-size:17px; }
-    .ua-inline-form { grid-template-columns:minmax(0,1fr); }
-    .ua-college-layout { grid-template-columns:minmax(0,1fr); }
-    .ua-status { font-size:10px; }
-    .ua-university-main { gap:8px; }
-    .ua-logo { width:43px; height:43px; }
-    .ua-university-info strong { font-size:12px; }
-    .ua-header { align-items:stretch; }
-    .ua-back,.ua-refresh { padding:9px; font-size:12px; }
+
+  .ua-eyebrow, .ua-section-kicker {
+    font-size: 12px;
+    font-weight: 800;
+    color: #637798;
   }
-  @media(prefers-reduced-motion:reduce) { .ua-spin { animation:none; } }
+
+  .ua-hero h1 {
+    margin: 5px 0;
+    font-size: clamp(25px, 4vw, 34px);
+  }
+
+  .ua-hero p {
+    margin: 0;
+    color: #63718a;
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  .ua-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .ua-stat {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 17px;
+    border: 1px solid #e3e9f2;
+    border-radius: 16px;
+    background: white;
+  }
+
+  .ua-stat-icon, .ua-category-icon {
+    display: grid;
+    place-items: center;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    border-radius: 13px;
+  }
+
+  .blue { background: #eaf1ff; color: #315fb2; }
+  .green { background: #e4f7ed; color: #16805a; }
+  .purple { background: #f1eaff; color: #7952bb; }
+  .gold { background: #fff2d9; color: #a97419; }
+
+  .ua-stat div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .ua-stat strong { font-size: 23px; }
+  .ua-stat small { color: #7b879b; font-size: 12px; }
+
+  .ua-panel {
+    margin-top: 20px;
+    padding: 22px;
+    border: 1px solid #e3e9f2;
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0 8px 26px #1b315408;
+  }
+
+  .ua-panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .ua-panel-heading h2, .ua-links-panel h2 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin: 5px 0;
+    font-size: 20px;
+  }
+
+  .ua-panel-heading p, .ua-links-panel p {
+    margin: 0;
+    color: #78849a;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .ua-count {
+    flex-shrink: 0;
+    border-radius: 99px;
+    padding: 7px 12px;
+    background: #edf3ff;
+    color: #315fb2;
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .ua-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .ua-form label, .ua-inline-form label,
+  .ua-file-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    font-size: 13px;
+    font-weight: 750;
+    color: #35445d;
+  }
+
+  .ua-form input:not([type=checkbox]):not([type=file]),
+  .ua-form textarea,
+  .ua-inline-form input:not([type=file]),
+  .ua-file-form input:not([type=file]),
+  .ua-file-form select,
+  .ua-search input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: 1px solid #dfe6f0;
+    border-radius: 11px;
+    background: #fbfcff;
+    padding: 12px;
+    color: #1e2b43;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+  }
+
+  .ua-form textarea {
+    resize: vertical;
+    line-height: 1.8;
+  }
+
+  .ua-form input:focus, .ua-form textarea:focus,
+  .ua-inline-form input:focus, .ua-file-form input:focus,
+  .ua-file-form select:focus, .ua-search input:focus {
+    border-color: #7ca2e6;
+    box-shadow: 0 0 0 3px #eaf1ff;
+  }
+
+  .ua-form small, .ua-upload small,
+  .ua-publish small, .ua-file-form small {
+    color: #7b879b;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+  }
+
+  .ua-full { grid-column: 1 / -1; }
+
+  .ua-upload {
+    padding: 14px;
+    border: 1px dashed #b8c9e5;
+    border-radius: 13px;
+    background: #f8faff;
+  }
+
+  .ua-upload span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #315fb2;
+  }
+
+  .ua-upload input { max-width: 100%; font-size: 12px; }
+
+  .ua-publish {
+    display: flex;
+    flex-direction: row !important;
+    align-items: flex-start;
+    gap: 11px !important;
+    padding: 14px;
+    border: 1px solid #e3eaf5;
+    border-radius: 13px;
+    background: #fbfcff;
+  }
+
+  .ua-publish input {
+    width: 18px;
+    height: 18px;
+    accent-color: #285eb5;
+    margin-top: 2px;
+  }
+
+  .ua-publish span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ua-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .ua-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 0;
+    border-radius: 11px;
+    padding: 12px 16px;
+    background: #285eb5;
+    color: white;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .ua-button:disabled { opacity: .6; cursor: wait; }
+  .ua-button-light { background: #edf3ff; color: #315fb2; }
+  .ua-button-danger { background: #fff0f0; color: #b43b49; }
+
+  .ua-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-right: 12px;
+    border: 1px solid #dfe6f0;
+    border-radius: 12px;
+    color: #7b879b;
+    background: #fbfcff;
+  }
+
+  .ua-search input {
+    border: 0;
+    box-shadow: none !important;
+    background: transparent;
+  }
+
+  .ua-university-list { display: grid; gap: 10px; }
+
+  .ua-university {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #e5eaf2;
+    border-radius: 14px;
+    background: #fff;
+  }
+
+  .ua-selected { border-color: #8baeea; background: #f8faff; }
+
+  .ua-university-main {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    gap: 12px;
+    border: 0;
+    background: transparent;
+    text-align: right;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .ua-logo {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    object-fit: contain;
+    background: white;
+    border: 1px solid #edf0f5;
+  }
+
+  .ua-logo-placeholder {
+    display: grid;
+    place-items: center;
+    color: #5275b4;
+  }
+
+  .ua-university-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 4px;
+  }
+
+  .ua-university-info strong {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+
+  .ua-university-info small {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #7b879a;
+    font-size: 11px;
+    overflow-wrap: anywhere;
+  }
+
+  .ua-status {
+    flex-shrink: 0;
+    padding: 6px 9px;
+    border-radius: 99px;
+    background: #f0f2f6;
+    color: #707d91;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .ua-status-live { background: #e6f8ee; color: #16754c; }
+
+  .ua-icon-button {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border: 1px solid #e1e7f0;
+    border-radius: 10px;
+    background: white;
+    color: #50627e;
+    cursor: pointer;
+  }
+
+  .ua-delete-icon { color: #b33f4c; }
+
+  .ua-inline-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: 12px;
+    margin: 16px 0;
+  }
+
+  .ua-inline-form input[type=file] { max-width: 100%; font-size: 12px; }
+
+  .ua-college-layout {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 18px;
+    margin-top: 20px;
+  }
+
+  .ua-college-list { display: grid; align-content: start; gap: 8px; }
+
+  .ua-college-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px;
+    border: 1px solid #e6ebf3;
+    border-radius: 12px;
+  }
+
+  .ua-college-active { border-color: #9bb7e9; background: #f3f7ff; }
+
+  .ua-college-row > button:first-child {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    text-align: right;
+    color: #273650;
+    cursor: pointer;
+  }
+
+  .ua-college-row strong, .ua-college-row small {
+    display: block;
+    overflow-wrap: anywhere;
+  }
+
+  .ua-college-row strong { font-size: 13px; }
+  .ua-college-row small { margin-top: 4px; color: #8590a3; font-size: 11px; }
+
+  .ua-major-area {
+    min-width: 0;
+    padding: 15px;
+    border: 1px solid #e7edf5;
+    border-radius: 15px;
+    background: #fafbfe;
+  }
+
+  .ua-major-area h3 { margin: 0 0 10px; font-size: 16px; }
+
+  .ua-major-list {
+    display: grid;
+    gap: 8px;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ua-major-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #e5eaf2;
+    border-radius: 11px;
+    background: white;
+  }
+
+  .ua-major-list li span {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .ua-major-list strong { font-size: 13px; overflow-wrap: anywhere; }
+  .ua-major-list small { color: #7d899c; font-size: 11px; }
+
+  .ua-file-categories { display: grid; gap: 10px; margin-bottom: 20px; }
+
+  .ua-category-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px;
+    border: 1px solid #e5eaf2;
+    border-radius: 14px;
+    background: #fcfdff;
+  }
+
+  .ua-category-summary > div {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .ua-category-summary strong { font-size: 13px; }
+  .ua-category-summary small { color: #7b879b; font-size: 11px; line-height: 1.7; }
+
+  .ua-file-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    align-items: end;
+    padding: 16px;
+    border: 1px solid #e2eaf7;
+    border-radius: 16px;
+    background: #f8faff;
+  }
+
+  .ua-file-form .ua-upload { grid-column: 1 / -1; }
+  .ua-file-form > button { justify-self: start; }
+
+  .ua-file-section { margin-top: 25px; }
+
+  .ua-file-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 12px;
+  }
+
+  .ua-section-file-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #edf3ff;
+    color: #315fb2;
+  }
+
+  .ua-file-section-heading > div { flex: 1; min-width: 0; }
+
+  .ua-file-section-heading h3 { margin: 0 0 4px; font-size: 15px; }
+  .ua-file-section-heading p { margin: 0; color: #7b879b; font-size: 12px; line-height: 1.7; }
+
+  .ua-file-list { display: grid; gap: 9px; margin-top: 12px; }
+
+  .ua-file-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 1px solid #e6ebf3;
+    border-radius: 12px;
+    color: #526b98;
+  }
+
+  .ua-file-row > div {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ua-file-row strong {
+    color: #293851;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+
+  .ua-file-row small { color: #8490a3; font-size: 11px; line-height: 1.7; }
+
+  .ua-file-row a {
+    display: grid;
+    place-items: center;
+    width: 35px;
+    height: 35px;
+    flex-shrink: 0;
+    border: 1px solid #e2e8f2;
+    border-radius: 10px;
+    color: #315fb2;
+  }
+
+  .ua-links-panel { display: grid; gap: 12px; }
+
+  .ua-links-panel a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #315fb2;
+    font-size: 13px;
+    font-weight: 750;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .ua-alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 14px 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+  }
+
+  .ua-alert button {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .ua-alert-error { color: #a62f3e; border: 1px solid #f1caca; background: #fff2f2; }
+  .ua-alert-success { color: #176f4a; border: 1px solid #c9ead7; background: #effbf4; }
+
+  .ua-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 90px;
+    padding: 16px;
+    color: #7d899c;
+    font-size: 13px;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  .ua-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding-top: 25px;
+    color: #8490a3;
+    font-size: 12px;
+  }
+
+  .ua-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #6b778c;
+  }
+
+  .ua-denied {
+    max-width: 440px;
+    margin: 10vh auto;
+    padding: 28px;
+    border: 1px solid #e2e8f2;
+    border-radius: 20px;
+    background: white;
+    text-align: center;
+  }
+
+  .ua-denied h1 { margin: 12px 0; }
+  .ua-denied p { color: #718096; line-height: 1.9; }
+  .ua-spin { animation: ua-spin 1s linear infinite; }
+  @keyframes ua-spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 720px) {
+    .ua-page { padding: 16px 11px 36px; }
+    .ua-hero { align-items: flex-start; padding: 17px; }
+    .ua-hero-icon { width: 48px; height: 48px; border-radius: 14px; }
+    .ua-panel { padding: 15px; }
+    .ua-form, .ua-file-form { grid-template-columns: minmax(0, 1fr); gap: 13px; }
+    .ua-full, .ua-file-form .ua-upload { grid-column: auto; }
+    .ua-panel-heading { align-items: flex-start; }
+    .ua-panel-heading h2 { font-size: 17px; }
+    .ua-inline-form { grid-template-columns: minmax(0, 1fr); }
+    .ua-college-layout { grid-template-columns: minmax(0, 1fr); }
+    .ua-stats { grid-template-columns: minmax(0, 1fr); }
+    .ua-stat { padding: 13px; }
+    .ua-status { font-size: 10px; }
+    .ua-university-main { gap: 8px; }
+    .ua-logo { width: 43px; height: 43px; }
+    .ua-university-info strong { font-size: 12px; }
+    .ua-header { align-items: stretch; }
+    .ua-back, .ua-refresh { padding: 9px; font-size: 12px; }
+    .ua-file-form > button { justify-self: stretch; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ua-spin { animation: none; }
+  }
 `
