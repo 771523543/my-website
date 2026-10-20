@@ -46,8 +46,8 @@ const sections = [
   {
     title: 'إدارة الجامعات',
     description:
-      'قسم مخصص لإضافة أدوات إدارة بيانات الجامعات مستقبلًا.',
-    href: '',
+      'أضف الجامعات وحدّث بياناتها وشعاراتها وروابط بوابات الطلاب، وأدر الكليات والتخصصات والملفات.',
+    href: '/admin/universities',
     icon: GraduationCap,
     theme: 'orange',
   },
