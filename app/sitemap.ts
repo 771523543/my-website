@@ -1,115 +1,148 @@
-import type { MetadataRoute } from 'next'
 
-import { universities } from '@/app/components/universities/data'
+import type { MetadataRoute } from 'next'
+import { readdirSync, statSync } from 'node:fs'
+import path from 'node:path'
+
+import { services } from './components/Services'
+import { packagesData } from './components/packagesData'
+import { universities } from './components/universities/data'
 
 const baseUrl = 'https://hadeel-alpha.vercel.app'
+const appDirectory = path.join(process.cwd(), 'app')
 
-const serviceIds = [
-  'research',
-  'reports',
-  'assignments',
-  'homework',
-  'lms',
-  'presentation',
-  'cv',
-  'case-study',
-  'feasibility',
-  'graduation',
+// صفحات لا نريد ظهورها في نتائج محركات البحث.
+const excludedRoutes = [
+  '/account',
+  '/admin',
+  '/auth',
+  '/chat',
+  '/request-service',
+  '/search',
+  '/api',
+  '/services/order',
 ]
 
-const packageIds = [
-  'full-term',
-  'academic-excellence',
-  'future-generation',
-]
+function isExcludedRoute(route: string): boolean {
+  return excludedRoutes.some(
+    (excluded) =>
+      route === excluded || route.startsWith(`${excluded}/`)
+  )
+}
+
+// اكتشاف الصفحات الثابتة من ملفات page.tsx و page.ts.
+// لا ننشئ روابط من ملفات الصفحات الديناميكية مثل [slug].
+function discoverStaticPages(
+  directory: string,
+  segments: string[] = []
+): string[] {
+  let entries
+
+  try {
+    entries = readdirSync(directory, { withFileTypes: true })
+  } catch {
+    return []
+  }
+
+  const routes: string[] = []
+
+  const hasPage = entries.some(
+    (entry) =>
+      entry.isFile() &&
+      /^page\.(tsx|ts|jsx|js)$/.test(entry.name)
+  )
+
+  if (hasPage) {
+    const routeSegments = segments.filter(
+      (segment) =>
+        !segment.startsWith('(') &&
+        !segment.startsWith('@')
+    )
+
+    // المجلدات ذات الأسماء الديناميكية تحتاج إلى بيانات فعلية.
+    const isDynamic = routeSegments.some(
+      (segment) =>
+        segment.startsWith('[') || segment.startsWith(']')
+    )
+
+    if (!isDynamic) {
+      const route =
+        routeSegments.length === 0
+          ? '/'
+          : `/${routeSegments.join('/')}`
+
+      if (!isExcludedRoute(route)) {
+        routes.push(route)
+      }
+    }
+  }
+
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue
+
+    // تجاهل مجلدات API والمجلدات الداخلية الخاصة.
+    if (
+      entry.name === 'api' ||
+      entry.name.startsWith('_') ||
+      entry.name.startsWith('@')
+    ) {
+      continue
+    }
+
+    const childPath = path.join(directory, entry.name)
+
+    try {
+      if (!statSync(childPath).isDirectory()) continue
+    } catch {
+      continue
+    }
+
+    routes.push(
+      ...discoverStaticPages(childPath, [
+        ...segments,
+        entry.name,
+      ])
+    )
+  }
+
+  return routes
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
 
-  /*
-   * الصفحات الرئيسية
-   */
-  const mainPages: MetadataRoute.Sitemap = [
-    {
-      url: baseUrl,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/universities`,
-      lastModified: now,
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/previous-works`,
-      lastModified: now,
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
+  // الصفحات الثابتة المكتشفة تلقائيًا.
+  const discoveredRoutes = discoverStaticPages(appDirectory)
+
+  // الروابط الديناميكية التي نعرف بياناتها بالفعل.
+  const dynamicRoutes = [
+    ...services.map((service) => `/services/${service.id}`),
+
+    ...packagesData.map((item) => `/packages/${item.id}`),
+
+    ...universities.flatMap((university) => [
+      `/universities/${university.slug}`,
+      `/universities/${university.slug}/colleges`,
+    ]),
   ]
 
-  /*
-   * صفحات الخدمات
-   */
-  const servicePages: MetadataRoute.Sitemap = serviceIds.map((id) => ({
-    url: `${baseUrl}/services/${id}`,
+  // إزالة التكرار واستبعاد أي مسار خاص.
+  const allRoutes = [
+    ...new Set([...discoveredRoutes, ...dynamicRoutes]),
+  ].filter((route) => !isExcludedRoute(route))
+
+  return allRoutes.map((route) => ({
+    url: `${baseUrl}${route === '/' ? '' : route}`,
+    changeFrequency: route === '/' ? 'weekly' : 'monthly',
+    priority:
+      route === '/'
+        ? 1
+        : [
+              '/services',
+              '/universities',
+              '/previous-works',
+            ].includes(route)
+          ? 0.9
+          : 0.7,
     lastModified: now,
-    changeFrequency: 'monthly',
-    priority: 0.8,
   }))
-
-  /*
-   * صفحات الباقات
-   */
-  const packagePages: MetadataRoute.Sitemap = packageIds.map((id) => ({
-    url: `${baseUrl}/packages/${id}`,
-    lastModified: now,
-    changeFrequency: 'monthly',
-    priority: 0.75,
-  }))
-
-  /*
-   * صفحة كل جامعة
-   *
-   * يتم أخذ الـ slug مباشرة من data.ts
-   * حتى لا نضيف أي جامعة غير موجودة فعليًا.
-   */
-  const universityPages: MetadataRoute.Sitemap = universities.flatMap(
-    (university) => [
-      {
-        url: `${baseUrl}/universities/${university.slug}`,
-        lastModified: now,
-        changeFrequency: 'monthly' as const,
-        priority: 0.85,
-      },
-
-      /*
-       * صفحة الكليات والتخصصات لكل جامعة
-       */
-      {
-        url: `${baseUrl}/universities/${university.slug}/colleges`,
-        lastModified: now,
-        changeFrequency: 'monthly' as const,
-        priority: 0.8,
-      },
-    ],
-  )
-
-  /*
-   * جميع روابط الـ Sitemap
-   */
-  return [
-    ...mainPages,
-    ...servicePages,
-    ...packagePages,
-    ...universityPages,
-  ]
 }
