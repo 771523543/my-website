@@ -27,6 +27,7 @@ export type StudentFile = {
   title: string
   file_url: string
   file_type: string | null
+  category?: "files" | "resources" | null
   display_order?: number | null
 }
 
@@ -39,7 +40,7 @@ function getFileLabel(file: StudentFile) {
   const type = (file.file_type || "").toLowerCase()
   const url = file.file_url.toLowerCase()
 
-  if (type.includes("pdf") || url.includes(".pdf")) return "PDF"
+  if (type.includes("pdf") || /\.pdf(\?|$)/.test(url)) return "PDF"
   if (type.includes("word") || /\.(doc|docx)(\?|$)/.test(url)) return "Word"
   if (type.includes("powerpoint") || /\.(ppt|pptx)(\?|$)/.test(url)) return "PowerPoint"
   if (type.includes("excel") || /\.(xls|xlsx)(\?|$)/.test(url)) return "Excel"
@@ -48,13 +49,78 @@ function getFileLabel(file: StudentFile) {
   return file.file_type || "ملف"
 }
 
+function FileCards({ files }: { files: StudentFile[] }) {
+  if (files.length === 0) {
+    return (
+      <div className="sp-empty-state">
+        <span className="sp-empty-icon sp-icon-blue">
+          <Files size={34} />
+        </span>
+        <h3>لا توجد ملفات في هذا القسم حاليًا</h3>
+        <p>
+          ستظهر الملفات هنا تلقائيًا عند إضافتها من لوحة إدارة الجامعات.
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {files.map((file) => (
+        <article
+          key={file.id}
+          className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+        >
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+              <File size={25} />
+            </span>
+
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
+              {getFileLabel(file)}
+            </span>
+          </div>
+
+          <h3 className="mb-4 break-words text-base font-bold leading-7 text-slate-800">
+            {file.title}
+          </h3>
+
+          <div className="mt-auto flex flex-wrap gap-2">
+            <a
+              href={file.file_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-700 px-3 py-3 text-sm font-bold text-white transition hover:bg-blue-800"
+            >
+              <ExternalLink size={17} />
+              فتح الملف
+            </a>
+
+            <a
+              href={file.file_url}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
+              aria-label={`تنزيل ${file.title}`}
+            >
+              <Download size={17} />
+              تنزيل
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  )
+}
+
 export default function StudentPortalContent({
   university,
   files = [],
 }: Props) {
   const [search, setSearch] = useState("")
 
-  const filteredFiles = useMemo(() => {
+  const { universityFiles, academicResources, totalFiles } = useMemo(() => {
     const query = search.trim().toLowerCase()
 
     const sortedFiles = [...files].sort(
@@ -62,18 +128,25 @@ export default function StudentPortalContent({
         (a.display_order ?? 0) - (b.display_order ?? 0)
     )
 
-    if (!query) return sortedFiles
-
-    return sortedFiles.filter((file) => {
-      const title = file.title.toLowerCase()
-      const type = (file.file_type || "").toLowerCase()
+    const matchesSearch = (file: StudentFile) => {
+      if (!query) return true
 
       return (
-        title.includes(query) ||
-        type.includes(query) ||
+        file.title.toLowerCase().includes(query) ||
+        (file.file_type || "").toLowerCase().includes(query) ||
         getFileLabel(file).toLowerCase().includes(query)
       )
-    })
+    }
+
+    return {
+      universityFiles: sortedFiles.filter(
+        (file) => file.category !== "resources" && matchesSearch(file)
+      ),
+      academicResources: sortedFiles.filter(
+        (file) => file.category === "resources" && matchesSearch(file)
+      ),
+      totalFiles: sortedFiles.length,
+    }
   }, [files, search])
 
   return (
@@ -88,7 +161,6 @@ export default function StudentPortalContent({
           <span className="sp-brand-mark">
             <GraduationCap size={30} />
           </span>
-
           <span className="sp-brand-copy">
             <strong>منصة هديل</strong>
             <small>تعليم يصنع المستقبل</small>
@@ -149,13 +221,8 @@ export default function StudentPortalContent({
           <span className="sp-shortcut-icon sp-icon-gold">
             <BookOpen size={30} />
           </span>
-
           <h2>الموارد الأكاديمية</h2>
-
-          <p>
-            شروحات وأدلة وروابط مفيدة لمساعدتك في مسيرتك الدراسية.
-          </p>
-
+          <p>شروحات وأدلة وروابط مفيدة لمساعدتك في مسيرتك الدراسية.</p>
           <span className="sp-round-arrow">
             <ArrowLeft size={17} />
           </span>
@@ -165,13 +232,8 @@ export default function StudentPortalContent({
           <span className="sp-shortcut-icon sp-icon-blue">
             <Files size={30} />
           </span>
-
           <h2>الملفات والأدلة الجامعية</h2>
-
-          <p>
-            ملفات PDF وWord والأدلة الجامعية المتاحة للطلاب.
-          </p>
-
+          <p>ملفات PDF وWord والأدلة الجامعية المتاحة للطلاب.</p>
           <span className="sp-round-arrow">
             <ArrowLeft size={17} />
           </span>
@@ -189,9 +251,7 @@ export default function StudentPortalContent({
             ابحث عن ما تحتاجه
           </h2>
 
-          <p>
-            اكتب اسم الملف أو نوعه للوصول إلى الملف المطلوب بسرعة.
-          </p>
+          <p>اكتب اسم الملف أو نوعه للوصول إلى الملف المطلوب بسرعة.</p>
 
           <label className="sp-search-box">
             <Search size={21} />
@@ -218,8 +278,8 @@ export default function StudentPortalContent({
 
           <p className="sp-search-hint">
             {search
-              ? `عدد الملفات المطابقة: ${filteredFiles.length}`
-              : `يتوفر حاليًا ${files.length} ملف في هذه البوابة.`}
+              ? `عدد الملفات المطابقة: ${universityFiles.length + academicResources.length}`
+              : `يتوفر حاليًا ${totalFiles} ملف في هذه البوابة.`}
           </p>
         </div>
       </section>
@@ -232,7 +292,6 @@ export default function StudentPortalContent({
           <span className="sp-section-icon sp-icon-blue">
             <FolderOpen size={25} />
           </span>
-
           <div>
             <h2>الملفات والأدلة الجامعية</h2>
             <p>
@@ -241,79 +300,25 @@ export default function StudentPortalContent({
           </div>
         </div>
 
-        {filteredFiles.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredFiles.map((file) => (
-              <article
-                key={file.id}
-                className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
-                    <File size={25} />
-                  </span>
-
-                  <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">
-                    {getFileLabel(file)}
-                  </span>
-                </div>
-
-                <h3 className="mb-4 break-words text-base font-bold leading-7 text-slate-800">
-                  {file.title}
-                </h3>
-
-                <div className="mt-auto flex flex-wrap gap-2">
-                  <a
-                    href={file.file_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-blue-700 px-3 py-3 text-sm font-bold text-white transition hover:bg-blue-800"
-                  >
-                    <ExternalLink size={17} />
-                    فتح الملف
-                  </a>
-
-                  <a
-                    href={file.file_url}
-                    download
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 px-3 py-3 text-sm font-bold text-slate-700 transition hover:bg-slate-50"
-                    aria-label={`تنزيل ${file.title}`}
-                  >
-                    <Download size={17} />
-                    تنزيل
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : (
+        {search &&
+          universityFiles.length === 0 &&
+          academicResources.length === 0 ? (
           <div className="sp-empty-state">
             <span className="sp-empty-icon sp-icon-blue">
-              <Files size={34} />
+              <Search size={34} />
             </span>
-
-            <h3>
-              {search ? "لم نعثر على ملفات مطابقة" : "الملفات الجامعية"}
-            </h3>
-
-            <p>
-              {search
-                ? "جرّب البحث بكلمات أخرى أو امسح عبارة البحث."
-                : "لا توجد ملفات متاحة حاليًا. ستظهر الملفات هنا بعد إضافتها من لوحة إدارة الجامعات."}
-            </p>
-
-            {search && (
-              <button
-                type="button"
-                className="mt-3 rounded-xl bg-blue-700 px-5 py-2.5 text-sm font-bold text-white"
-                onClick={() => setSearch("")}
-              >
-                عرض جميع الملفات
-              </button>
-            )}
+            <h3>لم نعثر على ملفات مطابقة</h3>
+            <p>جرّب البحث بكلمات أخرى أو امسح عبارة البحث.</p>
+            <button
+              type="button"
+              className="mt-3 rounded-xl bg-blue-700 px-5 py-2.5 text-sm font-bold text-white"
+              onClick={() => setSearch("")}
+            >
+              عرض جميع الملفات
+            </button>
           </div>
+        ) : (
+          <FileCards files={universityFiles} />
         )}
       </section>
 
@@ -325,7 +330,6 @@ export default function StudentPortalContent({
           <span className="sp-section-icon sp-icon-gold">
             <BookOpen size={25} />
           </span>
-
           <div>
             <h2>الموارد الأكاديمية</h2>
             <p>
@@ -334,17 +338,19 @@ export default function StudentPortalContent({
           </div>
         </div>
 
-        <div className="sp-empty-state">
-          <span className="sp-empty-icon sp-icon-gold">
-            <BookOpen size={34} />
-          </span>
-
-          <h3>الموارد الأكاديمية</h3>
-
-          <p>
-            ستظهر الموارد الأكاديمية هنا عند تخصيصها وإضافتها من لوحة الإدارة.
-          </p>
-        </div>
+        {search &&
+          universityFiles.length === 0 &&
+          academicResources.length === 0 ? (
+          <div className="sp-empty-state">
+            <span className="sp-empty-icon sp-icon-gold">
+              <Search size={34} />
+            </span>
+            <h3>لا توجد نتائج بحث</h3>
+            <p>امسح البحث لعرض الملفات والموارد المتاحة.</p>
+          </div>
+        ) : (
+          <FileCards files={academicResources} />
+        )}
       </section>
     </main>
   )
