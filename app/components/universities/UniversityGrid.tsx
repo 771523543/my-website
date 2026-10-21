@@ -22,7 +22,10 @@ type CollegeRow = {
 export default async function UniversityGrid() {
   noStore()
 
-  const { data, error } = await supabase
+  const {
+    data,
+    error,
+  } = await supabase
     .from("universities")
     .select(
       "id, slug, name, city, description, founded, logo_url"
@@ -31,44 +34,108 @@ export default async function UniversityGrid() {
     .order("display_order", { ascending: true })
     .order("name", { ascending: true })
 
+  // إظهار الخطأ الحقيقي بدل عرض الجامعات القديمة
   if (error) {
     console.error(
-      "تعذر تحميل الجامعات من قاعدة البيانات:",
+      "UniversityGrid: تعذر تحميل الجامعات",
       error.message
     )
 
     return (
-      <div className="university-grid">
-        {fallbackUniversities.map((university) => (
-          <UniversityCard
-            key={university.slug}
-            university={university}
-          />
-        ))}
+      <div
+        className="university-grid"
+        dir="rtl"
+      >
+        <div
+          style={{
+            gridColumn: "1 / -1",
+            padding: "24px",
+            borderRadius: "16px",
+            border: "1px solid #fecaca",
+            background: "#fef2f2",
+            color: "#991b1b",
+            textAlign: "center",
+            lineHeight: 1.9,
+          }}
+        >
+          <h3 style={{ fontWeight: 700, marginBottom: 8 }}>
+            تعذر تحميل الجامعات من قاعدة البيانات
+          </h3>
+
+          <p>
+            سبب الخطأ:
+          </p>
+
+          <p
+            dir="ltr"
+            style={{
+              overflowWrap: "anywhere",
+              marginTop: 8,
+              fontSize: 14,
+            }}
+          >
+            {error.message}
+          </p>
+
+          <p style={{ marginTop: 12, fontSize: 13 }}>
+            يرجى إرسال صورة هذه الرسالة لمعرفة سبب المشكلة
+            وإصلاحه دون التأثير على بيانات الجامعات.
+          </p>
+        </div>
       </div>
     )
   }
 
   const rows = (data ?? []) as UniversityRow[]
 
+  // إذا لم توجد نتائج، نوضح ذلك بدل عرض قائمة قديمة
   if (rows.length === 0) {
     return (
-      <div className="university-grid">
-        <p>لا توجد جامعات منشورة حاليًا.</p>
+      <div
+        className="university-grid"
+        dir="rtl"
+      >
+        <div
+          style={{
+            gridColumn: "1 / -1",
+            padding: "24px",
+            borderRadius: "16px",
+            border: "1px solid #fde68a",
+            background: "#fffbeb",
+            color: "#92400e",
+            textAlign: "center",
+            lineHeight: 1.9,
+          }}
+        >
+          <h3 style={{ fontWeight: 700, marginBottom: 8 }}>
+            لا توجد جامعات منشورة في النتائج
+          </h3>
+
+          <p>
+            نجح الاتصال بقاعدة البيانات، لكن الاستعلام لم يُرجع
+            أي جامعة منشورة. تحقق من مشروع Supabase المرتبط
+            بالموقع وحالة نشر الجامعات.
+          </p>
+        </div>
       </div>
     )
   }
 
-  const universityIds = rows.map((university) => university.id)
+  const universityIds = rows.map(
+    (university) => university.id
+  )
 
-  const { data: collegeData, error: collegeError } = await supabase
+  const {
+    data: collegeData,
+    error: collegeError,
+  } = await supabase
     .from("university_colleges")
     .select("university_id")
     .in("university_id", universityIds)
 
   if (collegeError) {
     console.error(
-      "تعذر تحميل أعداد الكليات:",
+      "UniversityGrid: تعذر تحميل أعداد الكليات",
       collegeError.message
     )
   }
@@ -83,26 +150,33 @@ export default async function UniversityGrid() {
     )
   }
 
-  const displayedUniversities: University[] = rows.map((row) => {
-    const fallback = fallbackUniversities.find(
-      (university) => university.slug === row.slug
-    )
+  const displayedUniversities: University[] = rows.map(
+    (row) => {
+      const fallback = fallbackUniversities.find(
+        (university) => university.slug === row.slug
+      )
 
-    const collegeCount = collegeCounts.get(row.id) ?? 0
+      const collegeCount = collegeCounts.get(row.id) ?? 0
 
-    return {
-      slug: row.slug,
-      name: row.name,
-      logo: row.logo_url?.trim() || fallback?.logo || "",
-      founded: row.founded ? `${row.founded}م` : "غير محدد",
-      city: row.city || "غير محدد",
-      description: row.description || "",
-      colleges: Array.from({ length: collegeCount }, () => ({
-        name: "",
-        majors: [],
-      })),
+      return {
+        slug: row.slug,
+        name: row.name,
+        logo: row.logo_url?.trim() || fallback?.logo || "",
+        founded: row.founded
+          ? `${row.founded}م`
+          : "غير محدد",
+        city: row.city || "غير محدد",
+        description: row.description || "",
+        colleges: Array.from(
+          { length: collegeCount },
+          () => ({
+            name: "",
+            majors: [],
+          })
+        ),
+      }
     }
-  })
+  )
 
   return (
     <div className="university-grid">
