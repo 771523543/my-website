@@ -77,7 +77,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: '/images/hadeel-og-image.webp',
+        url: '/hadeel.webp',
         width: 1200,
         height: 630,
         alt: 'منصة هديل للخدمات الطلابية والأكاديمية',
@@ -93,7 +93,7 @@ export const metadata: Metadata = {
     description:
       'خدمات طلابية وأكاديمية وبحثية ومهنية في منصة واحدة.',
 
-    images: ['/images/hadeel-og-image.webp'],
+    images: ['/hadeel.webp'],
   },
 }
 
