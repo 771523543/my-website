@@ -6,6 +6,9 @@ import Footer from './components/Footer'
 import FloatingWhatsApp from './components/FloatingWhatsApp'
 import GlobalBackButton from './components/GlobalBackButton'
 
+const siteDescription =
+  'أنجز متطلباتك الجامعية بكل سهولة! خدمات البحوث والتقارير والعروض التقديمية ومشاريع التخرج وغيرها من الخدمات الأكاديمية في مكان واحد.'
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://hadeel-alpha.vercel.app'),
 
@@ -14,8 +17,7 @@ export const metadata: Metadata = {
     template: '%s | منصة هديل',
   },
 
-  description:
-    'منصة هديل للخدمات الطلابية والأكاديمية والبحثية والمهنية. نقدم خدمات البحوث الجامعية، التقارير، الواجبات، التكاليف، مشاريع التخرج، العروض التقديمية، دراسة الحالة، دراسات الجدوى والسيرة الذاتية.',
+  description: siteDescription,
 
   keywords: [
     'منصة هديل',
@@ -72,8 +74,7 @@ export const metadata: Metadata = {
 
     title: 'منصة هديل للخدمات الطلابية والأكاديمية',
 
-    description:
-      'خدمات طلابية وأكاديمية وبحثية ومهنية تساعد الطلاب والباحثين في إنجاز متطلباتهم الدراسية والأكاديمية باحترافية.',
+    description: siteDescription,
 
     images: [
       {
@@ -90,8 +91,7 @@ export const metadata: Metadata = {
 
     title: 'منصة هديل للخدمات الطلابية والأكاديمية',
 
-    description:
-      'خدمات طلابية وأكاديمية وبحثية ومهنية في منصة واحدة.',
+    description: siteDescription,
 
     images: ['/hadeel.webp'],
   },
