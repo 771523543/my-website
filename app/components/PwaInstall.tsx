@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Download, Share, X } from 'lucide-react'
+import { Download, X } from 'lucide-react'
 
 type InstallPromptEvent = Event & {
   prompt: () => Promise<void>
@@ -10,9 +10,7 @@ type InstallPromptEvent = Event & {
 
 export default function PwaInstall() {
   const [promptEvent, setPromptEvent] = useState<InstallPromptEvent | null>(null)
-  const [isIOS, setIsIOS] = useState(false)
   const [isInstalled, setIsInstalled] = useState(false)
-  const [showIOSHelp, setShowIOSHelp] = useState(false)
   const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
@@ -21,7 +19,6 @@ export default function PwaInstall() {
       Boolean((navigator as Navigator & { standalone?: boolean }).standalone)
 
     setIsInstalled(standalone)
-    setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent))
 
     const handleBeforeInstall = (event: Event) => {
       event.preventDefault()
@@ -43,20 +40,12 @@ export default function PwaInstall() {
   }, [])
 
   const installApp = async () => {
-    if (promptEvent) {
-      await promptEvent.prompt()
-      const choice = await promptEvent.userChoice
-      if (choice.outcome === 'accepted') setIsInstalled(true)
-      setPromptEvent(null)
-      return
-    }
+    if (!promptEvent) return
 
-    if (isIOS) {
-      setShowIOSHelp(true)
-      return
-    }
-
-    setShowIOSHelp(true)
+    await promptEvent.prompt()
+    const choice = await promptEvent.userChoice
+    if (choice.outcome === 'accepted') setIsInstalled(true)
+    setPromptEvent(null)
   }
 
   if (isInstalled || dismissed) return null
@@ -107,15 +96,13 @@ export default function PwaInstall() {
           height="44"
           style={{ objectFit: 'contain', borderRadius: 10 }}
         />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <strong style={{ display: 'block', fontSize: 15 }}>منصة هديل كتطبيق</strong>
-          <span style={{ display: 'block', fontSize: 12, color: '#666', marginTop: 3 }}>
-            ثبّت المنصة على شاشة جوالك للوصول إليها بسهولة
-          </span>
-        </div>
+        <strong style={{ flex: 1, minWidth: 0, fontSize: 15 }}>
+          ثبت تطبيق منصة هديل
+        </strong>
         <button
           type="button"
           onClick={installApp}
+          disabled={!promptEvent}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -128,40 +115,14 @@ export default function PwaInstall() {
             color: '#fff',
             fontWeight: 700,
             whiteSpace: 'nowrap',
-            cursor: 'pointer',
+            cursor: promptEvent ? 'pointer' : 'default',
+            opacity: promptEvent ? 1 : 0.7,
           }}
         >
           <Download size={16} />
-          تثبيت
+          ثبت التطبيق
         </button>
       </div>
-
-      {showIOSHelp && (
-        <div
-          role="dialog"
-          aria-label="طريقة تثبيت منصة هديل"
-          style={{
-            marginTop: 12,
-            padding: 12,
-            borderRadius: 12,
-            background: '#f5f5f0',
-            fontSize: 13,
-            lineHeight: 1.8,
-          }}
-        >
-          <strong>طريقة التثبيت على جهازك:</strong>
-          {isIOS ? (
-            <p style={{ margin: '5px 0 0' }}>
-              افتح الموقع في Safari، ثم اضغط زر المشاركة <Share size={14} style={{ display: 'inline', verticalAlign: 'middle' }} />،
-              واختر «إضافة إلى الشاشة الرئيسية»، ثم اضغط «إضافة».
-            </p>
-          ) : (
-            <p style={{ margin: '5px 0 0' }}>
-              افتح الموقع في Chrome، ثم اضغط قائمة ⋮ واختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».
-            </p>
-          )}
-        </div>
-      )}
     </aside>
   )
 }
