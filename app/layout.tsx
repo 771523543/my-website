@@ -1,24 +1,29 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
 import FloatingWhatsApp from './components/FloatingWhatsApp'
 import GlobalBackButton from './components/GlobalBackButton'
+import PwaInstall from './components/PwaInstall'
 
 const siteDescription =
   'أنجز متطلباتك الجامعية بكل سهولة! خدمات البحوث والتقارير والعروض التقديمية ومشاريع التخرج وغيرها من الخدمات الأكاديمية في مكان واحد.'
 
+export const viewport: Viewport = {
+  themeColor: '#6f7657',
+  width: 'device-width',
+  initialScale: 1,
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://hadeel-alpha.vercel.app'),
-
+  manifest: '/manifest.webmanifest',
   title: {
     default: 'منصة هديل للخدمات الطلابية والأكاديمية',
     template: '%s | منصة هديل',
   },
-
   description: siteDescription,
-
   keywords: [
     'منصة هديل',
     'منصة هديل للخدمات الطلابية',
@@ -37,26 +42,24 @@ export const metadata: Metadata = {
     'دراسات جدوى',
     'سيرة ذاتية',
   ],
-
-  authors: [
-    {
-      name: 'منصة هديل للخدمات الطلابية والأكاديمية',
-    },
-  ],
-
+  authors: [{ name: 'منصة هديل للخدمات الطلابية والأكاديمية' }],
   creator: 'منصة هديل',
   publisher: 'منصة هديل للخدمات الطلابية والأكاديمية',
   applicationName: 'منصة هديل',
   category: 'education',
-
-  alternates: {
-    canonical: '/',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'منصة هديل',
   },
-
+  icons: {
+    icon: '/hadeel-platform-logo.png',
+    apple: '/hadeel-platform-logo.png',
+  },
+  alternates: { canonical: '/' },
   robots: {
     index: true,
     follow: true,
-
     googleBot: {
       index: true,
       follow: true,
@@ -65,34 +68,24 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
-
   openGraph: {
     type: 'website',
     locale: 'ar_SA',
     url: 'https://hadeel-alpha.vercel.app',
     siteName: 'منصة هديل للخدمات الطلابية والأكاديمية',
-
     title: 'منصة هديل للخدمات الطلابية والأكاديمية',
-
     description: siteDescription,
-
-    images: [
-      {
-        url: '/hadeel.webp',
-        width: 1200,
-        height: 630,
-        alt: 'منصة هديل للخدمات الطلابية والأكاديمية',
-      },
-    ],
+    images: [{
+      url: '/hadeel.webp',
+      width: 1200,
+      height: 630,
+      alt: 'منصة هديل للخدمات الطلابية والأكاديمية',
+    }],
   },
-
   twitter: {
     card: 'summary_large_image',
-
     title: 'منصة هديل للخدمات الطلابية والأكاديمية',
-
     description: siteDescription,
-
     images: ['/hadeel.webp'],
   },
 }
@@ -104,19 +97,14 @@ export default function RootLayout({
 }>) {
   const structuredData = {
     '@context': 'https://schema.org',
-
     '@graph': [
       {
         '@type': 'Organization',
         name: 'منصة هديل للخدمات الطلابية والأكاديمية',
         url: 'https://hadeel-alpha.vercel.app',
-
         logo: 'https://hadeel-alpha.vercel.app/images/hadeel-platform-logo.png',
-
-        description:
-          'منصة للخدمات الطلابية والأكاديمية والبحثية والمهنية.',
+        description: 'منصة للخدمات الطلابية والأكاديمية والبحثية والمهنية.',
       },
-
       {
         '@type': 'WebSite',
         name: 'منصة هديل للخدمات الطلابية والأكاديمية',
@@ -135,17 +123,12 @@ export default function RootLayout({
             __html: JSON.stringify(structuredData),
           }}
         />
-
         <Header />
-
-        {/* زر الرجوع العام للصفحات الداخلية */}
         <GlobalBackButton />
-
         {children}
-
         <Footer />
-
         <FloatingWhatsApp />
+        <PwaInstall />
       </body>
     </html>
   )
