@@ -33,6 +33,13 @@ export default function PwaInstall() {
     window.addEventListener('beforeinstallprompt', handleBeforeInstall)
     window.addEventListener('appinstalled', handleInstalled)
 
+    // Register the root service worker so Chromium can complete PWA install checks.
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch((error) => {
+        console.error('تعذر تسجيل خدمة التطبيق:', error)
+      })
+    }
+
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall)
       window.removeEventListener('appinstalled', handleInstalled)
