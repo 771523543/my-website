@@ -57,7 +57,7 @@ export default function PwaInstall() {
       style={{
         position: 'fixed',
         zIndex: 1000,
-        bottom: 'max(16px, env(safe-area-inset-bottom))',
+        top: 'max(16px, env(safe-area-inset-top))',
         left: 16,
         right: 16,
         maxWidth: 520,
