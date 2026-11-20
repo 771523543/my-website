@@ -47,12 +47,20 @@ export default function PwaInstall() {
   }, [])
 
   const installApp = async () => {
-    if (!promptEvent) return
+    if (!promptEvent) {
+      window.alert('لم تتوفر نافذة التثبيت من Chrome بعد. افتح قائمة Chrome (⋮) واختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».')
+      return
+    }
 
-    await promptEvent.prompt()
-    const choice = await promptEvent.userChoice
-    if (choice.outcome === 'accepted') setIsInstalled(true)
-    setPromptEvent(null)
+    try {
+      await promptEvent.prompt()
+      const choice = await promptEvent.userChoice
+      if (choice.outcome === 'accepted') setIsInstalled(true)
+      setPromptEvent(null)
+    } catch (error) {
+      console.error('تعذر فتح نافذة تثبيت التطبيق:', error)
+      window.alert('تعذر فتح نافذة التثبيت الآن. جرّب تحديث الصفحة ثم المحاولة مرة أخرى.')
+    }
   }
 
   if (isInstalled || dismissed) return null
@@ -109,7 +117,6 @@ export default function PwaInstall() {
         <button
           type="button"
           onClick={installApp}
-          disabled={!promptEvent}
           style={{
             display: 'inline-flex',
             alignItems: 'center',
@@ -122,8 +129,8 @@ export default function PwaInstall() {
             color: '#fff',
             fontWeight: 700,
             whiteSpace: 'nowrap',
-            cursor: promptEvent ? 'pointer' : 'default',
-            opacity: promptEvent ? 1 : 0.7,
+            cursor: 'pointer',
+            opacity: 1,
           }}
         >
           <Download size={16} />
