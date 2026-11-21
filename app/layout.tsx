@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     icon: '/hadeel-platform-logo.png',
     apple: '/hadeel-platform-logo.png',
   },
-  alternates: { canonical: '/' },
+  // لا نضع canonical موحدًا هنا حتى لا ترثه جميع الصفحات؛ لكل صفحة عنوانها الأساسي.
   robots: {
     index: true,
     follow: true,
