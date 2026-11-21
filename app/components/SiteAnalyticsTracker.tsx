@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
 const VISITOR_KEY = 'hadeel_analytics_visitor_v1'
-const INSTALL_KEY = 'hadeel_analytics_install_recorded_v1'
 
 function getVisitorId() {
   try {
@@ -52,13 +51,6 @@ export default function SiteAnalyticsTracker() {
 
   useEffect(() => {
     const handleInstalled = () => {
-      try {
-        if (window.localStorage.getItem(INSTALL_KEY) === '1') return
-        window.localStorage.setItem(INSTALL_KEY, '1')
-      } catch {
-        // The browser may block local storage; still attempt to record the event.
-      }
-
       void supabase.from('site_analytics_events').insert({
         event_type: 'app_install',
         source_mode: 'installed_app',
