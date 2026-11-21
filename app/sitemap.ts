@@ -122,6 +122,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...universities.flatMap((university) => [
       `/universities/${university.slug}`,
       `/universities/${university.slug}/colleges`,
+      `/universities/${university.slug}/student`,
     ]),
   ]
 
