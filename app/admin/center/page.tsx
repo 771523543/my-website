@@ -17,6 +17,7 @@ import {
   LockKeyhole,
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import SiteAnalytics from './SiteAnalytics'
 
 const sections = [
   {
@@ -254,6 +255,8 @@ export default function AdminCenterPage() {
             </p>
           </div>
         </section>
+
+        <SiteAnalytics />
 
         <section className="hac-section">
           <div className="hac-section-heading">
