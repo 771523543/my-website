@@ -6,6 +6,7 @@ import Footer from './components/Footer'
 import FloatingWhatsApp from './components/FloatingWhatsApp'
 import GlobalBackButton from './components/GlobalBackButton'
 import PwaInstall from './components/PwaInstall'
+import SiteAnalyticsTracker from './components/SiteAnalyticsTracker'
 
 const siteDescription =
   'أنجز متطلباتك الجامعية بكل سهولة! خدمات البحوث والتقارير والعروض التقديمية ومشاريع التخرج وغيرها من الخدمات الأكاديمية في مكان واحد.'
@@ -128,6 +129,7 @@ export default function RootLayout({
         {children}
         <Footer />
         <FloatingWhatsApp />
+        <SiteAnalyticsTracker />
         <PwaInstall />
       </body>
     </html>
